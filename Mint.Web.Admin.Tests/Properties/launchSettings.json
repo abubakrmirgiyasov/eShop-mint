@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Mint.Web.Admin.Tests": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:61350;http://localhost:61353"
+    }
+  }
+}
