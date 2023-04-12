@@ -1,5 +1,4 @@
-import { store } from "../store";
-import { authActions } from "../store/auth.slice";
+import { store, authActions } from "../store";
 
 export const fetchWrapper = {
   get: request("GET"),

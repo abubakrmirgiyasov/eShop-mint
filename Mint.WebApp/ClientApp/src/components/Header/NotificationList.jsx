@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Dropdown, DropdownMenu, DropdownToggle, Row } from 'reactstrap';
 
 const NotificationList = () => {
+    const [isNotifyDropdown, setIsNotifyDropdown] = useState(false);
+
+    const toggleNotifyDropdown = () => {
+        setIsNotifyDropdown(!isNotifyDropdown);
+    };
+
     return (
         <React.Fragment>
             <Dropdown
-                isOpen={""}
-                toggle={""}
+                isOpen={isNotifyDropdown}
+                toggle={toggleNotifyDropdown}
                 className="topbar-head-dropdown ms-1 header-item"
             >
                 <DropdownToggle

@@ -82,13 +82,13 @@ const CartList = () => {
               <Col>
                 <h6 className="m-0 fs-16 fw-semibol">Корзина</h6>
               </Col>
-              <div className="col-auto">
+              <Col className="col-auto">
                 <span className="badge badge-soft-warning fs-13">
                   <span className="cartitem-badge">
                     Товаров в корзине: {cartItem == 0 ? 0 : cartItem}
                   </span>
                 </span>
-              </div>
+              </Col>
             </Row>
           </div>
           <SimpleBar>

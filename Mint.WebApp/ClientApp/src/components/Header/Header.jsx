@@ -15,16 +15,18 @@ import CartList from "./CartList";
 import ThemeToggle from "./ThemeToggle";
 import LikesList from "./LikesList";
 import NotificationList from "./NotificationList";
-import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 import Signin from "../../Pages/Auth/Signin";
+import { useSelector } from "react-redux";
+import PrivateComponent from "../../helpers/privateComponent";
+import { Roles } from "../../constants/Roles";
 
 const Header = (props) => {
   const [value, setValue] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const { user: authUser } = useSelector((user) => user.auth);
+  const { Signin: user } = useSelector((user) => user);
 
   const onChangeData = (e) => {};
 
@@ -42,6 +44,23 @@ const Header = (props) => {
       document.body.classList.contains("menu")
         ? document.body.classList.remove("menu")
         : document.body.classList.add("menu");
+
+    if (document.documentElement.getAttribute("data-layout") === "vertical") {
+      if (windowSize < 1025 && windowSize > 767) {
+        document.body.classList.remove("vertical-sidebar-enable");
+        document.documentElement.getAttribute("data-sidebar-size") === "sm"
+          ? document.documentElement.setAttribute("data-sidebar-size", "")
+          : document.documentElement.setAttribute("data-sidebar-size", "sm");
+      } else if (windowSize > 1025) {
+        document.body.classList.remove("vertical-sidebar-enable");
+        document.documentElement.getAttribute("data-sidebar-size") === "lg"
+          ? document.documentElement.setAttribute("data-sidebar-size", "sm")
+          : document.documentElement.setAttribute("data-sidebar-size", "lg");
+      } else if (windowSize <= 767) {
+        document.body.classList.add("vertical-sidebar-enable");
+        document.documentElement.setAttribute("data-sidebar-size", "lg");
+      }
+    }
   };
 
   return (
@@ -133,26 +152,52 @@ const Header = (props) => {
               {<LanguageList />}
               {<CartList />}
               {<LikesList />}
-              {<ThemeToggle />}
+              {
+                <ThemeToggle
+                  layoutModeType={props.layoutModeType}
+                  onChangeLayoutMode={props.onChangeLayoutMode}
+                />
+              }
               {<NotificationList />}
 
-              {authUser ? (
-                <UserMenu />
+              {user.isLoggedIn ? (
+                <>
+                  <UserMenu />
+                  {
+                    <PrivateComponent>
+                      <div
+                        className="ms-sm-3 header-item topbar-user"
+                        roles={[Roles.Admin, Roles.Seller]}
+                      >
+                        <Link
+                          to="/admin/admin-signin"
+                          className="btn bg-light fs-5 rounded btn-icon"
+                          style={{ padding: "2rem 3rem" }}
+                        >
+                          <span className="d-flex align-items-center">
+                            <i className="ri-shield-user-line"></i>
+                            <span className="text-start ms-xl-2">Админ</span>
+                          </span>
+                        </Link>
+                      </div>
+                    </PrivateComponent>
+                  }
+                </>
               ) : (
                 <>
-                  <div className="d-flex justify-content-center align-items-center">
+                  <div className="ms-sm-3 header-item topbar-user">
                     <button
-                      className="btn bg-light ms-4 fs-5 rounded btn-icon"
+                      className="btn bg-light fs-5 rounded btn-icon"
                       style={{ padding: "2rem 3rem" }}
                       onClick={() => setIsLoginModalOpen(true)}
                     >
-                      <i className="ri-login-box-line"></i> Войти
+                      <span className="d-flex align-items-center">
+                        <i className="ri-login-box-line"></i>
+                        <span className="text-start ms-xl-2">Войти</span>
+                      </span>
                     </button>
                   </div>
-                  <Signin 
-                    isOpen={isLoginModalOpen}
-                    toggle={toggleLoginModal}
-                  />
+                  <Signin isOpen={isLoginModalOpen} toggle={toggleLoginModal} />
                 </>
               )}
             </div>

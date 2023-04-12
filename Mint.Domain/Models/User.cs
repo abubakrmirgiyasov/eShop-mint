@@ -38,6 +38,8 @@ public class User
     [MaxLength(777, ErrorMessage = "Перевышено макс. длина строки (777).")]
     public string? Description { get; set; }
 
+    public string Gender { get; set; } = null!;
+
     public int ZipCode { get; set; }
 
     public byte[] Salt { get; set; } = null!;
@@ -51,4 +53,6 @@ public class User
     public bool IsConfirmedEmail { get; set; } = false;
 
     public List<UserRole>? UserRoles { get; set; }
+
+    public List<RefreshToken>? RefreshTokens { get; set; }
 }

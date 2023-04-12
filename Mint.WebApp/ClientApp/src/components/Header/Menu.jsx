@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import navData from "../LayoutMenuData";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Collapse, Col, Row, Container } from "reactstrap";
 import LogoSm from "../../assets/images/logo-sm.png";
 import LogoLight from "../../assets/images/logo-light.png";
@@ -9,6 +9,7 @@ import LogoDark from "../../assets/images/logo-dark.png";
 const Menu = (props) => {
   const [isMoreMenu, setIsMoreMenu] = useState(false);
   const nav = navData().props.children;
+  const path = useLocation();
 
   let menuItems = [];
   let splitMenuItems = [];
@@ -43,26 +44,25 @@ const Menu = (props) => {
     },
   });
 
-  const path = "home";
-
   useEffect(() => {
     window.scrollTo({
       to: 0,
       behavior: "smooth",
     });
-
+    
     const initMenu = () => {
-      // const pathName = process.env.PUBLIC_URL + path;
-      // const ul = document.getElementById("navbar-nav");
-      // const items = ul.getElementsByTagName("a");
-      // let itemsArray = [...items];
-      // removeActivation(itemsArray);
-      // let matchingMenuItem = itemsArray.find((x) => {
-      //   return x.pathname === pathName;
-      // });
-      // if (matchingMenuItem) {
-      //   activateParentDropDown(matchingMenuItem);
-      // }
+      const pathName = process.env.PUBLIC_URL + path.pathname;
+
+      const ul = document.getElementById("navbar-nav");
+      const items = ul.getElementsByTagName("a");
+      let itemsArray = [...items];
+      removeActivation(itemsArray);
+      let matchingMenuItem = itemsArray.find((x) => {
+        return x.pathname === pathName;
+      });
+      if (matchingMenuItem) {
+        activateParentDropDown(matchingMenuItem);
+      }
     };
 
     initMenu();

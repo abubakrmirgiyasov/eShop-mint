@@ -152,8 +152,8 @@ const Navdata = () => {
       subItems: [
         {
           id: "analytics",
-          label: "Analytics",
-          link: "/dashboard-analytics",
+          label: "Test",
+          link: "/product-details/34",
           parentId: "dashboard",
         },
         {

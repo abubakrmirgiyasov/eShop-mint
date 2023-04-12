@@ -35,10 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Mint.Domain\Mint.Domain.csproj" />
     <ProjectReference Include="..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
   </ItemGroup>
