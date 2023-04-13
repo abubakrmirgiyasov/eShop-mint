@@ -132,7 +132,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             RemoveOldRefreshToken(user);
 
-            _context.Update(_user);
+            _context.Update(user);
             _context.SaveChanges();
 
             var jwtToken = _jwt.GenerateJwtToken(user);

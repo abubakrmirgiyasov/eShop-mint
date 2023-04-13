@@ -38,6 +38,8 @@ public class User
     [MaxLength(777, ErrorMessage = "Перевышено макс. длина строки (777).")]
     public string? Description { get; set; }
 
+    public DateTime DateBirth { get; set; }
+
     public string Gender { get; set; } = null!;
 
     public int ZipCode { get; set; }

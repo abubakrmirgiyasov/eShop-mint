@@ -1,4 +1,4 @@
-import { store, authActions } from "../store";
+import { refreshToken } from "./authentication";
 
 export const fetchWrapper = {
   get: request("GET"),
@@ -9,7 +9,7 @@ export const fetchWrapper = {
 };
 
 function authToken() {
-  return store.getState().auth.user?.token;
+  return JSON.parse(localStorage.getItem("auth_user")).accessToken;
 }
 
 function handleResponseFileShow(response) {
@@ -30,8 +30,8 @@ function handleResponseFile(fileName, response) {
 
 function handleResponse(response) {
   return response.text().then((text) => {
-    const data = text && JSON.parse(text);
 
+    const data = text && JSON.parse(text);
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
@@ -61,13 +61,12 @@ function requestFileShow() {
       .then((response) => handleResponseFileShow(response))
       .catch((error) => {
         if (error === "Unauthorized") {
-          return store
-            .dispatch(authActions.refresh())
-            .unwrap()
-            .then(() => {
-              requestOptions.headers["Authorization"] = authHeader(url);
-              return fetch(url, requestOptions).then(handleResponse);
-            });
+          // return dispatch(refreshToken())
+          //   .unwrap()
+          //   .then(() => {
+          //     requestOptions.headers["Authorization"] = authHeader(url);
+          //     return fetch(url, requestOptions).then(handleResponse);
+          //   });
         } else {
           return Promise.reject(error);
         }
@@ -97,13 +96,12 @@ function request(method) {
         .then((response) => handleResponseFile(fileName, response))
         .catch((error) => {
           if (error === "Unauthorized") {
-            return store
-              .dispatch(authActions.refresh())
-              .unwrap()
-              .then(() => {
-                requestOptions.headers["Authorization"] = authHeader(url);
-                return fetch(url, requestOptions).then(handleResponse);
-              });
+            // return dispatch(refreshToken())
+            //   .unwrap()
+            //   .then(() => {
+            //     requestOptions.headers["Authorization"] = authHeader(url);
+            //     return fetch(url, requestOptions).then(handleResponse);
+            //   });
           } else {
             return Promise.reject(error);
           }
@@ -113,8 +111,9 @@ function request(method) {
         .then(handleResponse)
         .catch((error) => {
           if (error === "Unauthorized") {
-            return store
-              .dispatch(authActions.refresh())
+            return fetch("api/authentication/refreshtoken", {
+              method: "POST"
+            })
               .unwrap()
               .then(() => {
                 requestOptions.headers["Authorization"] = authHeader(url);

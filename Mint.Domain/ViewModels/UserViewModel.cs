@@ -1,13 +1,6 @@
-﻿namespace Mint.Domain.BindingModels;
+﻿namespace Mint.Domain.ViewModels;
 
-public class UserSigninBindingModel
-{
-    public string? Email { get; set; }
-
-    public string? Password { get; set; }
-}
-
-public class UserFullBindingModel
+public class UserFullViewModel
 {
     public Guid Id { get; set; }
 
@@ -21,13 +14,11 @@ public class UserFullBindingModel
 
     public long? Phone { get; set; }
 
-    public string? Ip { get; set; }
-
-    public string? Password { get; set; }
-
     public string? Description { get; set; }
 
     public string? Gender { get; set; }
+
+    public bool IsConfirmedEmail { get; set; }
 
     public DateTime DateBirth { get; set; }
 }

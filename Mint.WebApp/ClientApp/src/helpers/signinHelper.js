@@ -1,4 +1,4 @@
-import { BASE_URL, SIGNIN, SIGNOUT } from "../constants/Urls";
+import { BASE_URL, REFRESHTOKEN, SIGNIN, SIGNOUT } from "../constants/Urls";
 
 const getAccessToken = () => {
   const user = JSON.parse(localStorage.getItem("auth_user"));
@@ -10,7 +10,7 @@ const signinHelper = async (values) => {
     method: "POST",
     body: JSON.stringify(values),
     headers: {
-      "content-type": "application/json",
+      "Content-Type": "application/json",
     },
   });
 
@@ -32,7 +32,24 @@ const signoutHelper = () => {
     body: { 
       token: null 
     },
-  }).then(() => localStorage.removeItem("auth_user"));
+  }).then(() => console.log("test")); //localStorage.removeItem("auth_user")).catch((error) => console.log(error)
 };
 
-export default { signinHelper, signoutHelper, getAccessToken };
+const refreshTokenHelper = () => {
+  console.log("refresh")
+  const response =  fetch(BASE_URL + REFRESHTOKEN, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  response.json().then((data) => {
+    if (data.accessToken) {
+      localStorage.setItem("auth_user", JSON.stringify(data));
+    }
+    return data;
+  })
+};
+
+export default { signinHelper, signoutHelper, getAccessToken, refreshTokenHelper };

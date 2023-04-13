@@ -18,10 +18,12 @@ import CustomerInfo from "./CustomerInfo";
 import Addresses from "./Addresses";
 import Orders from "./Orders";
 import ChangePassword from "./ChangePassword";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { user: user } = useSelector((user) => user.Signin);
 
   const tabChangeToggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -99,7 +101,7 @@ const Profile = () => {
           </Col>
           <Col md={8}>
             <TabContent activeTab={activeTab}>
-              <CustomerInfo />
+              <CustomerInfo userId={user.id} />
               <Addresses />
               <Orders />
               <ChangePassword />
