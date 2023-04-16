@@ -54,6 +54,10 @@ public class User
 
     public bool IsConfirmedEmail { get; set; } = false;
 
+    public Guid? PhotoId { get; set; }
+
+    public Photo? Photo { get; set; }
+
     public List<UserRole>? UserRoles { get; set; }
 
     public List<RefreshToken>? RefreshTokens { get; set; }

@@ -50,6 +50,12 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder.Entity<User>()
+            .HasOne(x => x.Photo)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.PhotoId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         var salt = new Hasher().GetSalt();
 
         var users = new User[]

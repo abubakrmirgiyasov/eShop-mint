@@ -44,6 +44,11 @@ const AdminMenu = () => {
         </DropdownToggle>
         <DropdownMenu>
           <h6 className="dropdown-header">Добро пожаловать!</h6>
+          <DropdownItem href={process.env.PUBLIC_URL + "/home"}>
+            <i className="ri-arrow-go-back-line text-muted fs-16 align-middle me-1"></i>
+            <span className="align-middle">Назад</span>
+          </DropdownItem>
+          <div className="dropdown-divider"></div>
           <DropdownItem href={process.env.PUBLIC_URL + "/user-profile"}>
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Профиль</span>

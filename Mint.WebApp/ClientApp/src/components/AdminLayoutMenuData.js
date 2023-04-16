@@ -6,6 +6,7 @@ const AdminNavdata = () => {
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
   const [isCatalog, setIsCatalog] = useState(false);
   const [isSales, setIsSales] = useState(false);
+  const [isNews, setIsNews] = useState(false);
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
@@ -37,12 +38,16 @@ const AdminNavdata = () => {
     if (iscurrentState !== "Sales") {
       setIsSales(false);
     }
+    if (iscurrentState !== "News") {
+      setIsNews(false);
+    }
 
   }, [
     history,
     iscurrentState,
     isCatalog,
     isSales,
+    isNews
   ]);
 
   const menuItems = [
@@ -126,6 +131,27 @@ const AdminNavdata = () => {
           id: "shipments",
           label: "Отгрузки",
           link: "/admin/shipments",
+          parentId: "sales",
+        },
+      ],
+    },
+    {
+      id: "news",
+      label: "Новости",
+      icon: "ri-newspaper-line",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsNews(!isNews);
+        setIscurrentState("News");
+        updateIconSidebar(e);
+      },
+      stateVariables: isNews,
+      subItems: [
+        {
+          id: "banners",
+          label: "Банеры",
+          link: "/admin/news/banners",
           parentId: "sales",
         },
       ],

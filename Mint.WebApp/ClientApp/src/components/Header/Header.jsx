@@ -174,7 +174,7 @@ const Header = (props) => {
                           className="btn bg-light fs-5 rounded btn-icon"
                           style={{ padding: "2rem 3rem" }}
                         >
-                          <span className="d-flex align-items-center">
+                          <span className="d-flex align-items-center user-name-text">
                             <i className="ri-shield-user-line"></i>
                             <span className="text-start ms-xl-2">Админ</span>
                           </span>
@@ -191,7 +191,7 @@ const Header = (props) => {
                       style={{ padding: "2rem 3rem" }}
                       onClick={() => setIsLoginModalOpen(true)}
                     >
-                      <span className="d-flex align-items-center">
+                      <span className="d-flex align-items-center user-name-text">
                         <i className="ri-login-box-line"></i>
                         <span className="text-start ms-xl-2">Войти</span>
                       </span>

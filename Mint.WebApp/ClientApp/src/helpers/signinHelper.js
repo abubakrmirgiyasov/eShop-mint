@@ -3,7 +3,7 @@ import { BASE_URL, REFRESHTOKEN, SIGNIN, SIGNOUT } from "../constants/Urls";
 const getAccessToken = () => {
   const user = JSON.parse(localStorage.getItem("auth_user"));
   return user && user.accessToken ? `Bearer ${user.accessToken}` : "";
-}
+};
 
 const signinHelper = async (values) => {
   const response = await fetch(BASE_URL + SIGNIN, {
@@ -26,22 +26,22 @@ const signoutHelper = () => {
   fetch(BASE_URL + SIGNOUT, {
     method: "POST",
     headers: {
-      "Authorization": getAccessToken(),
+      Authorization: getAccessToken(),
       "Content-Type": "application/json",
     },
-    body: { 
-      token: null 
-    },
-  }).then(() => console.log("test")); //localStorage.removeItem("auth_user")).catch((error) => console.log(error)
+    body: JSON.stringify({ token: null }),
+  })
+    .then(() => localStorage.removeItem("auth_user"))
+    .catch((error) => console.log(error));
 };
 
 const refreshTokenHelper = () => {
-  console.log("refresh")
-  const response =  fetch(BASE_URL + REFRESHTOKEN, {
+  console.log("refresh");
+  const response = fetch(BASE_URL + REFRESHTOKEN, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-    }
+    },
   });
 
   response.json().then((data) => {
@@ -49,7 +49,12 @@ const refreshTokenHelper = () => {
       localStorage.setItem("auth_user", JSON.stringify(data));
     }
     return data;
-  })
+  });
 };
 
-export default { signinHelper, signoutHelper, getAccessToken, refreshTokenHelper };
+export default {
+  signinHelper,
+  signoutHelper,
+  getAccessToken,
+  refreshTokenHelper,
+};

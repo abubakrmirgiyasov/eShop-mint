@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import getChartColorsArray from '../../../helpers/colorsGeneratorHelper';
 
-const PieChart = () => {
-    const chartDonutColors = ["--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info"];
+const PieChart = ({ dataColors }) => {
+    const chartDonutColors = getChartColorsArray(dataColors);
     const series = [44, 55, 13, 33];
     const options = {
-        chart: { height: 280, type: "donut", },
+        chart: { height: 280, type: "pie", },
         dataLabels: { enabled: false, },
         legend: { position: "bottom", },
         colors: chartDonutColors,
@@ -16,7 +17,7 @@ const PieChart = () => {
             className="apex-charts"
             series={series}
             options={options}
-            type={"donut"}
+            type={"pie"}
             height={267.7}
         />
     );

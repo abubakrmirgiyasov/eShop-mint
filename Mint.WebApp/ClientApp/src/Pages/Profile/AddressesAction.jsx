@@ -10,6 +10,7 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
+import Devider from "../../components/Devider/Devider";
 
 const AddressesAction = (props) => {
   console.log(props.address);
@@ -106,15 +107,7 @@ const AddressesAction = (props) => {
                   />
                 </div>
               </Col>
-              <div
-                className="mb-3"
-                style={{
-                  height: "1px",
-                  overflow: "hidden",
-                  background: "rgb(170 170 170)",
-                  opacity: 1,
-                }}
-              ></div>
+              <Devider />
               <Col lg={6}>
                 <div className="form-group mb-3">
                   <Label className="form-label" htmlFor="address1">
