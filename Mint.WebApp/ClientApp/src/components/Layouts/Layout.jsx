@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import Menu from "../Header/Menu";
 import { useDispatch, useSelector } from "react-redux";
-import { changeLayoutMode, changeLayoutType } from '../../store/theme/reducer';
+import { changeLayoutMode, changeLayoutType } from "../../store/theme/reducer";
+import { ToastContainer } from "react-toastify";
+
+// media
+import "react-toastify/dist/ReactToastify.css";
 
 const Layout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
@@ -14,15 +18,13 @@ const Layout = ({ children }) => {
   }));
 
   useEffect(() => {
-    if (layout)
-      dispatch(changeLayoutMode(layout));
-      
+    if (layout) dispatch(changeLayoutMode(layout));
+
     dispatch(changeLayoutType("horizontal"));
   }, [layout, layoutModeType, dispatch]);
 
   const onChangeLayoutMode = (value) => {
-    if (changeLayoutMode)
-      dispatch(changeLayoutMode(value));
+    if (changeLayoutMode) dispatch(changeLayoutMode(value));
   };
 
   useEffect(() => {
@@ -44,6 +46,20 @@ const Layout = ({ children }) => {
         />
         <Menu />
         <div className="main-content">{children}</div>
+
+        <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          limit={1}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss={true}
+          draggable={true}
+          pauseOnHover={true}
+          theme="colored"
+        />
       </div>
     </React.Fragment>
   );

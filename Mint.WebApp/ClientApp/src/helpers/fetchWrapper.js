@@ -9,7 +9,11 @@ export const fetchWrapper = {
 };
 
 function authToken() {
-  return JSON.parse(localStorage.getItem("auth_user")).accessToken;
+  if (localStorage.getItem("auth_user")) {
+    return JSON.parse(localStorage.getItem("auth_user")).accessToken;
+  } else {
+    return null;
+  }
 }
 
 function handleResponseFileShow(response) {

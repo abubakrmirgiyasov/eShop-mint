@@ -7,16 +7,15 @@ import {
   Form,
   Input,
   Row,
-  Spinner,
   TabPane,
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
-import { useSelector } from "react-redux";
+import { Error } from "../../components/Notification/Error";
 
 const CustomerInfo = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchWrapper
@@ -42,6 +41,7 @@ const CustomerInfo = ({ userId }) => {
           </div>
         ) : (
           <Card>
+            {error ? <Error message={error} /> : null}
             <CardBody>
               <h2>Информация о клиенте</h2>
               <Form className="form-horizontal">
@@ -180,9 +180,9 @@ const CustomerInfo = ({ userId }) => {
                     <Col className="mb-3">Check</Col>
                   ) : (null)}
                   <Col lg={4}>
-                    <label className="form-label">Телефон</label>
+                    <label className="form-label mt-3">Телефон</label>
                   </Col>
-                  <Col lg={8} className="mt-3 mb-3">
+                  <Col lg={8} className="mb-3 mt-3">
                     <Input
                       type="tel"
                       className="form-control me-2"

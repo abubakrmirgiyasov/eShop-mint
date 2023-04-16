@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import LogoSm from "../../assets/images/logo-sm.png";
-import LogoDark from "../../assets/images/logo-dark.png";
-import LogoLight from "../../assets/images/logo-light.png";
 import {
   Dropdown,
   DropdownMenu,
@@ -20,6 +17,11 @@ import Signin from "../../Pages/Auth/Signin";
 import { useSelector } from "react-redux";
 import PrivateComponent from "../../helpers/privateComponent";
 import { Roles } from "../../constants/Roles";
+
+//images
+import LogoSm from "../../assets/images/logo-sm.png";
+import LogoDark from "../../assets/images/logo-dark.png";
+import LogoLight from "../../assets/images/logo-light.png";
 
 const Header = (props) => {
   const [value, setValue] = useState("");
@@ -78,6 +80,7 @@ const Header = (props) => {
                     <img src={LogoDark} alt="" height="17" />
                   </span>
                 </Link>
+
                 <Link to="/" className="logo logo-light">
                   <span className="logo-sm">
                     <img src={LogoSm} alt="" height="22" />
@@ -159,7 +162,6 @@ const Header = (props) => {
                 />
               }
               {<NotificationList />}
-
               {user.isLoggedIn ? (
                 <>
                   <UserMenu />

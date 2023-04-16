@@ -43,6 +43,7 @@ app.UseStaticFiles();
 app.UsePathBase(new PathString("/api"));
 app.UseRouting();
 
+app.UseMiddleware<ExceptionMiddleWare>();
 app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllerRoute(

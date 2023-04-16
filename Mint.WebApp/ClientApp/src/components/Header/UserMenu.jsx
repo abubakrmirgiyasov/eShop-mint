@@ -32,7 +32,7 @@ const UserMenu = () => {
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                {`${isLoggedIn.user.firstName} ${isLoggedIn.user.secondName}`}
+                {`${isLoggedIn.user?.firstName} ${isLoggedIn.user?.secondName}`}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
                 Role
@@ -42,7 +42,7 @@ const UserMenu = () => {
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <h6 className="dropdown-header">
-            Добро пожаловать {isLoggedIn.user.email}!
+            Добро пожаловать {isLoggedIn.user?.email}!
           </h6>
           <DropdownItem href={process.env.PUBLIC_URL + "/profile"}>
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>

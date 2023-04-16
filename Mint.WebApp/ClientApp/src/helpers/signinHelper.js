@@ -6,20 +6,28 @@ const getAccessToken = () => {
 };
 
 const signinHelper = async (values) => {
-  const response = await fetch(BASE_URL + SIGNIN, {
+  await fetch(BASE_URL + SIGNIN, {
     method: "POST",
     body: JSON.stringify(values),
     headers: {
       "Content-Type": "application/json",
     },
-  });
-
-  response.json().then((data) => {
-    if (data.accessToken) {
-      localStorage.setItem("auth_user", JSON.stringify(data));
-    }
-    return data;
-  });
+  })
+    .then((response) => {
+      return response.ok
+        ? response.json()
+        : response.json().then((error) => {
+            throw new Error(error.message);
+          });
+    })
+    .then((data) => {
+      console.log(data)
+      if (data.accessToken) {
+        localStorage.setItem("auth_user", JSON.stringify(data));
+      }
+      return data;
+    })
+    .catch((error) => { throw new Error(error) });
 };
 
 const signoutHelper = () => {

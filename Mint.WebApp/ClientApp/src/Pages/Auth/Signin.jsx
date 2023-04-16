@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Col,
@@ -16,6 +16,11 @@ import {
 } from "reactstrap";
 import * as Yup from "yup";
 import { signin } from "../../helpers/authentication";
+import { Error } from "../../components/Notification/Error";
+
+// images
+import LogoLight from '../../assets/images/logo-mint-light.png';
+import LogoDark from '../../assets/images/logo-mint-dark.png';
 
 const Signin = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +28,8 @@ const Signin = (props) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { Message: message } = useSelector(message => message);
+  
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -49,6 +56,7 @@ const Signin = (props) => {
 
   return (
     <React.Fragment>
+      {!!isLoading ? message ? <Error message={message.message} /> : null : null}
       <Modal
         isOpen={props.isOpen}
         toggle={props.toggle}
@@ -74,7 +82,8 @@ const Signin = (props) => {
             action="#"
           >
             <div className="d-flex justify-content-center align-items-center w-100 h-50 mb-2">
-              <img src="../" width={100} height={100} />
+              {/* <img src={LogoLight} alt={"logo"} width={100} height={100} className="logo-light" /> */}
+              <img src={LogoLight} alt={"logo"} width={100} height={100} className="logo-dark" />
             </div>
             <Row>
               <Col lg={12} className="mb-2">
@@ -173,6 +182,7 @@ const Signin = (props) => {
             <Link
               to="/signup"
               className="fw-semibold text-primary text-decoration-underline"
+              onClick={() => props.toggle()}
             >
               Регистрация
             </Link>

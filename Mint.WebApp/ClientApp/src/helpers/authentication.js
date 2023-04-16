@@ -13,12 +13,9 @@ export const signin = (values) => (dispatch) => {
         type: SIGIN_IN,
         payload: { user: response },
       });
-
       return Promise.resolve();
     },
     (error) => {
-      console.log(error);
-
       const message =
         (error.response &&
           error.response.data &&

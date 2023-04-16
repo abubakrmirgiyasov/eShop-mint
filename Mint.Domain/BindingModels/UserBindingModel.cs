@@ -29,5 +29,7 @@ public class UserFullBindingModel
 
     public string? Gender { get; set; }
 
-    public DateTime DateBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
+
+    public PhotoFullBindingModel? Photo { get; set; }
 }

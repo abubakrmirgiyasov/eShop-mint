@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mint.Domain.BindingModels;
 using Mint.Domain.FormingModels;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Attributes;
@@ -36,6 +37,20 @@ public class UserController : ControllerBase
         {
             var user = _user.GetUserById(id);
             return Ok(new UserManager().FormingFullViewModel(user));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public IActionResult Registration([FromBody] UserFullBindingModel model)
+    {
+        try
+        {
+            return Ok();
         }
         catch (Exception ex)
         {
