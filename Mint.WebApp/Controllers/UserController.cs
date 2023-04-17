@@ -3,6 +3,7 @@ using Mint.Domain.BindingModels;
 using Mint.Domain.FormingModels;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Attributes;
+using Mint.WebApp.Extensions;
 
 namespace Mint.WebApp.Controllers;
 
@@ -18,6 +19,7 @@ public class UserController : ControllerBase
         _user = user;
     }
 
+    [HttpGet]
     public IActionResult GetUsers()
     {
         try
@@ -46,11 +48,13 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    public IActionResult Registration([FromBody] UserFullBindingModel model)
+    public async Task<IActionResult> Registration([FromForm] UserFullBindingModel model)
     {
         try
         {
-            return Ok();
+            //model.Ip = Request.GetIp();
+            //await _user.AddNewUser(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {

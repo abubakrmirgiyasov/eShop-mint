@@ -1,4 +1,6 @@
-﻿namespace Mint.Domain.BindingModels;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Mint.Domain.BindingModels;
 
 public class UserSigninBindingModel
 {
@@ -19,7 +21,7 @@ public class UserFullBindingModel
 
     public string? Email { get; set; }
 
-    public long? Phone { get; set; }
+    public long Phone { get; set; }
 
     public string? Ip { get; set; }
 
@@ -29,7 +31,7 @@ public class UserFullBindingModel
 
     public string? Gender { get; set; }
 
-    public DateTime DateOfBirth { get; set; }
+    public string? DateOfBirth { get; set; }
 
-    public PhotoFullBindingModel? Photo { get; set; }
+    public IFormFile? Photo { get; set; }
 }
