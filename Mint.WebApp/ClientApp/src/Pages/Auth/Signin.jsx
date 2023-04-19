@@ -166,9 +166,9 @@ const Signin = (props) => {
                 type="submit" 
                 color="success" 
                 className="btn btn-success w-50"
-                disabled={error ? null : isLoading ? true : false}
+                disabled={isLoading ? true : false}
               >
-                {error ? null : isLoading ? (
+                {isLoading ? (
                   <Spinner size={"sm"} className="me-2">
                     Loading...
                   </Spinner>

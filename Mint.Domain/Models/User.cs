@@ -42,8 +42,6 @@ public class User
 
     public string Gender { get; set; } = null!;
 
-    public int ZipCode { get; set; }
-
     public byte[] Salt { get; set; } = null!;
 
     public string Ip { get; set; } = null!;
@@ -61,4 +59,6 @@ public class User
     public List<UserRole>? UserRoles { get; set; }
 
     public List<RefreshToken>? RefreshTokens { get; set; }
+
+    public List<Address> Addresses { get; set; } = null!;
 }

@@ -9,15 +9,23 @@ import {
   FormFeedback,
   Input,
   Row,
+  Spinner,
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { Error } from "../../components/Notification/Error";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 const Signup = () => {
   const [isPhotoSelected, setIsPhotoSelected] = useState("d-none");
   const [imageSource, setImageSource] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const { isLoggedIn: isLoggedIn } = useSelector((state) => state.Signin);
 
   const strongRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?_&])[A-Za-z\d@$!%*?&_]{6,20}$/;
@@ -64,7 +72,6 @@ const Signup = () => {
       secondName: Yup.string().required("Заполните обязательное поле"),
       day: Yup.number()
         .min(1, "День обычно начинается с 1")
-        .max(31, "День обычно начинается с 31")
         .required("Заполните обязательное поле"),
       month: Yup.number().required("Заполните обязательное поле"),
       year: Yup.number().required("Заполните обязательное поле"),
@@ -88,6 +95,8 @@ const Signup = () => {
         .required("Заполните обязательное поле"),
     }),
     onSubmit: (values) => {
+      setIsLoading(true);
+
       let formData = new FormData();
       formData.append("firstName", values.firstName);
       formData.append("secondName", values.secondName);
@@ -96,18 +105,38 @@ const Signup = () => {
       formData.append("phone", values.phone);
       formData.append("password", values.password);
       formData.append("gender", values.gender);
-      formData.append("dateOfBirth", values.dateOfBirth);
+      formData.append("dateOfBirth", `${values.day}.${values.month}.${values.year}`);
       formData.append("description", values.description);
-      formData.append("folder", "user");
-      if (imageFile) formData.append("photo", imageFile);
 
-      fetchWrapper.post("api/user/registration", formData, false).then((response) => console.log(response));
+      if (imageFile) {
+        formData.append("folder", "user");
+        formData.append("photo", imageFile);
+      }
+      
+      fetchWrapper
+        .post("api/user/registration", formData, false)
+        .then((response) => {
+          console.log(response)
+          if (response.message.contains("Успешно"))
+            return <Navigate to="/" />
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLoading(false);
+        });
     },
   });
 
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
+
+  document.title = "Регистрация - Mint";
   return (
     <div className="page-content">
       <Container>
+        {!isLoading ? error ? <Error message={error} /> : null : null}
         <Card>
           <CardBody>
             <h1 className="mb-2">Регистрация</h1>
@@ -161,13 +190,16 @@ const Signup = () => {
                       type="radio"
                       className="form-check-input"
                       defaultValue={"N"}
-                      defaultChecked={validation.values.gender === "N"}
+                      defaultChecked={true}
                       id="gender-private"
                       name="gender"
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                     />
-                    <label className="form-check-label" htmlFor="gender-private">
+                    <label
+                      className="form-check-label"
+                      htmlFor="gender-private"
+                    >
                       Не указать
                     </label>
                   </div>
@@ -487,7 +519,16 @@ const Signup = () => {
                 </label>
               </div>
               <div className="d-flex justify-content-end align-items-end">
-                <Button type="submit" className="btn btn-success">
+                <Button
+                  type="submit"
+                  className="btn btn-success"
+                  disabled={isLoading ? true : false}
+                >
+                  {isLoading ? (
+                    <Spinner size={"sm"} className="me-2">
+                      Loading...
+                    </Spinner>
+                  ) : null}
                   Зарегистрироваться
                 </Button>
               </div>

@@ -33,5 +33,7 @@ public class UserFullBindingModel
 
     public string? DateOfBirth { get; set; }
 
+    public string? Folder { get; set; }
+
     public IFormFile? Photo { get; set; }
 }

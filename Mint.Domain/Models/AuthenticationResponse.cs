@@ -15,6 +15,8 @@ public class AuthenticationResponse
 
     public string? AccessToken { get; set; }
 
+    public string? ImagePath { get; set; }
+
     public List<RoleSampleBindingModel>? Roles { get; set; }
 
     [JsonIgnore]

@@ -14,6 +14,35 @@ namespace Mint.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZipCode = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: false),
+                    FileExtension = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileSize = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -39,17 +68,25 @@ namespace Mint.Infrastructure.Migrations
                     Phone = table.Column<long>(type: "bigint", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(777)", maxLength: 777, nullable: true),
-                    ZipCode = table.Column<int>(type: "int", nullable: false),
+                    DateBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Ip = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     NumOfAttempts = table.Column<int>(type: "int", nullable: false),
                     IsConfirmedEmail = table.Column<bool>(type: "bit", nullable: false),
+                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
@@ -58,7 +95,7 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshToken",
+                name: "RefreshTokens",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -74,9 +111,9 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_Users_UserId",
+                        name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -111,18 +148,18 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "CreactionDate", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTime(2023, 4, 7, 18, 43, 14, 203, DateTimeKind.Local).AddTicks(6729), "Покупатель" },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTime(2023, 4, 7, 18, 43, 14, 203, DateTimeKind.Local).AddTicks(6713), "Админ" },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTime(2023, 4, 7, 18, 43, 14, 203, DateTimeKind.Local).AddTicks(6717), "Продавец" }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(7020), "Покупатель" },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(7012), "Админ" },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(7018), "Продавец" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedDate", "Description", "Email", "FirstName", "Ip", "IsActive", "IsConfirmedEmail", "LastName", "NumOfAttempts", "Password", "Phone", "RoleId", "Salt", "SecondName", "ZipCode" },
+                columns: new[] { "Id", "CreatedDate", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "RoleId", "Salt", "SecondName" },
                 values: new object[,]
                 {
-                    { new Guid("0e05800e-ad5d-4d3e-b378-22578568825b"), new DateTime(2023, 4, 7, 18, 43, 14, 202, DateTimeKind.Local).AddTicks(9728), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "127.0.0.1", true, true, "Мукимжонович", 0, "adoJGFdbXwjcip7bseReSz7+D49HBbtHYLUMfHbRlkk=", 89502768428L, null, new byte[] { 18, 124, 164, 130, 156, 86, 198, 212, 178, 87, 233, 15, 244, 110, 236, 161 }, "Абубакр", 654000 },
-                    { new Guid("b522d6c3-223d-4ce6-993c-6746489f0b18"), new DateTime(2023, 4, 7, 18, 43, 14, 203, DateTimeKind.Local).AddTicks(6697), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "127.0.0.2", true, true, null, 0, "ekMEW2CO7YwGUky52vgA2KSRCJsym7nPlyYtDPMTabo=", 83452763423L, null, new byte[] { 18, 124, 164, 130, 156, 86, 198, 212, 178, 87, 233, 15, 244, 110, 236, 161 }, "User", 654000 }
+                    { new Guid("b16c3630-123f-4535-8327-5e75b9db7eab"), new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(6996), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "BXm1v5Vf3/XAQfMYU4EpfuVDc9cabDqn1eoqpzBZOdE=", 83452763423L, null, null, new byte[] { 99, 98, 147, 193, 111, 12, 161, 195, 77, 113, 186, 66, 180, 169, 7, 73 }, "User" },
+                    { new Guid("fb1f9922-69e9-4537-8d9f-5686151f8287"), new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(1860), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "Vzrp1yhhCpm2u/tvollJ104HMX6lJPgpnFWDxAFQ73U=", 89502768428L, null, null, new byte[] { 99, 98, 147, 193, 111, 12, 161, 195, 77, 113, 186, 66, 180, 169, 7, 73 }, "Абубакр" }
                 });
 
             migrationBuilder.InsertData(
@@ -130,16 +167,16 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("b522d6c3-223d-4ce6-993c-6746489f0b18") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("0e05800e-ad5d-4d3e-b378-22578568825b") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("b522d6c3-223d-4ce6-993c-6746489f0b18") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("0e05800e-ad5d-4d3e-b378-22578568825b") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("b522d6c3-223d-4ce6-993c-6746489f0b18") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("b16c3630-123f-4535-8327-5e75b9db7eab") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("b16c3630-123f-4535-8327-5e75b9db7eab") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("fb1f9922-69e9-4537-8d9f-5686151f8287") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("b16c3630-123f-4535-8327-5e75b9db7eab") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("fb1f9922-69e9-4537-8d9f-5686151f8287") }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_UserId",
-                table: "RefreshToken",
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -160,6 +197,11 @@ namespace Mint.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_PhotoId",
+                table: "Users",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
@@ -169,13 +211,19 @@ namespace Mint.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RefreshToken");
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Roles");

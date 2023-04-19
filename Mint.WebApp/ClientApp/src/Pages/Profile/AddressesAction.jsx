@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Col,
@@ -10,17 +10,31 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
-import Devider from "../../components/Devider/Devider";
+import { fetchWrapper } from "../../helpers/fetchWrapper";
 
 const AddressesAction = (props) => {
-  console.log(props.address);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = (e) => {
+    const address = {
+      fullAddress: e.target.address.value,
+      country: e.target.country.value,
+      city: e.target.city.value,
+      zipCode: e.target.zipCode.value,
+      description: e.target.description,
+      userId: props.userId,
+    };
+    // fetchWrapper.()
+  };
+
   return (
     <React.Fragment>
       <Modal
         isOpen={props.isOpen}
         toggle={props.toggle}
         className="border-0"
-        modalClassName="modal-xl fade zoomIn"
+        modalClassName="modal-xxl fade zoomIn"
       >
         <ModalHeader
           className="p-3 bg-soft-white border-bottom-dashed"
@@ -30,130 +44,29 @@ const AddressesAction = (props) => {
           {!!props.isEdit ? "Изменить адрес" : "Добавить адрес"}
         </ModalHeader>
         <ModalBody className="modal-body">
-          <Form>
+          <Form onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(e);
+            return false;
+          }}>
             <Row>
-              <Col lg={4}>
+              <Col lg={12}>
                 <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="firstName">
-                    Фамилия
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите фамилию"
-                    id="firstName"
-                    name="firstName"
-                    defaultValue={props.address?.firstName}
-                  />
-                </div>
-              </Col>
-              <Col lg={4}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="secondName">
-                    Имя
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите имя"
-                    id="secondName"
-                    name="secondName"
-                    defaultValue={props.address?.secondName}
-                  />
-                </div>
-              </Col>
-              <Col lg={4}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="lastName">
-                    Отчество
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите отчество"
-                    id="lastName"
-                    name="lastName"
-                    defaultValue={props.address?.lastName}
-                  />
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="email">
-                    Email
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите адрес электроной почты"
-                    id="email"
-                    name="email"
-                    defaultValue={props.address?.email}
-                  />
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="phone">
-                    Телефон
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите телефон"
-                    id="phone"
-                    name="phone"
-                    defaultValue={props.address?.phone}
-                  />
-                </div>
-              </Col>
-              <Devider />
-              <Col lg={6}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="address1">
-                    Адрес 1
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите ваш адрес 1"
-                    id="address1"
-                    name="address1"
-                    defaultValue={props.address?.address1}
-                  />
-                </div>
-              </Col>
-              <Col lg={6}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="address2">
-                    Адрес 2
-                  </Label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите ваш адрес 2"
-                    id="address2"
-                    name="address2"
-                    defaultValue={props.address?.address2}
-                  />
-                </div>
-              </Col>
-              <Col lg={4}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="city">
-                    Город
+                  <Label className="form-label" htmlFor="country">
+                    Страна
                   </Label>
                   <select
                     type="text"
                     className="form-control"
-                    placeholder="Введите ваш адрес город"
-                    id="city"
-                    name="city"
+                    id="country"
+                    name="country"
                     defaultValue={props.address?.city}
-                  />
+                  >
+                    <option>Выберете страну</option>
+                  </select>
                 </div>
               </Col>
-              <Col lg={4}>
+              <Col lg={6}>
                 <div className="form-group mb-3">
                   <Label className="form-label" htmlFor="city">
                     Город
@@ -161,14 +74,14 @@ const AddressesAction = (props) => {
                   <Input
                     type="text"
                     className="form-control"
-                    placeholder="Введите ваш адрес город"
+                    placeholder="Введите ваш город"
                     id="city"
                     name="city"
                     defaultValue={props.address?.city}
                   />
                 </div>
               </Col>
-              <Col lg={4}>
+              <Col lg={6}>
                 <div className="form-group mb-3">
                   <Label className="form-label" htmlFor="zipCode">
                     Почтовый индекс
@@ -176,10 +89,25 @@ const AddressesAction = (props) => {
                   <Input
                     type="text"
                     className="form-control"
-                    placeholder="Введите ваш почтовый индекс"
+                    placeholder="Ваш почтовый индекс"
                     id="zipCode"
                     name="zipCode"
                     defaultValue={props.address?.zipCode}
+                  />
+                </div>
+              </Col>
+              <Col lg={12}>
+                <div className="form-group mb-3">
+                  <Label className="form-label" htmlFor="address">
+                    Адрес
+                  </Label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    placeholder="Введите ваш адрес"
+                    id="address"
+                    name="address"
+                    defaultValue={props.address?.address1}
                   />
                 </div>
               </Col>

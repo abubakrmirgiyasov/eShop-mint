@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   Dropdown,
@@ -7,12 +7,8 @@ import {
   DropdownToggle,
 } from "reactstrap";
 
-import avatar1 from "../../assets/images/users/avatar-1.jpg";
-
 const UserMenu = () => {
   const { Signin: isLoggedIn } = useSelector((user) => user);
-
-  useEffect(() => {}, []);
 
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
 
@@ -27,7 +23,7 @@ const UserMenu = () => {
           <span className="d-flex align-items-center">
             <img
               className="rounded-circle header-profile-user"
-              src={avatar1}
+              src={isLoggedIn.user.imagePath}
               alt="Header Avatar"
             />
             <span className="text-start ms-xl-2">

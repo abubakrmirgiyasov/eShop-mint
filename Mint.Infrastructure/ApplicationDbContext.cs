@@ -12,6 +12,12 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<UserRole> UserRoles { get; set; }
 
+    public DbSet<Address> Addresses { get; set; }
+
+    public DbSet<Photo> Photos { get; set; }
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -76,7 +82,6 @@ public class ApplicationDbContext : DbContext
                 DateBirth = new DateTime(2001, 12, 5),
                 IsActive = true,
                 IsConfirmedEmail = true,
-                ZipCode = 654000,
                 CreatedDate = DateTime.Now,
             },
             new User()
@@ -94,7 +99,6 @@ public class ApplicationDbContext : DbContext
                 Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                 IsActive = true,
                 IsConfirmedEmail = true,
-                ZipCode = 654000,
                 CreatedDate = DateTime.Now,
             },
         };

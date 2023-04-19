@@ -72,23 +72,23 @@ const Header = (props) => {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
-                <Link to="/" className="logo logo-dark">
-                  <span className="logo-sm">
-                    <img src={LogoSm} alt="" height="22" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={LogoDark} alt="" height="17" />
-                  </span>
-                </Link>
+              <Link to="/" className="logo logo-dark">
+                                    <span className="logo-sm">
+                                        <img src={LogoSm} alt="" height="22" />
+                                    </span>
+                                    <span className="logo-lg">
+                                        <img src={LogoDark} alt="" height="17" />
+                                    </span>
+                                </Link>
 
-                <Link to="/" className="logo logo-light">
-                  <span className="logo-sm">
-                    <img src={LogoSm} alt="" height="22" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={LogoLight} alt="" height="17" />
-                  </span>
-                </Link>
+                                <Link to="/" className="logo logo-light">
+                                    <span className="logo-sm">
+                                        <img src={LogoSm} alt="" height="22" />
+                                    </span>
+                                    <span className="logo-lg">
+                                        <img src={LogoLight} alt="" height="17" />
+                                    </span>
+                                </Link>
               </div>
               <button
                 onClick={toggleMenuBtn}

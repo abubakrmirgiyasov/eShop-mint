@@ -34,6 +34,17 @@ const Profile = () => {
       <div className="container">
         <Row>
           <Col md={4}>
+            <Card className="mb-3">
+              <CardBody>
+                <div className="d-flex justify-content-center align-items-center mb-3">
+                  <img src={user.imagePath} className="rounded-circle" width={100} height={100} />
+                </div>
+                <div className="text-center">
+                  <h3>{user.firstName} {user.secondName}</h3>
+                  <h5 className="text-muted fs-14">{user.email}</h5>
+                </div>
+              </CardBody>
+            </Card>
             <ListGroup>
               <ListGroupItem
                 tag="a"
@@ -95,14 +106,14 @@ const Profile = () => {
                   "list-group-item-action fs-16 cursor-pointer"
                 )}
               >
-                <i className="ri-checkbox-line fs-16"></i> Создать магазин
+                <i className="ri-shopping-bag-3-line fs-16"></i> Создать магазин
               </ListGroupItem>
             </ListGroup>
           </Col>
           <Col md={8}>
             <TabContent activeTab={activeTab}>
               <CustomerInfo userId={user.id} />
-              <Addresses />
+              <Addresses userId={user.id} />
               <Orders />
               <ChangePassword />
             </TabContent>

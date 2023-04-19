@@ -14,7 +14,7 @@ import DeleteAddress from "./DeleteAddress";
 
 const Addresses = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);

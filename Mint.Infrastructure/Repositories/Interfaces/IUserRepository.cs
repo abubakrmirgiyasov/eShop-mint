@@ -11,5 +11,7 @@ public interface IUserRepository
 
     User GetUserByToken(string token);
 
-    Task AddNewUser(UserFullBindingModel model);
+    Task AddNewUserAsync(UserFullBindingModel model);
+
+    Task UpdateUserInfoAsync(UserFullBindingModel model);
 }

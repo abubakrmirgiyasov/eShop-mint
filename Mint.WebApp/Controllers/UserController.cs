@@ -52,8 +52,22 @@ public class UserController : ControllerBase
     {
         try
         {
-            //model.Ip = Request.GetIp();
-            //await _user.AddNewUser(model);
+            model.Ip = Request.GetIp();
+            await _user.AddNewUserAsync(model);
+            return Ok(new { message = "Успешно." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserInfo([FromForm] UserFullBindingModel model)
+    {
+        try
+        {
+            await _user.UpdateUserInfoAsync(model);
             return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)

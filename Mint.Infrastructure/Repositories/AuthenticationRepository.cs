@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Mint.Domain.BindingModels;
 using Mint.Domain.Common;
+using Mint.Domain.FormingModels;
 using Mint.Domain.Models;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.Infrastructure.Services;
@@ -31,6 +32,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 .Include(x => x.UserRoles!)
                 .ThenInclude(x => x.Role)
                 .Include(x => x.RefreshTokens)
+                .Include(x => x.Photo)
                 .FirstOrDefault(x => x.Email == model.Email);
 
             if (newUser != null)
@@ -68,16 +70,11 @@ public class AuthenticationRepository : IAuthenticationRepository
                                 });
                             }
 
-                            return new AuthenticationResponse()
-                            {
-                                Id = newUser.Id,
-                                FirstName = newUser.FirstName,
-                                SecondName = newUser.SecondName,
-                                Email = newUser.Email,
-                                RefreshToken = refreshToken.Token,
-                                AccessToken = jwtToken,
-                                Roles = roles,
-                            };
+                            return new AuthenticationResponseManager().FormingModel(
+                                model: newUser,
+                                refreshToken: refreshToken.Token!,
+                                accessToken: jwtToken,
+                                roles: roles);
                         }
                         else
                         {
@@ -137,15 +134,10 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             var jwtToken = _jwt.GenerateJwtToken(user);
 
-            return new AuthenticationResponse()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                SecondName = user.SecondName,
-                Email = user.Email,
-                RefreshToken = refreshToken.Token,
-                AccessToken = jwtToken,
-            };
+            return new AuthenticationResponseManager().FormingModel(
+                model: user,
+                refreshToken: refreshToken.Token!,
+                accessToken: jwtToken);
         }
         catch (Exception ex)
         {

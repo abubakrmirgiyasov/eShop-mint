@@ -7,4 +7,6 @@ public class Constants
     public const string ADMIN = "Админ";
     public const string BUYER = "Покупатель";
     public const string SELLER = "Продавец";
+
+    public const string IMAGE_PATH = "statics/images";
 }

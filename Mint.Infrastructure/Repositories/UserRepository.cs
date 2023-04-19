@@ -62,7 +62,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task AddNewUser(UserFullBindingModel model)
+    public async Task AddNewUserAsync(UserFullBindingModel model)
     {
         try
         {
@@ -77,10 +77,48 @@ public class UserRepository : IUserRepository
             if (isPhoneExist != null)
                 throw new Exception("Phone error");
 
-            var user = new UserManager().FormingBindingModelAddNewUser(model);
+            var user = await new UserManager().FormingBindingModelAddNewUser(model);
             user.UserRoles?.Add(new UserRole() { RoleId = role!.Id, });
 
             await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task UpdateUserInfoAsync(UserFullBindingModel model)
+    {
+        try
+        {
+            var user = await _context.Users
+                .Include(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == model.Id)
+                ?? throw new UserNotFoundException("Пользователь не найден.");
+
+            user.FirstName = model.FirstName!;
+            user.SecondName = model.SecondName!;
+            user.LastName = model.LastName;
+            user.Gender = model.Gender!;
+            user.Description = model.Description!;
+            user.DateBirth = DateTime.Parse(model.DateOfBirth!);
+
+            if (model.Photo != null && model.Folder != null)
+            {
+                var photo = await PhotoManager.CopyPhotoAsync(model.Photo, model.Id, model.Folder);
+                if (user.Photo != null)
+                {
+                    photo.Users = new List<User> { user };
+                    await _context.Photos.AddAsync(photo);
+                }
+                else
+                {
+                    // update photo
+                }
+            }
+                        
             await _context.SaveChangesAsync();
         }
         catch (Exception ex)
