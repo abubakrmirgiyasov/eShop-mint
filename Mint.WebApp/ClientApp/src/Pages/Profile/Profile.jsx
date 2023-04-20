@@ -29,6 +29,7 @@ const Profile = () => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  document.title = "Профиль - Mint";
   return (
     <div className="page-content">
       <div className="container">
@@ -113,9 +114,9 @@ const Profile = () => {
           <Col md={8}>
             <TabContent activeTab={activeTab}>
               <CustomerInfo userId={user.id} />
-              <Addresses userId={user.id} />
-              <Orders />
-              <ChangePassword />
+              <Addresses activeTab={activeTab} userId={user.id} />
+              <Orders userId={user.id} />
+              <ChangePassword userId={user.id} />
             </TabContent>
           </Col>
         </Row>

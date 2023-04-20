@@ -118,7 +118,8 @@ function request(method) {
               method: "POST"
             })
               .unwrap()
-              .then(() => {
+              .then((response) => {
+                console.log(response);
                 requestOptions.headers["Authorization"] = authHeader(url);
                 return fetch(url, requestOptions).then(handleResponse);
               });

@@ -3,6 +3,7 @@ import { Badge, Card, CardBody, CardHeader, Col, Container, Row } from "reactstr
 import HomeBanner from "../../components/Sliders/HomeBanner";
 import { Error } from "../../components/Notification/Error";
 import TopProducts from "../../components/HomeItems/TopProducts";
+import TopSales from "../../components/HomeItems/TopSales";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
           </Col>
         </Row>
         <TopProducts />
+        <TopSales />
       </Container>
     </div>
   );

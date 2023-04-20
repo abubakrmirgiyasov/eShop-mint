@@ -116,10 +116,8 @@ const Signup = () => {
       fetchWrapper
         .post("api/user/registration", formData, false)
         .then((response) => {
-          console.log(response)
-          if (response.message.contains("Успешно"))
-            return <Navigate to="/" />
           setIsLoading(false);
+          return <Navigate to="/" />
         })
         .catch((error) => {
           setError(error);
@@ -522,7 +520,7 @@ const Signup = () => {
                 <Button
                   type="submit"
                   className="btn btn-success"
-                  disabled={isLoading ? true : false}
+                  disabled={isLoading}
                 >
                   {isLoading ? (
                     <Spinner size={"sm"} className="me-2">

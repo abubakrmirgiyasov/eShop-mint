@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
-export const Error = ({ message }) => {
+export const Success = ({ message }) => {
   useEffect(() => {
-    toast.error(message, {
+    toast.success(message, {
       position: toast.POSITION.TOP_RIGHT,
     });
-  }, [message]);
+  }, [message])
 };

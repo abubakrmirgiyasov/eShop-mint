@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -7,32 +7,55 @@ import {
   CardFooter,
   Col,
   Row,
+  Spinner,
   TabPane,
 } from "reactstrap";
 import AddressesAction from "./AddressesAction";
 import DeleteAddress from "./DeleteAddress";
+import { fetchWrapper } from "../../helpers/fetchWrapper";
 
-const Addresses = () => {
+const Addresses = ({ activeTab, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [address, setAddress] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    if (activeTab === 2) {
+      fetchWrapper
+        .get("api/user/getuseraddressesbyid/" + userId)
+        .then((response) => {
+          setAddresses(response);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLoading(false);
+        });
+    }
+  }, [activeTab]);
 
   const deleteToggle = useCallback(() => {
-    if(isDeleteModal) {
+    if (isDeleteModal) {
       setIsDeleteModal(false);
     } else {
       setIsDeleteModal(true);
     }
   }, [isDeleteModal]);
 
-  const handleDeleteAddressClick = useCallback((arg) => {
-    setAddress({ id: arg.id });
-    setIsDeleteModal(true);
-    deleteToggle();
-  }, [isDeleteModal]);
+  const handleDeleteAddressClick = useCallback(
+    (arg) => {
+      setAddress({ id: arg.id });
+      setIsDeleteModal(true);
+      deleteToggle();
+    },
+    [isDeleteModal]
+  );
+
+  console.log(addresses);
 
   const actionToggle = useCallback(() => {
     if (isModal) {
@@ -43,92 +66,109 @@ const Addresses = () => {
     }
   }, [isModal]);
 
-  const handleChangeAddressClick = useCallback((arg) => {
-    setAddress({
-      id: "1234",
-      firstName: arg.firstName,
-      secondName: arg.secondName,
-      email: arg.email,
-      phone: arg.phone,
-      desc: arg.desc,
-    });
+  const handleChangeAddressClick = useCallback(
+    (arg) => {
+      setAddress({
+        id: "1234",
+        zipCode: 12345,
+        city: arg.city,
+        desc: arg.desc,
+      });
 
-    setIsEdit(true);
-    actionToggle();
-  }, [actionToggle]);
+      setIsEdit(true);
+      actionToggle();
+    },
+    [actionToggle]
+  );
 
   return (
     <React.Fragment>
       <TabPane tabId={2}>
-        <Card className="bg-light">
-          <CardBody>
-            <Row>
-              <Col md={8} lg={9}>
-                <div className="d-flex justify-content-start align-items-center mb-3">
-                  <h2>Адреса</h2>
-                </div>
-                <div className="d-flex justify-content-start align-items-center mb-3">
-                  <Button 
-                    className="btn btn-primary" 
-                    color="primary"
-                    onClick={() => {
-                      setIsEdit(false);
-                      actionToggle();
-                    }}
-                  >
-                    <i className="ri-add-line"></i> Добавить новый
-                  </Button>
-                </div>
-                <Row>
-                  <Col sm={8}>
-                    <Card>
-                      <CardBody>
-                        <h3>Johnn Smith</h3>
-                        <h5 className="text-muted fs-6">
-                          Email: admin@myshop.com
-                          <br />
-                          Phone number: 12345678
-                        </h5>
-                        <h5 className="text-muted fs-6">John Smith</h5>
-                        <h5 className="text-muted fs-6">John Smith LLC</h5>
-                        <h5 className="text-muted fs-6">1234 Main Road</h5>
-                        <h5 className="text-muted fs-6">New York, AA 12212</h5>
-                        <h5 className="text-muted fs-6">UNITED STATES</h5>
-                      </CardBody>
-                      <CardFooter className="d-flex justify-content-end align-items-center">
-                        <Button
-                          className="btn btn-success me-3"
-                          onClick={() => handleChangeAddressClick({
-                            firstName: "test1",
-                            secondName: "test2",
-                            email: "arg.email",
-                            phone: "arg.phone",
-                            desc: "arg.desc",
-                          })}
-                        >
-                          <i className="ri-edit-line"></i> Изменить
-                        </Button>
-                        <Button 
-                          className="btn btn-danger"
-                          onClick={() => handleDeleteAddressClick({ id: "123", })}
-                        >
-                          <i className="ri-delete-bin-7-line"></i> Удалить
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </CardBody>
-        </Card>
+        {isLoading ? (
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-grow text-success" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <Card className="">
+            <CardBody>
+              <div className="d-flex justify-content-start align-items-center mb-3">
+                <h2>Адреса</h2>
+              </div>
+              <Row>
+                <Col md={8} lg={9}>
+                  <div className="d-flex justify-content-start align-items-center mb-3">
+                    <Button
+                      className="btn btn-primary"
+                      color="primary"
+                      onClick={() => {
+                        setIsEdit(false);
+                        actionToggle();
+                      }}
+                    >
+                      <i className="ri-add-line"></i> Добавить новый
+                    </Button>
+                  </div>
+                  <Row>
+                    {addresses.map((item, key) => (
+                      <Col sm={8} key={key}>
+                        <Card>
+                          <CardBody className="bg-light">
+                            <h3>{item.fullName}</h3>
+                            <h5 className="text-muted fs-6">
+                              Email: {item.email}
+                              <br />
+                              Телеон: {item.phone}
+                            </h5>
+                            <h5 className="text-muted fs-6">ФИО: {item.fullName}</h5>
+                            <h5 className="text-muted fs-6">Компания: John Smith LLC</h5>
+                            <h5 className="text-muted fs-6">Адрес: {item.fullAddress}</h5>
+                            <h5 className="text-muted fs-6">
+                              Город: {item.city} Поч. Индекс: {item.zipCode} 
+                            </h5>
+                            <h5 className="text-muted fs-6">Страна: {item.country}</h5>
+                          </CardBody>
+                          <CardFooter className="d-flex justify-content-end align-items-center bg-light">
+                            <Button
+                              className="btn btn-success me-3"
+                              onClick={() =>
+                                handleChangeAddressClick({
+                                  zipCode: 12345,
+                                  city: "arg.phone",
+                                  desc: "arg.desc",
+                                })
+                              }
+                            >
+                              <i className="ri-edit-line"></i> Изменить
+                            </Button>
+                            <Button
+                              className="btn btn-danger"
+                              onClick={() =>
+                                handleDeleteAddressClick({ id: "123" })
+                              }
+                            >
+                              <i className="ri-delete-bin-7-line"></i> Удалить
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+        )}
       </TabPane>
-      <AddressesAction 
+      <AddressesAction
+        userId={userId}
         isOpen={isModal}
         toggle={actionToggle}
         address={address}
+        isEdit={isEdit}
       />
-      <DeleteAddress 
+      <DeleteAddress
         isOpen={isDeleteModal}
         toggle={deleteToggle}
         id={address}

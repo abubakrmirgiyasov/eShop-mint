@@ -12,7 +12,7 @@ using Mint.Infrastructure;
 namespace Mint.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230419152001_Init")]
+    [Migration("20230420160858_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -33,12 +33,35 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(777)
+                        .HasColumnType("nvarchar(777)");
+
+                    b.Property<string>("FullAddress")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Addresses");
                 });
@@ -136,19 +159,19 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            CreactionDate = new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(7012),
+                            CreactionDate = new DateTime(2023, 4, 20, 23, 8, 57, 803, DateTimeKind.Local).AddTicks(5393),
                             Name = "Админ"
                         },
                         new
                         {
                             Id = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            CreactionDate = new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(7018),
+                            CreactionDate = new DateTime(2023, 4, 20, 23, 8, 57, 803, DateTimeKind.Local).AddTicks(5397),
                             Name = "Продавец"
                         },
                         new
                         {
                             Id = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            CreactionDate = new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(7020),
+                            CreactionDate = new DateTime(2023, 4, 20, 23, 8, 57, 803, DateTimeKind.Local).AddTicks(5400),
                             Name = "Покупатель"
                         });
                 });
@@ -240,8 +263,8 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fb1f9922-69e9-4537-8d9f-5686151f8287"),
-                            CreatedDate = new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(1860),
+                            Id = new Guid("9815a679-1d78-48ec-87e0-d033faa42e72"),
+                            CreatedDate = new DateTime(2023, 4, 20, 23, 8, 57, 802, DateTimeKind.Local).AddTicks(5996),
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             Email = "abubakrmirgiyasov@gmail.com",
@@ -252,15 +275,15 @@ namespace Mint.Infrastructure.Migrations
                             IsConfirmedEmail = true,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "Vzrp1yhhCpm2u/tvollJ104HMX6lJPgpnFWDxAFQ73U=",
+                            Password = "m/DNPgoHWhv3ffEcMJw0SCMfq2UEwUo42pEjB8QGaHY=",
                             Phone = 89502768428L,
-                            Salt = new byte[] { 99, 98, 147, 193, 111, 12, 161, 195, 77, 113, 186, 66, 180, 169, 7, 73 },
+                            Salt = new byte[] { 31, 96, 237, 36, 22, 195, 145, 65, 92, 177, 36, 130, 171, 204, 255, 209 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
-                            Id = new Guid("b16c3630-123f-4535-8327-5e75b9db7eab"),
-                            CreatedDate = new DateTime(2023, 4, 19, 22, 20, 1, 32, DateTimeKind.Local).AddTicks(6996),
+                            Id = new Guid("22bbd09e-e3f9-40b8-ba0e-0f9eb825dfc5"),
+                            CreatedDate = new DateTime(2023, 4, 20, 23, 8, 57, 803, DateTimeKind.Local).AddTicks(5356),
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             Email = "admin@mint.com",
@@ -270,9 +293,9 @@ namespace Mint.Infrastructure.Migrations
                             IsActive = true,
                             IsConfirmedEmail = true,
                             NumOfAttempts = 0,
-                            Password = "BXm1v5Vf3/XAQfMYU4EpfuVDc9cabDqn1eoqpzBZOdE=",
+                            Password = "MgY+0XLsmjFFtEItA90DaUSzxZ4CER3Na3EWTCkn3AY=",
                             Phone = 83452763423L,
-                            Salt = new byte[] { 99, 98, 147, 193, 111, 12, 161, 195, 77, 113, 186, 66, 180, 169, 7, 73 },
+                            Salt = new byte[] { 31, 96, 237, 36, 22, 195, 145, 65, 92, 177, 36, 130, 171, 204, 255, 209 },
                             SecondName = "User"
                         });
                 });
@@ -295,28 +318,39 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("fb1f9922-69e9-4537-8d9f-5686151f8287")
+                            UserId = new Guid("9815a679-1d78-48ec-87e0-d033faa42e72")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("fb1f9922-69e9-4537-8d9f-5686151f8287")
+                            UserId = new Guid("9815a679-1d78-48ec-87e0-d033faa42e72")
                         },
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("b16c3630-123f-4535-8327-5e75b9db7eab")
+                            UserId = new Guid("22bbd09e-e3f9-40b8-ba0e-0f9eb825dfc5")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("b16c3630-123f-4535-8327-5e75b9db7eab")
+                            UserId = new Guid("22bbd09e-e3f9-40b8-ba0e-0f9eb825dfc5")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("b16c3630-123f-4535-8327-5e75b9db7eab")
+                            UserId = new Guid("22bbd09e-e3f9-40b8-ba0e-0f9eb825dfc5")
                         });
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Address", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.RefreshToken", b =>
@@ -377,6 +411,8 @@ namespace Mint.Infrastructure.Migrations
 
             modelBuilder.Entity("Mint.Domain.Models.User", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("UserRoles");

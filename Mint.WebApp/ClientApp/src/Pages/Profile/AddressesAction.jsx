@@ -9,23 +9,55 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  Spinner,
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
+import { Error } from "../../components/Notification/Error";
 
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  const countries = [
+    { label: "Россия", value: "1" },
+    { label: "Казахстан", value: "2" },
+  ];
 
   const handleSubmit = (e) => {
+    setIsLoading(true);
+
     const address = {
       fullAddress: e.target.address.value,
       country: e.target.country.value,
       city: e.target.city.value,
       zipCode: e.target.zipCode.value,
-      description: e.target.description,
+      description: e.target.description.value,
       userId: props.userId,
     };
-    // fetchWrapper.()
+
+    if (!!props.isEdit) {
+      fetchWrapper
+        .put("api/user/updateuseraddress", address)
+        .then((response) => {
+          setIsLoading(false);
+          props.toggle();
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLoading(false);
+        });
+    } else {
+      fetchWrapper
+        .post("api/user/adduseraddress", address)
+        .then((response) => {
+          setIsLoading(false);
+          props.toggle();
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLoading(false);
+        });
+    }
   };
 
   return (
@@ -36,6 +68,7 @@ const AddressesAction = (props) => {
         className="border-0"
         modalClassName="modal-xxl fade zoomIn"
       >
+        {error ? <Error message={error.message} /> : null}
         <ModalHeader
           className="p-3 bg-soft-white border-bottom-dashed"
           toggle={props.toggle}
@@ -44,11 +77,13 @@ const AddressesAction = (props) => {
           {!!props.isEdit ? "Изменить адрес" : "Добавить адрес"}
         </ModalHeader>
         <ModalBody className="modal-body">
-          <Form onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(e);
-            return false;
-          }}>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(e);
+              return false;
+            }}
+          >
             <Row>
               <Col lg={12}>
                 <div className="form-group mb-3">
@@ -60,9 +95,14 @@ const AddressesAction = (props) => {
                     className="form-control"
                     id="country"
                     name="country"
-                    defaultValue={props.address?.city}
+                    defaultValue={props.address?.country}
                   >
                     <option>Выберете страну</option>
+                    {countries.map((item, key) => (
+                      <option key={key} value={item.label}>
+                        {item.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </Col>
@@ -107,7 +147,7 @@ const AddressesAction = (props) => {
                     placeholder="Введите ваш адрес"
                     id="address"
                     name="address"
-                    defaultValue={props.address?.address1}
+                    defaultValue={props.address?.address}
                   />
                 </div>
               </Col>
@@ -127,21 +167,26 @@ const AddressesAction = (props) => {
               </Col>
               <div className="d-flex justify-content-end align-items-center">
                 <Button
-                    type="button"
-                    color="danger"
-                    className="me-3"
-                    onClick={() => {
-                        props.toggle();
-                    }}
+                  type="button"
+                  color="danger"
+                  className="me-3"
+                  onClick={() => {
+                    props.toggle();
+                  }}
                 >
-                    <i className="ri-close-line"></i> Отмена
+                  <i className="ri-close-line"></i> Отмена
                 </Button>
-                <Button
-                    type="submit"
-                    color="success"
-                    disabled={false}
+                <Button 
+                  type="submit" 
+                  color="success" 
+                  disabled={isLoading}
                 >
-                    <i className="ri-check-double-fill"></i> Сохранить
+                {isLoading ? (
+                  <Spinner size={"sm"} className="me-2">
+                    Loading...
+                  </Spinner>
+                ) : null}
+                  <i className="ri-check-double-fill"></i> Сохранить
                 </Button>
               </div>
             </Row>

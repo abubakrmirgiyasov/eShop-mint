@@ -37,3 +37,12 @@ public class UserFullBindingModel
 
     public IFormFile? Photo { get; set; }
 }
+
+public class UserUpdatePasswordBindingModel
+{
+    public Guid Id { get; set; }
+
+    public string? OldPassword { get; set; }
+
+    public string? NewPassword { get; set; }
+}

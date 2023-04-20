@@ -22,7 +22,7 @@ const AdminLayout = ({ children }) => {
     }, [layout, dispatch]);
 
     const onChangeLayoutMode = (value) => (dispatch) => {
-        console.log(value)
+        console.log("first")
         if (changeLayoutMode)
             dispatch(changeLayoutMode(value));
     };

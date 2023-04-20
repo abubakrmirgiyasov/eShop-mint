@@ -14,6 +14,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 // media
 import product1 from "../../assets/images/products/img-2.png";
+import product2 from "../../assets/images/products/img-3.png";
+import product3 from "../../assets/images/products/img-4.png";
 import Rating from "react-rating";
 
 const TopProducts = () => {
@@ -105,6 +107,100 @@ const TopProducts = () => {
                             </Link>
                           </h3>
                           <h4 className="text-success">350$</h4>
+                          {/* <h5 className="text-info text-muted text-decoration-line-through">450$</h5> */}
+                          <Rating
+                            initialRating={0}
+                            emptySymbol={"mdi mdi-star-outline text-muted"}
+                            fullSymbol={"mdi mdi-star text-warning"}
+                            className="mb-1"
+                          />
+                          <div className="d-flex justify-content-between align-items-center">
+                            <Button
+                              className="btn btn-success fs-14"
+                              color="success"
+                            >
+                              <i className="ri-shopping-cart-line"></i> В
+                              корзину
+                            </Button>
+                            <Button
+                              className="btn btn-outline-success fs-14"
+                              color="transparent"
+                            >
+                              <i className="ri-heart-line"></i>
+                            </Button>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </SwiperSlide>
+                  <SwiperSlide className="bg-light p-2">
+                    <Card className="mb-0">
+                      <CardBody>
+                        <div className="d-flex justify-content-center align-items-center">
+                          <img src={product2} width={200} height={200} />
+                        </div>
+                        <div className="text-start">
+                          <h3 className="mb-0">
+                            <Link
+                              to="/brand/apple"
+                              className="text-dark text-start fs-16"
+                            >
+                              Iphone 11 Pro
+                            </Link>
+                          </h3>
+                          <h3>
+                            <Link to="/brand/apple" className="text-muted fs-6">
+                              Apple
+                            </Link>
+                          </h3>
+                          <h4 className="text-success">559$</h4>
+                          {/* <h5 className="text-info text-muted text-decoration-line-through">450$</h5> */}
+                          <Rating
+                            initialRating={0}
+                            emptySymbol={"mdi mdi-star-outline text-muted"}
+                            fullSymbol={"mdi mdi-star text-warning"}
+                            className="mb-1"
+                          />
+                          <div className="d-flex justify-content-between align-items-center">
+                            <Button
+                              className="btn btn-success fs-14"
+                              color="success"
+                            >
+                              <i className="ri-shopping-cart-line"></i> В
+                              корзину
+                            </Button>
+                            <Button
+                              className="btn btn-outline-success fs-14"
+                              color="transparent"
+                            >
+                              <i className="ri-heart-line"></i>
+                            </Button>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </SwiperSlide>
+                  <SwiperSlide className="bg-light p-2">
+                    <Card className="mb-0">
+                      <CardBody>
+                        <div className="d-flex justify-content-center align-items-center">
+                          <img src={product3} width={200} height={200} />
+                        </div>
+                        <div className="text-start">
+                          <h3 className="mb-0">
+                            <Link
+                              to="/brand/apple"
+                              className="text-dark text-start fs-16"
+                            >
+                              Iphone 12 Pro
+                            </Link>
+                          </h3>
+                          <h3>
+                            <Link to="/brand/apple" className="text-muted fs-6">
+                              Apple
+                            </Link>
+                          </h3>
+                          <h4 className="text-success">299$</h4>
                           {/* <h5 className="text-info text-muted text-decoration-line-through">450$</h5> */}
                           <Rating
                             initialRating={0}

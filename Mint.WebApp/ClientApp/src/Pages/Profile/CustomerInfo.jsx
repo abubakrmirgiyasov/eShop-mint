@@ -214,11 +214,11 @@ const CustomerInfo = ({ userId }) => {
                   <Col lg={4}>
                     <label className="form-label">Дата рождения</label>
                   </Col>
-                  <Col md={8} className="mb-3">
+                  <Col md={8}>
                     <div className="d-flex">
                       <Input
                         type="number"
-                        className="form-control me-2"
+                        className="form-control me-2 mb-3"
                         name="day"
                         placeholder="День"
                         defaultValue={new Date(userData.dateBirth).getDate()}
@@ -227,7 +227,7 @@ const CustomerInfo = ({ userId }) => {
                       />
                       <Input
                         type="number"
-                        className="form-control me-2"
+                        className="form-control me-2 mb-3"
                         name="month"
                         placeholder="Месяц"
                         defaultValue={new Date(userData.dateBirth).getMonth() + 1}
@@ -236,7 +236,7 @@ const CustomerInfo = ({ userId }) => {
                       />
                       <Input
                         type="number"
-                        className="form-control"
+                        className="form-control mb-3"
                         name="year"
                         placeholder="Год"
                         defaultValue={new Date(

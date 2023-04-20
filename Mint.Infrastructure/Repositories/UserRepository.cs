@@ -4,6 +4,7 @@ using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
 using Mint.Domain.FormingModels;
 using Mint.Domain.Models;
+using Mint.Domain.ViewModels;
 using Mint.Infrastructure.Repositories.Interfaces;
 
 namespace Mint.Infrastructure.Repositories;
@@ -108,7 +109,7 @@ public class UserRepository : IUserRepository
             if (model.Photo != null && model.Folder != null)
             {
                 var photo = await PhotoManager.CopyPhotoAsync(model.Photo, model.Id, model.Folder);
-                if (user.Photo != null)
+                if (user.Photo == null)
                 {
                     photo.Users = new List<User> { user };
                     await _context.Photos.AddAsync(photo);
@@ -126,4 +127,69 @@ public class UserRepository : IUserRepository
             throw new Exception(ex.Message, ex);
         }
     }
+
+    public async Task UpdateUserPaswordAsync(UserUpdatePasswordBindingModel model)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == model.Id) 
+                ?? throw new UserNotFoundException("Пользователь не найден.");
+
+            if (user.NumOfAttempts >= 10)
+            {
+                user.IsActive = false;
+                await _context.SaveChangesAsync();
+                throw new Exception("Учетная запись заблокирована.");
+            }
+
+            if (user.Password == new Hasher().GetHash(model.OldPassword!, user.Salt))
+            {
+                var salt = new Hasher().GetSalt();
+
+                user.Password = new Hasher().GetHash(model.NewPassword!, salt);
+                user.Salt = salt;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                user.NumOfAttempts++;
+                await _context.SaveChangesAsync();
+                throw new Exception("Введенный пароль не правильный");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task<List<AddressViewModel>> GetUserAddressesByIdAsync(Guid userId)
+    {
+        try
+        {
+            var address = await _context.Addresses
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
+            return new AddressManager().FormingViewModels(address);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task AddUserAddressAsync(AddressBindingModel model)
+    {
+        try
+        {
+            var address = new AddressManager().FormingBindingModel(model);
+            await _context.Addresses.AddAsync(address);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
 }
