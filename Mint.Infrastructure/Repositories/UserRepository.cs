@@ -178,12 +178,36 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task AddUserAddressAsync(AddressBindingModel model)
+    public async Task<AddressViewModel> AddUserAddressAsync(AddressBindingModel model)
     {
         try
         {
             var address = new AddressManager().FormingBindingModel(model);
             await _context.Addresses.AddAsync(address);
+            await _context.SaveChangesAsync();
+
+            var temp = await _context.Addresses
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Id == model.UserId);
+            return new AddressManager().FormingSingleViewMdoel(temp!);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task UpdateUserAddressAsync(AddressBindingModel model)
+    {
+        try
+        {
+            var address = await _context.Addresses
+                .FirstOrDefaultAsync(x => x.Id == model.Id) ?? throw new Exception("Адрес не существует.");
+            address.FullAddress = model.FullAddress!;
+            address.City = model.City!;
+            address.Country = model.Country!;
+            address.ZipCode = model.ZipCode;
+            address.Description = model.Description!;
             await _context.SaveChangesAsync();
         }
         catch (Exception ex)
@@ -192,4 +216,18 @@ public class UserRepository : IUserRepository
         }
     }
 
+    public async Task DeleteUserAddressAsync(Guid id)
+    {
+        try
+        {
+            var address = await _context.Addresses
+                .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Адрес не существует.");
+            _context.Addresses.Remove(address);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }    
 }

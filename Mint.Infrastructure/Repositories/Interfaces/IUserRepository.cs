@@ -18,7 +18,11 @@ public interface IUserRepository
 
     Task UpdateUserPaswordAsync(UserUpdatePasswordBindingModel model);
 
-    Task AddUserAddressAsync(AddressBindingModel model);
+    Task<AddressViewModel> AddUserAddressAsync(AddressBindingModel model);
 
     Task<List<AddressViewModel>> GetUserAddressesByIdAsync(Guid userId);
+
+    Task DeleteUserAddressAsync(Guid id);
+
+    Task UpdateUserAddressAsync(AddressBindingModel model);
 }

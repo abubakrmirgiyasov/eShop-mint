@@ -9,7 +9,7 @@ import {
   Col,
   Row,
 } from "reactstrap";
-import { Autoplay, Navigation } from "swiper";
+import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // media
@@ -69,15 +69,11 @@ const TopProducts = () => {
             <Col xxl={12}>
               <Swiper
                 className="mySwiper marketplace-swiper rounded gallery-light pt-5"
-                modules={[Navigation, Autoplay]}
+                modules={[Autoplay]}
                 slidePrevClass={1}
                 spaceBetween={30}
                 loop={true}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
-                navigation={{
-                  nextEl: ".swiper-button-next",
-                  prevEl: ".swiper-button-prev",
-                }}
                 breakpoints={{
                   300: { slidesPerView: 1, spaceBetween: 15 },
                   640: { slidesPerView: 2, spaceBetween: 20 },
@@ -228,8 +224,6 @@ const TopProducts = () => {
                     </Card>
                   </SwiperSlide>
                 </div>
-                <div className="swiper-button-next"></div>
-                <div className="swiper-button-prev"></div>
               </Swiper>
             </Col>
           </Row>

@@ -110,7 +110,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _user.UpdateUserAddressAsync(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
@@ -118,12 +119,13 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteUserAddress([FromBody] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUserAddress(Guid id)
     {
         try
         {
-            return Ok();
+            await _user.DeleteUserAddressAsync(id);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {

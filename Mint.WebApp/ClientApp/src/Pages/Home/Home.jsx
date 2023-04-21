@@ -4,6 +4,7 @@ import HomeBanner from "../../components/Sliders/HomeBanner";
 import { Error } from "../../components/Notification/Error";
 import TopProducts from "../../components/HomeItems/TopProducts";
 import TopSales from "../../components/HomeItems/TopSales";
+import TopBrands from "../../components/HomeItems/TopBrands";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
             <HomeBanner />
           </Col>
         </Row>
+        <TopBrands />
         <TopProducts />
         <TopSales />
       </Container>

@@ -27,6 +27,7 @@ const AddressesAction = (props) => {
     setIsLoading(true);
 
     const address = {
+      id: props.address?.id,
       fullAddress: e.target.address.value,
       country: e.target.country.value,
       city: e.target.city.value,
@@ -46,12 +47,13 @@ const AddressesAction = (props) => {
           setError(error);
           setIsLoading(false);
         });
-    } else {
-      fetchWrapper
+      } else {
+        fetchWrapper
         .post("api/user/adduseraddress", address)
         .then((response) => {
           setIsLoading(false);
           props.toggle();
+          props.setNewAddress(address);
         })
         .catch((error) => {
           setError(error);

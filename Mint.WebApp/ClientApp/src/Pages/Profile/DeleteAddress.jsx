@@ -1,10 +1,31 @@
-import React from "react";
-import { Modal, ModalBody } from "reactstrap";
+import React, { useState } from "react";
+import { Modal, ModalBody, Spinner } from "reactstrap";
+import { fetchWrapper } from "../../helpers/fetchWrapper";
+import { Error } from "../../components/Notification/Error";
 
 const DeleteAddress = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const onDeleteClick = () => {
+    setIsLoading(true);
+
+    fetchWrapper
+      .delete("api/user/deleteuseraddress/" + props.id)
+      .then((response) => {
+        setIsLoading(false);
+        props.toggle();
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  };
+
   return (
     <React.Fragment>
       <Modal isOpen={props.isOpen} toggle={props.toggle} centered={true}>
+        {error ? <Error message={error} /> : null}
         <ModalBody className="py-3 px-5">
           <div className="mt-2 text-center">
             <lord-icon
@@ -14,9 +35,9 @@ const DeleteAddress = (props) => {
               style={{ width: "100px", height: "100px" }}
             ></lord-icon>
             <div className="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-              <h4>Are you sure ?</h4>
+              <h4>А вы уверены ?</h4>
               <p className="text-muted mx-4 mb-0">
-                Are you sure you want to remove this record ?
+                А вы уверены что хотите удалить эту запись ?
               </p>
             </div>
           </div>
@@ -25,17 +46,23 @@ const DeleteAddress = (props) => {
               type="button"
               className="btn w-sm btn-light"
               data-bs-dismiss="modal"
-            //   onClick={onCloseClick}
+              onClick={props.toggle}
             >
-              Close
+              Закрыть
             </button>
             <button
               type="button"
               className="btn w-sm btn-danger "
               id="delete-record"
-            //   onClick={onDeleteClick}
+              onClick={onDeleteClick}
+              disabled={isLoading}
             >
-              Yes, Delete It!
+              {isLoading ? (
+                <Spinner size={"sm"} className="me-2">
+                  Loading...
+                </Spinner>
+              ) : null}
+              Удалить
             </button>
           </div>
         </ModalBody>
