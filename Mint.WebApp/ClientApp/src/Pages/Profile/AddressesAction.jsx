@@ -42,6 +42,7 @@ const AddressesAction = (props) => {
         .then((response) => {
           setIsLoading(false);
           props.toggle();
+          props.setUpdatedAdress(address);
         })
         .catch((error) => {
           setError(error);
@@ -53,7 +54,7 @@ const AddressesAction = (props) => {
         .then((response) => {
           setIsLoading(false);
           props.toggle();
-          props.setNewAddress(address);
+          props.setNewAddress(response);
         })
         .catch((error) => {
           setError(error);
@@ -98,6 +99,7 @@ const AddressesAction = (props) => {
                     id="country"
                     name="country"
                     defaultValue={props.address?.country}
+                    required={true}
                   >
                     <option>Выберете страну</option>
                     {countries.map((item, key) => (
@@ -120,6 +122,7 @@ const AddressesAction = (props) => {
                     id="city"
                     name="city"
                     defaultValue={props.address?.city}
+                    required={true}
                   />
                 </div>
               </Col>
@@ -135,6 +138,7 @@ const AddressesAction = (props) => {
                     id="zipCode"
                     name="zipCode"
                     defaultValue={props.address?.zipCode}
+                    required={true}
                   />
                 </div>
               </Col>
@@ -150,6 +154,7 @@ const AddressesAction = (props) => {
                     id="address"
                     name="address"
                     defaultValue={props.address?.address}
+                    required={true}
                   />
                 </div>
               </Col>

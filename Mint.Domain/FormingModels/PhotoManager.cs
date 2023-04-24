@@ -31,4 +31,20 @@ public class PhotoManager
             throw new Exception(ex.Message, ex);
         }
     }
+    
+    public static void DeletePhoto(string? name)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            if (File.Exists(name))
+                File.Delete(name);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
 }

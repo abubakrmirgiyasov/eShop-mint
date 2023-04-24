@@ -1,6 +1,8 @@
-import { CHANGE_LAYOUT_MODE, CHANGE_LAYOUT_TYPE, CHANGE_LAYOUT_TYPE_SIZE } from './actionType';
+import { CHANGE_LAYOUT_MODE, CHANGE_LAYOUT_TYPE, CHANGE_LAYOUT_TYPE_MODE, CHANGE_LAYOUT_TYPE_SIZE } from './actionType';
 
-const initState = {};
+const layout = localStorage.getItem("theme_mode");
+
+const initState = layout ? { layout } : {};
 
 function changeHTMLAttribute(attribute, value) {
     if (document.documentElement) {
@@ -11,6 +13,7 @@ function changeHTMLAttribute(attribute, value) {
 
 export const changeLayoutMode = (mode) => (dispatch) => {
     changeHTMLAttribute("data-layout-mode", mode);
+    localStorage.setItem("theme_mode", mode);
 
     dispatch({
         type: CHANGE_LAYOUT_MODE,
@@ -36,23 +39,39 @@ export const changeLayoutTypeSize = (size) => (dispatch) => {
     });
 }
 
+export const changeLayoutBackground = (mode) => (dispatch) => {
+    changeHTMLAttribute("data-sidebar", mode);
+
+    dispatch({
+        type: CHANGE_LAYOUT_TYPE_MODE,
+        payload: mode,
+    });
+}
+
 export default function(state = initState, action) {
-    switch (action.type) {
+    const { type, payload } = action;
+    
+    switch (type) {
         case CHANGE_LAYOUT_MODE:
             return {
                 ...state,
-                layout: action.payload,
+                layout: payload,
             };
         case CHANGE_LAYOUT_TYPE:
             return {
                 ...state,
-                layoutModeType: action.payload,
+                layoutModeType: payload,
             };
         case CHANGE_LAYOUT_TYPE_SIZE:
             return {
                 ...state,
-                layoutTypeSize: action.payload,
-            }
+                layoutTypeSize: payload,
+            };
+        case CHANGE_LAYOUT_TYPE_MODE:
+            return {
+                ...state,
+                layoutModeTypeBack: payload,
+            };
         default:
             return state;
     }

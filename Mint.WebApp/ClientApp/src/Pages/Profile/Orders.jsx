@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -43,13 +44,13 @@ const Orders = ({ userId }) => {
                     </Row>
                   </CardBody>
                   <CardFooter className="bg-light">
-                    <Button
-                      type="button"
+                    <Link
+                      to="/orders/details/3"
                       className="btn btn-primary"
                       color="primary"
                     >
                       <i className="ri-file-list-3-line"></i> Детали заказа 
-                    </Button>
+                    </Link>
                   </CardFooter>
                 </Card>
               </Col>

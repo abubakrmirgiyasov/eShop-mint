@@ -5,8 +5,8 @@ function PrivateComponent({ children }) {
     const user = useSelector(user => user.Signin.user);
 
     if (children instanceof Array) {
-        return children.map((c) => 
-            console.log(c.props)
+        return children.map((c) =>
+            c.props
                 ? c.props.roles
                     ? Roles.hasRole(c.props.roles, user.roles)
                         ? c

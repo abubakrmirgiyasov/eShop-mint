@@ -8,7 +8,7 @@ const initState = user
 
 export default function (state = initState, action) {
     const { type, payload } = action;
-
+    
     switch (type) {
         case SIGNIN:
             return {

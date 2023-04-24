@@ -29,12 +29,9 @@ const TopSales = () => {
           <Row>
             <Col xxl={12}>
               <Swiper
-                className="mySwiper default-swiper rounded gallery-light mb-3"
-                modules={[Autoplay]}
+                className="mySwiper swiper pagination-dynamic-swiper rounded mb-3"
                 slidesPerView={4}
                 spaceBetween={30}
-                loop={true}
-                autoplay={{ delay: 2500, disableOnInteraction: false }}
                 breakpoints={{
                   300: { slidesPerView: 1, spaceBetween: 15 },
                   640: { slidesPerView: 2, spaceBetween: 20 },

@@ -14,7 +14,7 @@ public interface IUserRepository
 
     Task AddNewUserAsync(UserFullBindingModel model);
 
-    Task UpdateUserInfoAsync(UserFullBindingModel model);
+    Task<UserFullViewModel> UpdateUserInfoAsync(UserFullBindingModel model);
 
     Task UpdateUserPaswordAsync(UserUpdatePasswordBindingModel model);
 

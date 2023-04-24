@@ -15,6 +15,10 @@ import CategoriesTable from "../../components/Tables/CategoriesTable";
 const Categories = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const handleFilterClick = (e) => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
   return (
     <div className="page-content">
       <Card>
@@ -28,11 +32,11 @@ const Categories = () => {
                 <Button
                   className="me-2 fs-14"
                   color="primary"
-                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  onClick={handleFilterClick}
                 >
                   <i className="ri-filter-2-line"></i>
                 </Button>
-                <Link to="/" className="fs-14 btn btn-success">
+                <Link to="/admin/categories/add" className="fs-14 btn btn-success">
                   <i className="ri-add-line align-middle"></i> Добавить новое
                   ...
                 </Link>

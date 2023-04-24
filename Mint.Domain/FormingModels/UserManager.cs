@@ -22,7 +22,7 @@ public class UserManager
                 Password = new Hasher().GetHash(model.Password!, salt),
                 Salt = salt,
                 CreatedDate = DateTime.Now,
-                DateBirth = DateTime.Parse("12.12.2001"),
+                DateBirth = DateTime.Parse(model.DateOfBirth!),
                 Phone = model.Phone,
                 Gender = model.Gender!,
                 Description = model.Description!,
@@ -66,5 +66,28 @@ public class UserManager
 		{
 			throw new Exception(ex.Message, ex);
 		}
+    }
+
+    public UserFullViewModel FormingUpdateViewModel(User model)
+    {
+        try
+        {
+            byte[] bytes = File.ReadAllBytes(model.Photo != null ? model.Photo.FilePath : "ifnull.png");
+
+            return new UserFullViewModel()
+            {
+                Id = model.Id,
+                FirstName = model.FirstName,
+                SecondName = model.SecondName,
+                Gender = model.Gender,
+                ImagePath = "data:image/*;base64," + Convert.ToBase64String(bytes),
+                DateBirth = model.DateBirth,
+                Description = model.Description,
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 }

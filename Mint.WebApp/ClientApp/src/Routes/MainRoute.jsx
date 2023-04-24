@@ -1,11 +1,17 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { adminRoutes, privateRoutes, publicRoutes } from "./RoutesData";
+import {
+  adminRoutes,
+  emptyRoutes,
+  privateRoutes,
+  publicRoutes,
+} from "./RoutesData";
 import PublicRoutesLayout from "../components/RoutesLayout/PublicRoutesLayout";
 import { PrivateRoutesLayout } from "../components/RoutesLayout/PrivateRoutesLayout";
-import Layout from "../components/Layouts/Layout";
 import AdminRoutes from "../components/RoutesLayout/AdminRoutes";
+import Layout from "../components/Layouts/Layout";
 import AdminLayout from "../components/Layouts/AdminLayout";
+import EmptyLayout from "../components/Layouts/EmptyLayout";
 
 const MainRoute = () => {
   return (
@@ -41,7 +47,7 @@ const MainRoute = () => {
         </Route>
         <Route>
           {adminRoutes.map((route, index) => (
-            <Route 
+            <Route
               path={route.path}
               element={
                 <AdminRoutes>
@@ -52,6 +58,20 @@ const MainRoute = () => {
               exact={true}
             />
           ))}
+        </Route>
+        <Route>
+          {emptyRoutes.map((route, index) => {
+            <Route
+              path={route.path}
+              element={
+                <PublicRoutesLayout>
+                  <EmptyLayout>{route.component}</EmptyLayout>
+                </PublicRoutesLayout>
+              }
+              key={index}
+              exact={true}
+            />;
+          })}
         </Route>
       </Routes>
     </React.Fragment>

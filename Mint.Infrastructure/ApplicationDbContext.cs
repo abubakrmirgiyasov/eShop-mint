@@ -18,6 +18,12 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    public DbSet<Manufacture> Manufactures { get; set; }
+
+    public DbSet<Category> Categories { get; set; }
+
+    public DbSet<SubCategory> SubCategories { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -60,6 +66,24 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.Photo)
             .WithMany(x => x.Users)
             .HasForeignKey(x => x.PhotoId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Manufacture>()
+            .HasOne(x => x.Photo)
+            .WithMany(x => x.Manufactures)
+            .HasForeignKey(x => x.PhotoId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<SubCategory>()
+            .HasOne(x => x.Category)
+            .WithMany(x => x.SubCategories)
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Category>()
+            .HasOne(x => x.Manufacture)
+            .WithMany(x => x.Categories)
+            .HasForeignKey(x => x.ManufactureId)
             .OnDelete(DeleteBehavior.SetNull);
 
         var salt = new Hasher().GetSalt();

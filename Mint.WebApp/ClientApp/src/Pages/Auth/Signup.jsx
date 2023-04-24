@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -117,7 +117,6 @@ const Signup = () => {
         .post("api/user/registration", formData, false)
         .then((response) => {
           setIsLoading(false);
-          return <Navigate to="/" />
         })
         .catch((error) => {
           setError(error);
@@ -126,9 +125,11 @@ const Signup = () => {
     },
   });
 
-  if (isLoggedIn) {
-    return <Navigate to="/" />;
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      return <Navigate to="/" />;
+    }
+  }, [isLoggedIn]);
 
   document.title = "Регистрация - Mint";
   return (

@@ -20,7 +20,6 @@ import { Error } from "../../components/Notification/Error";
 
 // images
 import LogoLight from '../../assets/images/logo-mint-light.png';
-import LogoDark from '../../assets/images/logo-mint-dark.png';
 
 const Signin = (props) => {
   const dispatch = useDispatch();
@@ -28,8 +27,6 @@ const Signin = (props) => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { Message: message } = useSelector(message => message);
-  
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -56,7 +53,7 @@ const Signin = (props) => {
 
   return (
     <React.Fragment>
-      {!!isLoading ? message ? <Error message={message.message} /> : null : null}
+      {error ? <Error message={error} /> : null}
       <Modal
         isOpen={props.isOpen}
         toggle={props.toggle}
@@ -100,9 +97,7 @@ const Signin = (props) => {
                   onBlur={validation.handleBlur}
                   defaultValue={validation.values.email || ""}
                   invalid={
-                    validation.touched.email && validation.errors.email
-                      ? true
-                      : false
+                    !!(validation.touched.email && validation.errors.email)
                   }
                 />
                 {validation.touched.email && validation.errors.email ? (
@@ -126,14 +121,10 @@ const Signin = (props) => {
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                       invalid={
-                        validation.touched.password &&
-                        validation.errors.password
-                          ? true
-                          : false
+                        !!(validation.touched.password && validation.errors.password)
                       }
                     />
-                    {validation.touched.password &&
-                    validation.errors.password ? (
+                    {validation.touched.password && validation.errors.password ? (
                       <FormFeedback type="invalid">
                         {validation.errors.password}
                       </FormFeedback>

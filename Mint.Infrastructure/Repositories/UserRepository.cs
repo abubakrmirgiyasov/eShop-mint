@@ -90,7 +90,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task UpdateUserInfoAsync(UserFullBindingModel model)
+    public async Task<UserFullViewModel> UpdateUserInfoAsync(UserFullBindingModel model)
     {
         try
         {
@@ -109,18 +109,13 @@ public class UserRepository : IUserRepository
             if (model.Photo != null && model.Folder != null)
             {
                 var photo = await PhotoManager.CopyPhotoAsync(model.Photo, model.Id, model.Folder);
-                if (user.Photo == null)
-                {
-                    photo.Users = new List<User> { user };
-                    await _context.Photos.AddAsync(photo);
-                }
-                else
-                {
-                    // update photo
-                }
+                photo.Users = new List<User> { user };
+                await _context.Photos.AddAsync(photo);
             }
-                        
+
             await _context.SaveChangesAsync();
+
+            return new UserManager().FormingUpdateViewModel(user);
         }
         catch (Exception ex)
         {
@@ -132,7 +127,7 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == model.Id) 
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == model.Id)
                 ?? throw new UserNotFoundException("Пользователь не найден.");
 
             if (user.NumOfAttempts >= 10)
@@ -188,7 +183,7 @@ public class UserRepository : IUserRepository
 
             var temp = await _context.Addresses
                 .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == model.UserId);
+                .FirstOrDefaultAsync(x => x.UserId == model.UserId);
             return new AddressManager().FormingSingleViewMdoel(temp!);
         }
         catch (Exception ex)
@@ -229,5 +224,5 @@ public class UserRepository : IUserRepository
         {
             throw new Exception(ex.Message, ex);
         }
-    }    
+    }
 }

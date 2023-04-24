@@ -15,6 +15,7 @@ const DeleteAddress = (props) => {
       .then((response) => {
         setIsLoading(false);
         props.toggle();
+        props.setAddressAfterDeleting(props.id);
       })
       .catch((error) => {
         setIsLoading(false);

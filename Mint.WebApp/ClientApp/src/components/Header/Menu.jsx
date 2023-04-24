@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import navData from "../LayoutMenuData";
 import { Link, useLocation } from "react-router-dom";
 import { Collapse, Col, Row, Container } from "reactstrap";
@@ -7,7 +7,6 @@ import LogoLight from "../../assets/images/logo-light.png";
 import LogoDark from "../../assets/images/logo-dark.png";
 
 const Menu = (props) => {
-  const [isMoreMenu, setIsMoreMenu] = useState(false);
   const nav = navData().props.children;
   const path = useLocation();
 
@@ -15,10 +14,9 @@ const Menu = (props) => {
   let splitMenuItems = [];
   let menuSplitContainer = 6;
 
+
   nav.forEach(function (value, key) {
-    if (value["isHeader"]) {
-      menuSplitContainer++;
-    }
+    if (value["isHeader"]) menuSplitContainer++;
 
     if (key >= menuSplitContainer) {
       let val = value;
@@ -29,19 +27,6 @@ const Menu = (props) => {
     } else {
       menuItems.push(value);
     }
-  });
-
-  menuItems.push({
-    id: "more",
-    label: "More",
-    icon: "ri-briefcase-2-line",
-    link: "/#",
-    stateVariables: isMoreMenu,
-    subItems: splitMenuItems,
-    click: function (e) {
-      e.preventDefault();
-      setIsMoreMenu(!isMoreMenu);
-    },
   });
 
   useEffect(() => {

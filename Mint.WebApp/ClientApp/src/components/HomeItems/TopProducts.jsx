@@ -32,16 +32,11 @@ const TopProducts = () => {
             <Col xxl={12}>
               <Swiper
                 className="mySwiper default-swiper rounded gallery-light mb-3"
-                modules={[Autoplay]}
-                slidesPerView={4}
-                spaceBetween={30}
-                loop={true}
-                autoplay={{ delay: 2500, disableOnInteraction: false }}
                 breakpoints={{
                   300: { slidesPerView: 1, spaceBetween: 15 },
                   640: { slidesPerView: 2, spaceBetween: 20 },
                   768: { slidesPerView: 3, spaceBetween: 24 },
-                  1024: { slidesPerView: 4, spaceBetween: 24 },
+                  1024: { slidesPerView: 4, spaceBetween: 30 },
                 }}
               >
                 <div className="swiper-wrapper">
@@ -68,12 +63,7 @@ const TopProducts = () => {
             </Col>
             <Col xxl={12}>
               <Swiper
-                className="mySwiper marketplace-swiper rounded gallery-light pt-5"
-                modules={[Autoplay]}
-                slidePrevClass={1}
-                spaceBetween={30}
-                loop={true}
-                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                className="mySwiper marketplace-swiper rounded gallery-light"
                 breakpoints={{
                   300: { slidesPerView: 1, spaceBetween: 15 },
                   640: { slidesPerView: 2, spaceBetween: 20 },

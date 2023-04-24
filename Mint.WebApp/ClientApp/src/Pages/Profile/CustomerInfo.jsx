@@ -32,12 +32,12 @@ const CustomerInfo = ({ userId }) => {
         setIsLoading(false);
         setError(error);
       });
-  }, []);
+  }, [userId]);
 
   const handleFileChange = (e) => {
     if (e.target.files.length) {
       setImageFile(e.target.files[0]);
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
 
       reader.onload = function (e) {
@@ -50,7 +50,7 @@ const CustomerInfo = ({ userId }) => {
       setImageFile(null);
     }
   };
-
+  
   const handleSubmit = (e) => {
     let formData = new FormData();
     formData.append("id", userId);
@@ -72,13 +72,19 @@ const CustomerInfo = ({ userId }) => {
     fetchWrapper
       .put("api/user/updateuserinfo", formData, false)
       .then((response) => {
-        console.log(response.message.contains("Успешно"))
-        if (response.message.contains("Успешно")) {
-          setIsEdit(true);
-          setImageSource(null);
-          setImageFile(null);
-        }
+        const user = JSON.parse(localStorage.getItem("auth_user"));
+        user.firstName = response.firstName;
+        user.secondName = response.secondName;
+        user.imagePath = response.imagePath;
+        localStorage.setItem("auth_user", JSON.stringify(user));
+
+        setIsEdit(true);
+        setImageSource(null);
+        setImageFile(null);
         setIsLoading(false);
+        setIsPhotoSelected("d-none");
+
+        window.location.reload();
       })
       .catch((error) => {
         setError(error);
@@ -230,7 +236,9 @@ const CustomerInfo = ({ userId }) => {
                         className="form-control me-2 mb-3"
                         name="month"
                         placeholder="Месяц"
-                        defaultValue={new Date(userData.dateBirth).getMonth() + 1}
+                        defaultValue={
+                          new Date(userData.dateBirth).getMonth() + 1
+                        }
                         disabled={isEdit}
                         required={true}
                       />
@@ -331,7 +339,7 @@ const CustomerInfo = ({ userId }) => {
                       </>
                     ) : (
                       <>
-                        <i className="ri-close-line"></i> Cancel
+                        <i className="ri-close-line"></i> Отмена
                       </>
                     )}
                   </Button>

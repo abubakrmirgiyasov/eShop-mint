@@ -68,8 +68,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _user.UpdateUserInfoAsync(model);
-            return Ok(new { message = "Успешно." });
+            var user = await _user.UpdateUserInfoAsync(model);
+            return Ok(user);
         }
         catch (Exception ex)
         {
@@ -96,8 +96,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _user.AddUserAddressAsync(model);
-            return Ok(new { message = "Успешно." });
+            var address = await _user.AddUserAddressAsync(model);
+            return Ok(address);
         }
         catch (Exception ex)
         {

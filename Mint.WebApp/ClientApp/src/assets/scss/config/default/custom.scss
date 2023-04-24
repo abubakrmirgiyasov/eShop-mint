@@ -94,29 +94,30 @@ File: Custom Css File
 
 // Data Table
 
-.kVrXuC,
-.dwPlXY,
-.gKbhqU,
-.iSAVrt {
+.ewhdCu,
+.gUHoGv,
+.eoCEVt,
+.cOhUY,
+.jWpMhA {
   background-color: $table-bg !important;
   color: $table-color !important;
 }
 
-.fyrdjl {
+.jriwbs {
   color: rgba(var(--#{$prefix}body-color-rgb), 0.54) !important;
   fill: rgba(var(--#{$prefix}body-color-rgb), 0.54) !important;
 }
 
-.fyrdjl:disabled {
+.jriwbs:disabled {
   color: rgba(var(--#{$prefix}body-color-rgb), 0.18) !important;
   fill: rgba(var(--#{$prefix}body-color-rgb), 0.18) !important;
 }
 
-.iSAVrt {
+.jWpMhA {
   background-color: var(--#{$prefix}card-bg-custom) !important;
   border-bottom-color: $table-border-color !important;
 }
 
-.dwPlXY:not(:last-of-type) {
+.eoCEVt:not(:last-of-type) {
   border-bottom-color: $table-border-color !important;
 }

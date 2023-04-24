@@ -72,23 +72,23 @@ const Header = (props) => {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
-              <Link to="/" className="logo logo-dark">
-                                    <span className="logo-sm">
-                                        <img src={LogoSm} alt="" height="22" />
-                                    </span>
-                                    <span className="logo-lg">
-                                        <img src={LogoDark} alt="" height="17" />
-                                    </span>
-                                </Link>
+                <Link to="/" className="logo logo-dark">
+                  <span className="logo-sm">
+                    <img src={LogoSm} alt="" height="22" />
+                  </span>
+                  <span className="logo-lg">
+                    <img src={LogoDark} alt="" height="17" />
+                  </span>
+                </Link>
 
-                                <Link to="/" className="logo logo-light">
-                                    <span className="logo-sm">
-                                        <img src={LogoSm} alt="" height="22" />
-                                    </span>
-                                    <span className="logo-lg">
-                                        <img src={LogoLight} alt="" height="17" />
-                                    </span>
-                                </Link>
+                <Link to="/" className="logo logo-light">
+                  <span className="logo-sm">
+                    <img src={LogoSm} alt="" height="22" />
+                  </span>
+                  <span className="logo-lg">
+                    <img src={LogoLight} alt="" height="17" />
+                  </span>
+                </Link>
               </div>
               <button
                 onClick={toggleMenuBtn}
@@ -109,9 +109,7 @@ const Header = (props) => {
                     className="form-control"
                     placeholder="Поиск..."
                     defaultValue={value}
-                    onChange={(e) => {
-                      onChangeData(e.target.value);
-                    }}
+                    onChange={onChangeData}
                   />
                   <span className="mdi mdi-magnify search-widget-icon"></span>
                   <span
@@ -172,7 +170,7 @@ const Header = (props) => {
                         roles={[Roles.Admin, Roles.Seller]}
                       >
                         <Link
-                          to="/admin/admin-signin"
+                          to="/admin/admin-dashboard"
                           className="btn bg-light fs-5 rounded btn-icon"
                           style={{ padding: "2rem 3rem" }}
                         >

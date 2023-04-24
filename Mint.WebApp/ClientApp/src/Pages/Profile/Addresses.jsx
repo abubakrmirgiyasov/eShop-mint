@@ -7,12 +7,12 @@ import {
   CardFooter,
   Col,
   Row,
-  Spinner,
   TabPane,
 } from "reactstrap";
 import AddressesAction from "./AddressesAction";
 import DeleteAddress from "./DeleteAddress";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
+import { Error } from "../../components/Notification/Error";
 
 const Addresses = ({ activeTab, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +36,7 @@ const Addresses = ({ activeTab, userId }) => {
           setIsLoading(false);
         });
     }
-  }, [activeTab]);
+  }, [activeTab, userId]);
 
   const deleteToggle = useCallback(() => {
     if (isDeleteModal) {
@@ -52,7 +52,7 @@ const Addresses = ({ activeTab, userId }) => {
       setIsDeleteModal(true);
       deleteToggle();
     },
-    [isDeleteModal]
+    [deleteToggle]
   );
 
   const actionToggle = useCallback(() => {
@@ -85,9 +85,19 @@ const Addresses = ({ activeTab, userId }) => {
     setAddresses([...addresses, newAdress]);
   }
 
+  function setUpdatedAdress(updatedAdress) {
+    console.log(updatedAdress);
+  }
+
+  function setAddressAfterDeleting(id) {
+    const newList = addresses.filter((x) => x.id !== id);
+    setAddresses(newList);
+  }
+
   return (
     <React.Fragment>
       <TabPane tabId={2}>
+        {error ? <Error message={error} /> : null}
         {isLoading ? (
           <div className="d-flex justify-content-center align-items-center">
             <div className="spinner-grow text-success" role="status">
@@ -115,7 +125,7 @@ const Addresses = ({ activeTab, userId }) => {
                     </Button>
                   </div>
                   <Row>
-                    {addresses.length ? (
+                    {addresses.length !== 0 ? (
                       addresses.map((item, key) => (
                         <Col sm={8} key={key} className="w-50">
                           <Card>
@@ -191,11 +201,13 @@ const Addresses = ({ activeTab, userId }) => {
         address={address}
         isEdit={isEdit}
         setNewAddress={setNewAddress}
+        setUpdatedAdress={setUpdatedAdress}
       />
       <DeleteAddress
         isOpen={isDeleteModal}
         toggle={deleteToggle}
         id={address?.id}
+        setAddressAfterDeleting={setAddressAfterDeleting}
       />
     </React.Fragment>
   );

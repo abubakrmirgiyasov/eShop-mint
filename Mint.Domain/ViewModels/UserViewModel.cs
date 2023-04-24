@@ -20,5 +20,7 @@ public class UserFullViewModel
 
     public bool IsConfirmedEmail { get; set; }
 
+    public string? ImagePath { get; set; }
+
     public DateTime DateBirth { get; set; }
 }

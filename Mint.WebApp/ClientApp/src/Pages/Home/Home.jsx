@@ -1,12 +1,13 @@
 import React from "react";
-import { Badge, Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
-import HomeBanner from "../../components/Sliders/HomeBanner";
-import { Error } from "../../components/Notification/Error";
+import { Col, Container, Row } from "reactstrap";
+import HomeBanner from "../../components/HomeItems/HomeBanner";
 import TopProducts from "../../components/HomeItems/TopProducts";
 import TopSales from "../../components/HomeItems/TopSales";
 import TopBrands from "../../components/HomeItems/TopBrands";
 
 const Home = () => {
+
+  document.title = "Интернет магазин электроники - Mint";
   return (
     <div className="page-content">
       <Container>

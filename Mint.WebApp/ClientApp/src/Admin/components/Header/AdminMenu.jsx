@@ -29,7 +29,7 @@ const AdminMenu = () => {
           <span className="d-flex align-items-center">
             <img
               className="rounded-circle header-profile-user"
-              src={avatar1}
+              src={user.imagePath}
               alt="Header Avatar"
             />
             <span className="text-start ms-xl-2">
