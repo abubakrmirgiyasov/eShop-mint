@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -11,9 +11,27 @@ import {
   Row,
 } from "reactstrap";
 import CategoriesTable from "../../components/Tables/CategoriesTable";
+import { fetchWrapper } from "../../../helpers/fetchWrapper";
+import { Error } from "../../../components/Notification/Error";
 
 const Categories = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
+
+  useEffect((response) => {
+    fetchWrapper
+      .get("api/category/getcategories")
+      .then((response) => {
+        setIsLoading(false);
+        setData(response);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  }, []);
 
   const handleFilterClick = (e) => {
     setIsFilterOpen(!isFilterOpen);
@@ -21,6 +39,7 @@ const Categories = () => {
 
   return (
     <div className="page-content">
+      {error ? <Error message={error} /> : null}
       <Card>
         <CardHeader>
           <h2>Управление категориями</h2>
@@ -36,7 +55,10 @@ const Categories = () => {
                 >
                   <i className="ri-filter-2-line"></i>
                 </Button>
-                <Link to="/admin/categories/add" className="fs-14 btn btn-success">
+                <Link
+                  to="/admin/categories/add"
+                  className="fs-14 btn btn-success"
+                >
                   <i className="ri-add-line align-middle"></i> Добавить новое
                   ...
                 </Link>
@@ -55,7 +77,7 @@ const Categories = () => {
               </Collapse>
             </Col>
             <Col lg={12}>
-              <CategoriesTable />
+              <CategoriesTable data={data} />
             </Col>
           </Row>
         </CardBody>

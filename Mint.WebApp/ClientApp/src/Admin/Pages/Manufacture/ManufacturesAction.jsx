@@ -29,21 +29,22 @@ const ManufacturesAction = () => {
   const [error, setError] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [data, setData] = useState([]);
+  const [getDataLaoading, setGetDataLoading] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
     if (params.id) {
-      setIsLoading(true);
+      setGetDataLoading(true);
       fetchWrapper
         .get(`api/manufacture/getmanufacturebyid/${params.id}`)
         .then((response) => {
-          setIsLoading(false);
+          setGetDataLoading(false);
           setData(response);
         })
         .catch((error) => {
-          setIsLoading(false);
+          setGetDataLoading(false);
           setError(error);
         });
     }
@@ -112,31 +113,32 @@ const ManufacturesAction = () => {
           title={
             !params.id
               ? "Добавить нового производителя"
-              : "Изменить полбзователя"
+              : "Изменить пользователя"
           }
           pageTitle={"Производители"}
           link={"/admin/manufactures"}
         />
-        {isLoading ? (
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="spinner-grow text-success" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        ) : (
-          <Card>
-            <CardHeader>
-              <h3 className="fs-20 fw-bold">
-                <Link to="/admin/manufactures" className="btn btn-light">
-                  <i className="ri-arrow-left-line"></i>
-                </Link>{" "}
-                {!params.id
-                  ? "Добавить нового производителя"
-                  : "Изменить полбзователя"}
-              </h3>
-            </CardHeader>
-
-            <CardBody>
+        <Card>
+          <CardHeader>
+            <h3 className="fs-20 fw-bold">
+              <Link to="/admin/manufactures" className="btn btn-light">
+                <i className="ri-arrow-left-line"></i>
+              </Link>{" "}
+              {!params.id
+                ? "Добавить нового производителя"
+                : "Изменить пользователя"}
+            </h3>
+          </CardHeader>
+          <CardBody>
+            {params.id ? (
+              getDataLaoading ? (
+                <div className="d-flex justify-content-center align-items-center">
+                  <div className="spinner-grow text-success" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              ) : null
+            ) : (
               <Row>
                 <Form
                   onSubmit={(e) => {
@@ -275,9 +277,9 @@ const ManufacturesAction = () => {
                   </Col>
                 </Form>
               </Row>
-            </CardBody>
-          </Card>
-        )}
+            )}
+          </CardBody>
+        </Card>
       </Container>
     </div>
   );

@@ -99,62 +99,74 @@ const Addresses = ({ activeTab, userId }) => {
       <TabPane tabId={2}>
         {error ? <Error message={error} /> : null}
         {isLoading ? (
-          <div className="d-flex justify-content-center align-items-center">
-            <div className="spinner-grow text-success" role="status">
-              <span className="visually-hidden">Loading...</span>
+          <div className={"d-flex justify-content-center align-items-center"}>
+            <div className={"spinner-grow text-success"} role={"status"}>
+              <span className={"visually-hidden"}>Loading...</span>
             </div>
           </div>
         ) : (
           <Card>
             <CardBody>
-              <div className="d-flex justify-content-start align-items-center mb-3">
+              <div
+                className={
+                  "d-flex justify-content-start align-items-center mb-3"
+                }
+              >
                 <h2>Адреса</h2>
               </div>
               <Row>
                 <Col md={12} lg={12}>
-                  <div className="d-flex justify-content-start align-items-center mb-3">
+                  <div
+                    className={
+                      "d-flex justify-content-start align-items-center mb-3"
+                    }
+                  >
                     <Button
-                      className="btn btn-primary"
-                      color="primary"
+                      className={"btn btn-primary"}
+                      color={"primary"}
                       onClick={() => {
                         setIsEdit(false);
                         actionToggle();
                       }}
                     >
-                      <i className="ri-add-line"></i> Добавить новый
+                      <i className={"ri-add-line"}></i> Добавить новый
                     </Button>
                   </div>
                   <Row>
                     {addresses.length !== 0 ? (
                       addresses.map((item, key) => (
-                        <Col sm={8} key={key} className="w-50">
+                        <Col sm={8} key={key} className={"w-50"}>
                           <Card>
-                            <CardBody className="bg-light">
+                            <CardBody className={"bg-light"}>
                               <h3>{item.fullName}</h3>
-                              <h5 className="text-muted fs-6">
+                              <h5 className={"text-muted fs-6"}>
                                 Email: {item.email}
                                 <br />
                                 Телеон: {item.phone}
                               </h5>
-                              <h5 className="text-muted fs-6">
+                              <h5 className={"text-muted fs-6"}>
                                 ФИО: {item.fullName}
                               </h5>
-                              <h5 className="text-muted fs-6">
+                              <h5 className={"text-muted fs-6"}>
                                 Компания: John Smith LLC
                               </h5>
-                              <h5 className="text-muted fs-6">
+                              <h5 className={"text-muted fs-6"}>
                                 Адрес: {item.fullAddress}
                               </h5>
-                              <h5 className="text-muted fs-6">
+                              <h5 className={"text-muted fs-6"}>
                                 Город: {item.city} Поч. Индекс: {item.zipCode}
                               </h5>
-                              <h5 className="text-muted fs-6">
+                              <h5 className={"text-muted fs-6"}>
                                 Страна: {item.country}
                               </h5>
                             </CardBody>
-                            <CardFooter className="d-flex justify-content-end align-items-center bg-light">
+                            <CardFooter
+                              className={
+                                "d-flex justify-content-end align-items-center bg-light"
+                              }
+                            >
                               <Button
-                                className="btn btn-success me-3"
+                                className={"btn btn-success me-3"}
                                 onClick={() =>
                                   handleChangeAddressClick({
                                     id: item.id,
@@ -166,15 +178,16 @@ const Addresses = ({ activeTab, userId }) => {
                                   })
                                 }
                               >
-                                <i className="ri-edit-line"></i> Изменить
+                                <i className={"ri-edit-line"}></i> Изменить
                               </Button>
                               <Button
-                                className="btn btn-danger"
+                                className={"btn btn-danger"}
                                 onClick={() =>
                                   handleDeleteAddressClick({ id: item.id })
                                 }
                               >
-                                <i className="ri-delete-bin-7-line"></i> Удалить
+                                <i className={"ri-delete-bin-7-line"}></i>{" "}
+                                Удалить
                               </Button>
                             </CardFooter>
                           </Card>
@@ -182,7 +195,7 @@ const Addresses = ({ activeTab, userId }) => {
                       ))
                     ) : (
                       <Col>
-                        <h3 className="mt-3 text-center fs-18">
+                        <h3 className={"mt-3 text-center fs-18"}>
                           Вы пока не добавляли адрес!
                         </h3>
                       </Col>

@@ -29,7 +29,9 @@ builder.Services.Configure<FormOptions>(x =>
 
 builder.Services.AddScoped<IJwt, Jwt>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IManufactureRepository, ManufactureRepository>();
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
 var app = builder.Build();

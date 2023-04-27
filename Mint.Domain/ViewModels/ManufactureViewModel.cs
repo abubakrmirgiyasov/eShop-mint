@@ -12,3 +12,10 @@ public class ManufactureViewModel
 
     public string? Photo { get; set; }
 }
+
+public class ManufactureOnly
+{
+    public Guid Value { get; set; }
+
+    public string? Label { get; set; }
+}

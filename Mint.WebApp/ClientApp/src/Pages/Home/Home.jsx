@@ -4,9 +4,9 @@ import HomeBanner from "../../components/HomeItems/HomeBanner";
 import TopProducts from "../../components/HomeItems/TopProducts";
 import TopSales from "../../components/HomeItems/TopSales";
 import TopBrands from "../../components/HomeItems/TopBrands";
+import IconMenu from "../../components/IconMneu/IconMenu";
 
 const Home = () => {
-
   document.title = "Интернет магазин электроники - Mint";
   return (
     <div className="page-content">

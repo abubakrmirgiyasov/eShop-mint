@@ -5,6 +5,7 @@ import { Card, Col, Row } from "reactstrap";
 
 const PreviewSingleImage = ({ setSelectedImage, image, name }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [parentImage, setParentImage] = useState(image);
 
   const handleFileDrop = (files) => {
     files.map((file) =>
@@ -15,6 +16,7 @@ const PreviewSingleImage = ({ setSelectedImage, image, name }) => {
     );
     setSelectedFiles(files);
     setSelectedImage(files);
+    setParentImage(null);
   };
 
   function formatBytes(bytes, decimals = 2) {
@@ -80,7 +82,7 @@ const PreviewSingleImage = ({ setSelectedImage, image, name }) => {
             </Card>
           );
         })}
-        {image ? (
+        {parentImage ? (
           <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
             <div className="p-2">
               <Row className="align-items-center">

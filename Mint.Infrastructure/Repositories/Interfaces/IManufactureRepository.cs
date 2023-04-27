@@ -7,6 +7,8 @@ public interface IManufactureRepository
 {
     Task<List<ManufactureViewModel>> GetManufacturesAsync();
 
+    Task<List<ManufactureOnly>> GetOnlyManufacturesAsync();
+    
     Task<ManufactureViewModel> GetManufactureByIdAsync(Guid id);
 
     Task AddManufactureAsync(ManufactureBindingModel model);

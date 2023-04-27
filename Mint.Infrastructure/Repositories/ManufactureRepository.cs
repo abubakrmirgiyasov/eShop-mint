@@ -47,6 +47,19 @@ public class ManufactureRepository : IManufactureRepository
         }
     }
 
+    public async Task<List<ManufactureOnly>> GetOnlyManufacturesAsync()
+    {
+        try
+        {
+            var manufactures = await _context.Manufactures.ToListAsync();
+            return new ManufactureManager().FormingOnlyViewModel(manufactures);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public async Task AddManufactureAsync(ManufactureBindingModel model)
     {
         try
@@ -73,10 +86,24 @@ public class ManufactureRepository : IManufactureRepository
 
             manufacture.Name = model.Name ?? manufacture.Name;
             manufacture.DisplayOrder = model.DisplayOrder != 0 ? model.DisplayOrder : manufacture.DisplayOrder;
-            manufacture.Description = model.Description ?? manufacture.Name;
+            manufacture.Description = model.Description ?? manufacture.Description;
             
             if (model.Folder != null && model.Photo != null)
-                manufacture.Photo = await PhotoManager.CopyPhotoAsync(model.Photo, manufacture.Id, model.Folder);
+            {
+                var photo = await PhotoManager.CopyPhotoAsync(model.Photo, manufacture.Id, model.Folder);
+                if (manufacture.Photo != null)
+                {
+                    manufacture.Photo.FileName = photo.FileName;
+                    manufacture.Photo.FilePath = photo.FilePath;
+                    manufacture.Photo.FileSize = photo.FileSize;
+                    manufacture.Photo.FileExtension = photo.FileExtension;
+                    manufacture.Photo.FileType = photo.FileType;
+                }
+                else
+                {
+                    manufacture.Photo = photo;
+                }
+            }
 
             _context.Update(manufacture);
             await _context.SaveChangesAsync();

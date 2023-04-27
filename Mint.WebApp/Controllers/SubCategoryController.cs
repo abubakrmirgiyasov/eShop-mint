@@ -8,22 +8,22 @@ namespace Mint.WebApp.Controllers;
 
 [ApiController]
 [Route("[controller]/[action]")]
-public class ManufactureController : ControllerBase
+public class SubCategoryController : ControllerBase
 {
-    private readonly IManufactureRepository _manufacture;
+    private readonly ISubCategoryRepository _subCategory;
 
-    public ManufactureController(IManufactureRepository manufacture)
+    public SubCategoryController(ISubCategoryRepository subCategory)
     {
-        _manufacture = manufacture;
+        _subCategory = subCategory;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetManufactures()
+    public async Task<IActionResult> GetSubCategories()
     {
         try
         {
-            var manufactures = await _manufacture.GetManufacturesAsync();
-            return Ok(manufactures);
+            var subCategories = await _subCategory.GetSubCategoriesAsync();
+            return Ok(subCategories);
         }
         catch (Exception ex)
         {
@@ -32,12 +32,12 @@ public class ManufactureController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetOnlyManufactures()
+    public async Task<IActionResult> GetSubCategoriesOnly()
     {
         try
         {
-            var manufactures = await _manufacture.GetOnlyManufacturesAsync();
-            return Ok(manufactures);
+            var subCategoriesModel = await _subCategory.GetSubCategoriesOnlyAsync();
+            return Ok(subCategoriesModel);
         }
         catch (Exception ex)
         {
@@ -46,12 +46,12 @@ public class ManufactureController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetManufactureById(Guid id)
+    public async Task<IActionResult> GetSubCategoryById(Guid id)
     {
         try
         {
-            var manufacture = await _manufacture.GetManufactureByIdAsync(id);
-            return Ok(manufacture);
+            var subCategory = await _subCategory.GetSubCategoryByIdAsync(id);
+            return Ok(subCategory);
         }
         catch (Exception ex)
         {
@@ -61,12 +61,12 @@ public class ManufactureController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = Constants.ADMIN)]
-    public async Task<IActionResult> AddManufacture([FromForm] ManufactureBindingModel model)
+    public async Task<IActionResult> AddSubCategory([FromBody] SubCategoryBindingModel model)
     {
         try
         {
-            await _manufacture.AddManufactureAsync(model);
-            return Ok(new { message = "Успешно." });
+            var subCateory = await _subCategory.AddSubCategoryAsync(model);
+            return Ok(subCateory);
         }
         catch (Exception ex)
         {
@@ -76,11 +76,11 @@ public class ManufactureController : ControllerBase
 
     [HttpPut]
     [Authorize(Roles = Constants.ADMIN)]
-    public async Task<IActionResult> UpdateManufacture([FromForm] ManufactureBindingModel model)
+    public async Task<IActionResult> UpdateSubCategory([FromBody] SubCategoryBindingModel model)
     {
         try
         {
-            await _manufacture.UpdateManufactureAsync(model);
+            await _subCategory.UpdateSubCategoryAsync(model);
             return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
@@ -91,16 +91,16 @@ public class ManufactureController : ControllerBase
 
     [HttpDelete("{id}")]
     [Authorize(Roles = Constants.ADMIN)]
-    public async Task<IActionResult> DeleteManufacture(Guid id)
+    public async Task<IActionResult> DeleteSubCategory(Guid id)
     {
         try
         {
-            await _manufacture.DeleteManufactureAsync(id);
+            await _subCategory.DeleteSubCategoryAsync(id);
             return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new { ex.Message });
         }
     }
 }

@@ -11,9 +11,10 @@ public class SubCategory
     [MaxLength(100, ErrorMessage = "Перевышено макс. длина строки (100).")]
     public string Name { get; set; } = null!;
 
+    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
+    public string? Ico { get; set; }
+
     public int DisplayOrder { get; set; }
-
-    public Guid? CategoryId { get; set; }
-
-    public Category? Category { get; set; }
+    
+    public List<Category>? Categories { get; set; }
 }

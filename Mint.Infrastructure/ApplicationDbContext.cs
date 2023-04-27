@@ -74,10 +74,10 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.PhotoId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.Entity<SubCategory>()
-            .HasOne(x => x.Category)
-            .WithMany(x => x.SubCategories)
-            .HasForeignKey(x => x.CategoryId)
+        builder.Entity<Category>()
+            .HasOne(x => x.SubCategory)
+            .WithMany(x => x.Categories)
+            .HasForeignKey(x => x.SubCategoryId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.Entity<Category>()

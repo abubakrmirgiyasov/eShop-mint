@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -22,6 +22,8 @@ const Manufactures = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isDelete, setIsDelete] = useState(false);
+  const [manufactureId, setManufactureId] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,6 +43,28 @@ const Manufactures = () => {
   const handleFilterClick = (e) => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  const toggle = useCallback(() => {
+    if (isDelete) {
+      setIsDelete(false);
+    } else {
+      setIsDelete(true);
+    }
+  }, [isDelete]);
+
+  const handleDeleteClick = useCallback(
+    (arg) => {
+      setManufactureId({ id: arg.id });
+      setIsDelete(true);
+      toggle();
+    },
+    [toggle]
+  );
+
+  function handleDeletedItem(id) {
+    const newData = data.filter((x) => x.id !== id);
+    setData(newData);
+  }
 
   return (
     <div className="page-content">
@@ -92,8 +116,16 @@ const Manufactures = () => {
                 </Collapse>
               </Col>
               <Col lg={12}>
-                <ManufacturesTable data={data} />
-                <DeleteManufactureModal />
+                <ManufacturesTable
+                  data={data}
+                  handleDeleteClick={handleDeleteClick}
+                />
+                <DeleteManufactureModal
+                  isDelete={isDelete}
+                  toggle={toggle}
+                  id={manufactureId}
+                  remove={handleDeletedItem}
+                />
               </Col>
             </Row>
           )}

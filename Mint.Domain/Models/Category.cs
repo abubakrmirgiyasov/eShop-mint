@@ -22,14 +22,16 @@ public class Category
 
     [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
     public string? ExternalLink { get; set; }
-
-    [Required(ErrorMessage = "Заполните объязательное поле")]
-    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
-    public string Ico { get; set; } = null!;
-
+    
     public int DisplayOrder { get; set; }
 
-    public List<SubCategory>? SubCategories { get; set; }
+    public Guid? PhotoId { get; set; }
+
+    public Photo? Photo { get; set; }
+
+    public Guid? SubCategoryId { get; set; }
+
+    public SubCategory? SubCategory { get; set; }
 
     public Guid? ManufactureId { get; set; }
 

@@ -50,6 +50,28 @@ public class ManufactureManager
         }
     }
 
+    public List<ManufactureOnly> FormingOnlyViewModel(List<Manufacture> models)
+    {
+        try
+        {
+            var manufactures = new List<ManufactureOnly>();
+
+            for (int i = 0; i < models.Count; i++)
+            {
+                manufactures.Add(new ManufactureOnly()
+                {
+                    Value = models[i].Id,
+                    Label = models[i].Name,
+                });
+            }
+            return manufactures;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public List<ManufactureViewModel> FormingViewModels(List<Manufacture> models)
     {
         try
