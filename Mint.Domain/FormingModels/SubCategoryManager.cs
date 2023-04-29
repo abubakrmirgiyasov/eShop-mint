@@ -16,6 +16,8 @@ public class SubCategoryManager
                 Name = model.Name!,
                 Ico = model.Ico,
                 DisplayOrder = model.DisplayOrder,
+                BadgeStyle = model.BadgeStyle,
+                BadgeText = model.BadgeText,
             };
         }
         catch (Exception ex)
@@ -30,6 +32,8 @@ public class SubCategoryManager
         {
             var subCategories = new List<SubCategoryOnlylViewModel>();
 
+            models = models.OrderBy(x => x.DisplayOrder).ToList();
+            
             for (int i = 0; i < models.Count; i++)
             {
                 subCategories.Add(new SubCategoryOnlylViewModel()
@@ -56,6 +60,8 @@ public class SubCategoryManager
                 Name = model.Name,
                 DisplayOrder = model.DisplayOrder,
                 Ico = model.Ico,
+                BadgeStyle = model.BadgeStyle,
+                BadgeText = model.BadgeText,
             };
         }
         catch (Exception ex)
@@ -78,6 +84,8 @@ public class SubCategoryManager
                     Name = models[i].Name,
                     DisplayOrder = models[i].DisplayOrder,
                     Ico = models[i].Ico,
+                    BadgeStyle = models[i].BadgeStyle,
+                    BadgeText = models[i].BadgeText,
                 });
             }
             return subCategories;

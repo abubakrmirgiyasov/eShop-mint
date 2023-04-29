@@ -25,6 +25,10 @@ const IconsList = [
   { label: "ri-compasses-2-line", value: "ri-compasses-2-fill" },
   { label: "ri-tv-2-line", value: "ri-tv-2-fill" },
   { label: "ri-phone-line", value: "ri-phone-fill" },
+  { label: "ri-hospital-line", value: "ri-hospital-line" },
+  { label: "ri-device-line", value: "ri-device-line" },
+  { label: "ri-macbook-line", value: "ri-macbook-line" },
+  { label: "ri-cpu-line", value: "ri-cpu-line" },
 ];
 
 export { Countries, BadgesStyle, IconsList };

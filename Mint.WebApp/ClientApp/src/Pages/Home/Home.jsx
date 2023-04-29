@@ -4,7 +4,6 @@ import HomeBanner from "../../components/HomeItems/HomeBanner";
 import TopProducts from "../../components/HomeItems/TopProducts";
 import TopSales from "../../components/HomeItems/TopSales";
 import TopBrands from "../../components/HomeItems/TopBrands";
-import IconMenu from "../../components/IconMneu/IconMenu";
 
 const Home = () => {
   document.title = "Интернет магазин электроники - Mint";
@@ -12,7 +11,7 @@ const Home = () => {
     <div className="page-content">
       <Container>
         <Row>
-          <Col className="mb-3" xxl={12}>
+          <Col className={"mb-3"} xxl={12}>
             <HomeBanner />
           </Col>
         </Row>

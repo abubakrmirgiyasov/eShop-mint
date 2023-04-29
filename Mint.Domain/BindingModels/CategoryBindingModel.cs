@@ -22,5 +22,7 @@ public class CategoryFullBindingModel
 
     public string? ManufactureId { get; set; }
 
+    public string? DefaultLink { get; set; }
+
     public IFormFile? Photo { get; set; }
 }

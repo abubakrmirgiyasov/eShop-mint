@@ -27,7 +27,7 @@ const DeleteSubCategory = ({ id, isDelete, toggle, removedData }) => {
     <React.Fragment>
       {error ? <Error message={error} /> : null}
       <Modal isOpen={isDelete} toggle={toggle} centered={true}>
-        <ModalBody className="py-3 px-5">
+        <ModalBody className={"py-3 px-5"}>
           <div className={"mt-2 text-center"}>
             <lord-icon
               src={"https://cdn.lordicon.com/gsqxdxog.json"}

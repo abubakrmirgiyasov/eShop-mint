@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -13,14 +13,18 @@ import {
 import CategoriesTable from "../../components/Tables/CategoriesTable";
 import { fetchWrapper } from "../../../helpers/fetchWrapper";
 import { Error } from "../../../components/Notification/Error";
+import DeleteCategory from "./DeleteCategory";
 
 const Categories = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [itemId, setItemId] = useState(null);
   const [data, setData] = useState([]);
+  const [isDelete, setIsDelete] = useState(false);
 
   useEffect((response) => {
+    setIsLoading(true);
     fetchWrapper
       .get("api/category/getcategories")
       .then((response) => {
@@ -33,9 +37,27 @@ const Categories = () => {
       });
   }, []);
 
-  const handleFilterClick = (e) => {
+  const toggle = useCallback(() => {
+    if (isDelete) {
+      setIsDelete(false);
+    } else {
+      setIsDelete(true);
+    }
+  }, [isDelete]);
+
+  const handleFilterClick = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  function handleDeleteClick(item) {
+    setItemId(item.id);
+    setIsDelete(true);
+  }
+
+  function removeData(id) {
+    const categories = data.filter((x) => x.id !== id);
+    setData(categories);
+  }
 
   return (
     <div className="page-content">
@@ -77,11 +99,30 @@ const Categories = () => {
               </Collapse>
             </Col>
             <Col lg={12}>
-              <CategoriesTable data={data} />
+              {isLoading ? (
+                <div
+                  className={"d-flex justify-content-center align-items-center"}
+                >
+                  <div className={"spinner-grow text-success"} role={"status"}>
+                    <span className={"visually-hidden"}>Loading...</span>
+                  </div>
+                </div>
+              ) : (
+                <CategoriesTable
+                  data={data}
+                  handleDeleteClick={handleDeleteClick}
+                />
+              )}
             </Col>
           </Row>
         </CardBody>
       </Card>
+      <DeleteCategory
+        isOpen={isDelete}
+        toggle={toggle}
+        itemId={itemId}
+        removeData={removeData}
+      />
     </div>
   );
 };

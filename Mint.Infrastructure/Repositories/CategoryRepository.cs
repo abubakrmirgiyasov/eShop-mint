@@ -35,7 +35,20 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<CategoryViewModel> GetCategoryById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var category = await _context.Categories
+                .Include(x => x.SubCategory)
+                .Include(x => x.Manufacture)
+                .Include(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new Exception("Не существует.");
+            return new CategoryManager().FormingModel(category);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task<CategoryViewModel> AddCategoryAsync(CategoryFullBindingModel model)
@@ -48,29 +61,31 @@ public class CategoryRepository : ICategoryRepository
 
             if (Guid.TryParse(model.SubCategoryId, out Guid subCategoryId))
             {
-                var subcategory = _context.SubCategories
+                var subcategory = await _context.SubCategories
                     .FirstOrDefaultAsync(x => x.Id == subCategoryId)
                     ?? throw new Exception("Не существует.");
 
-                category.SubCategoryId = subCategoryId;
                 category.Name = model.Name!;
+                subcategory.BadgeText = model.BadgeText ?? subcategory.BadgeText;
+                subcategory.BadgeStyle = model.BadgeStyle ?? subcategory.BadgeStyle;
+
+                if (model.FileType != null && model.Photo != null)
+                    category.Photo = await PhotoManager.CopyPhotoAsync(model.Photo, category.Id, model.FileType);
+
+                await _context.Categories.AddAsync(category);
+                await _context.SaveChangesAsync();
             }
             else
             {
-                category.SubCategory = new SubCategory()
+                var subCategory = new SubCategory()
                 {
-                    Id = Guid.NewGuid(),
-                    DisplayOrder = 0,
-                    Ico = null,
+                    DisplayOrder = model.DisplayOrder,
                     Name = model.Name!,
                 };
+
+                await _context.SubCategories.AddAsync(subCategory);
+                await _context.SaveChangesAsync();
             }
-
-            if (model.FileType != null && model.Photo != null)
-                category.Photo = await PhotoManager.CopyPhotoAsync(model.Photo, category.Id, model.FileType);
-
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
 
             return manager.FormingModel(category);
         }
@@ -82,11 +97,58 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task UpdateCategoryAsync(CategoryFullBindingModel model)
     {
-        throw new NotImplementedException();
+        try
+        {
+
+            var category = await _context.Categories
+                .Include(x => x.SubCategory)
+                .Include(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(model.Id!))
+                ?? throw new Exception("Не существует.");
+
+            string? filePath = category.Photo?.FilePath;
+
+            category.Name = model.Name!;
+            category.FullName = model.FullName ?? category.FullName;
+            category.DisplayOrder = model.DisplayOrder == 0 ? category.DisplayOrder : model.DisplayOrder;
+            category.SubCategoryId = Guid.TryParse(model.SubCategoryId, out Guid id) ? id : category.SubCategoryId;
+
+            if (category.SubCategory != null)
+            {
+                category.SubCategory.BadgeText = model.BadgeText ?? category.SubCategory?.BadgeText;
+                category.SubCategory!.BadgeStyle = model.BadgeStyle ?? category.SubCategory?.BadgeStyle;
+            }
+
+            if (model.Photo != null && model.FileType != null)
+                category.Photo = await PhotoManager.CopyPhotoAsync(model.Photo, category.Id, model.FileType);
+
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
+
+            if (model.FileType != null && model.Photo != null)
+                PhotoManager.DeletePhoto(filePath);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task DeleteCategoryAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var category = await _context.Categories
+                .Include(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new Exception("Не существует.");
+
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 }

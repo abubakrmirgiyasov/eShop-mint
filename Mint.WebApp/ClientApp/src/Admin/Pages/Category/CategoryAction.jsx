@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Card,
@@ -22,34 +22,41 @@ import { fetchWrapper } from "../../../helpers/fetchWrapper";
 import { Error } from "../../../components/Notification/Error";
 import SubCategories from "../SubCategory/SubCategories";
 
-const CategoryAction = ({ handleNewData }) => {
+const CategoryAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [manufactures, setManufactures] = useState([]);
   const [subCategories, setSubCategories] = useState(false);
   const [parentData, setParentData] = useState([]);
   const [setSelectedImage, setSetSelectedImage] = useState(null);
+  const [updateData, setUpdateData] = useState([]);
   const navigate = useNavigate();
+  const params = useParams();
 
   useEffect(() => {
     setIsLoading(true);
 
-    fetchWrapper
-      .get("api/subcategory/getsubcategoriesonly")
-      .then((response) => setParentData(response))
-      .catch((error) => setError(error));
+    Promise.all([
+      params.id
+        ? fetchWrapper.get("api/category/getcategorybyid/" + params.id)
+        : Promise.resolve(),
 
-    fetchWrapper
-      .get("api/manufacture/getonlymanufactures")
+      fetchWrapper.get("api/subcategory/getsubcategoriesonly"),
+
+      fetchWrapper.get("api/manufacture/getonlymanufactures"),
+    ])
       .then((response) => {
+        const [updateData, parentData, manufactures] = response;
+        setUpdateData(updateData);
+        setParentData(parentData);
+        setManufactures(manufactures);
         setIsLoading(false);
-        setManufactures(response);
       })
       .catch((error) => {
         setIsLoading(false);
         setError(error);
       });
-  }, []);
+  }, [subCategories]);
 
   const toggle = useCallback(() => {
     if (subCategories) {
@@ -64,6 +71,7 @@ const CategoryAction = ({ handleNewData }) => {
 
     const formData = new FormData();
     // formData.append("externalLink", e.target.externalLink.value);
+    formData.append("id", params.id ? params.id : "");
     formData.append("subCategoryId", e.target.subCategory.value);
     formData.append("displayOrder", e.target.displayOrder.value);
     formData.append("name", e.target.name.value);
@@ -71,22 +79,36 @@ const CategoryAction = ({ handleNewData }) => {
     formData.append("manufactureId", e.target.manufacture.value);
     formData.append("badgeText", e.target.badgeText.value);
     formData.append("badgeStyle", e.target.badgeStyle.value);
+    formData.append("defaultLink", e.target.defaultLink.value);
 
     if (setSelectedImage) {
       formData.append("photo", setSelectedImage[0]);
       formData.append("fileType", "category");
     }
-    fetchWrapper
-      .post("api/category/addcategory", formData, false)
-      .then((response) => {
-        setIsLoading(false);
-        handleNewData(response);
-        navigate("/api/category");
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setError(error);
-      });
+
+    if (params.id) {
+      fetchWrapper
+        .put("api/category/updatecategory", formData, false)
+        .then((response) => {
+          setIsLoading(false);
+          navigate("/admin/categories");
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setError(error);
+        });
+    } else {
+      fetchWrapper
+        .post("api/category/addcategory", formData, false)
+        .then((response) => {
+          setIsLoading(false);
+          navigate("/admin/categories");
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setError(error);
+        });
+    }
   };
 
   function handleSetSelectedImage(image) {
@@ -98,7 +120,7 @@ const CategoryAction = ({ handleNewData }) => {
       {error ? <Error message={error} /> : null}
       <Container fluid>
         <Breadcrumb
-          title={"Добавить"}
+          title={params.id ? "Изменить" : "Добавить"}
           pageTitle={"Катерии"}
           link={"/admin/categories"}
         />
@@ -111,7 +133,7 @@ const CategoryAction = ({ handleNewData }) => {
                 <Link className={"btn btn-light me-2"} to={"/admin/categories"}>
                   <i className={"ri-arrow-left-line"}></i>
                 </Link>{" "}
-                Добавить новую категорию
+                {params.id ? "Изменить категорию" : "Добавить новую категорию"}
               </div>
             </h3>
           </CardHeader>
@@ -178,7 +200,9 @@ const CategoryAction = ({ handleNewData }) => {
                           placeholder={"Выберете родителя"}
                           name={"subCategory"}
                           options={parentData || []}
-                          defaultValue={[]}
+                          defaultValue={parentData.filter(
+                            (item) => item.label === updateData?.subCategory
+                          )}
                         />
                       </Col>
                       <Col xl={2} className={"mb-3"}>
@@ -211,7 +235,7 @@ const CategoryAction = ({ handleNewData }) => {
                           name={"displayOrder"}
                           className={"form-control"}
                           placeholder={"Отобразить по порядку"}
-                          defaultValue={"" || ""}
+                          defaultValue={updateData?.displayOrder || ""}
                         />
                       </Col>
                     </Row>
@@ -234,7 +258,7 @@ const CategoryAction = ({ handleNewData }) => {
                           name={"name"}
                           className={"form-control"}
                           placeholder={"Название"}
-                          defaultValue={"" || ""}
+                          defaultValue={updateData?.name || ""}
                         />
                       </Col>
                     </Row>
@@ -257,7 +281,34 @@ const CategoryAction = ({ handleNewData }) => {
                           name={"fullName"}
                           className={"form-control"}
                           placeholder={"Полное имя"}
-                          defaultValue={"" || ""}
+                          defaultValue={updateData?.fullName || ""}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col lg={12} className={"mb-3"}>
+                    <Row className={"align-items-center"}>
+                      <Col xl={2}>
+                        <Label className={"form-label fw-bold"}>
+                          Ссылка по умолчанию{" "}
+                          <Popover
+                            placement={"right"}
+                            text={`
+                            Альтернативная ссылка по умолчанию для этой категории в главном
+                            меню и в списках категорий. Например, на страницу с продуктами, 
+                            содержащую обратную ссылку на категорию.
+                        `}
+                            id={"defaultLink"}
+                          />
+                        </Label>
+                      </Col>
+                      <Col xl={10}>
+                        <Input
+                          type={"text"}
+                          name={"defaultLink"}
+                          className={"form-control"}
+                          placeholder={"Ссылка по умолчанию (example/child)"}
+                          defaultValue={updateData?.defaultLink || ""}
                         />
                       </Col>
                     </Row>
@@ -279,9 +330,11 @@ const CategoryAction = ({ handleNewData }) => {
                           name={"manufacture"}
                           className={""}
                           options={manufactures}
-                          // onChange={validation.handleChange}
-                          // onBlur={validation.handleBlur}
-                          defaultValue={[]} // validation.values.category
+                          defaultValue={
+                            manufactures.filter(
+                              (item) => item.label === updateData?.manufacture
+                            ) || []
+                          }
                           placeholder={"Выберете производителя"}
                         />
                       </Col>
@@ -304,8 +357,8 @@ const CategoryAction = ({ handleNewData }) => {
                           type={"text"}
                           name={"badgeText"}
                           className={"form-control"}
-                          placeholder={"Полное имя"}
-                          defaultValue={"" || ""}
+                          placeholder={"Текст значка"}
+                          defaultValue={updateData?.badgeText || ""}
                         />
                       </Col>
                     </Row>
@@ -326,6 +379,11 @@ const CategoryAction = ({ handleNewData }) => {
                         <Select
                           name={"badgeStyle"}
                           options={BadgesStyle}
+                          defaultValue={
+                            BadgesStyle.filter(
+                              (item) => item.label === updateData?.badgeStyle
+                            ) || []
+                          }
                           placeholder={"Выберете цвет"}
                         />
                       </Col>
@@ -346,8 +404,8 @@ const CategoryAction = ({ handleNewData }) => {
                       <Col xl={10}>
                         <PreviewSingleImage
                           setSelectedImage={handleSetSelectedImage}
-                          image={[]}
-                          name={[]}
+                          image={updateData?.photo}
+                          name={updateData?.name}
                         />
                       </Col>
                     </Row>

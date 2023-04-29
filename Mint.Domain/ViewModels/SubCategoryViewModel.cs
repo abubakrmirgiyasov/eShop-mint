@@ -9,6 +9,10 @@ public class SubCategoryFullViewModel
     public string? Ico { get; set; }
 
     public int DisplayOrder { get; set; }
+
+    public string? BadgeStyle { get; set; }
+
+    public string? BadgeText { get; set; }
 }
 
 public class SubCategoryOnlylViewModel

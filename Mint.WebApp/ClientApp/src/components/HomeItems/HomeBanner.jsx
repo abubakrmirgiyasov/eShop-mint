@@ -23,12 +23,12 @@ const HomeBanner = () => {
           dynamicBullets: true,
         }}
       >
-        <div className="swiper-wrapper">
+        <div className={"swiper-wrapper"}>
           <SwiperSlide>
-            <img src={apple} alt="" className="img-fluid w-100" />
+            <img src={apple} alt={""} className={"img-fluid w-100"} />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={samsung} alt="" className="img-fluid w-100" />
+            <img src={samsung} alt={""} className={"img-fluid w-100"} />
           </SwiperSlide>
         </div>
       </Swiper>

@@ -10,12 +10,7 @@ const IconMenu = ({ isOpen, toggle, handleSetIconClick, activeIco }) => {
 
   return (
     <React.Fragment>
-      <Modal
-        isOpen={isOpen}
-        toggle={toggle}
-        // centered={true}
-        // className={"modal-xxl fade zoomIn"}
-      >
+      <Modal isOpen={isOpen} toggle={toggle} centered={true}>
         <ModalHeader
           className={"p-3 bg-soft-white border-bottom-dashed"}
           toggle={toggle}

@@ -56,6 +56,8 @@ public class ManufactureManager
         {
             var manufactures = new List<ManufactureOnly>();
 
+            models = models.OrderBy(x => x.DisplayOrder).ToList();
+
             for (int i = 0; i < models.Count; i++)
             {
                 manufactures.Add(new ManufactureOnly()

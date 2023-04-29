@@ -7,9 +7,6 @@ import {
   DropdownToggle,
 } from "reactstrap";
 
-////////////////////////////////////////////////////////////////
-import avatar1 from "../../../assets/images/users/avatar-1.jpg";
-
 const AdminMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((user) => user.Signin.user);
@@ -44,7 +41,7 @@ const AdminMenu = () => {
         </DropdownToggle>
         <DropdownMenu>
           <h6 className="dropdown-header">Добро пожаловать!</h6>
-          <DropdownItem href={process.env.PUBLIC_URL + "/home"}>
+          <DropdownItem tag={"a"} href={process.env.PUBLIC_URL + "/home"}>
             <i className="ri-arrow-go-back-line text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Назад</span>
           </DropdownItem>

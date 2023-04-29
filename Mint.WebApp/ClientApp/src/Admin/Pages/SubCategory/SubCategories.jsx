@@ -9,7 +9,7 @@ import DeleteSubCategory from "./DeleteSubCategory";
 const SubCategories = ({ isOpen, toggle }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [subCategories, setSubCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [updateData, setUpdateData] = useState(null);
@@ -33,6 +33,7 @@ const SubCategories = ({ isOpen, toggle }) => {
   const actionToggle = useCallback(() => {
     if (isEdit) {
       setIsEdit(false);
+      setUpdateData(null);
     } else {
       setIsEdit(true);
     }
@@ -56,6 +57,7 @@ const SubCategories = ({ isOpen, toggle }) => {
     let subCategory = { ...data[temp] };
     subCategory.displayOrder = item.displayOrder;
     subCategory.name = item.name;
+    subCategory.ico = item.ico;
     data[temp] = subCategory;
     setSubCategories(data);
   }

@@ -1,7 +1,6 @@
 ﻿using Mint.Domain.BindingModels;
 using Mint.Domain.Models;
 using Mint.Domain.ViewModels;
-using System.Reflection;
 
 namespace Mint.Domain.FormingModels;
 
@@ -14,12 +13,12 @@ public class CategoryManager
             return new Category()
             {
                 Id = Guid.NewGuid(),
-                BadgeText = model.BadgeText,
-                BadgeStyle = model.BadgeStyle,
                 DisplayOrder = model.DisplayOrder,
                 FullName = model.FullName,
-                ManufactureId = model.ManufactureId != null ? Guid.Parse(model.ManufactureId!) : null,
+                ManufactureId = model.ManufactureId != null ? Guid.Parse(model.ManufactureId) : null,
                 ExternalLink = null,
+                DefaultLink = model.DefaultLink?.Trim('/'),
+                SubCategoryId = model.SubCategoryId != null ? Guid.Parse(model.SubCategoryId) : null,
             };
         }
         catch (Exception ex)
@@ -37,15 +36,16 @@ public class CategoryManager
             return new CategoryViewModel()
             {
                 Id = model.Id,
-                BadgeText = model.BadgeText,
                 DisplayOrder = model.DisplayOrder,
                 Name = model.Name,
-                BadgeStyle = model.BadgeStyle,
                 FullName = model.FullName,
                 SubCategory = model.SubCategory?.Name,
                 Manufacture = model.Manufacture?.Name,
                 ExternalLink = model.ExternalLink,
-                Photo = Convert.ToBase64String(bytes),
+                DefaultLink = model.DefaultLink,
+                BadgeText = model.SubCategory?.BadgeText,
+                BadgeStyle = model.SubCategory?.BadgeStyle,
+                Photo = "data:image/*;base64," + Convert.ToBase64String(bytes),
             };
         }
         catch (Exception ex)
@@ -73,8 +73,8 @@ public class CategoryManager
                     DisplayOrder = models[i].DisplayOrder,
                     FullName = models[i].FullName,
                     Name = models[i].Name,
-                    BadgeStyle = models[i].BadgeStyle,
-                    BadgeText = models[i].BadgeText,
+                    BadgeStyle = models[i].SubCategory?.BadgeStyle?.ToLower(),
+                    BadgeText = models[i].SubCategory?.BadgeText?.ToLower(),
                     Photo = "data:image/*;base64," + Convert.ToBase64String(bytes),
                 });
             };

@@ -21,4 +21,6 @@ public class CategoryViewModel
     public string? SubCategory { get; set; }
 
     public string? Manufacture { get; set; }
+
+    public string? DefaultLink { get; set; }
 }

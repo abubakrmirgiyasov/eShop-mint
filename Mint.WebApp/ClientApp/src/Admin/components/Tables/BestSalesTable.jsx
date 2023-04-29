@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 
@@ -9,25 +9,28 @@ const BestSalesTable = () => {
     { name: "test3", count: 1, price: 229 },
   ];
 
-  const columns = [
-    {
-      name: <span className="font-weight-bold fs-13">Продукт</span>,
-      selector: (row) => {
-        return <Link to="/">{row.name}</Link>;
+  const columns = useMemo(
+    () => [
+      {
+        name: <span className="font-weight-bold fs-13">Продукт</span>,
+        selector: (row) => {
+          return <Link to="/">{row.name}</Link>;
+        },
+        sortable: true,
       },
-      sortable: true,
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Кол-во X Цена</span>,
-      selector: (row) => `${row.count} X ${row.price}₽`,
-      sortable: true,
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Сумма</span>,
-      selector: (row) => row.count * row.price,
-      sortable: true,
-    },
-  ];
+      {
+        name: <span className="font-weight-bold fs-13">Кол-во X Цена</span>,
+        selector: (row) => `${row.count} X ${row.price}₽`,
+        sortable: true,
+      },
+      {
+        name: <span className="font-weight-bold fs-13">Сумма</span>,
+        selector: (row) => row.count * row.price,
+        sortable: true,
+      },
+    ],
+    []
+  );
 
   return (
     <DataTable
@@ -38,7 +41,5 @@ const BestSalesTable = () => {
     />
   );
 };
-
-
 
 export default BestSalesTable;

@@ -4,24 +4,28 @@ import Menu from "../Header/Menu";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLayoutMode, changeLayoutType } from "../../store/theme/reducer";
 import { ToastContainer } from "react-toastify";
+import { menu } from "../../Common/Categories/categories";
 
 // media
 import "react-toastify/dist/ReactToastify.css";
+import PlaceHolder from "../../Pages/test";
 
 const Layout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
   const dispatch = useDispatch();
 
-  const { layout, layoutModeType } = useSelector((state) => ({
+  const { layout, layoutModeType, menuData } = useSelector((state) => ({
     layout: state.Theme.layout,
     layoutModeType: state.Theme.layoutModeType,
+    menuData: state.Categories.menu,
   }));
 
   useEffect(() => {
     if (layout) dispatch(changeLayoutMode(layout));
 
+    dispatch(menu());
     dispatch(changeLayoutType("horizontal"));
-  }, [layout, layoutModeType, dispatch]);
+  }, [layout, layoutModeType, dispatch, menu]);
 
   const onChangeLayoutMode = (value) => {
     if (changeLayoutMode) dispatch(changeLayoutMode(value));
@@ -38,17 +42,22 @@ const Layout = ({ children }) => {
 
   return (
     <React.Fragment>
-      <div id="layout-wrapper">
+      <div id={"layout-wrapper"}>
         <Header
           headerClass={headerClass}
           layoutModeType={layout}
           onChangeLayoutMode={onChangeLayoutMode}
         />
-        <Menu />
-        <div className="main-content">{children}</div>
-
-        <ToastContainer 
-          position="top-right"
+        {!menuData ? (
+          <PlaceHolder />
+        ) : (
+          <>
+            <Menu />
+            <div className={"main-content"}>{children}</div>
+          </>
+        )}
+        <ToastContainer
+          position={"top-right"}
           autoClose={5000}
           limit={1}
           hideProgressBar={false}

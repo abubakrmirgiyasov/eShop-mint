@@ -7,12 +7,13 @@ import ProductDetail from "../Pages/Products/ProductDetail";
 import AdminSignin from "../Admin/Pages/Auth/AdminSignin";
 import AdminDashboard from "../Admin/Pages/Dashboard/AdminDashboard";
 import Categories from "../Admin/Pages/Category/Categories";
-import Prodcuts from "../Admin/Pages/Product/Prodcuts";
+import Products from "../Admin/Pages/Product/Products";
 import Signup from "../Pages/Auth/Signup";
 import OrderDetails from "../Pages/Orders/OrderDetails";
 import CategoryAction from "../Admin/Pages/Category/CategoryAction";
 import Manufactures from "../Admin/Pages/Manufacture/Manufactures";
 import ManufacturesAction from "../Admin/Pages/Manufacture/ManufacturesAction";
+import PlaceHolder from "../Pages/test";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -21,7 +22,8 @@ const publicRoutes = [
   { path: "/logout", component: <Signout /> },
   { path: "/product-details/:id", component: <ProductDetail /> },
   { path: "/signup", component: <Signup /> },
-  { path: "/admin/admin-signin", component: <>"test"</> },
+  { path: "/admin/admin-signin", component: <>test</> },
+  { path: "/place", component: <PlaceHolder /> },
 ];
 
 const privateRoutes = [
@@ -34,7 +36,7 @@ const adminRoutes = [
   // { path: "/", exact: true, component: <Navigate to="/home" /> },
   { path: "/admin/admin-dashboard", component: <AdminDashboard /> },
   { path: "/admin/categories", component: <Categories /> },
-  { path: "/admin/products", component: <Prodcuts /> },
+  { path: "/admin/products", component: <Products /> },
   { path: "/admin/categories/add", component: <CategoryAction /> },
   { path: "/admin/categories/edit/:id", component: <CategoryAction /> },
   { path: "/admin/manufactures", component: <Manufactures /> },

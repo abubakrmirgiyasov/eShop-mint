@@ -25,7 +25,11 @@ const SubCategoryAction = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isOpenIconMenu, setIsOpenIconMenu] = useState(false);
-  const [ico, setIco] = useState(updateData ? updateData.ico : "");
+  const [ico, setIco] = useState("");
+
+  useEffect(() => {
+    setIco(updateData?.ico);
+  }, [updateData?.ico]);
 
   const handleSubmit = (e) => {
     setIsLoading(true);
@@ -33,6 +37,7 @@ const SubCategoryAction = ({
     const data = {
       id: updateData ? updateData.id : null,
       name: e.target.name.value,
+      ico: e.target.ico.value,
       displayOrder: e.target.displayOrder.value,
     };
 
@@ -75,11 +80,16 @@ const SubCategoryAction = ({
     setIco(item);
   }
 
+  function onToggle() {
+    setIco("");
+    toggle();
+  }
+
   return (
     <React.Fragment>
       <Modal
         isOpen={isOpen}
-        toggle={toggle}
+        toggle={onToggle}
         className={"border-0"}
         modalClassName={"modal-xxl fade zoomIn"}
         centered={true}
@@ -87,7 +97,7 @@ const SubCategoryAction = ({
         {error ? <Error message={error} /> : null}
         <ModalHeader
           className={"p-3 bg-soft-white border-bottom-dashed"}
-          toggle={toggle}
+          toggle={onToggle}
           style={{ borderBottom: "1px" }}
         >
           {updateData ? "Изменить" : "Добавить"}
@@ -144,7 +154,7 @@ const SubCategoryAction = ({
                       placeholder={"Введите название"}
                       name={"ico"}
                       id={"ico"}
-                      defaultValue={ico || ""}
+                      defaultValue={ico}
                       required={true}
                     />
                   </Col>

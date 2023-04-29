@@ -15,6 +15,12 @@ public class SubCategory
     public string? Ico { get; set; }
 
     public int DisplayOrder { get; set; }
-    
+
+    [MaxLength(30, ErrorMessage = "Перевышено макс. длина строки (30).")]
+    public string? BadgeText { get; set; }
+
+    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
+    public string? BadgeStyle { get; set; }
+
     public List<Category>? Categories { get; set; }
 }

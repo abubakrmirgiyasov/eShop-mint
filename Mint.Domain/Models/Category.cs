@@ -14,15 +14,12 @@ public class Category
     [MaxLength(400, ErrorMessage = "Перевышено макс. длина строки (400).")]
     public string? FullName { get; set; }
 
-    [MaxLength(30, ErrorMessage = "Перевышено макс. длина строки (30).")]
-    public string? BadgeText { get; set; }
-
-    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
-    public string? BadgeStyle { get; set; }
-
     [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
     public string? ExternalLink { get; set; }
-    
+
+    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
+    public string? DefaultLink { get; set; }
+
     public int DisplayOrder { get; set; }
 
     public Guid? PhotoId { get; set; }

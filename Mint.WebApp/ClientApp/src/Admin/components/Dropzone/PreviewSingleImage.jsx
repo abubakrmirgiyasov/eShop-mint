@@ -41,36 +41,40 @@ const PreviewSingleImage = ({ setSelectedImage, image, name }) => {
     <React.Fragment>
       <Dropzone onDrop={handleFileDrop}>
         {({ getRootProps }) => (
-          <div className="dropzone dz-clickable">
-            <div className="dz-message needsclick" {...getRootProps()}>
-              <div className="mb-3">
-                <i className="display-4 text-muted ri-upload-cloud-2-fill"></i>
+          <div className={"dropzone dz-clickable"}>
+            <div className={"dz-message needsclick"} {...getRootProps()}>
+              <div className={"mb-3"}>
+                <i
+                  className={"display-4 text-muted ri-upload-cloud-2-fill"}
+                ></i>
               </div>
               <h4>Перетащите файлы сюда или нажмите, чтобы загрузить.</h4>
             </div>
           </div>
         )}
       </Dropzone>
-      <div className="list-unstyled mb-0" id="file-previews">
+      <div className={"list-unstyled mb-0"} id={"file-previews"}>
         {selectedFiles.map((file, index) => {
           return (
             <Card
-              className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
+              className={
+                "mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
+              }
               key={index + "-file"}
             >
-              <div className="p-2">
-                <Row className="align-items-center">
-                  <Col className="col-auto">
+              <div className={"p-2"}>
+                <Row className={"align-items-center"}>
+                  <Col className={"col-auto"}>
                     <img
-                      data-dz-thumbnail=""
-                      height="80"
-                      className="avatar-sm rounded bg-light"
+                      data-dz-thumbnail={""}
+                      height={"80"}
+                      className={"avatar-sm rounded bg-light"}
                       alt={file.name}
                       src={file.preview || image}
                     />
                   </Col>
                   <Col>
-                    <Link to="#" className="text-muted font-weight-bold">
+                    <Link to={"#"} className={"text-muted font-weight-bold"}>
                       {file.name}
                     </Link>
                     <p className="mb-0">
@@ -83,20 +87,24 @@ const PreviewSingleImage = ({ setSelectedImage, image, name }) => {
           );
         })}
         {parentImage ? (
-          <Card className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete">
-            <div className="p-2">
-              <Row className="align-items-center">
-                <Col className="col-auto">
+          <Card
+            className={
+              "mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
+            }
+          >
+            <div className={"p-2"}>
+              <Row className={"align-items-center"}>
+                <Col className={"col-auto"}>
                   <img
-                    data-dz-thumbnail=""
-                    height="80"
-                    className="avatar-sm rounded bg-light"
+                    data-dz-thumbnail={""}
+                    height={"80"}
+                    className={"avatar-sm rounded bg-light"}
                     alt=""
                     src={image}
                   />
                 </Col>
                 <Col>
-                  <Link to="#" className="text-muted font-weight-bold">
+                  <Link to="#" className={"text-muted font-weight-bold"}>
                     {name}
                   </Link>
                   <p className="mb-0">

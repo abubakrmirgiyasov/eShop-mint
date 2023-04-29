@@ -10,6 +10,7 @@ import {
 import { changeLayoutTypeSize } from "../../store/theme/reducer";
 import { Roles } from "../../constants/Roles";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const AdminLayout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
@@ -46,23 +47,26 @@ const AdminLayout = ({ children }) => {
     setHeaderClass(document.documentElement.scrollTop > 50 ? "top-shadow" : "");
   }
 
-  window.onscroll = function() {
+  window.onscroll = function () {
     const element = document.getElementById("back-to-top");
 
     if (element) {
-      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      if (
+        document.body.scrollTop > 100 ||
+        document.documentElement.scrollTop > 100
+      ) {
         element.style.display = "block";
       } else {
         element.style.display = "none";
       }
     }
-  }
+  };
 
   const toTop = (e) => {
     e.preventDefault();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-  }
+  };
 
   useEffect(() => {
     if (user.roles.length !== 3) {
@@ -96,6 +100,20 @@ const AdminLayout = ({ children }) => {
           <i className="ri-arrow-up-line"></i>
         </button>
       </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        limit={1}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss={true}
+        draggable={true}
+        pauseOnHover={true}
+        theme="colored"
+      />
     </React.Fragment>
   );
 };

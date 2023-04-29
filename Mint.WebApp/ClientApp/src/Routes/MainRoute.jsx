@@ -60,7 +60,7 @@ const MainRoute = () => {
           ))}
         </Route>
         <Route>
-          {emptyRoutes.map((route, index) => {
+          {emptyRoutes.map((route, index) => (
             <Route
               path={route.path}
               element={
@@ -70,8 +70,8 @@ const MainRoute = () => {
               }
               key={index}
               exact={true}
-            />;
-          })}
+            />
+          ))}
         </Route>
       </Routes>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import DataTable from "react-data-table-component";
 import {
   DropdownItem,
@@ -10,7 +10,7 @@ import PrivateComponent from "../../../helpers/privateComponent";
 import { Roles } from "../../../constants/Roles";
 
 const SubCategoryTable = ({ data, handleDeleteClick, handleUpdateClick }) => {
-  const columns = [
+  const columns = useMemo(() => [
     {
       id: "displayOrder",
       name: <span className={"font-weight-bold fs-13"}>Сортировать по</span>,
@@ -20,6 +20,14 @@ const SubCategoryTable = ({ data, handleDeleteClick, handleUpdateClick }) => {
     {
       name: <span className={"font-weight-bold fs-13"}>Название</span>,
       selector: (row) => row.name,
+    },
+    {
+      name: <span className={"font-weight-bold fs-13"}>Иконка</span>,
+      cell: (row) => (
+        <span className={"fs-18"}>
+          <i className={row.ico}></i>
+        </span>
+      ),
     },
     {
       name: <span className={"font-weight-bold fs-13"}>Действие</span>,
@@ -62,12 +70,12 @@ const SubCategoryTable = ({ data, handleDeleteClick, handleUpdateClick }) => {
         );
       },
     },
-  ];
+  ]);
 
   return (
     <DataTable
       columns={columns}
-      data={data}
+      data={data || []}
       pagination={true}
       highlightOnHover={true}
       defaultSortAsc={true}

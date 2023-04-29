@@ -22,8 +22,8 @@ function handleResponseFileShow(response) {
 
 function handleResponseFile(fileName, response) {
   return response.blob().then((blob) => {
-    var url = window.URL.createObjectURL(blob);
-    var link = document.createElement("a");
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
     link.href = url;
     link.download = fileName;
     document.body.appendChild(link);
@@ -115,11 +115,16 @@ function request(method) {
         .catch((error) => {
           if (error === "Unauthorized") {
             return fetch("api/authentication/refreshtoken", {
-              method: "POST"
+              method: "POST",
             })
               .unwrap()
               .then((response) => {
                 console.log(response);
+
+                const user = JSON.parse(localStorage.getItem("auth_user"));
+                user.accessToken = response.accessToken;
+                localStorage.setItem("auth_user", JSON.stringify(user));
+
                 requestOptions.headers["Authorization"] = authHeader(url);
                 return fetch(url, requestOptions).then(handleResponse);
               });

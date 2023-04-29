@@ -34,7 +34,8 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            return Ok();
+            var category = await _category.GetCategoryById(id);
+            return Ok(category);
         }
         catch (Exception ex)
         {
@@ -61,7 +62,8 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _category.UpdateCategoryAsync(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
