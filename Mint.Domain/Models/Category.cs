@@ -33,4 +33,6 @@ public class Category
     public Guid? ManufactureId { get; set; }
 
     public Manufacture? Manufacture { get; set; }
+
+    public List<Product>? Products { get; set; }
 }

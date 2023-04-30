@@ -61,4 +61,6 @@ public class User
     public List<RefreshToken>? RefreshTokens { get; set; }
 
     public List<Address> Addresses { get; set; } = null!;
+
+    public List<Store>? Stores { get; set; }
 }

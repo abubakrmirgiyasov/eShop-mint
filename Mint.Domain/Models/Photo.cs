@@ -26,4 +26,6 @@ public class Photo
     public List<Manufacture>? Manufactures { get; set; }
 
     public List<Category>? Categories { get; set; }
+
+    public List<ProductPhoto>? ProductPhotos { get; set; }
 }

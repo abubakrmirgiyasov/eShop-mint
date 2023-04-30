@@ -9,6 +9,7 @@ import { menu } from "../../Common/Categories/categories";
 // media
 import "react-toastify/dist/ReactToastify.css";
 import PlaceHolder from "../../Pages/test";
+import Footer from "../Footer/Footer";
 
 const Layout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
@@ -53,7 +54,10 @@ const Layout = ({ children }) => {
         ) : (
           <>
             <Menu />
-            <div className={"main-content"}>{children}</div>
+            <div className={"main-content"}>
+              {children}
+              <Footer />
+            </div>
           </>
         )}
         <ToastContainer

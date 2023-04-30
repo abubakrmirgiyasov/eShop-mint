@@ -12,8 +12,8 @@ using Mint.Infrastructure;
 namespace Mint.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230429122034_ChangedSomeCols")]
-    partial class ChangedSomeCols
+    [Migration("20230430210000_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,6 +112,73 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.CommonCharacteristic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Availability")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Garanty")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Length")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Material")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Width")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CommonCharacteristic");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Discount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ActiveDateUntil")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Percent")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discount");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.Manufacture", b =>
                 {
                     b.Property<Guid>("Id")
@@ -138,6 +205,39 @@ namespace Mint.Infrastructure.Migrations
                     b.HasIndex("PhotoId");
 
                     b.ToTable("Manufactures");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Photo", b =>
@@ -172,6 +272,115 @@ namespace Mint.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdminComment")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CommonCharacteristicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CountryOfOrigin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DeliveryMaxDay")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeliveryMinDay")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("DiscountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FullDescription")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("Gtin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsFreeTax")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ManufactureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("OldPrice")
+                        .HasMaxLength(7)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Price")
+                        .HasMaxLength(7)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<bool?>("ShowOnHomePage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TaxPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CommonCharacteristicId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("ManufactureId");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.ProductPhoto", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "PhotoId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("ProductPhotos");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.RefreshToken", b =>
@@ -236,21 +445,95 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            CreactionDate = new DateTime(2023, 4, 29, 19, 20, 34, 172, DateTimeKind.Local).AddTicks(7637),
+                            CreactionDate = new DateTime(2023, 5, 1, 4, 0, 0, 459, DateTimeKind.Local).AddTicks(5968),
                             Name = "Админ"
                         },
                         new
                         {
                             Id = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            CreactionDate = new DateTime(2023, 4, 29, 19, 20, 34, 172, DateTimeKind.Local).AddTicks(7641),
+                            CreactionDate = new DateTime(2023, 5, 1, 4, 0, 0, 459, DateTimeKind.Local).AddTicks(5972),
                             Name = "Продавец"
                         },
                         new
                         {
                             Id = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            CreactionDate = new DateTime(2023, 4, 29, 19, 20, 34, 172, DateTimeKind.Local).AddTicks(7644),
+                            CreactionDate = new DateTime(2023, 5, 1, 4, 0, 0, 459, DateTimeKind.Local).AddTicks(5975),
                             Name = "Покупатель"
                         });
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Storage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Storage");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AddressDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsOwnStorage")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("Url")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.SubCategory", b =>
@@ -371,8 +654,8 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("684999d3-ddac-4ba3-a10b-479a9a85d617"),
-                            CreatedDate = new DateTime(2023, 4, 29, 19, 20, 34, 172, DateTimeKind.Local).AddTicks(2460),
+                            Id = new Guid("b1bbe6be-f444-4b96-80e5-b4bff332a033"),
+                            CreatedDate = new DateTime(2023, 5, 1, 4, 0, 0, 458, DateTimeKind.Local).AddTicks(8532),
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             Email = "abubakrmirgiyasov@gmail.com",
@@ -383,15 +666,15 @@ namespace Mint.Infrastructure.Migrations
                             IsConfirmedEmail = true,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "C3P4aoHiK6HztaYEEoPsWOBtcP623wSWA7AXxeoVTPI=",
+                            Password = "MahRQnYmGRDhInZSP7plpvtC0YJBev5rc5k6RpbR7xM=",
                             Phone = 89502768428L,
-                            Salt = new byte[] { 168, 176, 100, 159, 199, 84, 86, 234, 174, 12, 236, 133, 7, 185, 152, 216 },
+                            Salt = new byte[] { 31, 247, 71, 236, 39, 40, 220, 224, 229, 213, 108, 145, 186, 102, 175, 0 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
-                            Id = new Guid("544e2b4b-4202-4591-8714-49b18b4b5d5f"),
-                            CreatedDate = new DateTime(2023, 4, 29, 19, 20, 34, 172, DateTimeKind.Local).AddTicks(7611),
+                            Id = new Guid("f8d7361c-5869-46ac-b769-cffe8928b7ca"),
+                            CreatedDate = new DateTime(2023, 5, 1, 4, 0, 0, 459, DateTimeKind.Local).AddTicks(5934),
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             Email = "admin@mint.com",
@@ -401,9 +684,9 @@ namespace Mint.Infrastructure.Migrations
                             IsActive = true,
                             IsConfirmedEmail = true,
                             NumOfAttempts = 0,
-                            Password = "SoAVpDzMXuCQuWasNALamw4yAzPjqkQgALkvwf2tj5A=",
+                            Password = "Wpdj2xrCBNJmD2OQgdgDzqJleR6v2Hd5xXk70oZCIug=",
                             Phone = 83452763423L,
-                            Salt = new byte[] { 168, 176, 100, 159, 199, 84, 86, 234, 174, 12, 236, 133, 7, 185, 152, 216 },
+                            Salt = new byte[] { 31, 247, 71, 236, 39, 40, 220, 224, 229, 213, 108, 145, 186, 102, 175, 0 },
                             SecondName = "User"
                         });
                 });
@@ -426,27 +709,27 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("684999d3-ddac-4ba3-a10b-479a9a85d617")
+                            UserId = new Guid("b1bbe6be-f444-4b96-80e5-b4bff332a033")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("684999d3-ddac-4ba3-a10b-479a9a85d617")
+                            UserId = new Guid("b1bbe6be-f444-4b96-80e5-b4bff332a033")
                         },
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("544e2b4b-4202-4591-8714-49b18b4b5d5f")
+                            UserId = new Guid("f8d7361c-5869-46ac-b769-cffe8928b7ca")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("544e2b4b-4202-4591-8714-49b18b4b5d5f")
+                            UserId = new Guid("f8d7361c-5869-46ac-b769-cffe8928b7ca")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("544e2b4b-4202-4591-8714-49b18b4b5d5f")
+                            UserId = new Guid("f8d7361c-5869-46ac-b769-cffe8928b7ca")
                         });
                 });
 
@@ -494,6 +777,82 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Photo");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.Order", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Store", "Store")
+                        .WithMany("Orders")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Product", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Mint.Domain.Models.CommonCharacteristic", "CommonCharacteristic")
+                        .WithMany("Products")
+                        .HasForeignKey("CommonCharacteristicId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Mint.Domain.Models.Discount", "Discount")
+                        .WithMany("Products")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Mint.Domain.Models.Manufacture", "Manufacture")
+                        .WithMany("Products")
+                        .HasForeignKey("ManufactureId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Mint.Domain.Models.Store", "Store")
+                        .WithMany("Products")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("CommonCharacteristic");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Manufacture");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.ProductPhoto", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Product", "Product")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.RefreshToken", b =>
                 {
                     b.HasOne("Mint.Domain.Models.User", "User")
@@ -501,6 +860,39 @@ namespace Mint.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Storage", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Product", "Product")
+                        .WithMany("Storages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Store", "Store")
+                        .WithMany("Storages")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Store", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
+                    b.HasOne("Mint.Domain.Models.User", "User")
+                        .WithMany("Stores")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Photo");
 
                     b.Navigation("User");
                 });
@@ -538,9 +930,26 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.CommonCharacteristic", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Discount", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.Manufacture", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Photo", b =>
@@ -549,7 +958,18 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Navigation("Manufactures");
 
+                    b.Navigation("ProductPhotos");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Product", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("ProductPhotos");
+
+                    b.Navigation("Storages");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Role", b =>
@@ -557,6 +977,15 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("UserRoles");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Store", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("Storages");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.SubCategory", b =>
@@ -569,6 +998,8 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Addresses");
 
                     b.Navigation("RefreshTokens");
+
+                    b.Navigation("Stores");
 
                     b.Navigation("UserRoles");
                 });

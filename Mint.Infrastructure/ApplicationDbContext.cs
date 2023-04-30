@@ -24,6 +24,12 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<SubCategory> SubCategories { get; set; }
 
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<Store> Stores { get; set; }
+
+    public DbSet<ProductPhoto> ProductPhotos { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -37,11 +43,26 @@ public class ApplicationDbContext : DbContext
             .HasIndex(x => x.Phone)
             .IsUnique(true);
 
+        builder.Entity<Store>()
+            .HasIndex(x => x.Url)
+            .IsUnique(true);
+
+        builder.Entity<Product>()
+            .HasIndex(x => x.Sku)
+            .IsUnique(true);
+
         builder.Entity<UserRole>()
             .HasKey(x => new
             {
                 x.RoleId,
                 x.UserId,
+            });
+
+        builder.Entity<ProductPhoto>()
+            .HasKey(x => new
+            {
+                x.ProductId,
+                x.PhotoId,
             });
 
         builder.Entity<UserRole>()
@@ -85,6 +106,72 @@ public class ApplicationDbContext : DbContext
             .WithMany(x => x.Categories)
             .HasForeignKey(x => x.ManufactureId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Product>()
+            .HasOne(x => x.Category)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Product>()
+            .HasOne(x => x.Manufacture)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.ManufactureId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Product>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<ProductPhoto>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.ProductPhotos)
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ProductPhoto>()
+            .HasOne(x => x.Photo)
+            .WithMany(x => x.ProductPhotos)
+            .HasForeignKey(x => x.PhotoId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Product>()
+            .HasOne(x => x.CommonCharacteristic)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.CommonCharacteristicId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Product>()
+            .HasOne(x => x.Discount)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.DiscountId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Storage>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.Storages)
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Storage>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.Storages)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Order>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Order>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         var salt = new Hasher().GetSalt();
 
