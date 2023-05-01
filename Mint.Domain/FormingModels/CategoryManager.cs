@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.BindingModels;
+using Mint.Domain.Common;
 using Mint.Domain.Models;
 using Mint.Domain.ViewModels;
 
@@ -31,8 +32,6 @@ public class CategoryManager
     {
         try
         {
-            byte[] bytes = File.ReadAllBytes(model.Photo != null ? model.Photo.FilePath : "default-image.png");
-
             return new CategoryViewModel()
             {
                 Id = model.Id,
@@ -45,7 +44,7 @@ public class CategoryManager
                 DefaultLink = model.DefaultLink,
                 BadgeText = model.SubCategory?.BadgeText,
                 BadgeStyle = model.SubCategory?.BadgeStyle,
-                Photo = "data:image/*;base64," + Convert.ToBase64String(bytes),
+                Photo = model.Photo.GetImage64(),
             };
         }
         catch (Exception ex)
@@ -62,8 +61,6 @@ public class CategoryManager
 
             for (int i = 0; i < models.Count; i++)
             {
-                byte[] bytes = File.ReadAllBytes(models[i].Photo != null ? models[i].Photo!.FilePath : "default-image.png");
-
                 categories.Add(new CategoryViewModel()
                 {
                     Id = models[i].Id,
@@ -75,7 +72,7 @@ public class CategoryManager
                     Name = models[i].Name,
                     BadgeStyle = models[i].SubCategory?.BadgeStyle?.ToLower(),
                     BadgeText = models[i].SubCategory?.BadgeText?.ToLower(),
-                    Photo = "data:image/*;base64," + Convert.ToBase64String(bytes),
+                    Photo =  models[i].Photo.GetImage64(),
                 });
             };
 

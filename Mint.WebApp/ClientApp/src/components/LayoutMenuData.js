@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Navdata = () => {
@@ -22,38 +21,40 @@ const Navdata = () => {
       });
     }
   }
-  console.log(menu);
-  const menuItems = [];
 
-  menu.map((item) => {
-    const data = {
-      id: item.id,
-      label: item.parentName,
-      icon: item.parentIco,
-      link: "/#",
-      orderBy: item.parentOrder,
-      badgeText: item.parentBadgeText,
-      badgeStyle: item.parentBadgeStyle,
-      stateVariables: isDashboard,
-      click: function (e) {
-        e.preventDefault();
-        setIsDashboard(!isDashboard);
-        updateIconSidebar(e);
-      },
-    };
+  const menuItems = useMemo(() => {
+    const items = [];
+    menu.map((item) => {
+      const data = {
+        id: item.id,
+        label: item.parentName,
+        icon: item.parentIco,
+        link: "/#",
+        orderBy: item.parentOrder,
+        badgeText: item.parentBadgeText,
+        badgeStyle: item.parentBadgeStyle,
+        stateVariables: isDashboard,
+        click: function (e) {
+          e.preventDefault();
+          setIsDashboard(!isDashboard);
+          updateIconSidebar(e);
+        },
+      };
 
-    item.menuChildViewModels.map((childItem) => {
-      if (!data.subItems) data.subItems = [];
+      item.menuChildViewModels.map((childItem) => {
+        if (!data.subItems) data.subItems = [];
 
-      data.subItems.push({
-        id: childItem.id,
-        label: childItem.childName,
-        link: childItem.childLink,
-        parentId: item.id,
+        data.subItems.push({
+          id: childItem.id,
+          label: childItem.childName,
+          link: childItem.childLink,
+          parentId: item.id,
+        });
       });
+      items.push(data);
     });
-    menuItems.push(data);
-  });
+    return items;
+  }, [menu]);
 
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

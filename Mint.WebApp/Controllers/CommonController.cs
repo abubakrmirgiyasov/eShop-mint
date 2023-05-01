@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Infrastructure.Repositories.Interfaces;
+using Mint.WebApp.Attributes;
 
 namespace Mint.WebApp.Controllers;
 
@@ -15,6 +16,7 @@ public class CommonController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Menu()
     {
 		try

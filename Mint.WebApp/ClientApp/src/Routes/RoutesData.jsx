@@ -14,6 +14,7 @@ import CategoryAction from "../Admin/Pages/Category/CategoryAction";
 import Manufactures from "../Admin/Pages/Manufacture/Manufactures";
 import ManufacturesAction from "../Admin/Pages/Manufacture/ManufacturesAction";
 import PlaceHolder from "../Pages/test";
+import ProductAction from "../Admin/Pages/Product/ProductAction";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -27,7 +28,7 @@ const publicRoutes = [
 ];
 
 const privateRoutes = [
-  { path: "/profile", component: <Profile /> },
+  { path: "/profile/:wh", component: <Profile /> },
   { path: "/orders/details/:id", component: <OrderDetails /> },
 ];
 
@@ -42,6 +43,8 @@ const adminRoutes = [
   { path: "/admin/manufactures", component: <Manufactures /> },
   { path: "/admin/manufactures/add", component: <ManufacturesAction /> },
   { path: "/admin/manufactures/edit/:id", component: <ManufacturesAction /> },
+  { path: "/admin/products/add", component: <ProductAction /> },
+  { path: "/admin/products/edit/:id", component: <ProductAction /> },
 ];
 
 const emptyRoutes = [{ path: "/test", component: <AdminSignin /> }];

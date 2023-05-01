@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -19,11 +19,33 @@ import Addresses from "./Addresses";
 import Orders from "./Orders";
 import ChangePassword from "./ChangePassword";
 import { useSelector } from "react-redux";
+import Store from "./Store";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const params = useParams();
+  const navigate = useNavigate();
 
-  const { user: user } = useSelector((user) => user.Signin);
+  const { user, isLoggedIn } = useSelector((u) => ({
+    user: u.Signin.user,
+    isLoggedIn: u.Signin.isLoggedIn,
+  }));
+
+  if (!isLoggedIn) {
+    navigate("/");
+  }
+
+  useEffect(() => {
+    switch (params.wh) {
+      case "info":
+        setActiveTab(1);
+      case "orders":
+        setActiveTab(3);
+      default:
+        setActiveTab(1);
+    }
+  }, [params]);
 
   const tabChangeToggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -38,10 +60,17 @@ const Profile = () => {
             <Card className="mb-3">
               <CardBody>
                 <div className="d-flex justify-content-center align-items-center mb-3">
-                  <img src={user.imagePath} className="rounded-circle" width={100} height={100} />
+                  <img
+                    src={user.imagePath}
+                    className="rounded-circle"
+                    width={100}
+                    height={100}
+                  />
                 </div>
                 <div className="text-center">
-                  <h3>{user.firstName} {user.secondName}</h3>
+                  <h3>
+                    {user.firstName} {user.secondName}
+                  </h3>
                   <h5 className="text-muted fs-14">{user.email}</h5>
                 </div>
               </CardBody>
@@ -117,6 +146,7 @@ const Profile = () => {
               <Addresses activeTab={activeTab} userId={user.id} />
               <Orders userId={user.id} />
               <ChangePassword userId={user.id} />
+              <Store userId={user.id} />
             </TabContent>
           </Col>
         </Row>

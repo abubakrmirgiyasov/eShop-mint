@@ -12,8 +12,11 @@ import {
 } from "reactstrap";
 import Flatpickr from "react-flatpickr";
 import ProductsTable from "../../components/Tables/ProductsTable";
+import Select from "react-select";
 
 const Products = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
@@ -65,9 +68,7 @@ const Products = () => {
                       </div>
                     </div>
                   </div>
-                  <select type="text" className="form-control w-25 me-3">
-                    <option>Выберете категорию</option>
-                  </select>
+                  <Select />
                   <Button color="danger">
                     <i className="ri-search-2-line"></i>
                   </Button>

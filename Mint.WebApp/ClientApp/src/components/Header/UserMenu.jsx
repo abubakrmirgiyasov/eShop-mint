@@ -40,7 +40,7 @@ const UserMenu = () => {
           <h6 className="dropdown-header">
             Добро пожаловать {isLoggedIn.user?.email}!
           </h6>
-          <DropdownItem href={process.env.PUBLIC_URL + "/profile"}>
+          <DropdownItem href={process.env.PUBLIC_URL + "/profile/info"}>
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Мой профиль</span>
           </DropdownItem>
@@ -48,7 +48,7 @@ const UserMenu = () => {
             <i className="bx bx-heart text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Список желаний</span>
           </DropdownItem>
-          <DropdownItem href={process.env.PUBLIC_URL + "/orders"}>
+          <DropdownItem href={process.env.PUBLIC_URL + "/profile/orders"}>
             <i className="ri-shopping-bag-3-line text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Заказы</span>
           </DropdownItem>

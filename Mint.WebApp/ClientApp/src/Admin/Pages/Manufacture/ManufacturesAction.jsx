@@ -113,7 +113,7 @@ const ManufacturesAction = () => {
           title={
             !params.id
               ? "Добавить нового производителя"
-              : "Изменить пользователя"
+              : "Изменить производителя"
           }
           pageTitle={"Производители"}
           link={"/admin/manufactures"}
@@ -130,14 +130,12 @@ const ManufacturesAction = () => {
             </h3>
           </CardHeader>
           <CardBody>
-            {params.id ? (
-              getDataLaoading ? (
-                <div className="d-flex justify-content-center align-items-center">
-                  <div className="spinner-grow text-success" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
+            {params.id && getDataLaoading ? (
+              <div className="d-flex justify-content-center align-items-center">
+                <div className="spinner-grow text-success" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
-              ) : null
+              </div>
             ) : (
               <Row>
                 <Form

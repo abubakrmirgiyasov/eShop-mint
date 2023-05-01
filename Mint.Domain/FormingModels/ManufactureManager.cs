@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.BindingModels;
+using Mint.Domain.Common;
 using Mint.Domain.Models;
 using Mint.Domain.ViewModels;
 
@@ -33,15 +34,13 @@ public class ManufactureManager
     {
         try
         {
-            byte[] bytes = File.ReadAllBytes(model.Photo != null ? model.Photo!.FilePath : "default-image.png");
-
             return new ManufactureViewModel()
             {
                 Id = model.Id,
                 DisplayOrder = model.DisplayOrder,
                 Name = model.Name,
                 Description = model.Description,
-                Photo = "data:image/*;base64," + Convert.ToBase64String(bytes),
+                Photo = model.Photo.GetImage64(),
             };
         }
         catch (Exception ex)
@@ -82,15 +81,13 @@ public class ManufactureManager
 
             for (int i = 0; i < models.Count; i++)
             {
-                byte[] bytes = File.ReadAllBytes(models[i].Photo != null ? models[i].Photo!.FilePath : "default-image.png");
-
                 manufactures.Add(new ManufactureViewModel()
                 {
                     Id = models[i].Id,
                     Name = models[i].Name,
                     DisplayOrder = models[i].DisplayOrder,
                     Description = models[i].Description,
-                    Photo = "data:image/*;base64," + Convert.ToBase64String(bytes),
+                    Photo = models[i].Photo.GetImage64(),
                 });
             }
             return manufactures;

@@ -72,15 +72,13 @@ public class UserManager
     {
         try
         {
-            byte[] bytes = File.ReadAllBytes(model.Photo != null ? model.Photo.FilePath : "ifnull.png");
-
             return new UserFullViewModel()
             {
                 Id = model.Id,
                 FirstName = model.FirstName,
                 SecondName = model.SecondName,
                 Gender = model.Gender,
-                ImagePath = "data:image/*;base64," + Convert.ToBase64String(bytes),
+                ImagePath = model.Photo.GetImage64(),
                 DateBirth = model.DateBirth,
                 Description = model.Description,
             };

@@ -1,4 +1,5 @@
-﻿using Mint.Domain.Models;
+﻿using Mint.Domain.Common;
+using Mint.Domain.Models;
 using Mint.Domain.ViewModels;
 
 namespace Mint.Domain.FormingModels;
@@ -26,14 +27,12 @@ public class MenuManager
 
                 for (int j = 0; j < models[i].Categories?.Count; j++)
                 {
-                    byte[] childBytes = File.ReadAllBytes(models[i].Categories?[j].Photo != null ? models[i].Categories?[j].Photo?.FilePath! : "default-image.png");
-
                     menus[i].MenuChildViewModels?.Add(new MenuChildViewModel()
                     {
                         Id =  (Guid)(models[i].Categories?[j].Id)!,
                         ChildName =  models[i].Categories?[j].Name,
                         ChildOrder = (int)(models[i].Categories?[j].DisplayOrder)!,
-                        ChildPhoto = "data:image/*;base64," + Convert.ToBase64String(childBytes)
+                        ChildPhoto = models[i].Categories?[j].Photo.GetImage64(),
                     });
                 }
             }

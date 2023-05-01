@@ -46,7 +46,7 @@ const AdminMenu = () => {
             <span className="align-middle">Назад</span>
           </DropdownItem>
           <div className="dropdown-divider"></div>
-          <DropdownItem href={process.env.PUBLIC_URL + "/user-profile"}>
+          <DropdownItem href={process.env.PUBLIC_URL + "/profile/info"}>
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Профиль</span>
           </DropdownItem>

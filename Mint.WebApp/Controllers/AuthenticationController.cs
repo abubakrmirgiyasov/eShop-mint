@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.BindingModels;
-using Mint.Domain.Common;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Attributes;
 using Mint.WebApp.Extensions;
