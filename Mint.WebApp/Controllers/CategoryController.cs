@@ -43,6 +43,20 @@ public class CategoryController : ControllerBase
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetOnlyCategories()
+    {
+        try
+        {
+            var categories = await _category.GetCategoriesOnlyAsync();
+            return Ok(categories);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromForm] CategoryFullBindingModel model)
     {

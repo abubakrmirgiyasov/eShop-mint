@@ -16,7 +16,7 @@ public class CategoryRepository : ICategoryRepository
         _context = context;
     }
 
-    public async Task<List<CategoryViewModel>> GetCategoriesAsync()
+    public async Task<List<CategoryFullViewModel>> GetCategoriesAsync()
     {
         try
         {
@@ -33,7 +33,7 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<CategoryViewModel> GetCategoryById(Guid id)
+    public async Task<CategoryFullViewModel> GetCategoryById(Guid id)
     {
         try
         {
@@ -51,7 +51,20 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<CategoryViewModel> AddCategoryAsync(CategoryFullBindingModel model)
+    public async Task<List<CategoryOnlyViewModel>> GetCategoriesOnlyAsync()
+    {
+        try
+        {
+            var categories = await _context.Categories.ToListAsync();
+            return new CategoryManager().FormingOnlyViewModels(categories);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task<CategoryFullViewModel> AddCategoryAsync(CategoryFullBindingModel model)
     {
         try
         {

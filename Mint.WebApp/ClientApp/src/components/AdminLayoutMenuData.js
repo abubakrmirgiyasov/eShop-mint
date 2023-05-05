@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const AdminNavdata = () => {
   const history = useNavigate();
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
+  const [isDashboard, setIsDashboard] = useState(false);
   const [isCatalog, setIsCatalog] = useState(false);
   const [isSales, setIsSales] = useState(false);
   const [isNews, setIsNews] = useState(false);
@@ -15,7 +16,7 @@ const AdminNavdata = () => {
       let activeIconItems = [...iconItems];
       activeIconItems.forEach((item) => {
         item.classList.remove("active");
-        var id = item.getAttribute("subitems");
+        const id = item.getAttribute("subitems");
         if (document.getElementById(id))
           document.getElementById(id).classList.remove("show");
       });
@@ -32,6 +33,9 @@ const AdminNavdata = () => {
       history("/widgets");
       document.body.classList.add("twocolumn-panel");
     }
+    if (iscurrentState !== "Dashboard") {
+      setIsDashboard(false);
+    }
     if (iscurrentState !== "Catalog") {
       setIsCatalog(false);
     }
@@ -41,14 +45,7 @@ const AdminNavdata = () => {
     if (iscurrentState !== "News") {
       setIsNews(false);
     }
-
-  }, [
-    history,
-    iscurrentState,
-    isCatalog,
-    isSales,
-    isNews
-  ]);
+  }, [history, iscurrentState, isCatalog, isSales, isNews]);
 
   const menuItems = [
     {
@@ -60,8 +57,10 @@ const AdminNavdata = () => {
       label: "Дашбоард",
       icon: "ri-dashboard-2-line",
       link: "/admin/admin-dashboard",
+      stateVariables: isDashboard,
       click: function (e) {
         e.preventDefault();
+        setIsDashboard(!isDashboard);
         setIscurrentState("Dashboard");
       },
     },
@@ -139,6 +138,56 @@ const AdminNavdata = () => {
       id: "news",
       label: "Новости",
       icon: "ri-newspaper-line",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsNews(!isNews);
+        setIscurrentState("News");
+        updateIconSidebar(e);
+      },
+      stateVariables: isNews,
+      subItems: [
+        {
+          id: "banners",
+          label: "Банеры",
+          link: "/admin/news/banners",
+          parentId: "sales",
+        },
+      ],
+    },
+    {
+      label: "CRUD",
+      isHeader: true,
+    },
+    {
+      id: "customers",
+      label: "Сотрудники",
+      icon: "ri-customer-service-line",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsNews(!isNews);
+        setIscurrentState("News");
+        updateIconSidebar(e);
+      },
+      stateVariables: isNews,
+      subItems: [
+        {
+          id: "banners",
+          label: "Банеры",
+          link: "/admin/news/banners",
+          parentId: "sales",
+        },
+      ],
+    },
+    {
+      label: "КРАД",
+      isHeader: true,
+    },
+    {
+      id: "sellers",
+      label: "Продавцы",
+      icon: "ri-file-user-line",
       link: "/#",
       click: function (e) {
         e.preventDefault();

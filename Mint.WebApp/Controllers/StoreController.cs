@@ -33,6 +33,7 @@ public class StoreController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetMyStore(Guid id)
     {
         try
@@ -51,7 +52,8 @@ public class StoreController : ControllerBase
     {
         try
         {
-            return Ok();
+            var store = await _store.CreateStoreAsync(model);
+            return Ok(store);
         }
         catch (Exception ex)
         {

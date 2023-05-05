@@ -12,7 +12,7 @@ const BestSalesTable = () => {
   const columns = useMemo(
     () => [
       {
-        name: <span className="font-weight-bold fs-13">Продукт</span>,
+        name: <span className={"font-weight-bold fs-13"}>Продукт</span>,
         selector: (row) => {
           return <Link to="/">{row.name}</Link>;
         },
@@ -24,7 +24,7 @@ const BestSalesTable = () => {
         sortable: true,
       },
       {
-        name: <span className="font-weight-bold fs-13">Сумма</span>,
+        name: <span className={"font-weight-bold fs-13"}>Сумма</span>,
         selector: (row) => row.count * row.price,
         sortable: true,
       },

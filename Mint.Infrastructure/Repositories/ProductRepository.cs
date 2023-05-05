@@ -1,0 +1,211 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Mint.Domain.BindingModels;
+using Mint.Domain.FormingModels;
+using Mint.Domain.Models;
+using Mint.Domain.ViewModels;
+using Mint.Infrastructure.Repositories.Interfaces;
+
+namespace Mint.Infrastructure.Repositories;
+
+public class ProductRepository : IProductRepository
+{
+    private readonly ApplicationDbContext _context;
+
+    public ProductRepository(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<ProductFullViewModel>> GetProductsAsync()
+    {
+        return new List<ProductFullViewModel>();
+    }
+
+    public async Task<List<ProductFullViewModel>> GetSellerProductsAsync(Guid id)
+    {
+        try
+        {
+            var products = await _context.Products
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .ToListAsync();
+
+            return new ProductManager().FormingFullProdutcViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task<ProductFullViewModel> GetProductByIdAsync(Guid id)
+    {
+        try
+        {
+            var product = await _context.Products
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new Exception("Продукт не найден");
+            return new ProductManager().FormingSingleFullViewModel(product);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task<List<ProductFullViewModel>> GetTopDiscountedProductsAsync(int top)
+    {
+        return new List<ProductFullViewModel>();
+    }
+
+    public async Task<List<ProductFullViewModel>> GetTopProductsAsync(int top)
+    {
+        return new List<ProductFullViewModel>();
+    }
+
+    public async Task<List<ProductFullViewModel>> GetTopSaledProductsAsync(int top)
+    {
+        return new List<ProductFullViewModel>();
+    }
+
+    public async Task<List<ProductFullViewModel>> GetTopSellersWithProductsAsync(int top)
+    {
+        return new List<ProductFullViewModel>();
+    }
+
+    public async Task<ProductFullViewModel> CreateProductAsync(ProductInfoBindingModel model)
+    {
+        try
+        {
+            var store = await _context.Stores
+                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(model.StoreId!))
+                ?? throw new Exception("Выберете магазин или создайте новый.");
+
+            var manager = new ProductManager();
+
+            var product = manager.FormingInfoBindingModel(model);
+            product.StoreId = store.Id;
+
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+
+            return manager.FormingInfoViewModel(product);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task UpdateProductCharacteristicAsync(CommonCharacteristicFullBindingModel model)
+    {
+        try
+        {
+            var characteristic = await _context.CommonCharacteristics
+                .Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.ProductId == model.ProductId);
+
+            if (characteristic == null)
+            {
+                var newCharacteristic = new CommonCharacteristic()
+                {
+                    Id = Guid.NewGuid(),
+                    Material = model.Material,
+                    Color = model.Color,
+                    Garanty = model.Garanty,
+                    Availability = model.Availability,
+                    Weight = model.Weight,
+                    Length = model.Length,
+                    Width = model.Width,
+                    Height = model.Height,
+                    Rate = model.Rate,
+                    ReleaseDate = model.ReleaseDate,
+                };
+                await _context.CommonCharacteristics.AddAsync(newCharacteristic);
+            }
+            else
+            {
+                characteristic.Material = model.Material ?? characteristic.Material;
+                characteristic.Color = model.Color ?? characteristic.Color;
+                characteristic.Garanty = model.Garanty == characteristic.Garanty ? characteristic.Garanty : model.Garanty;
+                characteristic.Availability = model.Availability;
+                characteristic.Weight = model.Weight == characteristic.Weight ? characteristic.Weight : model.Weight;
+                characteristic.Length = model.Length == characteristic.Length ? characteristic.Weight : model.Length;
+                characteristic.Width = model.Width == characteristic.Width ? characteristic.Weight : model.Width;
+                characteristic.Height = model.Height == characteristic.Height ? characteristic.Weight : model.Height;
+                characteristic.Rate = model.Rate == characteristic.Rate ? characteristic.Weight : model.Rate;
+                characteristic.ReleaseDate = model.ReleaseDate == characteristic.ReleaseDate ? characteristic.ReleaseDate : model.ReleaseDate;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task UpdateProductPriceAsync(ProductPriceBindingModel model)
+    {
+        try
+        {
+            var prodcut = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == model.ProductId)
+                ?? throw new Exception("Товар не найден.");
+
+            prodcut.TaxPrice = prodcut.TaxPrice == model.TaxPrice ? prodcut.TaxPrice : model.TaxPrice;
+            prodcut.Price = model.Price == prodcut.Price ? prodcut.Price : model.Price;
+            prodcut.IsFreeTax = model.IsFreeTax == prodcut.IsFreeTax ? prodcut.IsFreeTax : model.IsFreeTax;
+
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public async Task UpdateProductPicturesAsync(ProductPicturesBindingModel model)
+    {
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public Task CategoryMappingsAsync(ProductCategoryMappingsBindingModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ManufactureMappingsAsync(ProductManufactureMappingsBindingModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task PromotionsAsync(ProductPromotionsBindingModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ProductFullViewModel> DeleteProductAsync(Guid id)
+    {
+        return new ProductFullViewModel();
+    }
+}

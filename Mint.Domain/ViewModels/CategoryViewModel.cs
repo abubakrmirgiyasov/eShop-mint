@@ -1,6 +1,6 @@
 ﻿namespace Mint.Domain.ViewModels;
 
-public class CategoryViewModel
+public class CategoryFullViewModel
 {
     public Guid Id { get; set; }
 
@@ -23,4 +23,11 @@ public class CategoryViewModel
     public string? Manufacture { get; set; }
 
     public string? DefaultLink { get; set; }
+}
+
+public class CategoryOnlyViewModel
+{
+    public Guid Value { get; set; }
+
+    public string? Label { get; set; }
 }

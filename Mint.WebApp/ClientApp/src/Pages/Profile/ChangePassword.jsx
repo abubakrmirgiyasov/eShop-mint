@@ -18,7 +18,6 @@ import { Success } from "../../components/Notification/Success";
 import { useFormik } from "formik";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 
-
 const ChangePassword = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,7 +27,6 @@ const ChangePassword = ({ userId }) => {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?_&])[A-Za-z\d@$!%*?&_]{6,20}$/;
 
   const validation = useFormik({
-    enableReinitialize: true,
     initialValues: {
       oldPassword: "",
       newPassword: "",
@@ -49,7 +47,7 @@ const ChangePassword = ({ userId }) => {
     }),
     onSubmit: (values, { resetForm }) => {
       setIsLoading(true);
-      
+
       const data = {
         id: userId,
         oldPassword: values.oldPassword,
@@ -59,13 +57,13 @@ const ChangePassword = ({ userId }) => {
       fetchWrapper
         .put("api/user/updateuserpassword", data)
         .then((response) => {
-            resetForm();
-            setIsLoading(false);
-            setSuccess(response);
+          resetForm();
+          setIsLoading(false);
+          setSuccess(response);
         })
         .catch((error) => {
-            setError(error);
-            setIsLoading(false);
+          setError(error);
+          setIsLoading(false);
         });
     },
   });

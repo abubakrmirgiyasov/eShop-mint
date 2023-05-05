@@ -10,6 +10,7 @@ import { menu } from "../../Common/Categories/categories";
 import "react-toastify/dist/ReactToastify.css";
 import PlaceHolder from "../../Pages/test";
 import Footer from "../Footer/Footer";
+// import { myStore } from "../../Common/UserStores/myStore";
 
 const Layout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
@@ -26,6 +27,7 @@ const Layout = ({ children }) => {
 
     dispatch(menu());
     dispatch(changeLayoutType("horizontal"));
+    // dispatch(myStore());
   }, [layout, layoutModeType, dispatch, menu]);
 
   const onChangeLayoutMode = (value) => {

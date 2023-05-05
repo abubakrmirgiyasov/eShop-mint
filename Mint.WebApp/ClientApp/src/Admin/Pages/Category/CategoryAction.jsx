@@ -328,7 +328,6 @@ const CategoryAction = () => {
                       <Col xl={10}>
                         <Select
                           name={"manufacture"}
-                          className={""}
                           options={manufactures}
                           defaultValue={
                             manufactures.filter(

@@ -29,5 +29,7 @@ public class CommonCharacteristic
 
     public double Height { get; set; }
 
-    public List<Product>? Products { get; set; }
+    public Guid? ProductId { get; set; }
+
+    public Product? Product { get; set; }
 }

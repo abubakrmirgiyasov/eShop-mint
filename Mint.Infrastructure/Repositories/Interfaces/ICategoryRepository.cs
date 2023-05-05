@@ -5,11 +5,13 @@ namespace Mint.Infrastructure.Repositories.Interfaces;
 
 public interface ICategoryRepository
 {
-    Task<List<CategoryViewModel>> GetCategoriesAsync();
+    Task<List<CategoryFullViewModel>> GetCategoriesAsync();
 
-    Task<CategoryViewModel> GetCategoryById(Guid id);
+    Task<CategoryFullViewModel> GetCategoryById(Guid id);
 
-    Task<CategoryViewModel> AddCategoryAsync(CategoryFullBindingModel model);
+    Task<List<CategoryOnlyViewModel>> GetCategoriesOnlyAsync();
+
+    Task<CategoryFullViewModel> AddCategoryAsync(CategoryFullBindingModel model);
 
     Task UpdateCategoryAsync(CategoryFullBindingModel model);
 

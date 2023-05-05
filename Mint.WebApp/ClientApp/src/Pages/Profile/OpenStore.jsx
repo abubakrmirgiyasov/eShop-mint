@@ -20,7 +20,7 @@ import { Error } from "../../components/Notification/Error";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-const OpenStore = () => {
+const OpenStore = ({ userId }) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setEror] = useState(null);
@@ -35,7 +35,6 @@ const OpenStore = () => {
   }
 
   const validation = useFormik({
-    enableReinitialize: true,
     initialValues: {
       name: "",
       url: null,
@@ -45,6 +44,7 @@ const OpenStore = () => {
       zipCode: 0,
       logo: null,
       addressDescription: null,
+      isOwnStore: false,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Заполните обязательное поле"),
@@ -52,7 +52,7 @@ const OpenStore = () => {
       city: Yup.string().required("Заполните обязательное поле"),
       street: Yup.string().required("Заполните обязательное поле"),
       zipCode: Yup.number().required("Заполните обязательное поле"),
-
+      isOwnStore: Yup.bool().required("Выберете вид склада"),
       // country: Yup.object()
       //   .shape({
       //     value: Yup.string().required("Выберете страну"),
@@ -65,11 +65,13 @@ const OpenStore = () => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("url", values.url);
-      formData.append("country", values.country);
+      formData.append("country", "values.country");
       formData.append("city", values.city);
       formData.append("street", values.street);
       formData.append("zipCode", values.zipCode);
       formData.append("addressDescription", values.addressDescription);
+      formData.append("userId", userId);
+      formData.append("isOwnStore", values.isOwnStore);
 
       if (selectedImage) {
         formData.append("fileType", "storeLogos");
@@ -116,7 +118,7 @@ const OpenStore = () => {
             <i className={"ri-store-2-line"}></i> Октрыть магазин
           </Button>
         </div>
-        <Collapse isOpen={isFormOpened} horizontal={true}>
+        <Collapse isOpen={isFormOpened}>
           <Row>
             <Col lg={12} className={"mb-3"}>
               <Label className={"form-label"} id={"name"}>
@@ -277,6 +279,36 @@ const OpenStore = () => {
               {validation.touched.zipCode && validation.errors.zipCode ? (
                 <FormFeedback type="invalid">
                   {validation.errors.zipCode}
+                </FormFeedback>
+              ) : null}
+            </Col>
+            <Col lg={12} className={"mb-3"}>
+              <Label className={"form-label"} id={"isOwnStore"}>
+                Свой скалд{" "}
+                <Popover
+                  id={"isOwnStore"}
+                  placement={"right"}
+                  text={"PAGES/PROFILE/OPENSTORE.jsx-290"}
+                />
+              </Label>
+              <Input
+                type={"checkbox"}
+                className={"form-checkbox"}
+                name={"isOwnStore"}
+                id={"isOwnStore"}
+                onChange={validation.handleChange}
+                onBlur={validation.handleBlur}
+                defaultChecked={validation.values.isOwnStore || false}
+                invalid={
+                  !!(
+                    validation.touched.isOwnStore &&
+                    validation.errors.isOwnStore
+                  )
+                }
+              />
+              {validation.touched.isOwnStore && validation.errors.isOwnStore ? (
+                <FormFeedback type="invalid">
+                  {validation.errors.isOwnStore}
                 </FormFeedback>
               ) : null}
             </Col>

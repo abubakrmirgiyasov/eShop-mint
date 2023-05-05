@@ -11,6 +11,7 @@ import { changeLayoutTypeSize } from "../../store/theme/reducer";
 import { Roles } from "../../constants/Roles";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { myStore } from "../../Common/UserStores/myStore";
 
 const AdminLayout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
@@ -29,6 +30,7 @@ const AdminLayout = ({ children }) => {
     }
 
     dispatch(changeLayoutType("vertical"));
+    dispatch(myStore());
     dispatch(changeLayoutTypeSize("lg"));
   }, [layout, dispatch]);
 

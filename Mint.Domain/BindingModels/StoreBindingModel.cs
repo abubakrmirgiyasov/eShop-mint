@@ -24,5 +24,7 @@ public class StoreFullBindingModel
 
     public string? FileType { get; set; }
 
+    public string? UserId { get; set; }
+
     public IFormFile? Photo { get; set; }
 }

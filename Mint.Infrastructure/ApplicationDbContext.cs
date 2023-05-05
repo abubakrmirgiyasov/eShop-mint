@@ -30,6 +30,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ProductPhoto> ProductPhotos { get; set; }
 
+    public DbSet<CommonCharacteristic> CommonCharacteristics { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -137,10 +139,10 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.PhotoId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Product>()
-            .HasOne(x => x.CommonCharacteristic)
-            .WithMany(x => x.Products)
-            .HasForeignKey(x => x.CommonCharacteristicId)
+        builder.Entity<CommonCharacteristic>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.CommonCharacteristics)
+            .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.SetNull);
 
         builder.Entity<Product>()

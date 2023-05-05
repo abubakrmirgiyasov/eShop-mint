@@ -8,15 +8,14 @@ public class Product
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
+    [StringLength(255, ErrorMessage = "Перевышено макс. длина строки (255).")]
     public string Name { get; set; } = null!;
 
-    [Required(ErrorMessage = "Заполните обязательное поле.")]
     [StringLength(800, ErrorMessage = "Перевышено макс. длина строки (800).")]
-    public string ShortDescription { get; set; } = null!;
-
+    public string? ShortDescription { get; set; }
     [Required(ErrorMessage = "Заполните обязательное поле.")]
     [StringLength(4000, ErrorMessage = "Перевышено макс. длина строки (4000).")]
-    public string FullDescription { get; set; } = null!;
+    public string? FullDescription { get; set; } = null!;
     
     [StringLength(255, ErrorMessage = "Перевышено макс. длина строки (255).")]
     public string? AdminComment { get; set; }
@@ -41,11 +40,15 @@ public class Product
     [MinLength(2, ErrorMessage = "Мин. длина строки (2).")]
     public decimal OldPrice { get; set; }
 
+    public bool IsPublished { get; set; } = false;
+
     public bool IsFreeTax { get; set; } = false;
 
     public decimal TaxPrice { get; set; } = 0;
         
     public DateTime DateCreate { get; set; } = DateTime.Now;
+
+    public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
     public int DeliveryMinDay { get; set; }
 
@@ -63,10 +66,6 @@ public class Product
 
     public Store? Store { get; set; }
 
-    public Guid? CommonCharacteristicId { get; set; }
-
-    public CommonCharacteristic? CommonCharacteristic { get; set; }
-
     public Guid? DiscountId { get; set; }
 
     public Discount? Discount { get; set; }
@@ -76,4 +75,6 @@ public class Product
     public List<Order> Orders { get; set; } = null!;
 
     public List<Storage>? Storages { get; set; }
+
+    public List<CommonCharacteristic>? CommonCharacteristics { get; set; }
 }

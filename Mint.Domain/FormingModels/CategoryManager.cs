@@ -28,11 +28,11 @@ public class CategoryManager
         }
     }
 
-    public CategoryViewModel FormingModel(Category model)
+    public CategoryFullViewModel FormingModel(Category model)
     {
         try
         {
-            return new CategoryViewModel()
+            return new CategoryFullViewModel()
             {
                 Id = model.Id,
                 DisplayOrder = model.DisplayOrder,
@@ -53,15 +53,38 @@ public class CategoryManager
         }
     }
 
-    public List<CategoryViewModel> FormingViewModels(List<Category> models)
+    public List<CategoryOnlyViewModel> FormingOnlyViewModels(List<Category> models)
     {
         try
         {
-            var categories = new List<CategoryViewModel>();
+            var categories = new List<CategoryOnlyViewModel>();
 
             for (int i = 0; i < models.Count; i++)
             {
-                categories.Add(new CategoryViewModel()
+                categories.Add(new CategoryOnlyViewModel()
+                {
+                    Value = models[i].Id,
+                    Label = models[i].Name,
+                });
+            }
+
+            return categories;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    public List<CategoryFullViewModel> FormingViewModels(List<Category> models)
+    {
+        try
+        {
+            var categories = new List<CategoryFullViewModel>();
+
+            for (int i = 0; i < models.Count; i++)
+            {
+                categories.Add(new CategoryFullViewModel()
                 {
                     Id = models[i].Id,
                     SubCategory = models[i].SubCategory?.Name,

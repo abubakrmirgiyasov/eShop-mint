@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, CardBody, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import OpenStore from "./OpenStore";
+import StoreInfo from "./StoreInfo";
 
 const Store = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +30,7 @@ const Store = ({ userId }) => {
         <Card>
           <CardBody>
             <h2 className={"mb-3"}>Ваш магазин</h2>
-            {error ? <OpenStore /> : <>ok</>}
+            {error ? <OpenStore userId={userId} /> : <StoreInfo data={data} />}
           </CardBody>
         </Card>
       </TabPane>
