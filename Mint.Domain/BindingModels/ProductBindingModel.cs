@@ -108,6 +108,8 @@ public class ProductCategoryMappingsBindingModel
     public Guid ProductId { get; set; }
 
     public Guid CategoryId { get; set; }
+
+    public int DisplayOrder { get; set; }
 }
 
 public class ProductManufactureMappingsBindingModel

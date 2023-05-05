@@ -71,7 +71,7 @@ const ProductsTable = ({ data }) => {
         ),
       },
       {
-        name: <span className={"font-weight-bold fs-13"}>Доставка в днях</span>,
+        name: <span className={"font-weight-bold fs-13"}>Действие</span>,
         cell: (row) => (
           <UncontrolledDropdown>
             <DropdownToggle

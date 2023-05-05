@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row, TabPane } from "reactstrap";
+import { Button, Col, Row, Spinner, TabPane } from "reactstrap";
 import PreviewMultiImage from "../../../components/Dropzone/PreviewMultiImage";
 import { Error } from "../../../../components/Notification/Error";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
@@ -12,22 +12,32 @@ const Pictures = ({ isAdded, dataForUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setIsLoading(true);
-
-    const formData = new FormData();
-    formData.append("productId", dataForUpdate?.id);
-
     if (photos) {
-      formData.append("fileType", "");
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append("productId", dataForUpdate?.id);
+      formData.append("fileType", "products");
+
+      formData.append("files", photos[0]);
+
+      fetchWrapper
+        .put("api/product/updateproductpictures", formData, false)
+        .then((response) => {
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLoading(false);
+        });
+    } else {
+      setError("Выберете картинку для вашего продукта.");
     }
-
-    const data = {
-      productId: dataForUpdate?.id,
-      photos: [],
-    };
-
-    fetchWrapper.put("api/product/updatepictures", photos, false);
   };
+
+  function handleUpdateFiles(files) {
+    setPhotos(files);
+  }
 
   return (
     <TabPane tabId={3}>
@@ -43,7 +53,25 @@ const Pictures = ({ isAdded, dataForUpdate }) => {
           <form onSubmit={handleSubmit}>
             <Row>
               <Col lg={12}>
-                <PreviewMultiImage />
+                <PreviewMultiImage handleFiles={handleUpdateFiles} />
+              </Col>
+              <Col
+                lg={12}
+                className={"d-flex justify-content-end align-items-end"}
+              >
+                <Button
+                  type={"submit"}
+                  color={"primary"}
+                  className={"btn btn-primary"}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Spinner size={"sm"} className={"me-2"}>
+                      Loading...
+                    </Spinner>
+                  ) : null}
+                  <i className={"ri-check-double-line"}></i> Сохранить
+                </Button>
               </Col>
             </Row>
           </form>

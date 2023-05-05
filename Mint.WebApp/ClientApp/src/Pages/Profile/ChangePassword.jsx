@@ -100,10 +100,10 @@ const ChangePassword = ({ userId }) => {
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                       invalid={
-                        validation.touched.oldPassword &&
-                        validation.errors.oldPassword
-                          ? true
-                          : false
+                        !!(
+                          validation.touched.oldPassword &&
+                          validation.errors.oldPassword
+                        )
                       }
                     />
                     {validation.touched.oldPassword &&

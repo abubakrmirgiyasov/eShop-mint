@@ -7,7 +7,7 @@ import DataTable from "react-data-table-component";
 const ManufactureMappings = ({ isAdded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [manufactures, setManufactures] = useState([]);
   const [columnsToAdd, setColumnsToAdd] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const ManufactureMappings = ({ isAdded }) => {
       .get("api/manufacture/getonlymanufactures")
       .then((response) => {
         setIsLoading(false);
-        setCategories(response);
+        setManufactures(response);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -52,7 +52,7 @@ const ManufactureMappings = ({ isAdded }) => {
           return (
             <select name={"category"} className={"form-control"}>
               <option>Выберете производителя</option>
-              {categories.map((item) => (
+              {manufactures.map((item) => (
                 <option key={item.value} value={item.value}>
                   {item.label}
                 </option>
@@ -97,7 +97,7 @@ const ManufactureMappings = ({ isAdded }) => {
         },
       },
     ],
-    []
+    [manufactures]
   );
 
   return (

@@ -9,18 +9,17 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-const PreviewMultiImage = ({}) => {
-  const [files, setFiles] = useState([]);
-
+const PreviewMultiImage = ({ files, handleFiles }) => {
   return (
     <div>
       <FilePond
         files={files}
-        onupdatefiles={setFiles}
+        onupdatefiles={handleFiles}
         allowMultiple={true}
         maxFiles={10}
+        data-max-file-size={"3MB"}
         name="files"
-        className="filepond filepond-input-multiple"
+        className={"filepond filepond-input-multiple"}
       />
     </div>
   );

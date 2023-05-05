@@ -20,7 +20,7 @@ import { Error } from "../../components/Notification/Error";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-const OpenStore = ({ userId }) => {
+const OpenStore = ({ userId, newData }) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setEror] = useState(null);
@@ -82,6 +82,7 @@ const OpenStore = ({ userId }) => {
         .post("api/store/createstore", formData, false)
         .then((response) => {
           setIsLoading(false);
+          newData(response);
         })
         .catch((error) => {
           setIsLoading(false);

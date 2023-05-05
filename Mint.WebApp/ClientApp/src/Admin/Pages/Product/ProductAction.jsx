@@ -76,9 +76,11 @@ const ProductAction = () => {
           </CardHeader>
           <CardBody>
             {isLoading ? (
-              <div className={"d-flex justify-content-center"}>
-                <div className={"spinner-border text-success"} role={"status"}>
-                  <span className={"sr-only"}>Loading...</span>
+              <div
+                className={"d-flex justify-content-center align-items-center"}
+              >
+                <div className={"spinner-grow text-success"} role={"status"}>
+                  <span className={"visually-hidden"}>Loading...</span>
                 </div>
               </div>
             ) : (

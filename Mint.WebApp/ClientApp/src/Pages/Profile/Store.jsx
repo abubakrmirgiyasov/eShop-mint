@@ -24,13 +24,21 @@ const Store = ({ userId }) => {
       });
   }, []);
 
+  function handleNewData(newData) {
+    setData([...data, newData]);
+  }
+
   return (
     <React.Fragment>
       <TabPane tabId={5}>
         <Card>
           <CardBody>
             <h2 className={"mb-3"}>Ваш магазин</h2>
-            {error ? <OpenStore userId={userId} /> : <StoreInfo data={data} />}
+            {error ? (
+              <OpenStore userId={userId} newData={handleNewData} />
+            ) : (
+              <StoreInfo data={data} />
+            )}
           </CardBody>
         </Card>
       </TabPane>

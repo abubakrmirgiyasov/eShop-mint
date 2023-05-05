@@ -32,6 +32,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<CommonCharacteristic> CommonCharacteristics { get; set; }
 
+    public DbSet<Discount> Discounts { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 

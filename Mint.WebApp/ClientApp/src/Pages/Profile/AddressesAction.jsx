@@ -13,11 +13,12 @@ import {
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import { Error } from "../../components/Notification/Error";
+import Select from "react-select";
 
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const countries = [
     { label: "Россия", value: "1" },
     { label: "Казахстан", value: "2" },
@@ -48,8 +49,8 @@ const AddressesAction = (props) => {
           setError(error);
           setIsLoading(false);
         });
-      } else {
-        fetchWrapper
+    } else {
+      fetchWrapper
         .post("api/user/adduseraddress", address)
         .then((response) => {
           setIsLoading(false);
@@ -68,18 +69,18 @@ const AddressesAction = (props) => {
       <Modal
         isOpen={props.isOpen}
         toggle={props.toggle}
-        className="border-0"
-        modalClassName="modal-xxl fade zoomIn"
+        className={"border-0"}
+        modalClassName={"modal-xxl fade zoomIn"}
       >
         {error ? <Error message={error.message} /> : null}
         <ModalHeader
-          className="p-3 bg-soft-white border-bottom-dashed"
+          className={"p-3 bg-soft-white border-bottom-dashed"}
           toggle={props.toggle}
           style={{ borderBottom: "1px" }}
         >
           {!!props.isEdit ? "Изменить адрес" : "Добавить адрес"}
         </ModalHeader>
-        <ModalBody className="modal-body">
+        <ModalBody className={"modal-body"}>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -88,112 +89,96 @@ const AddressesAction = (props) => {
             }}
           >
             <Row>
-              <Col lg={12}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="country">
-                    Страна
-                  </Label>
-                  <select
-                    type="text"
-                    className="form-control"
-                    id="country"
-                    name="country"
-                    defaultValue={props.address?.country}
-                    required={true}
-                  >
-                    <option>Выберете страну</option>
-                    {countries.map((item, key) => (
-                      <option key={key} value={item.label}>
-                        {item.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <Col lg={12} className={"mb-3"}>
+                <Label className={"form-label"} htmlFor={"country"}>
+                  Страна
+                </Label>
+                <Select
+                  type={"text"}
+                  id={"country"}
+                  name={"country"}
+                  defaultValue={props.address?.country}
+                  options={countries}
+                />
               </Col>
               <Col lg={6}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="city">
+                <div className={"form-group mb-3"}>
+                  <Label className={"form-label"} htmlFor={"city"}>
                     Город
                   </Label>
                   <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите ваш город"
-                    id="city"
-                    name="city"
+                    type={"text"}
+                    className={"form-control"}
+                    placeholder={"Введите ваш город"}
+                    id={"city"}
+                    name={"city"}
                     defaultValue={props.address?.city}
                     required={true}
                   />
                 </div>
               </Col>
               <Col lg={6}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="zipCode">
+                <div className={"form-group mb-3"}>
+                  <Label className={"form-label"} htmlFor={"zipCode"}>
                     Почтовый индекс
                   </Label>
                   <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Ваш почтовый индекс"
-                    id="zipCode"
-                    name="zipCode"
+                    type={"text"}
+                    className={"form-control"}
+                    placeholder={"Ваш почтовый индекс"}
+                    id={"zipCode"}
+                    name={"zipCode"}
                     defaultValue={props.address?.zipCode}
                     required={true}
                   />
                 </div>
               </Col>
               <Col lg={12}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="address">
+                <div className={"form-group mb-3"}>
+                  <Label className={"form-label"} htmlFor={"address"}>
                     Адрес
                   </Label>
                   <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите ваш адрес"
-                    id="address"
-                    name="address"
+                    type={"text"}
+                    className={"form-control"}
+                    placeholder={"Введите ваш адрес"}
+                    id={"address"}
+                    name={"address"}
                     defaultValue={props.address?.address}
                     required={true}
                   />
                 </div>
               </Col>
               <Col lg={12}>
-                <div className="form-group mb-3">
-                  <Label className="form-label" htmlFor="description">
+                <div className={"form-group mb-3"}>
+                  <Label className={"form-label"} htmlFor={"description"}>
                     Описание
                   </Label>
                   <textarea
-                    className="form-control"
-                    placeholder="Дополнительные сведения"
-                    id="description"
-                    name="description"
+                    className={"form-control"}
+                    placeholder={"Дополнительные сведения"}
+                    id={"description"}
+                    name={"description"}
                     defaultValue={props.address?.description}
                   ></textarea>
                 </div>
               </Col>
-              <div className="d-flex justify-content-end align-items-center">
+              <div className={"d-flex justify-content-end align-items-center"}>
                 <Button
-                  type="button"
-                  color="danger"
-                  className="me-3"
-                  onClick={() => {
-                    props.toggle();
-                  }}
+                  type={"button"}
+                  color={"danger"}
+                  className={"me-3"}
+                  onClick={props.toggle}
                 >
-                  <i className="ri-close-line"></i> Отмена
+                  <i className={"ri-close-line"}></i> Отмена
                 </Button>
-                <Button 
-                  type="submit" 
-                  color="success" 
-                  disabled={isLoading}
-                >
-                {isLoading ? (
-                  <Spinner size={"sm"} className="me-2">
-                    Loading...
-                  </Spinner>
-                ) : null}
-                  <i className="ri-check-double-fill"></i> Сохранить
+                <Button type={"submit"} color={"success"} disabled={isLoading}>
+                  {isLoading ? (
+                    <Spinner size={"sm"} className={"me-2"}>
+                      Loading...
+                    </Spinner>
+                  ) : null}
+                  <i className={"ri-check-double-fill"}></i> Сохранить
                 </Button>
               </div>
             </Row>

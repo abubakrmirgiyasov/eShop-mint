@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Mint.Domain.Common;
 using Mint.Domain.Models;
 using Mint.Infrastructure;
@@ -25,10 +24,13 @@ builder.Services
     .AddControllersWithViews()
     .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.Configure<FormOptions>(x =>
+builder.Services.Configure<FormOptions>(option =>
 {
-    x.BufferBody = true;
-    x.ValueCountLimit = int.MaxValue;
+    option.BufferBody = true;
+    option.ValueCountLimit = int.MaxValue;
+    option.ValueLengthLimit = int.MaxValue;
+    option.MultipartBodyLengthLimit = int.MaxValue;
+    option.MemoryBufferThreshold = int.MaxValue;
 });
 
 builder.Services.AddScoped<IJwt, Jwt>();
@@ -37,6 +39,7 @@ builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<IManufactureRepository, ManufactureRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();

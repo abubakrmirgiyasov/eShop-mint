@@ -66,8 +66,6 @@ const Price = ({ isAdded, dataForUpdate }) => {
     },
   });
 
-  console.log(dataForUpdate.isFreeTax);
-
   return (
     <TabPane tabId={2}>
       {error ? <Error message={error} /> : null}

@@ -71,6 +71,10 @@ const AdminLayout = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!user) {
+      navigate("/admin/admin-signin");
+    }
+
     if (user.roles.length !== 3) {
       user.roles.map((role) => {
         if (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Roles } from "../constants/Roles";
 
 const AdminNavdata = () => {
   const history = useNavigate();
@@ -8,6 +9,8 @@ const AdminNavdata = () => {
   const [isCatalog, setIsCatalog] = useState(false);
   const [isSales, setIsSales] = useState(false);
   const [isNews, setIsNews] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
@@ -45,7 +48,21 @@ const AdminNavdata = () => {
     if (iscurrentState !== "News") {
       setIsNews(false);
     }
-  }, [history, iscurrentState, isCatalog, isSales, isNews]);
+    if (iscurrentState !== "Customer") {
+      setIsCustomer(false);
+    }
+    if (iscurrentState !== "Seller") {
+      setIsSeller(false);
+    }
+  }, [
+    history,
+    iscurrentState,
+    isCatalog,
+    isSales,
+    isNews,
+    isSeller,
+    isCustomer,
+  ]);
 
   const menuItems = [
     {
@@ -139,6 +156,7 @@ const AdminNavdata = () => {
       label: "Новости",
       icon: "ri-newspaper-line",
       link: "/#",
+      roles: [Roles.Admin],
       click: function (e) {
         e.preventDefault();
         setIsNews(!isNews);
@@ -151,57 +169,62 @@ const AdminNavdata = () => {
           id: "banners",
           label: "Банеры",
           link: "/admin/news/banners",
-          parentId: "sales",
+          parentId: "news",
+        },
+        {
+          id: "promotions",
+          label: "Акции",
+          link: "/admin/news/promotions",
+          parentId: "news",
         },
       ],
     },
     {
-      label: "CRUD",
+      label: "Пользователи",
       isHeader: true,
+      roles: [Roles.Admin],
     },
     {
       id: "customers",
       label: "Сотрудники",
       icon: "ri-customer-service-line",
       link: "/#",
+      roles: [Roles.Admin],
       click: function (e) {
         e.preventDefault();
-        setIsNews(!isNews);
-        setIscurrentState("News");
+        setIsCustomer(!isCustomer);
+        setIscurrentState("Customer");
         updateIconSidebar(e);
       },
-      stateVariables: isNews,
+      stateVariables: isCustomer,
       subItems: [
         {
-          id: "banners",
-          label: "Банеры",
+          id: "test",
+          label: "test",
           link: "/admin/news/banners",
-          parentId: "sales",
+          parentId: "customers",
         },
       ],
-    },
-    {
-      label: "КРАД",
-      isHeader: true,
     },
     {
       id: "sellers",
       label: "Продавцы",
       icon: "ri-file-user-line",
       link: "/#",
+      roles: [Roles.Admin],
       click: function (e) {
         e.preventDefault();
-        setIsNews(!isNews);
-        setIscurrentState("News");
+        setIsSeller(!isSeller);
+        setIscurrentState("Seller");
         updateIconSidebar(e);
       },
-      stateVariables: isNews,
+      stateVariables: isSeller,
       subItems: [
         {
-          id: "banners",
-          label: "Банеры",
+          id: "test",
+          label: "test",
           link: "/admin/news/banners",
-          parentId: "sales",
+          parentId: "sellers",
         },
       ],
     },

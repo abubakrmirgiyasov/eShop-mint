@@ -124,6 +124,8 @@ public class ProductController : ControllerBase
     {
         try
         {
+            var x = Request.Form.Files;
+
             await _product.UpdateProductPicturesAsync(model);
             return Ok(new { message = "Успешно." });
         }

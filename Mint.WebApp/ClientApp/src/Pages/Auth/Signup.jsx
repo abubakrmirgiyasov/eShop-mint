@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Error } from "../../components/Notification/Error";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [isPhotoSelected, setIsPhotoSelected] = useState("d-none");
@@ -24,6 +24,8 @@ const Signup = () => {
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const { isLoggedIn: isLoggedIn } = useSelector((state) => state.Signin);
 
@@ -60,11 +62,9 @@ const Signup = () => {
       phone: "",
       password: "",
       description: "",
-      gender: "",
       day: "",
       month: "",
       year: "",
-      description: "",
       photo: null,
     },
     validationSchema: Yup.object({
@@ -105,18 +105,22 @@ const Signup = () => {
       formData.append("phone", values.phone);
       formData.append("password", values.password);
       formData.append("gender", values.gender);
-      formData.append("dateOfBirth", `${values.day}.${values.month}.${values.year}`);
+      formData.append(
+        "dateOfBirth",
+        `${values.day}.${values.month}.${values.year}`
+      );
       formData.append("description", values.description);
 
       if (imageFile) {
         formData.append("folder", "user");
         formData.append("photo", imageFile);
       }
-      
+
       fetchWrapper
         .post("api/user/registration", formData, false)
         .then((response) => {
           setIsLoading(false);
+          navigate("/");
         })
         .catch((error) => {
           setError(error);
@@ -127,7 +131,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      return <Navigate to="/" />;
+      navigate("/");
     }
   }, [isLoggedIn]);
 

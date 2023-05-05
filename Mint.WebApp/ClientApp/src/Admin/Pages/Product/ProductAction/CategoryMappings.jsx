@@ -3,12 +3,17 @@ import DataTable from "react-data-table-component";
 import { Button, Input, Spinner, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 import { Error } from "../../../../components/Notification/Error";
+import { useNavigate } from "react-router-dom";
 
-const CategoryMappings = ({ isAdded }) => {
+const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [columnsToAdd, setColumnsToAdd] = useState([]);
+  const [addingLoading, setAddingLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -29,11 +34,39 @@ const CategoryMappings = ({ isAdded }) => {
     setColumnsToAdd([...columnsToAdd, { id: columnsToAdd.length + 1 }]);
   };
 
-  const handleAcceptClick = () => {};
+  const handleAcceptClick = () => {
+    if (selectedCategory && selectedCategory !== "Выберете Категорию") {
+      setAddingLoading(true);
+
+      const data = {
+        categoryId: selectedCategory,
+        productId: dataForUpdate?.id,
+        // displayOrder: console.log(e.target),
+      };
+
+      fetchWrapper
+        .put("api/product/categorymappings", data)
+        .then((response) => {
+          setAddingLoading(false);
+          navigate("/api/products");
+        })
+        .catch((error) => {
+          setAddingLoading(false);
+          setError(error);
+        });
+    } else {
+      setError("Выберете категорию");
+    }
+  };
 
   const handleRemoveClick = (row) => {
     const newItems = columnsToAdd.filter((x) => x.id !== row.id);
     setColumnsToAdd(newItems);
+  };
+
+  const handleCategoryChange = (e) => {
+    const s = e.target.value;
+    setSelectedCategory(s);
   };
 
   const columns = useMemo(
@@ -53,10 +86,11 @@ const CategoryMappings = ({ isAdded }) => {
               name={"category"}
               className={"form-control"}
               placeholder={"Выберете Категорию"}
+              onChange={handleCategoryChange}
             >
               <option>Выберете категорию</option>
-              {categories.map((item) => (
-                <option key={item.value} value={item.value}>
+              {categories.map((item, key) => (
+                <option key={key} value={item.value}>
                   {item.label}
                 </option>
               ))}
@@ -79,7 +113,7 @@ const CategoryMappings = ({ isAdded }) => {
         },
       },
       {
-        name: <span className={"font-weight-bold fs-13"}>Показать</span>,
+        name: <span className={"font-weight-bold fs-13"}>Действие</span>,
         selector: (row) => {
           return (
             <div
@@ -92,7 +126,16 @@ const CategoryMappings = ({ isAdded }) => {
               >
                 <i className={"ri-close-line"}></i>
               </Button>
-              <Button color={"primary"} onClick={handleAcceptClick}>
+              <Button
+                color={"primary"}
+                onClick={handleAcceptClick}
+                disabled={addingLoading}
+              >
+                {addingLoading ? (
+                  <Spinner className={"me-2"} size={"sm"}>
+                    ...Loading
+                  </Spinner>
+                ) : null}{" "}
                 <i className={"ri-check-line"}></i>
               </Button>
             </div>
@@ -100,7 +143,7 @@ const CategoryMappings = ({ isAdded }) => {
         },
       },
     ],
-    []
+    [categories]
   );
 
   return (
@@ -120,13 +163,7 @@ const CategoryMappings = ({ isAdded }) => {
                 className={"btn btn-success"}
                 color={"success"}
                 onClick={handleAddClick}
-                // disabled={isLoading}
               >
-                {/*{isLoading ? (*/}
-                {/*  <Spinner className={"me-2"} size={"sm"}>*/}
-                {/*    ...Loading*/}
-                {/*  </Spinner>*/}
-                {/*) : null}{" "}*/}
                 <i className={"ri-add-line align-middle"}></i> Добавить
               </Button>
             </div>

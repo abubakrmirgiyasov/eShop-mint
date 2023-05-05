@@ -19,13 +19,14 @@ import { signin } from "../../helpers/authentication";
 import { Error } from "../../components/Notification/Error";
 
 // images
-import LogoLight from '../../assets/images/logo-mint-light.png';
+import LogoLight from "../../assets/images/logo-mint-light.png";
 
 const Signin = (props) => {
   const dispatch = useDispatch();
   const [passwordShow, setPasswordShow] = useState(false);
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const error = useSelector((state) => state.Message.message);
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -45,7 +46,8 @@ const Signin = (props) => {
           setIsLoading(false);
         })
         .catch((error) => {
-          setError(error);
+          // setError(error);
+          console.log(error);
           setIsLoading(false);
         });
     },
@@ -80,7 +82,13 @@ const Signin = (props) => {
           >
             <div className="d-flex justify-content-center align-items-center w-100 h-50 mb-2">
               {/* <img src={LogoLight} alt={"logo"} width={100} height={100} className="logo-light" /> */}
-              <img src={LogoLight} alt={"logo"} width={100} height={100} className="logo-dark" />
+              <img
+                src={LogoLight}
+                alt={"logo"}
+                width={100}
+                height={100}
+                className="logo-dark"
+              />
             </div>
             <Row>
               <Col lg={12} className="mb-2">
@@ -121,10 +129,14 @@ const Signin = (props) => {
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                       invalid={
-                        !!(validation.touched.password && validation.errors.password)
+                        !!(
+                          validation.touched.password &&
+                          validation.errors.password
+                        )
                       }
                     />
-                    {validation.touched.password && validation.errors.password ? (
+                    {validation.touched.password &&
+                    validation.errors.password ? (
                       <FormFeedback type="invalid">
                         {validation.errors.password}
                       </FormFeedback>
@@ -153,9 +165,9 @@ const Signin = (props) => {
               </Col>
             </Row>
             <div className="d-flex justify-content-center align-items-center mb-2">
-              <button 
-                type="submit" 
-                color="success" 
+              <button
+                type="submit"
+                color="success"
                 className="btn btn-success w-50"
                 disabled={isLoading}
               >
