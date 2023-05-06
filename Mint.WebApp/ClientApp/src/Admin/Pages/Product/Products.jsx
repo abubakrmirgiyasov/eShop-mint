@@ -17,6 +17,7 @@ import { fetchWrapper } from "../../../helpers/fetchWrapper";
 import { useSelector } from "react-redux";
 import PrivateComponent from "../../../helpers/privateComponent";
 import { Roles } from "../../../constants/Roles";
+import { Error } from "../../../components/Notification/Error";
 
 const Products = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +32,7 @@ const Products = () => {
   useEffect(() => {
     setIsLoading(true);
     fetchWrapper
-      .get("api/product/getsellerproducts/" + user.id)
+      .get("api/product/getsellerproductsbyid/" + user.id)
       .then((response) => {
         setIsLoading(false);
         setIsData(response);
@@ -43,7 +44,8 @@ const Products = () => {
   }, []);
 
   return (
-    <div className={"page-content"}>
+      <div className={"page-content"}>
+          {error ? <Error message={error} /> : null}
       <Card>
         <CardHeader>
           <h2>Управление продуктами</h2>

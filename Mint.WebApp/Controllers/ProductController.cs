@@ -37,11 +37,26 @@ public class ProductController : ControllerBase
 
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetSellerProducts(Guid id)
+    public async Task<IActionResult> GetSellerProductsById(Guid id)
     {
         try
         {
-            var products = await _product.GetSellerProductsAsync(id);
+            var products = await _product.GetSellerProductsByIdAsync(id);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("{name}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetSellerProductsByName(string name)
+    {
+        try
+        {
+            var products = await _product.GetSellerProductsByNameAsync(name);
             return Ok(products);
         }
         catch (Exception ex)
@@ -83,7 +98,8 @@ public class ProductController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _product.UpdateProductInfo(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
@@ -124,7 +140,7 @@ public class ProductController : ControllerBase
     {
         try
         {
-            var x = Request.Form.Files;
+            model.Files = Request.Form.Files;
 
             await _product.UpdateProductPicturesAsync(model);
             return Ok(new { message = "Успешно." });
@@ -140,7 +156,8 @@ public class ProductController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _product.CategoryMappingsAsync(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
@@ -153,7 +170,8 @@ public class ProductController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _product.ManufactureMappingsAsync(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
@@ -166,7 +184,8 @@ public class ProductController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _product.PromotionsAsync(model);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {
@@ -179,7 +198,8 @@ public class ProductController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _product.DeleteProductAsync(id);
+            return Ok(new { message = "Успешно." });
         }
         catch (Exception ex)
         {

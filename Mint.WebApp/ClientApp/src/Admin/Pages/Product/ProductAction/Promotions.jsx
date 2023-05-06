@@ -1,34 +1,38 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Error } from "../../../../components/Notification/Error";
-import { Button, Input, TabPane } from "reactstrap";
 import DataTable from "react-data-table-component";
+import { Error } from "../../../../components/Notification/Error";
+import { Success } from "../../../../components/Notification/Success";
+import { Button, Input, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 
 const Promotions = ({ isAdded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [success, setSuccess] = useState(null);
+  const [promotions, setPromotions] = useState([]);
   const [columnsToAdd, setColumnsToAdd] = useState([]);
 
-  // useEffect(() => {
-  //   // setIsLoading(true);
-  //   // fetchWrapper
-  //   //   .get("api/manufacture/getonlymanufactures")
-  //   //   .then((response) => {
-  //   //     setIsLoading(false);
-  //   //     setCategories(response);
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     setIsLoading(false);
-  //   //     setError(error);
-  //   //   });
-  // }, []);
+  useEffect(() => {
+    setIsLoading(true);
+    fetchWrapper
+      .get("api/discount/getpromotions")
+      .then((response) => {
+        setIsLoading(false);
+        setPromotions(response);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  }, []);
 
   const handleAddClick = () => {
     setColumnsToAdd([...columnsToAdd, columnsToAdd.length + 1]);
   };
 
-  const handleAcceptClick = () => {};
+  const handleAcceptClick = () => {
+    //setSuccess(response);
+  };
 
   const handleRemoveClick = (row) => {
     const newItems = [...columnsToAdd];
@@ -51,9 +55,9 @@ const Promotions = ({ isAdded }) => {
           return (
             <select name={"discount"} className={"form-control"}>
               <option>Выберете вид скидки</option>
-              {categories.map((item) => (
-                <option key={item.value} value={item.value}>
-                  {item.label}
+              {promotions.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {`${item.name} - ${item.percent}%`}
                 </option>
               ))}
             </select>
@@ -88,6 +92,7 @@ const Promotions = ({ isAdded }) => {
   return (
     <TabPane tabId={6}>
       {error ? <Error message={error} /> : null}
+      {success ? <Success message={success} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
@@ -102,13 +107,7 @@ const Promotions = ({ isAdded }) => {
                 className={"btn btn-success"}
                 color={"success"}
                 onClick={handleAddClick}
-                // disabled={isLoading}
               >
-                {/*{isLoading ? (*/}
-                {/*  <Spinner className={"me-2"} size={"sm"}>*/}
-                {/*    ...Loading*/}
-                {/*  </Spinner>*/}
-                {/*) : null}{" "}*/}
                 <i className={"ri-add-line align-middle"}></i> Добавить
               </Button>
             </div>

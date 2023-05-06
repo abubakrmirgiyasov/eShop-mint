@@ -75,15 +75,31 @@ const AdminLayout = ({ children }) => {
       navigate("/admin/admin-signin");
     }
 
+    // const requiredRoles = [Roles.Seller, Roles.Admin];
+    // const hasRequiredRoles =
+    //   user.roles.filter((role) => requiredRoles.includes(role)).length ===
+    //   requiredRoles.length;
+    //
+    // if (!hasRequiredRoles) {
+    //   navigate("/admin/admin-signin");
+    // }
+
     if (user.roles.length !== 3) {
-      user.roles.map((role) => {
+      let isAccessed = false;
+
+      for (let i = 0; i < user.roles.length; i++) {
         if (
-          role.value !== Roles.Admin.value ||
-          role.value !== Roles.Seller.value
+          user.roles[i].value === Roles.Seller.value ||
+          user.roles[i].value === Roles.Admin.value
         ) {
-          navigate("/admin/admin-signin");
+          isAccessed = true;
+          break;
+        } else {
+          isAccessed = false;
         }
-      });
+      }
+
+      if (!isAccessed) navigate("/admin/admin-signin");
     }
   }, [user]);
 

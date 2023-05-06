@@ -5,7 +5,7 @@ namespace Mint.Infrastructure.Repositories.Interfaces;
 
 public interface IStoreRepository
 {
-    Task<StoreFullViewModel> GetStoresAsync();
+    Task<List<StoreFullViewModel>> GetStoresAsync();
 
     Task<StoreFullViewModel> GetMyStoreAsync(Guid id);
     

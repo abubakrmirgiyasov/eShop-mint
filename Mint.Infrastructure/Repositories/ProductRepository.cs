@@ -18,10 +18,18 @@ public class ProductRepository : IProductRepository
 
     public async Task<List<ProductFullViewModel>> GetProductsAsync()
     {
-        return new List<ProductFullViewModel>();
+        try
+        {
+            var products = await _context.Products.ToListAsync();
+            return new List<ProductFullViewModel>();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public async Task<List<ProductFullViewModel>> GetSellerProductsAsync(Guid id)
+    public async Task<List<ProductFullViewModel>> GetSellerProductsByIdAsync(Guid id)
     {
         try
         {
@@ -34,7 +42,6 @@ public class ProductRepository : IProductRepository
                 .Include(x => x.ProductPhotos!)
                 .ThenInclude(x => x.Photo)
                 .ToListAsync();
-
             return new ProductManager().FormingFullProdutcViewModels(products);
         }
         catch (Exception ex)
@@ -65,6 +72,38 @@ public class ProductRepository : IProductRepository
         }
     }
 
+    public async Task<List<ProductFullViewModel>> GetSellerProductsByNameAsync(string name)
+    {
+        var product = await _context.Stores
+            .Include(x => x.Products!)
+            .ThenInclude(x => x.Discount)
+            .Include(x => x.Products!)
+            .ThenInclude(x => x.ProductPhotos!)
+            .ThenInclude(x => x.Photo)
+            .FirstOrDefaultAsync(x => x.Url == name)
+            ?? throw new Exception("Что то пошло не так.");
+        return new ProductManager().FormingMultiViewModels(product);
+    }
+
+    public async Task<List<ProductFullViewModel>> GetProductsByCategoryAsync(string name)
+    {
+        try
+        {
+            var products = await _context.Categories
+                .Include(x => x.Products!)
+                .ThenInclude(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Include(x => x.SubCategory)
+                .Include(x => x.Photo)
+                .ToListAsync();
+            return new ProductManager().FormingCategoryViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public async Task<List<ProductFullViewModel>> GetTopDiscountedProductsAsync(int top)
     {
         return new List<ProductFullViewModel>();
@@ -85,7 +124,7 @@ public class ProductRepository : IProductRepository
         return new List<ProductFullViewModel>();
     }
 
-    public async Task<ProductFullViewModel> CreateProductAsync(ProductInfoBindingModel model)
+    public async Task CreateProductAsync(ProductInfoBindingModel model)
     {
         try
         {
@@ -100,8 +139,21 @@ public class ProductRepository : IProductRepository
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
 
-            return manager.FormingInfoViewModel(product);
+    public async Task UpdateProductInfo(ProductInfoBindingModel model)
+    {
+        try
+        {
+            var product = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == model.Id)
+                ?? throw new Exception("Товар не найден.");
+            
         }
         catch (Exception ex)
         {
@@ -132,6 +184,7 @@ public class ProductRepository : IProductRepository
                     Height = model.Height,
                     Rate = model.Rate,
                     ReleaseDate = model.ReleaseDate,
+                    ProductId = model.ProductId,
                 };
                 await _context.CommonCharacteristics.AddAsync(newCharacteristic);
             }
@@ -181,7 +234,32 @@ public class ProductRepository : IProductRepository
     {
         try
         {
+            var product = await _context.Products
+                .Include(x => x.ProductPhotos)
+                .Include(x => x.Store)
+                .FirstOrDefaultAsync(x => x.Id == model.ProductId)
+            ?? throw new Exception("Товар не найден.");
 
+            var list = new List<ProductPhoto>();
+
+            if (product.ProductPhotos?.Count == 0)
+            {
+                for (int i = 0; i < model.Files?.Count; i++)
+                {
+                    list.Add(new ProductPhoto()
+                    {
+                        Product = product,
+                        Photo = await PhotoManager.CopyPhotoAsync(model.Files[i], product.Id, "products/" + product.Store?.Id),
+                    });
+                }
+            }
+            else
+            {
+               
+            }
+
+            await _context.ProductPhotos.AddRangeAsync(list);
+            await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -189,23 +267,88 @@ public class ProductRepository : IProductRepository
         }
     }
 
-    public Task CategoryMappingsAsync(ProductCategoryMappingsBindingModel model)
+    public async Task CategoryMappingsAsync(ProductCategoryMappingsBindingModel model)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var product = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == model.ProductId)
+                ?? throw new Exception("Товар не найден.");
+
+            product.CategoryId = model.CategoryId;
+
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public Task ManufactureMappingsAsync(ProductManufactureMappingsBindingModel model)
+    public async Task ManufactureMappingsAsync(ProductManufactureMappingsBindingModel model)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var product = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == model.ProductId)
+                ?? throw new Exception("Товар не найден.");
+
+            product.ManufactureId = model.ManufactureId;
+
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public Task PromotionsAsync(ProductPromotionsBindingModel model)
+    public async Task PromotionsAsync(ProductPromotionsBindingModel model)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var product = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == model.ProductId)
+                ?? throw new Exception("Товар не найден.");
+
+            product.DiscountId = model.PromotionId;
+
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public async Task<ProductFullViewModel> DeleteProductAsync(Guid id)
+    public async Task DeleteProductAsync(Guid id)
     {
-        return new ProductFullViewModel();
+        try
+        {
+            var product = await _context.Products
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new Exception("Товар не найден.");
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            for (int i = 0; i < product.ProductPhotos?.Count; i++)
+            {
+                if (product.ProductPhotos[i].Photo != null)
+                {
+                    _context.ProductPhotos.RemoveRange(product.ProductPhotos);
+                    await _context.SaveChangesAsync();
+                    
+                    PhotoManager.DeletePhoto(product.ProductPhotos[i].Photo?.FilePath);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // roll back ?
+            throw new Exception(ex.Message, ex);
+        }
     }
 }

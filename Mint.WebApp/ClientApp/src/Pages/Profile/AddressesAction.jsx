@@ -18,6 +18,7 @@ import Select from "react-select";
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [country, setCountry] = useState(null);
 
   const countries = [
     { label: "Россия", value: "1" },
@@ -30,7 +31,7 @@ const AddressesAction = (props) => {
     const address = {
       id: props.address?.id,
       fullAddress: e.target.address.value,
-      country: e.target.country.value,
+      country: country,
       city: e.target.city.value,
       zipCode: e.target.zipCode.value,
       description: e.target.description.value,
@@ -62,6 +63,10 @@ const AddressesAction = (props) => {
           setIsLoading(false);
         });
     }
+  };
+
+  const handleChange = (e) => {
+    setCountry(e.label);
   };
 
   return (
@@ -99,7 +104,11 @@ const AddressesAction = (props) => {
                   name={"country"}
                   defaultValue={props.address?.country}
                   options={countries}
+                  onChange={handleChange}
                 />
+                {!country ? (
+                  <div className={"text-danger mt-1"}>Выберете страну</div>
+                ) : null}
               </Col>
               <Col lg={6}>
                 <div className={"form-group mb-3"}>

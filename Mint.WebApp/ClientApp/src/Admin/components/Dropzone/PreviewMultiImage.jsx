@@ -13,6 +13,12 @@ const PreviewMultiImage = ({ files, handleFiles }) => {
   return (
     <div>
       <FilePond
+        acceptedFileTypes={[
+          "image/jpeg",
+          "image/png",
+          "image/svg",
+          "image/webp",
+        ]}
         files={files}
         onupdatefiles={handleFiles}
         allowMultiple={true}

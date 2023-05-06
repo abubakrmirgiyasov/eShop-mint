@@ -9,6 +9,8 @@ public class MenuChildViewModel
     public string? ChildPhoto { get; set; }
     
     public int ChildOrder { get; set; }
+
+    public string? Link { get; set; }
 }
 
 public class MenuParentViewModel

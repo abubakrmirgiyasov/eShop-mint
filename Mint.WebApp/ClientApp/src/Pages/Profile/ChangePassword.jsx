@@ -75,7 +75,7 @@ const ChangePassword = ({ userId }) => {
         {!isLoading ? <Success message={success?.message} /> : null}
         <Card>
           <CardBody>
-            <h2 className="mb-4">Изменить пароль</h2>
+            <h2 className={"mb-3"}>Изменить пароль</h2>
             <Form
               className="form-horizontal"
               onSubmit={(e) => {

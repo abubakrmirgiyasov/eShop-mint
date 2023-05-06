@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Button, Col, Row, Spinner, TabPane } from "reactstrap";
 import PreviewMultiImage from "../../../components/Dropzone/PreviewMultiImage";
 import { Error } from "../../../../components/Notification/Error";
+import { Success } from "../../../../components/Notification/Success";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 
 const Pictures = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [photos, setPhotos] = useState(null);
 
   const handleSubmit = (e) => {
@@ -19,12 +21,13 @@ const Pictures = ({ isAdded, dataForUpdate }) => {
       formData.append("productId", dataForUpdate?.id);
       formData.append("fileType", "products");
 
-      formData.append("files", photos[0]);
+      photos.forEach((file, i) => formData.append(`files[${i}]`, photos[i]));
 
       fetchWrapper
         .put("api/product/updateproductpictures", formData, false)
         .then((response) => {
           setIsLoading(false);
+          setSuccess(response);
         })
         .catch((error) => {
           setError(error);
@@ -36,12 +39,13 @@ const Pictures = ({ isAdded, dataForUpdate }) => {
   };
 
   function handleUpdateFiles(files) {
-    setPhotos(files);
+    setPhotos(files.map((file) => file.file));
   }
 
   return (
     <TabPane tabId={3}>
       {error ? <Error message={error} /> : null}
+      {success ? <Success message={success} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>

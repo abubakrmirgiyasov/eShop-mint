@@ -7,9 +7,13 @@ public interface IProductRepository
 {
     Task<List<ProductFullViewModel>> GetProductsAsync();
 
-    Task<List<ProductFullViewModel>> GetSellerProductsAsync(Guid id);
+    Task<List<ProductFullViewModel>> GetSellerProductsByIdAsync(Guid id);
 
     Task<ProductFullViewModel> GetProductByIdAsync(Guid id);
+
+    Task<List<ProductFullViewModel>> GetSellerProductsByNameAsync(string name);
+
+    Task<List<ProductFullViewModel>> GetProductsByCategoryAsync(string name);
 
     Task<List<ProductFullViewModel>> GetTopProductsAsync(int top);
 
@@ -19,7 +23,9 @@ public interface IProductRepository
 
     Task<List<ProductFullViewModel>> GetTopSellersWithProductsAsync(int top);
 
-    Task<ProductFullViewModel> CreateProductAsync(ProductInfoBindingModel model);
+    Task CreateProductAsync(ProductInfoBindingModel model);
+
+    Task UpdateProductInfo(ProductInfoBindingModel model);
 
     Task UpdateProductCharacteristicAsync(CommonCharacteristicFullBindingModel model);
 
@@ -33,5 +39,5 @@ public interface IProductRepository
 
     Task PromotionsAsync(ProductPromotionsBindingModel model);
 
-    Task<ProductFullViewModel> DeleteProductAsync(Guid id);
+    Task DeleteProductAsync(Guid id);
 }

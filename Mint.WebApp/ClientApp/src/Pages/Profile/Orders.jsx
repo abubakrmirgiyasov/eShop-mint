@@ -16,7 +16,7 @@ const Orders = ({ userId }) => {
       <TabPane tabId={3}>
         <Card>
           <CardBody>
-            <h2>Заказы</h2>
+            <h2 className={"mb-3"}>Заказы</h2>
             <Row>
               <Col>
                 <Card>
@@ -49,7 +49,7 @@ const Orders = ({ userId }) => {
                       className="btn btn-primary"
                       color="primary"
                     >
-                      <i className="ri-file-list-3-line"></i> Детали заказа 
+                      <i className="ri-file-list-3-line"></i> Детали заказа
                     </Link>
                   </CardFooter>
                 </Card>

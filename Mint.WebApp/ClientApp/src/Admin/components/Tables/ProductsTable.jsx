@@ -58,15 +58,17 @@ const ProductsTable = ({ data }) => {
         name: <span className={"font-weight-bold fs-13"}>Картинки</span>,
         selector: (row) => (
           <div className={"avatar-group"}>
-            {row.photos.map((photo, key) => (
-              <Link to={"#"} key={key} className={"avatar-group-item"}>
-                <img
-                  src={photo}
-                  alt={""}
-                  className={"rounded-circle avatar-xs"}
-                />
-              </Link>
-            ))}
+            {row.photos.map((photo, key) =>
+              key <= 2 ? (
+                <Link to={"#"} key={key} className={"avatar-group-item"}>
+                  <img
+                    src={photo}
+                    alt={""}
+                    className={"rounded-circle avatar-xs"}
+                  />
+                </Link>
+              ) : null
+            )}
           </div>
         ),
       },

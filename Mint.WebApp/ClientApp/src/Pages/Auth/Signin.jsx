@@ -56,21 +56,7 @@ const Signin = (props) => {
   return (
     <React.Fragment>
       {error ? <Error message={error} /> : null}
-      <Modal
-        isOpen={props.isOpen}
-        toggle={props.toggle}
-        className="border-0"
-        modalClassName="modal-xxl fade zoomIn"
-      >
-        <ModalHeader
-          className="p-3 bg-soft-white border-bottom-dashed"
-          toggle={props.toggle}
-          style={{
-            borderBottom: "1px",
-          }}
-        >
-          Войти
-        </ModalHeader>
+      <Modal isOpen={props.isOpen} toggle={props.toggle} centered={true}>
         <ModalBody>
           <Form
             onSubmit={(e) => {

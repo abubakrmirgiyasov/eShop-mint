@@ -39,7 +39,16 @@ const PreviewSingleImage = ({ setSelectedImage, image, name }) => {
 
   return (
     <React.Fragment>
-      <Dropzone onDrop={handleFileDrop}>
+      <Dropzone
+        onDrop={handleFileDrop}
+        accept={{
+          "image/jpeg": [],
+          "image/png": [],
+          "image/svg": [],
+          "image/webp": [],
+        }}
+        multiple={false}
+      >
         {({ getRootProps }) => (
           <div className={"dropzone dz-clickable"}>
             <div className={"dz-message needsclick"} {...getRootProps()}>

@@ -24,7 +24,8 @@ public class StoreController : ControllerBase
     {
         try
         {
-            return Ok();
+            var stores = await _store.GetStoresAsync();
+            return Ok(stores);
         }
         catch (Exception ex)
         {

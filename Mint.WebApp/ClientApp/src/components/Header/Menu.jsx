@@ -21,7 +21,7 @@ const Menu = (props) => {
     if (key >= menuSplitContainer) {
       let val = value;
       val.childItems = value.subItems;
-      val.isChildItem = value.subItems ? true : false;
+      val.isChildItem = !!value.subItems;
       delete val.subItems;
       splitMenuItems.push(val);
     } else {
@@ -125,22 +125,6 @@ const Menu = (props) => {
       }
       item.classList.remove("active");
     });
-  };
-
-  const addEventListenerOnSmHoverMenu = () => {
-    // if (
-    //   document.documentElement.getAttribute("data-sidebar-size") === "sm-hover"
-    // )
-    //   document.documentElement.setAttribute(
-    //     "data-sidebar-size",
-    //     "sm-hover-active"
-    //   );
-    // else if (
-    //   document.documentElement.getAttribute("data-sidebar-size") ===
-    //   "sm-hover-active"
-    // )
-    //   document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
-    // else document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
   };
 
   return (

@@ -11,8 +11,9 @@ import {
   TabPane,
 } from "reactstrap";
 import Popover from "../../../../components/Popover/Popover";
-import { Error } from "../../../../components/Notification/Error";
 import * as Yup from "yup";
+import { Error } from "../../../../components/Notification/Error";
+import { Success } from "../../../../components/Notification/Success";
 import { useFormik } from "formik";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +22,7 @@ const Price = ({ isAdded, dataForUpdate }) => {
   const [isFreeTax, setIsFreeTax] = useState(!dataForUpdate?.isFreeTax);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState(null);
 
   const taxPriceToggle = () => {
     setIsFreeTax(!isFreeTax);
@@ -57,7 +57,7 @@ const Price = ({ isAdded, dataForUpdate }) => {
         .put("api/product/updateproductprice", data)
         .then((response) => {
           setIsLoading(false);
-          navigate("/admin/products");
+          setSuccess(response);
         })
         .catch((error) => {
           setIsLoading(false);
@@ -69,6 +69,7 @@ const Price = ({ isAdded, dataForUpdate }) => {
   return (
     <TabPane tabId={2}>
       {error ? <Error message={error} /> : null}
+      {success ? <Success message={success} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>

@@ -3,17 +3,16 @@ import DataTable from "react-data-table-component";
 import { Button, Input, Spinner, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 import { Error } from "../../../../components/Notification/Error";
-import { useNavigate } from "react-router-dom";
+import { Success } from "../../../../components/Notification/Success";
 
 const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [categories, setCategories] = useState([]);
   const [columnsToAdd, setColumnsToAdd] = useState([]);
   const [addingLoading, setAddingLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -35,6 +34,8 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleAcceptClick = () => {
+    console.log(selectedCategory);
+
     if (selectedCategory && selectedCategory !== "Выберете Категорию") {
       setAddingLoading(true);
 
@@ -48,7 +49,7 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
         .put("api/product/categorymappings", data)
         .then((response) => {
           setAddingLoading(false);
-          navigate("/api/products");
+          setSuccess(response);
         })
         .catch((error) => {
           setAddingLoading(false);
@@ -65,9 +66,12 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleCategoryChange = (e) => {
-    const s = e.target.value;
-    setSelectedCategory(s);
+    setSelectedCategory(e.target.value);
   };
+
+  useEffect(() => {
+    window.addEventListener("change", handleCategoryChange, false);
+  }, [selectedCategory]);
 
   const columns = useMemo(
     () => [
@@ -149,6 +153,7 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   return (
     <TabPane tabId={4}>
       {error ? <Error message={error} /> : null}
+      {success ? <Success message={success} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
@@ -169,7 +174,7 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
             </div>
             <DataTable
               columns={columns || []}
-              data={columnsToAdd || []}
+              data={columnsToAdd || categories || []}
               pagination={true}
               highlightOnHover={true}
             />

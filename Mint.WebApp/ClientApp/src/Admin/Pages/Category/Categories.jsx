@@ -14,6 +14,8 @@ import CategoriesTable from "../../components/Tables/CategoriesTable";
 import { fetchWrapper } from "../../../helpers/fetchWrapper";
 import { Error } from "../../../components/Notification/Error";
 import DeleteCategory from "./DeleteCategory";
+import PrivateComponent from "../../../helpers/privateComponent";
+import { Roles } from "../../../constants/Roles";
 
 const Categories = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -77,15 +79,18 @@ const Categories = () => {
                 >
                   <i className="ri-filter-2-line"></i>
                 </Button>
-                <Link
-                  to="/admin/categories/add"
-                  className="fs-14 btn btn-success"
-                >
-                  <i className="ri-add-line align-middle"></i> Добавить новое
-                  ...
-                </Link>
+                <PrivateComponent>
+                  <Link
+                    to="/admin/categories/add"
+                    className="fs-14 btn btn-success"
+                    roles={[Roles.Admin]}
+                  >
+                    <i className="ri-add-line align-middle"></i> Добавить новое
+                    ...
+                  </Link>
+                </PrivateComponent>
               </div>
-              <Collapse isOpen={isFilterOpen} horizontal={true}>
+              <Collapse isOpen={isFilterOpen}>
                 <div className="d-flex mt-3">
                   <Input
                     type="text"

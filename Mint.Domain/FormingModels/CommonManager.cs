@@ -32,7 +32,8 @@ public class MenuManager
                         Id =  (Guid)(models[i].Categories?[j].Id)!,
                         ChildName =  models[i].Categories?[j].Name,
                         ChildOrder = (int)(models[i].Categories?[j].DisplayOrder)!,
-                        ChildPhoto = models[i].Categories?[j].Photo.GetImage64(),
+                        Link = models[i].Categories![j].DefaultLink,
+                        //ChildPhoto = models[i].Categories?[j].Photo.GetImage64(),
                     });
                 }
             }

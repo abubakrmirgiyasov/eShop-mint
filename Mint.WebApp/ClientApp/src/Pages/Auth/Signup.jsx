@@ -17,10 +17,9 @@ import { useFormik } from "formik";
 import { Error } from "../../components/Notification/Error";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import PreviewSingleImage from "../../Admin/components/Dropzone/PreviewSingleImage";
 
 const Signup = () => {
-  const [isPhotoSelected, setIsPhotoSelected] = useState("d-none");
-  const [imageSource, setImageSource] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -33,23 +32,6 @@ const Signup = () => {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?_&])[A-Za-z\d@$!%*?&_]{6,20}$/;
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
-  const previewImage = (e) => {
-    if (e.target.files.length) {
-      setImageFile(e.target.files[0]);
-      var reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-
-      reader.onload = function (e) {
-        setImageSource(e.target.result);
-        setIsPhotoSelected("");
-      };
-    } else {
-      setIsPhotoSelected("d-none");
-      setImageSource(null);
-      setImageFile(null);
-    }
-  };
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -113,13 +95,14 @@ const Signup = () => {
 
       if (imageFile) {
         formData.append("folder", "user");
-        formData.append("photo", imageFile);
+        formData.append("photo", imageFile[0]);
       }
 
       fetchWrapper
         .post("api/user/registration", formData, false)
         .then((response) => {
           setIsLoading(false);
+          // toggle Signin Model
           navigate("/");
         })
         .catch((error) => {
@@ -134,6 +117,10 @@ const Signup = () => {
       navigate("/");
     }
   }, [isLoggedIn]);
+
+  function handleFileChange(newFile) {
+    setImageFile(newFile);
+  }
 
   document.title = "Регистрация - Mint";
   return (
@@ -226,10 +213,10 @@ const Signup = () => {
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
-                      validation.touched.firstName &&
-                      validation.errors.firstName
-                        ? true
-                        : false
+                      !!(
+                        validation.touched.firstName &&
+                        validation.errors.firstName
+                      )
                     }
                   />
                   {validation.touched.firstName &&
@@ -258,10 +245,10 @@ const Signup = () => {
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
-                      validation.touched.secondName &&
-                      validation.errors.secondName
-                        ? true
-                        : false
+                      !!(
+                        validation.touched.secondName &&
+                        validation.errors.secondName
+                      )
                     }
                   />
                   {validation.touched.secondName &&
@@ -305,9 +292,7 @@ const Signup = () => {
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         invalid={
-                          validation.touched.day && validation.errors.day
-                            ? true
-                            : false
+                          !!(validation.touched.day && validation.errors.day)
                         }
                       />
                       {validation.touched.day && validation.errors.day ? (
@@ -325,9 +310,9 @@ const Signup = () => {
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         invalid={
-                          validation.touched.month && validation.errors.month
-                            ? true
-                            : false
+                          !!(
+                            validation.touched.month && validation.errors.month
+                          )
                         }
                       />
                       {validation.touched.month && validation.errors.month ? (
@@ -345,9 +330,7 @@ const Signup = () => {
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         invalid={
-                          validation.touched.year && validation.errors.year
-                            ? true
-                            : false
+                          !!(validation.touched.year && validation.errors.year)
                         }
                       />
                       {validation.touched.year && validation.errors.year ? (
@@ -374,9 +357,7 @@ const Signup = () => {
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
-                      validation.touched.email && validation.errors.email
-                        ? true
-                        : false
+                      !!(validation.touched.email && validation.errors.email)
                     }
                   />
                   {validation.touched.email && validation.errors.email ? (
@@ -401,9 +382,10 @@ const Signup = () => {
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
-                      validation.touched.password && validation.errors.password
-                        ? true
-                        : false
+                      !!(
+                        validation.touched.password &&
+                        validation.errors.password
+                      )
                     }
                   />
                   {validation.touched.email && validation.errors.password ? (
@@ -427,9 +409,10 @@ const Signup = () => {
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
-                      validation.touched.password && validation.errors.password
-                        ? true
-                        : false
+                      !!(
+                        validation.touched.password &&
+                        validation.errors.password
+                      )
                     }
                   />
                   {validation.touched.email && validation.errors.password ? (
@@ -456,9 +439,7 @@ const Signup = () => {
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
-                      validation.touched.phone && validation.errors.phone
-                        ? true
-                        : false
+                      !!(validation.touched.phone && validation.errors.phone)
                     }
                   />
                   {validation.touched.email && validation.errors.phone ? (
@@ -473,31 +454,11 @@ const Signup = () => {
                   </label>
                 </Col>
                 <Col lg={8} className="mt-3 mb-3">
-                  <Input
-                    type="file"
-                    accept="image/png, image/jpeg, image/webp"
-                    className="form-control me-2"
-                    name="file"
-                    onChange={(e) => {
-                      previewImage(e);
-                      validation.handleChange(e);
-                    }}
-                    onBlur={validation.handleBlur}
-                    defaultValue={""}
+                  <PreviewSingleImage
+                    name={null}
+                    image={null}
+                    setSelectedImage={handleFileChange}
                   />
-                  {
-                    <div
-                      className={`mt-3 d-flex justify-content-center align-items-center ${isPhotoSelected}`}
-                      id="previewImage"
-                    >
-                      <img
-                        src={imageSource}
-                        width={100}
-                        height={100}
-                        className="rounded-circle"
-                      />
-                    </div>
-                  }
                 </Col>
                 <Col lg={4}>
                   <label className="form-label" htmlFor="description">
@@ -515,11 +476,10 @@ const Signup = () => {
                   ></textarea>
                 </Col>
               </Row>
-              <div className="container">
-                <label className="text-muted fs-13">
-                  <Input type="checkbox" className="me-1" />
-                  Я, соглашаюсь там крч потом поменяю заебал
-                </label>
+              <div className="container text-muted fs-14 mt-2">
+                Создав учетную запись на Mint.com, мы будем хранить и
+                обрабатывать данные о вас. Вы всегда можете прочитать полные и
+                последние условия @здесь@ и политику конфиденциальности @здесь@.
               </div>
               <div className="d-flex justify-content-end align-items-end">
                 <Button

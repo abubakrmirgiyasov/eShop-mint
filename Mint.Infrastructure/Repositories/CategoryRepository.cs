@@ -153,11 +153,18 @@ public class CategoryRepository : ICategoryRepository
         {
             var category = await _context.Categories
                 .Include(x => x.Photo)
+                .Include(x => x.SubCategory)
                 .FirstOrDefaultAsync(x => x.Id == id)
                 ?? throw new Exception("Не существует.");
 
+            if (category.SubCategory != null)
+                _context.SubCategories.Remove(category.SubCategory);
+    
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
+
+            if (category.Photo != null)
+                PhotoManager.DeletePhoto(category.Photo.FilePath);
         }
         catch (Exception ex)
         {

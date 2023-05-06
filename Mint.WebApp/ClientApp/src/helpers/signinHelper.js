@@ -21,13 +21,15 @@ const signinHelper = async (values) => {
           });
     })
     .then((data) => {
-      console.log(data)
+      console.log(data);
       if (data.accessToken) {
         localStorage.setItem("auth_user", JSON.stringify(data));
       }
       return data;
     })
-    .catch((error) => { throw new Error(error) });
+    .catch((error) => {
+      throw new Error(error);
+    });
 };
 
 const signoutHelper = () => {
@@ -39,7 +41,10 @@ const signoutHelper = () => {
     },
     body: JSON.stringify({ token: null }),
   })
-    .then(() => localStorage.removeItem("auth_user"))
+    .then(() => {
+      localStorage.removeItem("auth_user");
+      localStorage.removeItem("my_store");
+    })
     .catch((error) => console.log(error));
 };
 

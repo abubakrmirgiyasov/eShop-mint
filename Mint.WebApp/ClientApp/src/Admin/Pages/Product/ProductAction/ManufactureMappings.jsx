@@ -2,11 +2,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 import { Button, Input, TabPane } from "reactstrap";
 import { Error } from "../../../../components/Notification/Error";
+import { Success } from "../../../../components/Notification/Success";
 import DataTable from "react-data-table-component";
 
 const ManufactureMappings = ({ isAdded }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [manufactures, setManufactures] = useState([]);
   const [columnsToAdd, setColumnsToAdd] = useState([]);
 
@@ -29,7 +31,9 @@ const ManufactureMappings = ({ isAdded }) => {
     setColumnsToAdd([...columnsToAdd, columnsToAdd.length + 1]);
   };
 
-  const handleAcceptClick = () => {};
+  const handleAcceptClick = () => {
+    // setSuccess(response)
+  };
 
   const handleRemoveClick = (row) => {
     const newItems = [...columnsToAdd];
@@ -103,6 +107,7 @@ const ManufactureMappings = ({ isAdded }) => {
   return (
     <TabPane tabId={5}>
       {error ? <Error message={error} /> : null}
+      {success ? <Success message={success} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
@@ -117,13 +122,7 @@ const ManufactureMappings = ({ isAdded }) => {
                 className={"btn btn-success"}
                 color={"success"}
                 onClick={handleAddClick}
-                // disabled={isLoading}
               >
-                {/*{isLoading ? (*/}
-                {/*  <Spinner className={"me-2"} size={"sm"}>*/}
-                {/*    ...Loading*/}
-                {/*  </Spinner>*/}
-                {/*) : null}{" "}*/}
                 <i className={"ri-add-line align-middle"}></i> Добавить
               </Button>
             </div>

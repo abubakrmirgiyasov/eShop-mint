@@ -25,6 +25,7 @@ const OpenStore = ({ userId, newData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setEror] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [country, setCountry] = useState(null);
 
   const toggleForm = () => {
     setIsFormOpened(!isFormOpened);
@@ -53,43 +54,44 @@ const OpenStore = ({ userId, newData }) => {
       street: Yup.string().required("Заполните обязательное поле"),
       zipCode: Yup.number().required("Заполните обязательное поле"),
       isOwnStore: Yup.bool().required("Выберете вид склада"),
-      // country: Yup.object()
-      //   .shape({
-      //     value: Yup.string().required("Выберете страну"),
-      //     label: Yup.string().required("Выберете страну"),
-      //   })
     }),
     onSubmit: (values) => {
-      setIsLoading(true);
+      if (country) {
+        setIsLoading(true);
 
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("url", values.url);
-      formData.append("country", "values.country");
-      formData.append("city", values.city);
-      formData.append("street", values.street);
-      formData.append("zipCode", values.zipCode);
-      formData.append("addressDescription", values.addressDescription);
-      formData.append("userId", userId);
-      formData.append("isOwnStore", values.isOwnStore);
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("url", values.url);
+        formData.append("country", country);
+        formData.append("city", values.city);
+        formData.append("street", values.street);
+        formData.append("zipCode", values.zipCode);
+        formData.append("addressDescription", values.addressDescription);
+        formData.append("userId", userId);
+        formData.append("isOwnStore", values.isOwnStore);
 
-      if (selectedImage) {
-        formData.append("fileType", "storeLogos");
-        formData.append("photo", selectedImage[0]);
+        if (selectedImage) {
+          formData.append("fileType", "storeLogos");
+          formData.append("photo", selectedImage[0]);
+        }
+
+        fetchWrapper
+          .post("api/store/createstore", formData, false)
+          .then((response) => {
+            setIsLoading(false);
+            newData(response);
+          })
+          .catch((error) => {
+            setIsLoading(false);
+            setEror(error);
+          });
       }
-
-      fetchWrapper
-        .post("api/store/createstore", formData, false)
-        .then((response) => {
-          setIsLoading(false);
-          newData(response);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          setEror(error);
-        });
     },
   });
+
+  const handleCountryChange = (e) => {
+    setCountry(e.label);
+  };
 
   return (
     <React.Fragment>
@@ -188,18 +190,12 @@ const OpenStore = ({ userId, newData }) => {
                 name={"country"}
                 placeholder={"Выберете страну"}
                 options={Countries}
-                // onChange={validation.handleChange}
-                // onBlur={validation.handleBlur}
-                // defaultValue={validation.values.country || ""}
-                // invalid={
-                //   !!(validation.touched.country && validation.errors.country)
-                // }
+                onChange={handleCountryChange}
+                defaultValue={""}
               />
-              {/*{validation.touched.country && validation.errors.country ? (*/}
-              {/*  <FormFeedback type="invalid">*/}
-              {/*    {validation.errors.country}*/}
-              {/*  </FormFeedback>*/}
-              {/*) : null}*/}
+              {!country ? (
+                <div className="text-danger mt-1">Выберете страну</div>
+              ) : null}
             </Col>
             <Col lg={12} className={"mb-3"}>
               <Label className={"form-label"} id={"city"}>

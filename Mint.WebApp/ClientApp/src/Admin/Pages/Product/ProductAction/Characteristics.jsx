@@ -3,16 +3,15 @@ import { Button, Col, Input, Label, Row, Spinner, TabPane } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Error } from "../../../../components/Notification/Error";
+import { Success } from "../../../../components/Notification/Success";
 import Popover from "../../../../components/Popover/Popover";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
-import { useNavigate } from "react-router-dom";
 
 const Characteristics = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [color, setColor] = useState(null);
-
-  const navigate = useNavigate();
 
   const handleColorChange = (e) => {
     setColor(e.target.value);
@@ -30,11 +29,11 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
       garanty: 0,
     },
     validationSchema: Yup.object({
-      // weight: Yup.number(),
-      // length: Yup.number(),
-      // width: Yup.number(),
-      // height: Yup.number(),
-      // garanty: Yup.number(),
+      weight: Yup.number().notRequired(),
+      length: Yup.number().notRequired(),
+      width: Yup.number().notRequired(),
+      height: Yup.number().notRequired(),
+      garanty: Yup.number().notRequired(),
     }),
     onSubmit: (values) => {
       setIsLoading(true);
@@ -55,7 +54,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
         .put("api/product/updateproductcharacteristic", data)
         .then((response) => {
           setIsLoading(false);
-          navigate("/admin/products");
+          setSuccess(response);
         })
         .catch((error) => {
           setIsLoading(false);
@@ -76,6 +75,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
           }}
         >
           {error ? <Error message={error} /> : null}
+          {success ? <Success message={success} /> : null}
           <Row>
             <Col
               lg={12}

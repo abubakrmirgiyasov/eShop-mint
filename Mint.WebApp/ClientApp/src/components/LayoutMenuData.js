@@ -47,7 +47,7 @@ const Navdata = () => {
         data.subItems.push({
           id: childItem.id,
           label: childItem.childName,
-          link: childItem.childLink,
+          link: "/categories/" + childItem.link,
           parentId: item.id,
         });
       });

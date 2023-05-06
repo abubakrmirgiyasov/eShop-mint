@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SimpleBar from "simplebar-react";
 import { Collapse, Container } from "reactstrap";
 import nav from "../AdminLayoutMenuData";
+import PrivateComponent from "../../helpers/privateComponent";
 
-/////////////////////////////////////////////////////
 import LogoSm from "../../assets/images/logo-sm.png";
 import LogoDark from "../../assets/images/logo-dark.png";
 import LogoLight from "../../assets/images/logo-light.png";
-import PrivateComponent from "../../helpers/privateComponent";
-import Price from "../../Admin/Pages/Product/ProductAction/Price";
 
 const AdminSidebar = (props) => {
   const navData = nav().props.children;

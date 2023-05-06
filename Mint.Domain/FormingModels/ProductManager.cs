@@ -7,6 +7,25 @@ namespace Mint.Domain.FormingModels;
 
 public class ProductManager
 {
+    public List<ProductFullViewModel> FormingCategoryViewModels(List<Category> models)
+    {
+        try
+        {
+            var products = new List<ProductFullViewModel>();
+
+            for (int i = 0; i < models.Count; i++)
+            {
+
+            }
+
+            return products;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public CommonCharacteristic FormingCharacteristicsBindingModel(CommonCharacteristic? commonCharacteristic, CommonCharacteristicFullBindingModel model)
     {
         try
@@ -125,6 +144,39 @@ public class ProductManager
     public ProductFullViewModel FormingInfoViewModel(Product model)
     {
         return new ProductFullViewModel();
+    }
+
+    public List<ProductFullViewModel> FormingMultiViewModels(Store model)
+    {
+        try
+        {
+            var products = new List<ProductFullViewModel>();
+
+            for (int i = 0; i < model.Products?.Count; i++)
+            {
+                products.Add(new ProductFullViewModel()
+                {
+                    Id = model.Products![i].Id,
+                    Name = model.Products![i].Name,
+                    Sku = model.Products![i].Sku,
+                    ShortDescription = model.Products![i].ShortDescription,
+                    Price = model.Products![i].Price,
+                    IsDiscount = model.Products![i].Discount != null,
+                    Percent = model.Products![i].Discount?.Percent,
+                });
+
+                for (int j = 0; j < model.Products[i].ProductPhotos?.Count; j++)
+                {
+                    products[i].Photos?.Add(model.Products[i].ProductPhotos![j].Photo.GetImage64());
+                }
+            }
+
+            return products;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public ProductFullViewModel FormingSingleFullViewModel(Product model)

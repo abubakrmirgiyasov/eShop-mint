@@ -24,6 +24,10 @@ public class ProductFullViewModel
 
     public decimal OldPrice { get; set; }
 
+    public bool IsDiscount { get; set; }
+
+    public int? Percent { get; set; } = 0;
+
     public bool IsPublished { get; set; }
 
     public bool IsFreeTax { get; set; }
@@ -32,7 +36,7 @@ public class ProductFullViewModel
 
     public int Quantity { get; set; }
 
-    public DateTime DateCreate { get; set; } = DateTime.Now;
+    public DateTime DateCreate { get; set; }
 
     public int DeliveryMinDay { get; set; }
 

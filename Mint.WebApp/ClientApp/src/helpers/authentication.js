@@ -37,7 +37,6 @@ export const signout = () => (dispatch) => {
 };
 
 export const refreshToken = () => (dispatch) => {
-  console.log("first")
   return AuthHelper.refreshTokenHelper().then(
     (response) => {
       dispatch({

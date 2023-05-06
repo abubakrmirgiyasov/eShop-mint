@@ -60,4 +60,35 @@ public class StoreManager
 			throw new Exception(ex.Message, ex);
 		}
     }
+
+    public List<StoreFullViewModel> FormingViewModels(List<Store> models)
+    {
+		try
+		{
+			var stores = new List<StoreFullViewModel>();
+
+			for (int i = 0; i < models.Count; i++)
+			{
+				stores.Add(new StoreFullViewModel()
+				{
+					Id = models[i].Id,
+					Name = models[i].Name,
+					Url = models[i].Url,
+					IsOwnStorage = models[i].IsOwnStorage,
+					Country = models[i].Country,
+					City = models[i].City,
+ 					Street = models[i].Street,
+					ZipCode = models[i].ZipCode,
+					AddressDescription = models[i].AddressDescription,
+					Photo = models[i].Photo.GetImage64(),
+				});
+			}
+
+			return stores;
+		}
+		catch (Exception ex)
+		{
+			throw new Exception(ex.Message, ex);
+		}
+    }
 }

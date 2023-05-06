@@ -15,17 +15,17 @@ import { useFormik } from "formik";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Error } from "../../../../components/Notification/Error";
+import { Success } from "../../../../components/Notification/Success";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
-import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import { myStore } from "../../../../Common/UserStores/myStore";
+import Select from "react-select";
 
 const Info = ({ setAddingData, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [storeId, setStoreId] = useState(null);
   const [myStoreOptions, setMyStoreOptions] = useState([]);
+  const [success, setSuccess] = useState(null);
 
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Заполните обязательное поле"),
-      sku: Yup.string().required("Заполните обязательное поле"),
+      sku: Yup.number().required("Заполните обязательное поле"),
       gtin: Yup.number().notRequired(),
       deliveryMinDay: Yup.number()
         .min(1, "Мин дней для доставки (1)")
@@ -84,11 +84,11 @@ const Info = ({ setAddingData, dataForUpdate }) => {
 
       if (dataForUpdate.length > 0) {
         fetchWrapper
-          .post("api/product/updateproductinfo")
+          .put("api/product/updateproductinfo")
           .then((response) => {
             setIsLoading(false);
             setAddingData(true);
-            navigate("/admin/products");
+            setSuccess(response);
           })
           .catch((error) => {
             setIsLoading(false);
@@ -119,6 +119,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
   return (
     <TabPane tabId={1}>
       {error ? <Error message={error} /> : null}
+      {success ? <Success message={success} /> : null}
       <form
         className={"form-horizontal"}
         onSubmit={(e) => {
@@ -182,7 +183,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
             </Col>
             <Col lg={8}>
               <Input
-                type={"text"}
+                type={"number"}
                 className={"form-control"}
                 name={"sku"}
                 placeholder={"Введите артикул"}
@@ -220,7 +221,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
             </Col>
             <Col lg={8}>
               <Input
-                type={"text"}
+                type={"number"}
                 className={"form-control"}
                 name={"gtin"}
                 placeholder={"Введите номер продукта"}

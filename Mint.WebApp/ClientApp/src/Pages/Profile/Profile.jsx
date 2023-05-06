@@ -143,7 +143,7 @@ const Profile = () => {
           </Col>
           <Col md={8}>
             <TabContent activeTab={activeTab}>
-              <CustomerInfo userId={user.id} />
+              <CustomerInfo userId={user.id} userImage={user.imagePath} />
               <Addresses activeTab={activeTab} userId={user.id} />
               <Orders userId={user.id} />
               <ChangePassword userId={user.id} />

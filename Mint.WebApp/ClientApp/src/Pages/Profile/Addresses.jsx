@@ -107,13 +107,7 @@ const Addresses = ({ activeTab, userId }) => {
         ) : (
           <Card>
             <CardBody>
-              <div
-                className={
-                  "d-flex justify-content-start align-items-center mb-3"
-                }
-              >
-                <h2>Адреса</h2>
-              </div>
+              <h2 className={"mb-3"}>Адреса</h2>
               <Row>
                 <Col md={12} lg={12}>
                   <div

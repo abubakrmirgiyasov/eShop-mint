@@ -11,15 +11,14 @@ import {
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import { Error } from "../../components/Notification/Error";
+import PreviewSingleImage from "../../Admin/components/Dropzone/PreviewSingleImage";
 
-const CustomerInfo = ({ userId }) => {
+const CustomerInfo = ({ userId, userImage }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState([]);
   const [error, setError] = useState(null);
   const [isEdit, setIsEdit] = useState(true);
   const [imageSource, setImageSource] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [isPhotoSelected, setIsPhotoSelected] = useState("d-none");
 
   useEffect(() => {
     fetchWrapper
@@ -34,23 +33,10 @@ const CustomerInfo = ({ userId }) => {
       });
   }, [userId]);
 
-  const handleFileChange = (e) => {
-    if (e.target.files.length) {
-      setImageFile(e.target.files[0]);
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
+  function handleFileChange(img) {
+    setImageSource(img);
+  }
 
-      reader.onload = function (e) {
-        setImageSource(e.target.result);
-        setIsPhotoSelected("");
-      };
-    } else {
-      setIsPhotoSelected("d-none");
-      setImageSource(null);
-      setImageFile(null);
-    }
-  };
-  
   const handleSubmit = (e) => {
     let formData = new FormData();
     formData.append("id", userId);
@@ -64,9 +50,9 @@ const CustomerInfo = ({ userId }) => {
     );
     formData.append("description", e.target.description.value);
 
-    if (imageFile) {
+    if (imageSource) {
       formData.append("folder", "user");
-      formData.append("photo", imageFile);
+      formData.append("photo", imageSource[0]);
     }
 
     fetchWrapper
@@ -77,13 +63,7 @@ const CustomerInfo = ({ userId }) => {
         user.secondName = response.secondName;
         user.imagePath = response.imagePath;
         localStorage.setItem("auth_user", JSON.stringify(user));
-
-        setIsEdit(true);
-        setImageSource(null);
-        setImageFile(null);
         setIsLoading(false);
-        setIsPhotoSelected("d-none");
-
         window.location.reload();
       })
       .catch((error) => {
@@ -288,31 +268,20 @@ const CustomerInfo = ({ userId }) => {
                       required={true}
                     />
                   </Col>
-                  <Col lg={4}>
-                    <label className="form-label">Аватарка</label>
-                  </Col>
-                  <Col lg={8} className="mb-3">
-                    <Input
-                      type="file"
-                      className="form-control me-2"
-                      name="photo"
-                      onChange={handleFileChange}
-                      disabled={isEdit}
-                    />
-                    {
-                      <div
-                        className={`mt-3 d-flex justify-content-center align-items-center ${isPhotoSelected}`}
-                        id="previewImage"
-                      >
-                        <img
-                          src={imageSource}
-                          width={100}
-                          height={100}
-                          className="rounded-circle"
+                  {!isEdit ? (
+                    <>
+                      <Col lg={4}>
+                        <label className="form-label">Аватарка</label>
+                      </Col>
+                      <Col lg={8} className="mb-3">
+                        <PreviewSingleImage
+                          setSelectedImage={handleFileChange}
+                          image={userImage}
+                          name={"previewImage"}
                         />
-                      </div>
-                    }
-                  </Col>
+                      </Col>
+                    </>
+                  ) : null}
                   <Col lg={4}>
                     <label className="form-label">Описание</label>
                   </Col>
