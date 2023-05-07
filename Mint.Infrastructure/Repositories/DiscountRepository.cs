@@ -24,7 +24,9 @@ public class DiscountRepository : IDiscountRepository
     {
         try
         {
-            var discounts = await _context.Discounts.ToListAsync();
+            var discounts = await _context.Discounts
+                .AsNoTracking()
+                .ToListAsync();
             return new DiscountManager().FomingMultiViewModels(discounts);
         }
         catch (Exception ex)
@@ -38,8 +40,9 @@ public class DiscountRepository : IDiscountRepository
         try
         {
             var discount = await _context.Discounts
-            .FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new Exception("Акция не найдена.");
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new Exception("Акция не найдена.");
 
             return new DiscountManager().FomingSingleViewModel(discount);
         }
@@ -71,8 +74,8 @@ public class DiscountRepository : IDiscountRepository
         try
         {
             var discount = await _context.Discounts
-            .FirstOrDefaultAsync(x => x.Id == model.Id)
-            ?? throw new Exception("Акция не найдена.");
+                .FirstOrDefaultAsync(x => x.Id == model.Id)
+                ?? throw new Exception("Акция не найдена.");
 
             discount.Name = model.Name!;
             discount.ActiveDateUntil = model.UntilDate == discount.ActiveDateUntil ? discount.ActiveDateUntil : model.UntilDate;
@@ -91,8 +94,8 @@ public class DiscountRepository : IDiscountRepository
         try
         {
             var discount = await _context.Discounts
-            .FirstOrDefaultAsync(x => x.Id == id)
-            ?? throw new Exception("Акция не найдена.");
+                .FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new Exception("Акция не найдена.");
 
             _context.Remove(discount);
             await _context.SaveChangesAsync();

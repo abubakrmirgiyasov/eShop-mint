@@ -40,6 +40,7 @@ public class StoreRepository : IStoreRepository
                 .Include(x => x.Photo)
                 .Include(x => x.Products)
                 .Include(x => x.User)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.User != null && x.User.Id == id)
                 ?? throw new Exception("Error store");
             return new StoreManager().FormingViewModel(store);
@@ -57,6 +58,7 @@ public class StoreRepository : IStoreRepository
             var user = await _context.Users
                 .Include(x => x.UserRoles)
                 .Include(x => x.Stores)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == Guid.Parse(model.UserId!));
 
             if (user != null && user.Stores?.Count == 0)

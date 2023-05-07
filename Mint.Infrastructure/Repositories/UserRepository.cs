@@ -127,7 +127,8 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == model.Id)
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == model.Id)
                 ?? throw new UserNotFoundException("Пользователь не найден.");
 
             if (user.NumOfAttempts >= 10)
@@ -163,6 +164,7 @@ public class UserRepository : IUserRepository
         try
         {
             var address = await _context.Addresses
+                .AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
             return new AddressManager().FormingViewModels(address);
@@ -197,7 +199,8 @@ public class UserRepository : IUserRepository
         try
         {
             var address = await _context.Addresses
-                .FirstOrDefaultAsync(x => x.Id == model.Id) ?? throw new Exception("Адрес не существует.");
+                .FirstOrDefaultAsync(x => x.Id == model.Id) 
+                ?? throw new Exception("Адрес не существует.");
             address.FullAddress = model.FullAddress!;
             address.City = model.City!;
             address.Country = model.Country!;
@@ -216,7 +219,9 @@ public class UserRepository : IUserRepository
         try
         {
             var address = await _context.Addresses
-                .FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Адрес не существует.");
+                .FirstOrDefaultAsync(x => x.Id == id) 
+                ?? throw new Exception("Адрес не существует.");
+
             _context.Addresses.Remove(address);
             await _context.SaveChangesAsync();
         }

@@ -75,10 +75,13 @@ public class SubCategoryRepository : ISubCategoryRepository
         try
         {
             var subCategory = await _context.SubCategories
-                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(model.Id!)) ?? throw new Exception("Не существует.");
+                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(model.Id!))
+                ?? throw new Exception("Не существует.");
+
             subCategory.Name = model.Name!;
             subCategory.DisplayOrder = model.DisplayOrder == 0 ? subCategory.DisplayOrder : model.DisplayOrder;
             subCategory.Ico = model.Ico ?? subCategory.Ico;
+            
             await _context.SaveChangesAsync();
         }
         catch (Exception ex)

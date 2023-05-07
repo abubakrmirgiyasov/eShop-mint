@@ -2,7 +2,7 @@
 
 namespace Min.Web.UI.Tests;
 
-public class AttributeTests
+public class AttributeTest
 {
     [Fact]
     public void Check_Authorize_Attribute_For_Multiple()
