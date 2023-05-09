@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
     dispatch(menu());
     dispatch(changeLayoutType("horizontal"));
     // dispatch(myStore());
-  }, [layout, layoutModeType, dispatch, menu]);
+  }, [layout, layoutModeType, dispatch]);
 
   const onChangeLayoutMode = (value) => {
     if (changeLayoutMode) dispatch(changeLayoutMode(value));

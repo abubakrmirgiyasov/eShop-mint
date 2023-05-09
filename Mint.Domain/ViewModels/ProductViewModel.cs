@@ -42,11 +42,19 @@ public class ProductFullViewModel
 
     public int DeliveryMaxDay { get; set; }
 
+    public Guid? ManufactureId { get; set; }
+
     public string? Manufacture { get; set; }
+
+    public Guid? CategoryId { get; set; }
 
     public string? Category { get; set; }
 
+    public Guid? StoreId { get; set; }
+
     public string? Store { get; set; }
+
+    public Guid? DiscountId { get; set; }
 
     public string? Discount { get; set; }
 

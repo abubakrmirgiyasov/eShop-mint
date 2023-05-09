@@ -2,202 +2,275 @@ import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionItem,
+  Button,
   Card,
   CardBody,
   Col,
   Collapse,
   Container,
-  Form,
   Input,
+  Label,
   Row,
 } from "reactstrap";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import classnames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Error } from "../../components/Notification/Error";
+import { products } from "../../Common/Products/products";
+import Rating from "react-rating";
 
 const SingleCategory = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState(null);
   const [title, setTitle] = useState(null);
+  const [data, setData] = useState([]);
 
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { menu } = useSelector((state) => ({
+  const { menu, allProducts, message } = useSelector((state) => ({
     menu: state.Categories.menu,
+    allProducts: state.Products.products,
+    message: state.Message,
   }));
 
   useEffect(() => {
+    setIsLoading(true);
+
+    const fetchData = async () => {
+      await dispatch(products())
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoading(false);
+        });
+    };
+
+    fetchData().then((r) => setIsLoading(false));
+
+    if (allProducts && allProducts.length) {
+      setIsLoading(false);
+
+      const filteredData = allProducts.filter(
+        (item) => item.categoryId === title?.value
+      );
+      setData(filteredData);
+    } else {
+      setIsLoading(false);
+    }
+
+    console.log(params.name);
+    console.log(data);
+
     if (params.name) {
       menu.map((item) =>
         item.menuChildViewModels.map((child) => {
           if (child.link === params.name) {
-            setTitle(child.childName);
-            return;
+            setTitle({ label: child.childName, value: child.id });
           }
         })
       );
     } else {
       navigate("/categories");
     }
-  }, [params]);
-
-  console.log(title);
-
-  const [fillCol1, setfillCol1] = useState(true);
-  const [fillCol2, setfillCol2] = useState(false);
-  const [fillCol3, setfillCol3] = useState(false);
-
-  const t_fillCol1 = () => {
-    setfillCol1(!fillCol1);
-    setfillCol2(false);
-    setfillCol3(false);
-  };
-
-  const t_fillCol2 = () => {
-    setfillCol2(!fillCol2);
-    setfillCol1(false);
-    setfillCol3(false);
-  };
-
-  const t_fillCol3 = () => {
-    setfillCol3(!fillCol3);
-    setfillCol1(false);
-    setfillCol2(false);
-  };
+  }, [params, dispatch]);
 
   return (
     <div className={"page-content"}>
+      <Breadcrumb
+        title={title?.label}
+        pageTitle={"Категории"}
+        link={"/categories"}
+      />
+      {message ? <Error message={message} /> : null}
       <Container fluid={true}>
-        <Breadcrumb
-          title={title}
-          pageTitle={"Категории"}
-          link={"/categories"}
-        />
-        <Row>
-          <Col lg={3}>
-            <Card>
-              <CardBody>
-                <div className={"app-search d-none d-md-block mt-0 mb-0 p-0"}>
-                  <div className={"position-relative p-0"}>
-                    <Input
-                      type={"text"}
-                      className={"form-control mt-0 mb-0"}
-                      placeholder={"Поиск..."}
-                      defaultValue={""}
-                      // onChange={() => {}}
-                    />
-                    <span
-                      className={"mdi mdi-magnify search-widget-icon"}
-                    ></span>
-                    <span
-                      className={
-                        "mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
-                      }
-                      id={"search-close-options"}
-                    ></span>
+        {isLoading ? (
+          <div className={"d-flex justify-content-center align-items-center"}>
+            <div className={"spinner-grow text-success"} role={"status"}>
+              <span className={"visually-hidden"}>Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <Row>
+            <Col lg={3}>
+              <Card>
+                <CardBody>
+                  <div className={"app-search d-none d-md-block mt-0 mb-0 p-0"}>
+                    <div className={"position-relative p-0"}>
+                      <Input
+                        type={"text"}
+                        className={"form-control mt-0 mb-0"}
+                        placeholder={"Поиск..."}
+                        defaultValue={""}
+                        // onChange={() => {}}
+                      />
+                      <span
+                        className={"mdi mdi-magnify search-widget-icon"}
+                      ></span>
+                      <span
+                        className={
+                          "mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
+                        }
+                        id={"search-close-options"}
+                      ></span>
+                    </div>
                   </div>
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg={9}>
-            <Card>
-              <CardBody></CardBody>
-            </Card>
-          </Col>
-          <Col lg={3}>
-            <Card>
-              <CardBody>
-                <Accordion
-                  className="custom-accordionwithicon accordion-fill-success"
-                  id="accordionFill"
-                >
-                  <AccordionItem>
-                    <h2 className="accordion-header" id="accordionFillExample1">
-                      <button
-                        className={classnames("accordion-button", {
-                          collapsed: !fillCol1,
-                        })}
-                        type="button"
-                        onClick={t_fillCol1}
-                        style={{ cursor: "pointer" }}
-                      >
-                        What are webhooks?
-                      </button>
-                    </h2>
-                    <Collapse
-                      isOpen={fillCol1}
-                      className="accordion-collapse"
-                      id="accor_fill1"
-                    >
-                      <div className="accordion-body">
-                        Webhooks allow you to gather real time data on key
-                        interactions that happen with your Slick Text account.
-                        Simply provide us with a url where you'd like the data
-                        to be sent, choose which events you'd like to be
-                        informed of, and click save.{" "}
-                      </div>
-                    </Collapse>
-                  </AccordionItem>
-                  <AccordionItem>
-                    <h2 className="accordion-header" id="accordionFillExample2">
-                      <button
-                        className={classnames("accordion-button", {
-                          collapsed: !fillCol2,
-                        })}
-                        type="button"
-                        onClick={t_fillCol2}
-                        style={{ cursor: "pointer" }}
-                      >
-                        Where can I find my Textword ID?
-                      </button>
-                    </h2>
-                    <Collapse
-                      isOpen={fillCol2}
-                      className="accordion-collapse"
-                      id="accor_fill2"
-                    >
-                      <div className="accordion-body">
-                        Head over to the Textwords page. Click options on the
-                        right hand side, and then click Settings. This will
-                        redirect you to your Textword Setting page. Now, go
-                        check your url, and the textword ID will be the number
-                        after "word=". Too much or too little spacing, as in the
-                        example below.
-                      </div>
-                    </Collapse>
-                  </AccordionItem>
-                  <AccordionItem>
-                    <h2 className="accordion-header" id="accordionFillExample3">
-                      <button
-                        className={classnames("accordion-button", {
-                          collapsed: !fillCol3,
-                        })}
-                        type="button"
-                        onClick={t_fillCol3}
-                        style={{ cursor: "pointer" }}
-                      >
-                        Производители
-                      </button>
-                    </h2>
-                    <Collapse
-                      isOpen={fillCol3}
-                      className="accordion-collapse"
-                      id="accor_fill3"
-                    >
-                      test1
-                    </Collapse>
-                  </AccordionItem>
-                </Accordion>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg={9}>
-            <Card>
-              <CardBody></CardBody>
-            </Card>
-          </Col>
-        </Row>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col lg={9}>
+              <Card>
+                <CardBody>
+                  <div
+                    className={
+                      "d-flex justify-content-between align-items-center"
+                    }
+                  >
+                    <div>
+                      <h3 className={"fs-16"}>Attirbutes</h3>
+                    </div>
+                    <div className={""}>
+                      <Button color={"light"} className={"fs-16 me-2 active"}>
+                        <i className={"ri-layout-top-fill"}></i>
+                      </Button>
+                      <Button color={"light"} className={"fs-16"}>
+                        <i className={"ri-grid-fill"}></i>
+                      </Button>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col lg={3}>
+              <Card>
+                <CardBody></CardBody>
+              </Card>
+            </Col>
+            <Col lg={9}>
+              {data?.map((item, key) => (
+                <Card key={key} className={"mb-3"}>
+                  <CardBody>
+                    <Row>
+                      <Col lg={10}>
+                        <Row>
+                          <Col xl={3}>
+                            <div style={{ float: "left" }}>
+                              {/*style={{ width: "100%", height: "100px" }}*/}
+                              <img
+                                src={item.photos[0]}
+                                alt={item.name}
+                                height={100}
+                                width={150}
+                                className={"rounded"}
+                                // style={{ objectFit: "scale-down" }}
+                              />
+                            </div>
+                          </Col>
+                          <Col xl={9}>
+                            <Row>
+                              <Col lg={12}>
+                                <Link
+                                  to={"/product-details/" + item.id}
+                                  color={"primary"}
+                                  className={"fs-18"}
+                                  style={{ float: "left" }}
+                                >
+                                  {item.name}
+                                </Link>
+                              </Col>
+                            </Row>
+                            <Col lg={12} className={"mb-2"}>
+                              <h5
+                                className={"text-muted fs-14"}
+                                dangerouslySetInnerHTML={{
+                                  __html: item.shortDescription,
+                                }}
+                              ></h5>
+                            </Col>
+                            <Col lg={12} className={"mb-1"}>
+                              <div
+                                className={
+                                  "d-flex justify-content-start align-items-center"
+                                }
+                              >
+                                <div className={"form-check fs-15 me-3"}>
+                                  <Label className={"form-check-label"}>
+                                    <Input
+                                      defaultChecked={false}
+                                      className={"form-check-input"}
+                                      type={"checkbox"}
+                                    />
+                                    Сравнить
+                                  </Label>
+                                </div>
+                                <div className={""}>
+                                  <Rating
+                                    initialRating={
+                                      item.commonCharacteristic?.rate
+                                    }
+                                    emptySymbol={
+                                      "mdi mdi-star-outline text-muted"
+                                    }
+                                    fullSymbol={"mdi mdi-star text-warning"}
+                                    className={"me-1"}
+                                  />
+                                  <span className={"text-info"}>
+                                    {item.commonCharacteristic?.rate}
+                                  </span>
+                                </div>
+                              </div>
+                            </Col>
+                            <Col lg={12}>
+                              <Link to={"/#"}>Доставим за два часа</Link>
+                            </Col>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col lg={2}>
+                        <div className={"d-flex flex-column"}>
+                          <div className={"mb-3"}>
+                            <span
+                              className={
+                                "fs-12 text-muted text-decoration-line-through"
+                              }
+                              style={{ float: "right" }}
+                            >
+                              {item.percent > 0 ? item.price : ""}
+                            </span>
+                            <span
+                              className={"fs-18 text-danger  me-2"}
+                              style={{ float: "right" }}
+                            >
+                              {item.percent > 0
+                                ? (item.price * item.percent) / 100
+                                : item.price}
+                            </span>
+                          </div>
+                          <div
+                            className={
+                              "d-flex justify-content-end align-items-center"
+                            }
+                          >
+                            <Button color={"outline-danger"} className={"me-2"}>
+                              <i className={"bx bx-heart"}></i>
+                            </Button>
+                            <Button color={"outline-success"}>
+                              <i className={"bx bx-shopping-bag"}></i>
+                            </Button>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              ))}
+            </Col>
+          </Row>
+        )}
       </Container>
     </div>
   );

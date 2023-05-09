@@ -20,8 +20,17 @@ public class ProductRepository : IProductRepository
     {
         try
         {
-            var products = await _context.Products.ToListAsync();
-            return new List<ProductFullViewModel>();
+            var products = await _context.Products
+                .Where(x => x.IsPublished == true)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Include(x => x.Store)
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.Discount)
+                .ToListAsync();
+            return new ProductManager().FormingFullProdutcViewModels(products);
         }
         catch (Exception ex)
         {
@@ -95,6 +104,7 @@ public class ProductRepository : IProductRepository
                 .ThenInclude(x => x.Photo)
                 .Include(x => x.SubCategory)
                 .Include(x => x.Photo)
+                .Include(x => x.Manufacture)
                 .ToListAsync();
             return new ProductManager().FormingCategoryViewModels(products);
         }
@@ -153,7 +163,21 @@ public class ProductRepository : IProductRepository
             var product = await _context.Products
                 .FirstOrDefaultAsync(x => x.Id == model.Id)
                 ?? throw new Exception("Товар не найден.");
-            
+
+            product.Name = model.Name ?? product.Name;
+            product.Sku = model.Sku ?? product.Sku;
+            product.Gtin = model.Gtin == 0 ? product.Gtin : model.Gtin.ToString();
+            product.CountryOfOrigin = model.CountryOfOrigin ?? product.CountryOfOrigin;
+            product.IsPublished = product.IsPublished == model.IsPublished ? product.IsPublished : model.IsPublished;
+            product.DeliveryMinDay = model.DeliveryMinDay == 1 ? product.DeliveryMinDay : model.DeliveryMinDay;
+            product.DeliveryMaxDay = model.DeliveryMaxDay == 1 ? product.DeliveryMaxDay : model.DeliveryMaxDay;
+            product.ShortDescription = model.ShortDescription ?? product.ShortDescription;
+            product.FullDescription = model.FullDescription ?? product.FullDescription;
+            product.AdminComment = model.AdminComment ?? product.AdminComment;
+            //product.StoreId = model.StoreId == product.StoreId.ToString() ? product.StoreId : ;
+            //product.Quantity
+
+            await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -255,7 +279,7 @@ public class ProductRepository : IProductRepository
             }
             else
             {
-               
+
             }
 
             await _context.ProductPhotos.AddRangeAsync(list);
@@ -340,7 +364,7 @@ public class ProductRepository : IProductRepository
                 {
                     _context.ProductPhotos.RemoveRange(product.ProductPhotos);
                     await _context.SaveChangesAsync();
-                    
+
                     PhotoManager.DeletePhoto(product.ProductPhotos[i].Photo?.FilePath);
                 }
             }

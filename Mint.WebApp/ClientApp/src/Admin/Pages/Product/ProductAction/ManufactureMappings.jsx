@@ -1,16 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
-import { Button, Input, TabPane } from "reactstrap";
+import { Button, Input, Spinner, TabPane } from "reactstrap";
 import { Error } from "../../../../components/Notification/Error";
 import { Success } from "../../../../components/Notification/Success";
 import DataTable from "react-data-table-component";
 
-const ManufactureMappings = ({ isAdded }) => {
+const ManufactureMappings = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [manufactures, setManufactures] = useState([]);
   const [columnsToAdd, setColumnsToAdd] = useState([]);
+  const [selectedManufacture, setSelectedManufacture] = useState(null);
+  const [addingLoading, setAddingLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,8 +34,40 @@ const ManufactureMappings = ({ isAdded }) => {
   };
 
   const handleAcceptClick = () => {
-    // setSuccess(response)
+    if (
+      selectedManufacture &&
+      selectedManufacture !== "Выберете производителя"
+    ) {
+      setAddingLoading(true);
+
+      const data = {
+        manufactureId: selectedManufacture,
+        productId: dataForUpdate?.id,
+        // displayOrder: console.log(e.target),
+      };
+
+      fetchWrapper
+        .put("api/product/manufacturemappings", data)
+        .then((response) => {
+          setAddingLoading(false);
+          setSuccess(response);
+        })
+        .catch((error) => {
+          setAddingLoading(false);
+          setError(error);
+        });
+    } else {
+      setError("Выберете производителя");
+    }
   };
+
+  const handleManufactureChange = (e) => {
+    setSelectedManufacture(e.target.value);
+  };
+
+  useEffect(() => {
+    window.addEventListener("change", handleManufactureChange, false);
+  }, [selectedManufacture]);
 
   const handleRemoveClick = (row) => {
     const newItems = [...columnsToAdd];
@@ -54,7 +88,7 @@ const ManufactureMappings = ({ isAdded }) => {
         name: <span className={"font-weight-bold fs-13"}>Производитель</span>,
         selector: () => {
           return (
-            <select name={"category"} className={"form-control"}>
+            <select name={"manufacture"} className={"form-control"}>
               <option>Выберете производителя</option>
               {manufactures.map((item) => (
                 <option key={item.value} value={item.value}>
@@ -93,8 +127,18 @@ const ManufactureMappings = ({ isAdded }) => {
               >
                 <i className={"ri-close-line"}></i>
               </Button>
-              <Button color={"primary"} onClick={handleAcceptClick}>
-                <i className={"ri-check-line"}></i>
+              <Button
+                color={"primary"}
+                onClick={handleAcceptClick}
+                disabled={addingLoading}
+              >
+                {addingLoading ? (
+                  <Spinner className={"me-2"} size={"sm"}>
+                    ...Loading
+                  </Spinner>
+                ) : (
+                  <i className={"ri-check-line"}></i>
+                )}
               </Button>
             </div>
           );
@@ -107,7 +151,7 @@ const ManufactureMappings = ({ isAdded }) => {
   return (
     <TabPane tabId={5}>
       {error ? <Error message={error} /> : null}
-      {success ? <Success message={success} /> : null}
+      {success ? <Success message={success.message} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>

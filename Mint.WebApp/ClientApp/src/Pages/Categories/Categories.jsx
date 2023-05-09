@@ -21,7 +21,7 @@ const Categories = () => {
                   <ul>
                     <li className={"fs-18"}>{item.parentName}</li>
                     {item.menuChildViewModels.map((child, childKey) => (
-                      <ul>
+                      <ul key={childKey}>
                         <li>
                           <Link to={child.link}>{child.childName}</Link>
                         </li>

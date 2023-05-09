@@ -15,7 +15,28 @@ public class ProductManager
 
             for (int i = 0; i < models.Count; i++)
             {
+                for (int j = 0; j < models[i].Products?.Count; j++)
+                {
+                    var product = models[i].Products![j];
 
+                    products.Add(new ProductFullViewModel()
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        ShortDescription = product.ShortDescription,
+                        Sku = product.Sku,
+                        CountryOfOrigin = product.CountryOfOrigin,
+                        DeliveryMinDay = product.DeliveryMinDay,
+                        DeliveryMaxDay = product.DeliveryMaxDay,
+                        Store = product.Store?.Name,
+                    });
+
+                    for (int k = 0; k < models[i].Products![j].ProductPhotos?.Count;)
+                    {
+                        products[j].Photos?.Add(models[i].Products![j].ProductPhotos![j].Photo.GetImage64());
+                        break;
+                    }
+                }
             }
 
             return products;
@@ -88,24 +109,55 @@ public class ProductManager
                     ShowOnHomePage = models[i].ShowOnHomePage,
                     CountryOfOrigin = models[i].CountryOfOrigin,
                     Store = models[i].Store?.Name,
+                    StoreId = models[i].StoreId,
                     TaxPrice = models[i].TaxPrice,
                     Price = models[i].Price,
                     OldPrice = models[i].Price,
                     DateCreate = models[i].DateCreate,
                     Category = models[i].Category?.Name,
+                    CategoryId = models[i].CategoryId,
                     DeliveryMinDay = models[i].DeliveryMinDay,
                     DeliveryMaxDay = models[i].DeliveryMaxDay,
                     Discount = models[i].Discount?.Name,
                     IsFreeTax = models[i].IsFreeTax,
                     IsPublished = models[i].IsPublished,
                     Manufacture = models[i].Manufacture?.Name,
+                    ManufactureId = models[i].ManufactureId,
                     //Quantity = models[i].Storages?.FirstOrDefault
                     Photos = new List<string>(),
+                    IsDiscount = models[i].Discount != null,
+                    Percent = models[i].Discount != null ? models[i].Discount!.Percent : 0,
+                    DiscountId = models[i].DiscountId,
                 });
 
-                for (int j = 0; j < models[i].ProductPhotos?.Count; j++)
+                for (int j = 0; j < models[i].CommonCharacteristics?.Count; j++)
                 {
-                    products[i].Photos?.Add(models[i].ProductPhotos![j].Photo.GetImage64());
+                    products[i].CommonCharacteristic = new CommonCharacteristicFullViewModel()
+                    {
+                        Id = models[i].CommonCharacteristics![j].Id,
+                        Color = models[i].CommonCharacteristics![j].Color,
+                        Garanty = models[i].CommonCharacteristics![j].Garanty,
+                        Availability = models[i].CommonCharacteristics![j].Availability,
+                        Height = models[i].CommonCharacteristics![j].Height,
+                        Length = models[i].CommonCharacteristics![j].Length,
+                        Material = models[i].CommonCharacteristics![j].Material,
+                        Rate = models[i].CommonCharacteristics![j].Rate,
+                        ReleaseDate = models[i].CommonCharacteristics![j].ReleaseDate,
+                        Weight = models[i].CommonCharacteristics![j].Weight,
+                        Width = models[i].CommonCharacteristics![j].Width,
+                    };
+                }
+
+                if (models[i].ProductPhotos?.Count == 0)
+                {
+                    products[i].Photos?.Add(new Photo().GetImage64());
+                }
+                else
+                {
+                    for (int j = 0; j < models[i].ProductPhotos?.Count; j++)
+                    {
+                        products[i].Photos?.Add(models[i].ProductPhotos![j].Photo.GetImage64());
+                    }
                 }
             }
 
@@ -133,6 +185,7 @@ public class ProductManager
                 AdminComment = model.AdminComment!,
                 DeliveryMaxDay = model.DeliveryMaxDay,
                 DeliveryMinDay = model.DeliveryMinDay,
+                CountryOfOrigin = model.CountryOfOrigin!,
             };
         }
         catch (Exception ex)

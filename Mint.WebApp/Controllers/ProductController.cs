@@ -46,7 +46,7 @@ public class ProductController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return NotFound(new { message = ex.Message });
         }
     }
 
@@ -61,7 +61,7 @@ public class ProductController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return NotFound(new { message = ex.Message });
         }
     }
 
@@ -75,7 +75,21 @@ public class ProductController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("{name}")]
+    public async Task<IActionResult> GetProductsByCategory(string name)
+    {
+        try
+        {
+            var products = await _product.GetProductsByCategoryAsync(name);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new { message = ex.Message });
         }
     }
 

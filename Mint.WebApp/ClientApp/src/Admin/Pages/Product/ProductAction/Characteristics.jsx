@@ -75,7 +75,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
           }}
         >
           {error ? <Error message={error} /> : null}
-          {success ? <Success message={success} /> : null}
+          {success ? <Success message={success.message} /> : null}
           <Row>
             <Col
               lg={12}

@@ -19,6 +19,7 @@ import { Success } from "../../../../components/Notification/Success";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { Countries } from "../../../../constants/Common";
 
 const Info = ({ setAddingData, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,25 +27,26 @@ const Info = ({ setAddingData, dataForUpdate }) => {
   const [storeId, setStoreId] = useState(null);
   const [myStoreOptions, setMyStoreOptions] = useState([]);
   const [success, setSuccess] = useState(null);
+  const [country, setCountry] = useState(null);
 
   const navigate = useNavigate();
 
   const myStore = JSON.parse(localStorage.getItem("my_store"));
 
   useEffect(() => {
-    setMyStoreOptions([{ label: myStore.name, value: myStore.id }]);
+    if (myStore)
+      setMyStoreOptions([{ label: myStore.name, value: myStore.id }]);
+    else {
+      setError("Откройте сначала магазин чтобы добавить товары.");
+      navigate("/admin/products");
+    }
   }, []);
-
-  // const { sL, myStore } = useSelector((state) => ({
-  //   sL: console.log(state),
-  //   myStore: state.MyStore.myStore,
-  // }));
 
   const validation = useFormik({
     initialValues: {
       name: "",
       sku: "",
-      gtin: "",
+      gtin: 0,
       isPublished: false,
       deliveryMinDay: 1,
       deliveryMaxDay: 1,
@@ -56,7 +58,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Заполните обязательное поле"),
-      sku: Yup.number().required("Заполните обязательное поле"),
+      sku: Yup.string().required("Заполните обязательное поле"),
       gtin: Yup.number().notRequired(),
       deliveryMinDay: Yup.number()
         .min(1, "Мин дней для доставки (1)")
@@ -69,6 +71,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
       setIsLoading(true);
 
       const data = {
+        id: dataForUpdate?.id,
         name: values.name,
         sku: values.sku,
         gtin: values.gtin,
@@ -80,11 +83,12 @@ const Info = ({ setAddingData, dataForUpdate }) => {
         adminComment: values.adminComment,
         storeId: storeId,
         quantity: values.quantity,
+        countryOfOrigin: country,
       };
 
-      if (dataForUpdate.length > 0) {
+      if (dataForUpdate.length) {
         fetchWrapper
-          .put("api/product/updateproductinfo")
+          .put("api/product/updateproductinfo", data)
           .then((response) => {
             setIsLoading(false);
             setAddingData(true);
@@ -116,10 +120,14 @@ const Info = ({ setAddingData, dataForUpdate }) => {
     setStoreId(e.value);
   };
 
+  const handleCountryChange = (e) => {
+    setCountry(e.label);
+  };
+
   return (
     <TabPane tabId={1}>
       {error ? <Error message={error} /> : null}
-      {success ? <Success message={success} /> : null}
+      {success ? <Success message={success.message} /> : null}
       <form
         className={"form-horizontal"}
         onSubmit={(e) => {
@@ -183,7 +191,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
             </Col>
             <Col lg={8}>
               <Input
-                type={"number"}
+                type={"text"}
                 className={"form-control"}
                 name={"sku"}
                 placeholder={"Введите артикул"}
@@ -309,6 +317,39 @@ const Info = ({ setAddingData, dataForUpdate }) => {
                   (item) => item.name === dataForUpdate?.store
                 )}
                 onChange={handleStoreChange}
+              />
+            </Col>
+          </Col>
+          <Col
+            lg={12}
+            className={"d-flex justify-content-between align-items-center mb-3"}
+          >
+            <Col lg={2}>
+              <Label
+                className={"form-label fs-16"}
+                htmlFor={"storeId"}
+                id={"storeId"}
+              >
+                Страна производства
+                <Popover
+                  id={"storeId"}
+                  placement={"top"}
+                  text={
+                    "Тут вы должны выбрать, в какой стране был произведен товар."
+                  }
+                />
+              </Label>
+            </Col>
+            <Col lg={8}>
+              <Select
+                name={"storeId"}
+                // onChange={validation.handleChange}
+                // onBlur={validation.handleBlur}
+                options={Countries || []}
+                defaultValue={Countries.filter(
+                  (item) => item.label === dataForUpdate?.countryOfOrigin
+                )}
+                onChange={handleCountryChange}
               />
             </Col>
           </Col>

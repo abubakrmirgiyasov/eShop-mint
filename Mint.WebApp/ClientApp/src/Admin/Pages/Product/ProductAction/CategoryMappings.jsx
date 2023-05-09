@@ -13,6 +13,7 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   const [columnsToAdd, setColumnsToAdd] = useState([]);
   const [addingLoading, setAddingLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [temp, setTemp] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -27,6 +28,8 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
         setIsLoading(false);
         setError(error);
       });
+
+    setTemp([...temp, dataForUpdate]);
   }, []);
 
   const handleAddClick = () => {
@@ -34,30 +37,28 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleAcceptClick = () => {
-    console.log(selectedCategory);
+    // if (selectedCategory && selectedCategory !== "Выберете Категорию") {
+    setAddingLoading(true);
 
-    if (selectedCategory && selectedCategory !== "Выберете Категорию") {
-      setAddingLoading(true);
+    const data = {
+      categoryId: "0747acb0-ce7e-4ca3-8d36-efab5225652b",
+      productId: dataForUpdate?.id,
+      // displayOrder: console.log(e.target),
+    };
 
-      const data = {
-        categoryId: selectedCategory,
-        productId: dataForUpdate?.id,
-        // displayOrder: console.log(e.target),
-      };
-
-      fetchWrapper
-        .put("api/product/categorymappings", data)
-        .then((response) => {
-          setAddingLoading(false);
-          setSuccess(response);
-        })
-        .catch((error) => {
-          setAddingLoading(false);
-          setError(error);
-        });
-    } else {
-      setError("Выберете категорию");
-    }
+    fetchWrapper
+      .put("api/product/categorymappings", data)
+      .then((response) => {
+        setAddingLoading(false);
+        setSuccess(response);
+      })
+      .catch((error) => {
+        setAddingLoading(false);
+        setError(error);
+      });
+    // } else {
+    //   setError("Выберете категорию");
+    // }
   };
 
   const handleRemoveClick = (row) => {
@@ -90,11 +91,16 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
               name={"category"}
               className={"form-control"}
               placeholder={"Выберете Категорию"}
-              onChange={handleCategoryChange}
+              // onChange={handleCategoryChange}
+              multiple={false}
             >
               <option>Выберете категорию</option>
               {categories.map((item, key) => (
-                <option key={key} value={item.value}>
+                <option
+                  key={key}
+                  value={item.value}
+                  selected={item.value === dataForUpdate?.categoryId}
+                >
                   {item.label}
                 </option>
               ))}
@@ -139,8 +145,9 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
                   <Spinner className={"me-2"} size={"sm"}>
                     ...Loading
                   </Spinner>
-                ) : null}{" "}
-                <i className={"ri-check-line"}></i>
+                ) : (
+                  <i className={"ri-check-line"}></i>
+                )}
               </Button>
             </div>
           );
@@ -150,10 +157,12 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
     [categories]
   );
 
+  console.log(selectedCategory);
+
   return (
     <TabPane tabId={4}>
       {error ? <Error message={error} /> : null}
-      {success ? <Success message={success} /> : null}
+      {success ? <Success message={success.message} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
@@ -174,7 +183,7 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
             </div>
             <DataTable
               columns={columns || []}
-              data={columnsToAdd || categories || []}
+              data={temp || []}
               pagination={true}
               highlightOnHover={true}
             />

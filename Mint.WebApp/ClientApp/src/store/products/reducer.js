@@ -1,4 +1,4 @@
-import { MENU } from "./actionType";
+import { GET_ALL_PRODCUTS } from "./actionType";
 
 const initState = {};
 
@@ -6,10 +6,10 @@ export default function (state = initState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case MENU:
+    case GET_ALL_PRODCUTS:
       return {
         ...state,
-        menu: payload,
+        products: payload,
       };
     default:
       return state;

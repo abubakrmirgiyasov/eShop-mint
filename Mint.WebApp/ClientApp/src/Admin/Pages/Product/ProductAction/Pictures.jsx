@@ -45,7 +45,7 @@ const Pictures = ({ isAdded, dataForUpdate }) => {
   return (
     <TabPane tabId={3}>
       {error ? <Error message={error} /> : null}
-      {success ? <Success message={success} /> : null}
+      {success ? <Success message={success.message} /> : null}
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>

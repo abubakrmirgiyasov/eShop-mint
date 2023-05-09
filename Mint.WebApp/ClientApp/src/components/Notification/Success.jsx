@@ -6,5 +6,5 @@ export const Success = ({ message }) => {
     toast.success(message, {
       position: toast.POSITION.TOP_RIGHT,
     });
-  }, [message])
+  }, []);
 };

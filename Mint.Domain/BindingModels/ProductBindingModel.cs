@@ -61,7 +61,9 @@ public class ProductInfoBindingModel
     public string? Sku { get; set; }
     
     public int Gtin { get; set; }
-    
+
+    public string? CountryOfOrigin { get; set; }
+
     public bool IsPublished { get; set; }
     
     public int DeliveryMinDay { get; set; }

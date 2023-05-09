@@ -4,6 +4,7 @@ import Message from "./message/reducer";
 import Theme from "./theme/reducer";
 import Categories from "./categories/reducer";
 import MyStore from "./userStore/reducer";
+import Products from "./products/reducer";
 
 const rootReducer = combineReducers({
   Signin,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   Theme,
   Categories,
   MyStore,
+  Products,
 });
 
 export default rootReducer;
