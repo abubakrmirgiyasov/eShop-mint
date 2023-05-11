@@ -31,10 +31,17 @@ public class ProductManager
                         Store = product.Store?.Name,
                     });
 
-                    for (int k = 0; k < models[i].Products![j].ProductPhotos?.Count;)
+                    if (models[i].Products![j].ProductPhotos?.Count == 0)
                     {
-                        products[j].Photos?.Add(models[i].Products![j].ProductPhotos![j].Photo.GetImage64());
-                        break;
+                        products[i].Photos?.Add(new Photo().GetImage64());
+                    }
+                    else
+                    {
+                        for (int k = 0; k < models[i].Products![j].ProductPhotos?.Count;)
+                        {
+                            products[j].Photos?.Add(models[i].Products![j].ProductPhotos![j].Photo.GetImage64());
+                            break;
+                        }
                     }
                 }
             }

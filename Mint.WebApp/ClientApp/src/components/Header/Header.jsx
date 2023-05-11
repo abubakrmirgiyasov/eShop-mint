@@ -28,7 +28,11 @@ const Header = (props) => {
   const [isSearch, setIsSearch] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const { Signin: user } = useSelector((user) => user);
+  const { user, myStore, isLoggedIn } = useSelector((state) => ({
+    user: state.Signin.user,
+    myStore: state.MyStore.myStore,
+    isLoggedIn: state.Signin.isLoggedIn,
+  }));
 
   const onChangeData = (e) => {};
 
@@ -160,7 +164,7 @@ const Header = (props) => {
                 />
               }
               {<NotificationList />}
-              {user.isLoggedIn ? (
+              {isLoggedIn ? (
                 <>
                   <UserMenu />
                   {

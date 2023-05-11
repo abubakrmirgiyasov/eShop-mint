@@ -6,8 +6,6 @@ const Navdata = () => {
     menu: state.Categories.menu,
   }));
 
-  const [isDashboard, setIsDashboard] = useState(false);
-
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
       const ul = document.getElementById("two-column-menu");
@@ -33,10 +31,8 @@ const Navdata = () => {
         orderBy: item.parentOrder,
         badgeText: item.parentBadgeText,
         badgeStyle: item.parentBadgeStyle,
-        stateVariables: isDashboard,
         click: function (e) {
           e.preventDefault();
-          setIsDashboard(!isDashboard);
           updateIconSidebar(e);
         },
       };

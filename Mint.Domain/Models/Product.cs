@@ -77,4 +77,6 @@ public class Product
     public List<Storage>? Storages { get; set; }
 
     public List<CommonCharacteristic>? CommonCharacteristics { get; set; }
+
+    public List<LikedProduct>? LikedProducts { get; set; }
 }

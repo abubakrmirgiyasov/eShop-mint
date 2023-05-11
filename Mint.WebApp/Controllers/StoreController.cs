@@ -34,7 +34,6 @@ public class StoreController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [AllowAnonymous]
     public async Task<IActionResult> GetMyStore(Guid id)
     {
         try

@@ -50,6 +50,7 @@ public class ProductRepository : IProductRepository
                 .Include(x => x.Storages)
                 .Include(x => x.ProductPhotos!)
                 .ThenInclude(x => x.Photo)
+                .Where(x => x.Store!.Id == id)
                 .ToListAsync();
             return new ProductManager().FormingFullProdutcViewModels(products);
         }
@@ -98,15 +99,18 @@ public class ProductRepository : IProductRepository
     {
         try
         {
-            var products = await _context.Categories
-                .Include(x => x.Products!)
-                .ThenInclude(x => x.ProductPhotos!)
-                .ThenInclude(x => x.Photo)
-                .Include(x => x.SubCategory)
-                .Include(x => x.Photo)
+            var products = await _context.Products
                 .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Where(x => x.Category != null)
+                .Where(x => x.Category!.DefaultLink == name)
                 .ToListAsync();
-            return new ProductManager().FormingCategoryViewModels(products);
+            return new ProductManager().FormingFullProdutcViewModels(products);
         }
         catch (Exception ex)
         {

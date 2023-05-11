@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import DataTable from "react-data-table-component";
 import { Button, Input, Spinner, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 import { Error } from "../../../../components/Notification/Error";
 import { Success } from "../../../../components/Notification/Success";
+import { Grid, _ } from "gridjs-react";
+import Select from "react-select";
 
 const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,32 +34,34 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   }, []);
 
   const handleAddClick = () => {
-    setColumnsToAdd([...columnsToAdd, { id: columnsToAdd.length + 1 }]);
+    const cols = ["Категория", "Показать", "Действие"];
+    setColumnsToAdd([...columnsToAdd, cols]);
   };
 
   const handleAcceptClick = () => {
-    // if (selectedCategory && selectedCategory !== "Выберете Категорию") {
-    setAddingLoading(true);
+    console.log(selectedCategory);
+    if (selectedCategory) {
+      setAddingLoading(true);
 
-    const data = {
-      categoryId: "0747acb0-ce7e-4ca3-8d36-efab5225652b",
-      productId: dataForUpdate?.id,
-      // displayOrder: console.log(e.target),
-    };
+      const data = {
+        categoryId: selectedCategory,
+        productId: dataForUpdate?.id,
+        // displayOrder: console.log(e.target),
+      };
 
-    fetchWrapper
-      .put("api/product/categorymappings", data)
-      .then((response) => {
-        setAddingLoading(false);
-        setSuccess(response);
-      })
-      .catch((error) => {
-        setAddingLoading(false);
-        setError(error);
-      });
-    // } else {
-    //   setError("Выберете категорию");
-    // }
+      fetchWrapper
+        .put("api/product/categorymappings", data)
+        .then((response) => {
+          setAddingLoading(false);
+          setSuccess(response);
+        })
+        .catch((error) => {
+          setAddingLoading(false);
+          setError(error);
+        });
+    } else {
+      setError("Выберете категорию");
+    }
   };
 
   const handleRemoveClick = (row) => {
@@ -67,51 +70,34 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+    console.log(e);
+    setSelectedCategory(e.value);
   };
-
-  useEffect(() => {
-    window.addEventListener("change", handleCategoryChange, false);
-  }, [selectedCategory]);
 
   const columns = useMemo(
     () => [
+      // {
+      //   name: (
+      //     <Input type={"checkbox"} className={"form-check"} disabled={true} />
+      //   ),
+      //   formatter: (row) => _(<span>{row.displayOrder}</span>),
+      //   // cell: () => <Input type={"checkbox"} className={"form-check"} />,
+      // },
       {
-        name: (
-          <Input type={"checkbox"} className={"form-check"} disabled={true} />
-        ),
-        selector: (row) => <span>{row.displayOrder}</span>,
-        cell: () => <Input type={"checkbox"} className={"form-check"} />,
+        name: "Категория",
+        formatter: () =>
+          _(
+            <Select
+              options={categories}
+              defaultValue={""}
+              onChange={handleCategoryChange}
+            />
+          ),
       },
       {
-        name: <span className={"font-weight-bold fs-13"}>Категория</span>,
-        selector: () => {
-          return (
-            <select
-              name={"category"}
-              className={"form-control"}
-              placeholder={"Выберете Категорию"}
-              // onChange={handleCategoryChange}
-              multiple={false}
-            >
-              <option>Выберете категорию</option>
-              {categories.map((item, key) => (
-                <option
-                  key={key}
-                  value={item.value}
-                  selected={item.value === dataForUpdate?.categoryId}
-                >
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          );
-        },
-      },
-      {
-        name: <span className={"font-weight-bold fs-13"}>Показать</span>,
-        selector: () => {
-          return (
+        name: "Показать",
+        formatter: () =>
+          _(
             <Input
               type={"number"}
               name={"displayOrder"}
@@ -119,16 +105,13 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
               placeholder={"Введите порядок показа"}
               defaultValue={0}
             />
-          );
-        },
+          ),
       },
       {
-        name: <span className={"font-weight-bold fs-13"}>Действие</span>,
-        selector: (row) => {
-          return (
-            <div
-              className={"d-flex justify-content-between align-items-center"}
-            >
+        name: "Действие",
+        formatter: (row) =>
+          _(
+            <div className={"d-flex justify-content-end align-items-center"}>
               <Button
                 color={"danger"}
                 className={"me-2"}
@@ -150,14 +133,11 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
                 )}
               </Button>
             </div>
-          );
-        },
+          ),
       },
     ],
     [categories]
   );
-
-  console.log(selectedCategory);
 
   return (
     <TabPane tabId={4}>
@@ -172,21 +152,34 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
           </div>
         ) : (
           <>
-            <div className={"d-flex justify-content-start align-items-center"}>
-              <Button
-                className={"btn btn-success"}
-                color={"success"}
-                onClick={handleAddClick}
-              >
-                <i className={"ri-add-line align-middle"}></i> Добавить
-              </Button>
-            </div>
-            <DataTable
-              columns={columns || []}
-              data={temp || []}
-              pagination={true}
-              highlightOnHover={true}
+            <Select
+              options={categories}
+              defaultValue={""}
+              onChange={handleCategoryChange}
             />
+            <Button
+              color={"primary"}
+              onClick={handleAcceptClick}
+              disabled={addingLoading}
+            >
+              {addingLoading ? (
+                <Spinner className={"me-2"} size={"sm"}>
+                  ...Loading
+                </Spinner>
+              ) : (
+                <i className={"ri-check-line"}></i>
+              )}
+            </Button>
+            {/*<div className={"d-flex justify-content-start align-items-center"}>*/}
+            {/*  <Button*/}
+            {/*    className={"btn btn-success mb-3"}*/}
+            {/*    color={"success"}*/}
+            {/*    onClick={handleAddClick}*/}
+            {/*  >*/}
+            {/*    <i className={"ri-add-line align-middle"}></i> Добавить*/}
+            {/*  </Button>*/}
+            {/*</div>*/}
+            {/*<Grid data={columnsToAdd || []} columns={columns} sort={true} />*/}
           </>
         )
       ) : (

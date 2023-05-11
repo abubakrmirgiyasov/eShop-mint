@@ -5,6 +5,7 @@ import Theme from "./theme/reducer";
 import Categories from "./categories/reducer";
 import MyStore from "./userStore/reducer";
 import Products from "./products/reducer";
+import Cart from "./cart/reducer";
 
 const rootReducer = combineReducers({
   Signin,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   Categories,
   MyStore,
   Products,
+  Cart,
 });
 
 export default rootReducer;

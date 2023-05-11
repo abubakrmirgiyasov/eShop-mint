@@ -34,7 +34,7 @@ const Store = ({ userId }) => {
         <Card>
           <CardBody>
             <h2 className={"mb-3"}>Ваш магазин</h2>
-            {error ? (
+            {!data ? (
               <OpenStore userId={userId} newData={handleNewData} />
             ) : (
               <StoreInfo data={data} />

@@ -34,6 +34,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Discount> Discounts { get; set; }
 
+    public DbSet<LikedProduct> LikedProducts { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -176,6 +178,12 @@ public class ApplicationDbContext : DbContext
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<LikedProduct>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.LikedProducts)
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         var salt = new Hasher().GetSalt();
 

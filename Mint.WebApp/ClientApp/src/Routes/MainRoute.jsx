@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   adminRoutes,
@@ -12,8 +12,16 @@ import AdminRoutes from "../components/RoutesLayout/AdminRoutes";
 import Layout from "../components/Layouts/Layout";
 import AdminLayout from "../components/Layouts/AdminLayout";
 import EmptyLayout from "../components/Layouts/EmptyLayout";
+import { useDispatch, useSelector } from "react-redux";
+import { myStore } from "../Common/UserStores/myStore";
 
 const MainRoute = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(myStore());
+  }, [dispatch]);
+
   return (
     <React.Fragment>
       <Routes>

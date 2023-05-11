@@ -1,7 +1,6 @@
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 
 const productHelper = () => {
-  console.log("asdasd");
   return fetchWrapper
     .get("api/product/getproducts")
     .then((response) => {

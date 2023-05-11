@@ -25,27 +25,31 @@ const Products = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [data, setIsData] = useState(null);
 
-  const { user } = useSelector((state) => ({
-    user: state.Signin.user,
+  const { store } = useSelector((state) => ({
+    store: state.MyStore.myStore,
   }));
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchWrapper
-      .get("api/product/getsellerproductsbyid/" + user.id)
-      .then((response) => {
-        setIsLoading(false);
-        setIsData(response);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        setError(error);
-      });
+    if (store) {
+      setIsLoading(true);
+      fetchWrapper
+        .get("api/product/getsellerproductsbyid/" + store.id)
+        .then((response) => {
+          setIsLoading(false);
+          setIsData(response);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setError(error);
+        });
+    } else {
+      setError("Возникла, ошибка. Откройте магазин.");
+    }
   }, []);
 
   return (
-      <div className={"page-content"}>
-          {error ? <Error message={error} /> : null}
+    <div className={"page-content"}>
+      {error ? <Error message={error} /> : null}
       <Card>
         <CardHeader>
           <h2>Управление продуктами</h2>

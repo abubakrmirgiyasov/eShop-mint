@@ -66,6 +66,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetProductById(Guid id)
     {
         try
@@ -80,6 +81,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{name}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetProductsByCategory(string name)
     {
         try
