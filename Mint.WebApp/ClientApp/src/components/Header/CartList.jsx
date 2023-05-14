@@ -36,8 +36,6 @@ const CartList = () => {
     dispatch(removeFromCart(item.id));
   };
 
-  console.log(cartData.length);
-
   return (
     <React.Fragment>
       <Dropdown
@@ -120,8 +118,9 @@ const CartList = () => {
                 >
                   <div className={"d-flex align-items-center"}>
                     <img
-                      // src={item.photos.length ? item.photos[0] : defaultImage}
+                      src={item.photos?.length ? item.photos[0] : defaultImage}
                       className={"me-3 rounded-circle avatar-sm p-2 bg-light"}
+                      style={{ objectFit: "scale-down" }}
                       alt={""}
                     />
                     <div className={"flex-1"}>

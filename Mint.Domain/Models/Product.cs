@@ -72,11 +72,11 @@ public class Product
 
     public List<ProductPhoto>? ProductPhotos { get; set; }
 
-    public List<Order> Orders { get; set; } = null!;
-
     public List<Storage>? Storages { get; set; }
 
     public List<CommonCharacteristic>? CommonCharacteristics { get; set; }
 
     public List<LikedProduct>? LikedProducts { get; set; }
+
+    public List<OrderProduct> OrderProducts { get; set; } = null!;
 }

@@ -36,6 +36,10 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<LikedProduct> LikedProducts { get; set; }
 
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<OrderProduct> OrderProducts { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -69,6 +73,13 @@ public class ApplicationDbContext : DbContext
             {
                 x.ProductId,
                 x.PhotoId,
+            });
+
+        builder.Entity<OrderProduct>()
+            .HasKey(x => new
+            {
+                x.ProductId,
+                x.OrderId,
             });
 
         builder.Entity<UserRole>()
@@ -173,9 +184,15 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.StoreId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Order>()
+        builder.Entity<OrderProduct>()
+            .HasOne(x => x.Order)
+            .WithMany(x => x.OrderProducts)
+            .HasForeignKey(x => x.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<OrderProduct>()
             .HasOne(x => x.Product)
-            .WithMany(x => x.Orders)
+            .WithMany(x => x.OrderProducts)
             .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -183,6 +200,12 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.Product)
             .WithMany(x => x.LikedProducts)
             .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Order>()
+            .HasOne(x => x.Address)
+            .WithMany(x => x.Orders)
+            .HasForeignKey(x => x.AddressId)
             .OnDelete(DeleteBehavior.SetNull);
 
         var salt = new Hasher().GetSalt();

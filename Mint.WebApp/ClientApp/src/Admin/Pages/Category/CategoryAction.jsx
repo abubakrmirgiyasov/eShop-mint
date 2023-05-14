@@ -419,11 +419,9 @@ const CategoryAction = () => {
                       className={"btn btn-primary"}
                     >
                       {isLoading ? (
-                        <Spinner size={"sm"} className="me-2">
-                          Loading...
-                        </Spinner>
+                        <Spinner size={"sm"}>Loading...</Spinner>
                       ) : null}
-                      Сохранить
+                      <i className={"ri-check-double-fill"}></i> Сохранить
                     </Button>
                   </Col>
                 </Row>

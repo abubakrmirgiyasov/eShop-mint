@@ -52,6 +52,8 @@ public class ProductFullViewModel
 
     public Guid? StoreId { get; set; }
 
+    public string? StoreUrl { get; set; }
+
     public string? Store { get; set; }
 
     public Guid? DiscountId { get; set; }

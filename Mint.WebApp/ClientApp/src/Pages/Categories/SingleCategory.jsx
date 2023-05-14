@@ -15,6 +15,9 @@ const SingleCategory = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const [isRow, setIsRow] = useState(false);
+  const [searchValue, setSearchValue] = useState(null);
+  const [searchParam] = useState(["name", "fullDescription"]);
+  const [dataForSearch, setDataForSearch] = useState([]);
 
   const params = useParams();
 
@@ -25,6 +28,7 @@ const SingleCategory = () => {
       .get("api/product/getproductsbycategory/" + params.name)
       .then((response) => {
         setData(response);
+        setDataForSearch(response);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -41,7 +45,27 @@ const SingleCategory = () => {
     setIsRow(true);
   };
 
-  console.log(data);
+  const handleFilteredData = (newData) => {
+    setDataForSearch(newData);
+  };
+
+  const handleSearch = (e) => {
+    if (e.target.value !== "") {
+      const newData = dataForSearch.filter((item) => {
+        return searchParam.some((newItem) => {
+          return (
+            item[newItem]
+              .toString()
+              .toLowerCase()
+              .indexOf(e.target.value.toLowerCase()) > -1
+          );
+        });
+      });
+      setDataForSearch(newData);
+    } else {
+      setDataForSearch(data);
+    }
+  };
 
   return (
     <div className={"page-content"}>
@@ -70,7 +94,7 @@ const SingleCategory = () => {
                         className={"form-control mt-0 mb-0"}
                         placeholder={"Поиск..."}
                         defaultValue={""}
-                        // onChange={() => {}}
+                        onChange={handleSearch}
                       />
                       <span
                         className={"mdi mdi-magnify search-widget-icon"}
@@ -120,21 +144,25 @@ const SingleCategory = () => {
             <Col lg={3}>
               <Card>
                 <CardBody>
-                  <ProductSort />
+                  <ProductSort
+                    data={data}
+                    dataForSearch={dataForSearch}
+                    filteredData={handleFilteredData}
+                  />
                 </CardBody>
               </Card>
             </Col>
             <Col lg={9}>
-              {data.length ? (
+              {dataForSearch.length ? (
                 isRow ? (
-                  data?.map((item, key) => (
+                  dataForSearch?.map((item, key) => (
                     <ProductCardRow product={item} key={key} />
                   ))
                 ) : (
                   <Row>
-                    {data?.map((item, key) => (
-                      <Col md={12} lg={4} className={"mb-4 mb-lg-0"}>
-                        <ProductCardTable product={item} key={key} />
+                    {dataForSearch?.map((item, key) => (
+                      <Col md={12} lg={4} className={"mb-4 mb-lg-0"} key={key}>
+                        <ProductCardTable product={item} />
                       </Col>
                     ))}
                   </Row>

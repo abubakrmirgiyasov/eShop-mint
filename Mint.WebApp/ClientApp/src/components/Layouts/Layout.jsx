@@ -64,9 +64,9 @@ const Layout = ({ children }) => {
         <ToastContainer
           position={"top-right"}
           autoClose={5000}
-          limit={1}
+          limit={10}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick={true}
           rtl={false}
           pauseOnFocusLoss={true}

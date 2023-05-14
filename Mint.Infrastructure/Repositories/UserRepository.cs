@@ -164,6 +164,7 @@ public class UserRepository : IUserRepository
         try
         {
             var address = await _context.Addresses
+                .Include(x => x.User)
                 .AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .ToListAsync();

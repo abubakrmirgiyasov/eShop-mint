@@ -21,7 +21,6 @@ const signinHelper = async (values) => {
           });
     })
     .then((data) => {
-      console.log(data);
       if (data.accessToken) {
         localStorage.setItem("auth_user", JSON.stringify(data));
       }

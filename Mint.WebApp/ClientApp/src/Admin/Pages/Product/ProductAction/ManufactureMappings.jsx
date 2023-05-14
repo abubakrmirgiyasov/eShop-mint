@@ -4,6 +4,7 @@ import { Button, Input, Spinner, TabPane } from "reactstrap";
 import { Error } from "../../../../components/Notification/Error";
 import { Success } from "../../../../components/Notification/Success";
 import DataTable from "react-data-table-component";
+import Select from "react-select";
 
 const ManufactureMappings = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,10 +35,7 @@ const ManufactureMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleAcceptClick = () => {
-    if (
-      selectedManufacture &&
-      selectedManufacture !== "Выберете производителя"
-    ) {
+    if (selectedManufacture) {
       setAddingLoading(true);
 
       const data = {
@@ -62,12 +60,8 @@ const ManufactureMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleManufactureChange = (e) => {
-    setSelectedManufacture(e.target.value);
+    setSelectedManufacture(e.value);
   };
-
-  useEffect(() => {
-    window.addEventListener("change", handleManufactureChange, false);
-  }, [selectedManufacture]);
 
   const handleRemoveClick = (row) => {
     const newItems = [...columnsToAdd];
@@ -170,12 +164,31 @@ const ManufactureMappings = ({ isAdded, dataForUpdate }) => {
                 <i className={"ri-add-line align-middle"}></i> Добавить
               </Button>
             </div>
-            <DataTable
-              columns={columns || []}
-              data={columnsToAdd || []}
-              pagination={true}
-              highlightOnHover={true}
+            <Select
+              name={"manufacture"}
+              className={"form-control"}
+              options={manufactures}
+              onChange={handleManufactureChange}
             />
+            <Button
+              color={"primary"}
+              onClick={handleAcceptClick}
+              disabled={addingLoading}
+            >
+              {addingLoading ? (
+                <Spinner className={"me-2"} size={"sm"}>
+                  ...Loading
+                </Spinner>
+              ) : (
+                <i className={"ri-check-line"}></i>
+              )}
+            </Button>
+            {/*<DataTable*/}
+            {/*  columns={columns || []}*/}
+            {/*  data={columnsToAdd || []}*/}
+            {/*  pagination={true}*/}
+            {/*  highlightOnHover={true}*/}
+            {/*/>*/}
           </>
         )
       ) : (

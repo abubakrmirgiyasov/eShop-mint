@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, CardBody, Col, Row } from "reactstrap";
+import { Badge, Button, Card, CardBody, Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 import Rating from "react-rating";
 import { dateConverter } from "../../helpers/dateConverter";
@@ -25,7 +25,22 @@ const ProductCardRow = ({ product }) => {
   return (
     <React.Fragment>
       {success ? <Success message={success} /> : null}
-      <Card>
+      <Card className={"position-relative"}>
+        {product.isDiscount ? (
+          <div
+            className={"d-flex justify-content-end p-3 position-absolute"}
+            style={{ left: 0, zIndex: 1 }}
+          >
+            <div
+              className={
+                "bg-danger rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+              }
+              style={{ width: "35px", height: "35px" }}
+            >
+              <p className={"text-white mb-0 small"}>% {product.percent}</p>
+            </div>
+          </div>
+        ) : null}
         <CardBody>
           <Row>
             <Col className={"mb-4 mb-lg-0"} md={12} lg={3}>
@@ -84,14 +99,21 @@ const ProductCardRow = ({ product }) => {
                   : product.shortDescription}
               </p>
             </Col>
-            <Col md="6" lg="3" className="border-sm-start-none border-start">
-              <div className="d-flex flex-row align-items-center mb-1">
-                <h4 className="mb-1 me-1">₽ {product.price}</h4>
-                {product.percent > 0 ? (
-                  <span className="text-danger">
-                    <s>₽ {product.price}</s>
-                  </span>
-                ) : null}
+            <Col md={6} lg={3} className={"border-sm-start-none border-start"}>
+              <div className={"d-flex flex-row align-items-center mb-1"}>
+                {product.isDiscount ? (
+                  <>
+                    <h4 className={"mb-1 me-1"}>
+                      ₽{" "}
+                      {product.price - (product.price * product.percent) / 100}
+                    </h4>
+                    <span className={"text-danger"}>
+                      <s>₽ {product.price}</s>
+                    </span>
+                  </>
+                ) : (
+                  <h4 className={"mb-1 me-1"}>₽ {product.price}</h4>
+                )}
               </div>
               {product.isFreeTax ? (
                 <h6 className="text-success">Бесплатная доставка</h6>
@@ -101,9 +123,14 @@ const ProductCardRow = ({ product }) => {
                 </h6>
               )}
               <div className={"d-flex flex-column mt-4"}>
-                <Button color={"success"} size={"md"}>
+                <Link
+                  to={"/product-details/" + product.id}
+                  color={"success"}
+                  className={"btn btn-success"}
+                  size={"md"}
+                >
                   Подробнее
-                </Button>
+                </Link>
                 <Button
                   color={"outline-success"}
                   size={"md"}
@@ -135,7 +162,22 @@ const ProductCardTable = ({ product }) => {
   return (
     <React.Fragment>
       {success ? <Success message={success} /> : null}
-      <Card style={{ height: "370px" }}>
+      <Card style={{ height: "370px" }} className={"position-relative"}>
+        {product.isDiscount ? (
+          <div
+            className={"d-flex justify-content-end p-3 position-absolute"}
+            style={{ right: 0 }}
+          >
+            <div
+              className={
+                "bg-danger rounded-circle d-flex align-items-center justify-content-center shadow-1-strong"
+              }
+              style={{ width: "35px", height: "35px" }}
+            >
+              <p className={"text-white mb-0 small"}>% {product.percent}</p>
+            </div>
+          </div>
+        ) : null}
         <img
           src={product.photos[0]}
           alt={product.name}
@@ -143,26 +185,39 @@ const ProductCardTable = ({ product }) => {
           style={{ objectFit: "scale-down", height: "200px" }}
         />
         <CardBody className={"d-flex flex-column justify-content-end"}>
-          <div className="d-flex justify-content-between">
-            <p className="small">
+          <div className={"d-flex justify-content-between"}>
+            <p className={"small"}>
               <Link to={"/product-details/" + product.id} color={"primary"}>
                 {product.name.length > 100
                   ? product.name.substring(0, 100) + "..."
                   : product.name}
               </Link>
             </p>
-            {product.percent > 0 ? (
-              <span className="text-danger">
-                <s>₽ {product.price}</s>
-              </span>
-            ) : null}
           </div>
-
           <div className={"d-flex justify-content-between mb-3"}>
             <h5 className={"mb-0"}>{product.category}</h5>
-            <h5 className={"text-dark mb-0"}>₽ {product.price}</h5>
+            <h5 className={"text-dark mb-0 position-relative"}>
+              {product.isDiscount ? (
+                <>
+                  ₽ {product.price - (product.price * product.percent) / 100}
+                  <Badge
+                    pill={true}
+                    className={
+                      "position-absolute translate-middle fw-normal text-decoration-line-through"
+                    }
+                    color={"transparent"}
+                    style={{ left: "60%", top: "-5px" }}
+                  >
+                    <span className={"text-danger fs-12"}>
+                      {"₽ " + product.price}
+                    </span>
+                  </Badge>
+                </>
+              ) : (
+                "₽" + product.price
+              )}
+            </h5>
           </div>
-
           <div className={"d-flex justify-content-between mb-2"}>
             <p className={"text-muted mb-0"}>
               <Button
@@ -175,6 +230,7 @@ const ProductCardTable = ({ product }) => {
               <Link
                 to={"/product-details/" + product.id}
                 color={"outline-success"}
+                className={"btn btn-outline-success"}
               >
                 Подробнее
               </Link>

@@ -54,15 +54,15 @@ public class AddressManager
         }
     }
 
-    public List<AddressViewModel> FormingViewModels(List<Address> addresses)
+    public List<AddressViewModel> FormingViewModels(List<Address> models)
     {
         try
         {
-            var extractedModels = new List<AddressViewModel>();
+            var addresses = new List<AddressViewModel>();
 
-            foreach (var address in addresses)
+            foreach (var address in models)
             {
-                extractedModels.Add(new AddressViewModel()
+                addresses.Add(new AddressViewModel()
                 {
                     Id = address.Id,
                     FullName = $"{address.User.FirstName} {address.User.SecondName}",
@@ -75,7 +75,7 @@ public class AddressManager
                     Description = address.Description,
                 });
             }
-            return extractedModels;
+            return addresses;
         }
         catch (Exception ex)
         {

@@ -20,6 +20,7 @@ import Stores from "../Pages/Stores/Stores";
 import SingleStore from "../Pages/Stores/SingleStore";
 import SampleCategories from "../Pages/Categories/Categories";
 import SingleCategory from "../Pages/Categories/SingleCategory";
+import Checkout from "../Pages/Checkout/Checkout";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -33,6 +34,7 @@ const publicRoutes = [
   { path: "/stores/:name", component: <SingleStore /> },
   { path: "/categories", component: <SampleCategories /> },
   { path: "/categories/:name", component: <SingleCategory /> },
+  { path: "/checkout", component: <Checkout /> },
   {
     path: "/admin/admin-signin",
     component: <div className={"page-content"}>test</div>,

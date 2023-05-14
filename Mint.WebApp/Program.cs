@@ -35,6 +35,7 @@ builder.Services.Configure<FormOptions>(option =>
 
 builder.Services.AddScoped<IJwt, Jwt>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();

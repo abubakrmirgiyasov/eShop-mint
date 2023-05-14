@@ -4,6 +4,7 @@ import { Error } from "../../../../components/Notification/Error";
 import { Success } from "../../../../components/Notification/Success";
 import { Button, Input, Spinner, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
+import Select from "react-select";
 
 const Promotions = ({ isAdded, dataForUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,14 +21,19 @@ const Promotions = ({ isAdded, dataForUpdate }) => {
       .get("api/discount/getpromotions")
       .then((response) => {
         setIsLoading(false);
-        setPromotions(response);
+        setPromotions(
+          response.map(({ id, name, percent }) => ({
+            value: id,
+            label: `${name} ${percent} %`,
+          }))
+        );
       })
       .catch((error) => {
         setIsLoading(false);
         setError(error);
       });
 
-    window.addEventListener("change", handleManufactureChange, false);
+    window.addEventListener("change", handlePromotionChange, false);
   }, []);
 
   const handleAddClick = () => {
@@ -65,8 +71,8 @@ const Promotions = ({ isAdded, dataForUpdate }) => {
     setColumnsToAdd(newItems);
   };
 
-  const handleManufactureChange = (e) => {
-    setSelectedPromotion(e.target.value);
+  const handlePromotionChange = (e) => {
+    setSelectedPromotion(e.value);
   };
 
   const columns = useMemo(
@@ -137,21 +143,36 @@ const Promotions = ({ isAdded, dataForUpdate }) => {
           </div>
         ) : (
           <>
-            <div className={"d-flex justify-content-start align-items-center"}>
-              <Button
-                className={"btn btn-success"}
-                color={"success"}
-                onClick={handleAddClick}
-              >
-                <i className={"ri-add-line align-middle"}></i> Добавить
-              </Button>
-            </div>
-            <DataTable
-              columns={columns || []}
-              data={columnsToAdd || []}
-              pagination={true}
-              highlightOnHover={true}
+            {/*<div className={"d-flex justify-content-start align-items-center"}>*/}
+            {/*  <Button*/}
+            {/*    className={"btn btn-success"}*/}
+            {/*    color={"success"}*/}
+            {/*    onClick={handleAddClick}*/}
+            {/*  >*/}
+            {/*    <i className={"ri-add-line align-middle"}></i> Добавить*/}
+            {/*  </Button>*/}
+            {/*</div>*/}
+            <Select
+              name={"discount"}
+              className={"form-control"}
+              onChange={handlePromotionChange}
+              options={promotions}
             />
+            <Button color={"primary"} onClick={handleAcceptClick}>
+              {addingLoading ? (
+                <Spinner className={"me-2"} size={"sm"}>
+                  ...Loading
+                </Spinner>
+              ) : (
+                <i className={"ri-check-line"}></i>
+              )}
+            </Button>
+            {/*<DataTable*/}
+            {/*  columns={columns || []}*/}
+            {/*  data={columnsToAdd || []}*/}
+            {/*  pagination={true}*/}
+            {/*  highlightOnHover={true}*/}
+            {/*/>*/}
           </>
         )
       ) : (

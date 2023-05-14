@@ -258,7 +258,7 @@ const ManufacturesAction = () => {
                   </Col>
                   <Col
                     lg={12}
-                    className="d-flex justify-content-end align-items-end"
+                    className={"d-flex justify-content-end align-items-end"}
                   >
                     <Button
                       color={"primary"}
@@ -266,11 +266,9 @@ const ManufacturesAction = () => {
                       disabled={isLoading}
                     >
                       {isLoading ? (
-                        <Spinner size={"sm"} className="me-2">
-                          Loading...
-                        </Spinner>
+                        <Spinner size={"sm"}>Loading...</Spinner>
                       ) : null}
-                      Сохранить
+                      <i className={"ri-check-double-fill"}></i> Сохранить
                     </Button>
                   </Col>
                 </Form>

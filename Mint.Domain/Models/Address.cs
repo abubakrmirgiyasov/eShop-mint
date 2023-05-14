@@ -30,4 +30,6 @@ public class Address
     public Guid UserId { get; set; }
 
     public User User { get; set; } = null!;
+
+    public List<Order>? Orders { get; set; }
 }

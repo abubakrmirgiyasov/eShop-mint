@@ -10,7 +10,7 @@ const products = JSON.parse(localStorage.getItem("cart_items")) || [];
 
 const initState = {
   isCartOpen: false,
-  cart: products,
+  cart: [],
 };
 
 export default function (state = initState, action) {

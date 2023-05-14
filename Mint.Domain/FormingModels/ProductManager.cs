@@ -96,7 +96,7 @@ public class ProductManager
         }
     }
 
-    public List<ProductFullViewModel> FormingFullProdutcViewModels(List<Product> models)
+    public List<ProductFullViewModel> FormingFullProductViewModels(List<Product> models)
     {
         try
         {
@@ -201,11 +201,6 @@ public class ProductManager
         }
     }
 
-    public ProductFullViewModel FormingInfoViewModel(Product model)
-    {
-        return new ProductFullViewModel();
-    }
-
     public List<ProductFullViewModel> FormingMultiViewModels(Store model)
     {
         try
@@ -255,6 +250,8 @@ public class ProductManager
                 ShowOnHomePage = model.ShowOnHomePage,
                 CountryOfOrigin = model.CountryOfOrigin,
                 Store = model.Store?.Name,
+                StoreUrl = model.Store?.Url,
+                StoreId = model.Store?.Id,
                 TaxPrice = model.TaxPrice,
                 Price = model.Price,
                 OldPrice = model.Price,
@@ -263,6 +260,9 @@ public class ProductManager
                 DeliveryMinDay = model.DeliveryMinDay,
                 DeliveryMaxDay = model.DeliveryMaxDay,
                 Discount = model.Discount?.Name,
+                IsDiscount = model.Discount != null,
+                DiscountId = model.DiscountId,
+                Percent = model.Discount?.Percent,
                 IsFreeTax = model.IsFreeTax,
                 IsPublished = model.IsPublished,
                 Manufacture = model.Manufacture?.Name,

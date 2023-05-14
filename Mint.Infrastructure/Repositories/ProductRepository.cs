@@ -30,7 +30,7 @@ public class ProductRepository : IProductRepository
                 .Include(x => x.Category)
                 .Include(x => x.Discount)
                 .ToListAsync();
-            return new ProductManager().FormingFullProdutcViewModels(products);
+            return new ProductManager().FormingFullProductViewModels(products);
         }
         catch (Exception ex)
         {
@@ -43,6 +43,7 @@ public class ProductRepository : IProductRepository
         try
         {
             var products = await _context.Products
+                .Include(x => x.Discount)
                 .Include(x => x.Manufacture)
                 .Include(x => x.Category)
                 .Include(x => x.CommonCharacteristics)
@@ -52,7 +53,7 @@ public class ProductRepository : IProductRepository
                 .ThenInclude(x => x.Photo)
                 .Where(x => x.Store!.Id == id)
                 .ToListAsync();
-            return new ProductManager().FormingFullProdutcViewModels(products);
+            return new ProductManager().FormingFullProductViewModels(products);
         }
         catch (Exception ex)
         {
@@ -65,6 +66,7 @@ public class ProductRepository : IProductRepository
         try
         {
             var product = await _context.Products
+                .Include(x => x.Discount)
                 .Include(x => x.Manufacture)
                 .Include(x => x.Category)
                 .Include(x => x.CommonCharacteristics)
@@ -100,6 +102,7 @@ public class ProductRepository : IProductRepository
         try
         {
             var products = await _context.Products
+                .Include(x => x.Discount)
                 .Include(x => x.Manufacture)
                 .Include(x => x.Category)
                 .Include(x => x.CommonCharacteristics)
@@ -110,7 +113,7 @@ public class ProductRepository : IProductRepository
                 .Where(x => x.Category != null)
                 .Where(x => x.Category!.DefaultLink == name)
                 .ToListAsync();
-            return new ProductManager().FormingFullProdutcViewModels(products);
+            return new ProductManager().FormingFullProductViewModels(products);
         }
         catch (Exception ex)
         {
