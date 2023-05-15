@@ -1,58 +1,49 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 
-const NewOrdersTable = () => {
-  const data = [
-    {
-      name: "test1",
-      count: 3,
-      price: 333,
-      date: new Date().toLocaleDateString("ru-RU"),
-    },
-    {
-      name: "test2",
-      count: 4,
-      price: 139,
-      date: new Date().toLocaleDateString("ru-RU"),
-    },
-    {
-      name: "test3",
-      count: 1,
-      price: 229,
-      date: new Date().toLocaleDateString("ru-RU"),
-    },
-  ];
-
-  const columns = [
-    {
-      name: <span className="font-weight-bold fs-13">Продукт</span>,
-      selector: (row) => {
-        return <Link to="/">{row.name}</Link>;
+const NewOrdersTable = ({ orders }) => {
+  const columns = useMemo(
+    () => [
+      {
+        name: <span className="font-weight-bold fs-13">Продукт</span>,
+        selector: (row) => (
+          <Link to="/">{row.orderProducts[0].product.name}</Link>
+        ),
+        sortable: true,
       },
-      sortable: true,
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Кол-во X Цена</span>,
-      selector: (row) => `${row.count} X ${row.price}₽`,
-      sortable: true,
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Сумма</span>,
-      selector: (row) => row.count * row.price,
-      sortable: true,
-    },
-    {
-      name: <span className="font-weight-bold fs-13">Дата</span>,
-      selector: (row) => row.date,
-      sortable: true,
-    },
-  ];
+      {
+        name: <span className="font-weight-bold fs-13">Кол-во X Цена</span>,
+        selector: (row) =>
+          `${row.orderProducts[0].quantity} X ${row.orderProducts[0].price} ₽`,
+        sortable: true,
+      },
+      {
+        name: <span className="font-weight-bold fs-13">Сумма</span>,
+        selector: (row) => `${row.orderProducts[0].sum} ₽`,
+        sortable: true,
+      },
+      {
+        name: <span className="font-weight-bold fs-13">Дата</span>,
+        selector: (row) =>
+          `${new Date(row.dateCreate).getDay()} / ${
+            new Date(row.dateCreate).getMonth() + 1
+          } ${new Date(row.dateCreate).getFullYear()}`,
+        sortable: true,
+      },
+      // {
+      //   name: <span className="font-weight-bold fs-13">Действие</span>,
+      //   selector: (row) => row.date,
+      //   sortable: true,
+      // },
+    ],
+    [orders]
+  );
 
   return (
     <DataTable
       columns={columns}
-      data={data}
+      data={orders}
       pagination={true}
       highlightOnHover={true}
     />

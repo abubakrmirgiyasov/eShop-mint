@@ -266,6 +266,7 @@ public class ProductManager
                 IsFreeTax = model.IsFreeTax,
                 IsPublished = model.IsPublished,
                 Manufacture = model.Manufacture?.Name,
+                ManufactureId = model.Manufacture?.Id,
                 //Quantity = models[i].Storages?.FirstOrDefault
                 Photos = new List<string>(),
             };

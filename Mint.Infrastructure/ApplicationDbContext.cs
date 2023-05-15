@@ -178,9 +178,9 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.StoreId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.Entity<Order>()
+        builder.Entity<OrderProduct>()
             .HasOne(x => x.Store)
-            .WithMany(x => x.Orders)
+            .WithMany(x => x.OrderProducts)
             .HasForeignKey(x => x.StoreId)
             .OnDelete(DeleteBehavior.Cascade);
 

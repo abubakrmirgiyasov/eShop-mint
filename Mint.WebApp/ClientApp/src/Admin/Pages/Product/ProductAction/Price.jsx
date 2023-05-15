@@ -16,7 +16,6 @@ import { Error } from "../../../../components/Notification/Error";
 import { Success } from "../../../../components/Notification/Success";
 import { useFormik } from "formik";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
-import { useNavigate } from "react-router-dom";
 
 const Price = ({ isAdded, dataForUpdate }) => {
   const [isFreeTax, setIsFreeTax] = useState(!dataForUpdate?.isFreeTax);
@@ -31,7 +30,7 @@ const Price = ({ isAdded, dataForUpdate }) => {
   const validation = useFormik({
     initialValues: {
       price: 0,
-      isFreeTax: true,
+      isFreeTax: null,
       taxPrice: 1,
     },
     validationSchema: Yup.object({

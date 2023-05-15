@@ -145,7 +145,7 @@ const Profile = () => {
             <TabContent activeTab={activeTab}>
               <CustomerInfo userId={user.id} userImage={user.imagePath} />
               <Addresses activeTab={activeTab} userId={user.id} />
-              <Orders userId={user.id} />
+              <Orders userId={user.id} activeTab={activeTab} />
               <ChangePassword userId={user.id} />
               <Store userId={user.id} />
             </TabContent>

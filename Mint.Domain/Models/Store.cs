@@ -32,5 +32,5 @@ public class Store
 
     public List<Storage>? Storages { get; set; }
 
-    public List<Order> Orders { get; set; } = null!;
+    public List<OrderProduct> OrderProducts { get; set; } = null!;
 }

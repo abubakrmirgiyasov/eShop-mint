@@ -11,12 +11,6 @@ public class Order
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int OrderNumber { get; set; }
 
-    public int Quantity { get; set; }
-
-    public decimal Price { get; set; }
-
-    public decimal Sum { get; set; }
-
     public string ShippingType { get; set; } = null!;
 
     public string PaymentType { get; set; } = null!;
@@ -28,10 +22,6 @@ public class Order
     public Guid? AddressId { get; set; }
 
     public Address? Address { get; set; }
-
-    public Guid StoreId { get; set; }
-
-    public Store Store { get; set; } = null!;
 
     public Guid? UserId { get; set; }
 

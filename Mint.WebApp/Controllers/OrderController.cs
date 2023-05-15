@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.BindingModels;
 using Mint.Domain.Common;
 using Mint.Infrastructure.Repositories.Interfaces;
@@ -25,7 +24,8 @@ public class OrderController : ControllerBase
     {
 		try
 		{
-			return Ok();
+			var orders = await _order.GetOrdersAsync();
+			return Ok(orders);
 		}
 		catch (Exception ex)
 		{
@@ -38,7 +38,8 @@ public class OrderController : ControllerBase
 	{
 		try
 		{
-			return Ok();
+			var orders = await _order.GetSellerOrdersByIdAsync(id);
+            return Ok(orders);
 		}
 		catch (Exception ex)
 		{
@@ -51,7 +52,8 @@ public class OrderController : ControllerBase
 	{
 		try
 		{
-			return Ok();
+			var orders = await _order.GetBuyerOrdersByIdAsync(id);
+            return Ok(orders);
 		}
 		catch (Exception ex)
 		{

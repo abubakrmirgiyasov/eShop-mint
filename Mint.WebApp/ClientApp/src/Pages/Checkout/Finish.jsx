@@ -25,7 +25,7 @@ const Finish = ({ newOrder }) => {
           <h5>Заказ принят!</h5>
           <p className="text-muted">
             Заказ в обработке, подробности можете посмотреть по{" "}
-            <Link to={"/orders/details/id"} color={"primary"}>
+            <Link to={"/orders/details/" + newOrder?.id} color={"primary"}>
               ссылке
             </Link>
           </p>
@@ -33,7 +33,7 @@ const Finish = ({ newOrder }) => {
         <Link
           className={"btn btn-success me-2"}
           color={"success"}
-          to={"/orders/details/id"}
+          to={"/orders/details/" + newOrder?.id}
         >
           Подробности
         </Link>

@@ -41,11 +41,23 @@ const Confirmation = ({
     const data = {
       userId: userId,
       orderProducts: cartData.map((item) => {
-        return { id: item.id, quantity: item.quantity };
+        return {
+          id: item.id,
+          quantity: item.quantity + 1,
+          storeId: item.storeId,
+          percent: item.percent,
+          price: item.price,
+          sum: item.isDiscount
+            ? (item.price - (item.price * item.percent) / 100) *
+                (item.quantity + 1) +
+              (item.isFreeTax ? item.taxPrice : 0)
+            : (item.quantity + 1) * item.price,
+        };
       }),
       paymentType: payment.payment,
       shippingType: shipping.shipping,
-      address: address.id,
+      addressId: address.id,
+      description: description,
     };
 
     console.log(data);
@@ -54,6 +66,7 @@ const Confirmation = ({
       .post("api/order/createorder", data)
       .then((response) => {
         setIsLoading(false);
+        setSuccess("Заказ принят!");
         setNewOrder(response);
         next(6);
       })
@@ -147,12 +160,14 @@ const Confirmation = ({
                     <span className={"fw-semibold"}>{address?.city}</span>
                   </p>
                   <p>
-                    Улица:{" "}
-                    <span className={"fw-semibold"}>{address?.street}</span>
-                  </p>
-                  <p>
                     Почтовый индекс:{" "}
                     <span className={"fw-semibold"}>{address?.zipCode}</span>
+                  </p>
+                  <p>
+                    Описание:{" "}
+                    <span className={"fw-semibold"}>
+                      {address?.description}
+                    </span>
                   </p>
                 </Col>
                 <Col lg={4}>
@@ -182,13 +197,64 @@ const Confirmation = ({
             </CardBody>
           </Card>
           <Card>
-            <CardHeader className={"bg-light"}>name</CardHeader>
+            <CardHeader className={"bg-light"}>Список товаров</CardHeader>
             <CardBody>
-              {cartData.map((item, key) => (
-                <div className={""} key={key}>
-                  {item.name}
-                </div>
-              ))}
+              <Row>
+                {cartData.map((item, key) => (
+                  <Col lg={12} key={key} className={"mb-0"}>
+                    <div className={"d-flex justify-content-start"}>
+                      <div className={"img-thumbnail rounded"}>
+                        <img
+                          src={item.photos[0]}
+                          className={"fluid object-cover"}
+                          height={150}
+                        />
+                      </div>
+                      <div>
+                        <Link
+                          to={"/product-details/" + item.id}
+                          className={"m-2"}
+                        >
+                          {item.name}
+                        </Link>
+                        <p className={"m-2"}>
+                          Количество:{" "}
+                          <span className={"fw-semibold"}>
+                            {item.quantity + 1}
+                          </span>
+                        </p>
+                        <p className={"m-2"}>
+                          Цена:{" "}
+                          <span className={"fw-semibold"}>{item.price} ₽</span>
+                        </p>
+                        <p className={"m-2"}>
+                          Цена доставки:{" "}
+                          <span className={"fw-semibold"}>
+                            {item.isFreeTax
+                              ? "Бесплатная доставка"
+                              : item.taxPrice + " ₽"}{" "}
+                          </span>
+                        </p>
+                        <p className={"m-2"}>
+                          Скидка:{" "}
+                          <span className={"fw-semibold"}>
+                            {item.percent + " %"}
+                          </span>
+                        </p>
+                        <p className={"m-2"}>
+                          Сумма:{" "}
+                          <span className={"fw-semibold"}>
+                            {(item.price - (item.price * item.percent) / 100) *
+                              (item.quantity + 1) +
+                              (item.isFreeTax ?? item.taxPrice)}{" "}
+                            ₽
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
             </CardBody>
           </Card>
         </Container>

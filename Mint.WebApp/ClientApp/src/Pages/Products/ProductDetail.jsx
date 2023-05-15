@@ -24,7 +24,7 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Rating from "react-rating";
 import { PricingWidget } from "../../components/Widgets/PricingWidget";
 import classNames from "classnames";
@@ -145,7 +145,10 @@ const ProductDetail = () => {
                                       <img
                                         src={photo}
                                         alt={product?.name}
-                                        className={"img-fluid d-block rounded"}
+                                        height={120}
+                                        className={
+                                          "object-cover d-block rounded"
+                                        }
                                       />
                                     </div>
                                   </SwiperSlide>
@@ -167,6 +170,8 @@ const ProductDetail = () => {
                                     to={
                                       "/manufacture/" + product?.manufactureId
                                     }
+                                    className={"fw-medium"}
+                                    color={"primary"}
                                   >
                                     {product?.manufacture}
                                   </Link>
@@ -176,7 +181,7 @@ const ProductDetail = () => {
                                   Продовец:{" "}
                                   <Link
                                     to={"/stores/" + product?.storeUrl}
-                                    className={"text-body fw-medium"}
+                                    className={"fw-medium"}
                                     color={"primary"}
                                   >
                                     {product?.store}
@@ -185,7 +190,15 @@ const ProductDetail = () => {
                                 <div className={"text-muted"}>
                                   Дата релиза:{" "}
                                   <span className={"text-body fw-medium"}>
-                                    {product?.commonCharacteristic?.releaseDate}
+                                    {`${new Date(
+                                      product?.commonCharacteristic?.releaseDate
+                                    ).getDate()} / ${
+                                      new Date(
+                                        product?.commonCharacteristic?.releaseDate
+                                      ).getMonth() + 1
+                                    } / ${new Date(
+                                      product?.commonCharacteristic?.releaseDate
+                                    ).getFullYear()}`}
                                   </span>
                                 </div>
                               </div>
@@ -202,7 +215,7 @@ const ProductDetail = () => {
                                     Изменить
                                   </Tooltip>
                                   <Link
-                                    to={""}
+                                    to={"/admin/products/edit/" + params.id}
                                     id={"TooltipTop"}
                                     className={"btn btn-light"}
                                   >

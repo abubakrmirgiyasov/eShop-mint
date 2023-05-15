@@ -34,7 +34,6 @@ const Checkout = () => {
     isLoggedIn: state.Signin.isLoggedIn,
     user: state.Signin.user,
     cartData: state.Cart.cart,
-    s: console.log(state),
   }));
 
   const toggleLoginModal = () => {
