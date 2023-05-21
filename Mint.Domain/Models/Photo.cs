@@ -28,4 +28,6 @@ public class Photo
     public List<Category>? Categories { get; set; }
 
     public List<ProductPhoto>? ProductPhotos { get; set; }
+
+    public List<ReviewPhoto>? ReviewPhotos { get; set; }
 }

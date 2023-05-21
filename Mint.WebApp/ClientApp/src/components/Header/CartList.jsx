@@ -106,7 +106,7 @@ const CartList = () => {
                   to={"/categories"}
                   className={"btn btn-success w-md mb-3"}
                 >
-                  Shop Now
+                  К покупкам
                 </Link>
               </div>
               {cartData.map((item, key) => (

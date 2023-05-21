@@ -46,7 +46,7 @@ const ProductCardRow = ({ product }) => {
             <Col className={"mb-4 mb-lg-0"} md={12} lg={3}>
               <div className={"bg-image rounded hover-zoom hover-overlay"}>
                 <img
-                  src={product.photos[0]}
+                  src={product.photos?.at(0)}
                   className={"fluid w-100"}
                   alt={product.name}
                 />
@@ -71,13 +71,13 @@ const ProductCardRow = ({ product }) => {
               <div className="d-flex flex-row">
                 <div className="text-danger mb-1 me-2">
                   <Rating
-                    initialRating={product.commonCharacteristic?.rate}
+                    initialRating={product.rating}
                     emptySymbol={"mdi mdi-star-outline text-muted"}
                     fullSymbol={"mdi mdi-star text-warning"}
                     className={"me-1"}
                   />
                 </div>
-                <span>{product.commonCharacteristic?.rate}</span>
+                <span>{product.rating}</span>
               </div>
               <div className="mt-1 mb-0 text-muted small">
                 <span>Год релиза: {date}</span>
@@ -179,7 +179,7 @@ const ProductCardTable = ({ product }) => {
           </div>
         ) : null}
         <img
-          src={product.photos[0]}
+          src={product.photos?.at(0)}
           alt={product.name}
           className={"fluid p-3"}
           style={{ objectFit: "scale-down", height: "200px" }}
@@ -237,7 +237,7 @@ const ProductCardTable = ({ product }) => {
             </p>
             <div className={"ms-auto text-warning"}>
               <Rating
-                initialRating={product.commonCharacteristic?.rate}
+                initialRating={product.rating}
                 emptySymbol={"mdi mdi-star-outline text-muted"}
                 fullSymbol={"mdi mdi-star text-warning"}
                 className={"me-1"}

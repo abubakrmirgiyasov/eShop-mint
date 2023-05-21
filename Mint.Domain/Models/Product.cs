@@ -52,6 +52,8 @@ public class Product
 
     public int DeliveryMinDay { get; set; }
 
+    public double Rating { get; set; }
+
     public int DeliveryMaxDay { get; set; }
 
     public Guid? ManufactureId { get; set; }
@@ -79,4 +81,6 @@ public class Product
     public List<LikedProduct>? LikedProducts { get; set; }
 
     public List<OrderProduct> OrderProducts { get; set; } = null!;
+
+    public List<Review>? Reviews { get; set; }
 }

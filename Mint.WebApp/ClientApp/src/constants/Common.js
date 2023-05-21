@@ -31,4 +31,10 @@ const IconsList = [
   { label: "ri-cpu-line", value: "ri-cpu-line" },
 ];
 
-export { Countries, BadgesStyle, IconsList };
+const CommentTypes = [
+  { label: "Менее месяца", value: "lessMonth" },
+  { label: "Не более года", value: "lessYear" },
+  { label: "Более года", value: "moreYear" },
+];
+
+export { Countries, BadgesStyle, IconsList, CommentTypes };

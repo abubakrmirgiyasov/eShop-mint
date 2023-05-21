@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 const Navdata = () => {
@@ -22,7 +22,7 @@ const Navdata = () => {
 
   const menuItems = useMemo(() => {
     const items = [];
-    menu.map((item) => {
+    menu?.map((item) => {
       const data = {
         id: item.id,
         label: item.parentName,

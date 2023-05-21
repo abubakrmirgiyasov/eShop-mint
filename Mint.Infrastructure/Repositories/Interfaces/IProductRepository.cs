@@ -40,4 +40,5 @@ public interface IProductRepository
     Task PromotionsAsync(ProductPromotionsBindingModel model);
 
     Task DeleteProductAsync(Guid id);
+    Task<List<ProductFullViewModel>> GetTopNewProductsAsync(int top);
 }

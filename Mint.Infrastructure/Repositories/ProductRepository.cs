@@ -121,24 +121,121 @@ public class ProductRepository : IProductRepository
         }
     }
 
+    public async Task<List<ProductFullViewModel>> GetTopNewProductsAsync(int top)
+    {
+        try
+        {
+            var products = await _context.Products
+                .Include(x => x.Discount)
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Where(x => x.DateCreate >= DateTime.Now.AddDays(-7))
+                .ToListAsync();
+            return new ProductManager().FormingFullProductViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public async Task<List<ProductFullViewModel>> GetTopDiscountedProductsAsync(int top)
     {
-        return new List<ProductFullViewModel>();
+        try
+        {
+            var products = await _context.Products
+                .Include(x => x.Discount)
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Where(x => x.Discount != null)
+                .Where(x => x.Discount!.Percent > 50)
+                .Take(top)
+                .ToListAsync();
+            return new ProductManager().FormingFullProductViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task<List<ProductFullViewModel>> GetTopProductsAsync(int top)
     {
-        return new List<ProductFullViewModel>();
+        try
+        {
+            var products = await _context.Products
+                .Include(x => x.Discount)
+                .Include(x => x.Category)
+                .Include(x => x.Store)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Where(x => x.Rating > 4)
+                .Take(top)
+                .ToListAsync();
+            return new ProductManager().FormingFullProductViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task<List<ProductFullViewModel>> GetTopSaledProductsAsync(int top)
     {
-        return new List<ProductFullViewModel>();
+        try
+        {
+            var products = await _context.Products
+                .Include(x => x.Discount)
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Where(x => x.CommonCharacteristics!.Count(x => x.Rate > 4.5) > 0)
+                .Take(top)
+                .ToListAsync();
+            return new ProductManager().FormingFullProductViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task<List<ProductFullViewModel>> GetTopSellersWithProductsAsync(int top)
     {
-        return new List<ProductFullViewModel>();
+        try
+        {
+            var products = await _context.Products
+                .Include(x => x.Discount)
+                .Include(x => x.Manufacture)
+                .Include(x => x.Category)
+                .Include(x => x.CommonCharacteristics)
+                .Include(x => x.Store)
+                .Include(x => x.Storages)
+                .Include(x => x.ProductPhotos!)
+                .ThenInclude(x => x.Photo)
+                .Where(x => x.CommonCharacteristics!.Count(x => x.Rate > 4.5) > 0)
+                .Take(top)
+                .ToListAsync();
+            return new ProductManager().FormingFullProductViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task CreateProductAsync(ProductInfoBindingModel model)
@@ -245,13 +342,22 @@ public class ProductRepository : IProductRepository
     {
         try
         {
-            var prodcut = await _context.Products
+            var product = await _context.Products
                 .FirstOrDefaultAsync(x => x.Id == model.ProductId)
                 ?? throw new Exception("Товар не найден.");
 
-            prodcut.TaxPrice = prodcut.TaxPrice == model.TaxPrice ? prodcut.TaxPrice : model.TaxPrice;
-            prodcut.Price = model.Price == prodcut.Price ? prodcut.Price : model.Price;
-            prodcut.IsFreeTax = model.IsFreeTax == prodcut.IsFreeTax ? prodcut.IsFreeTax : model.IsFreeTax;
+            product.Price = model.Price == product.Price ? product.Price : model.Price;
+
+            if (model.IsFreeTax != null)
+            {
+                product.IsFreeTax = bool.Parse(model.IsFreeTax);
+                product.TaxPrice = model.TaxPrice;
+            } 
+            else
+            {
+                product.IsFreeTax = false;
+                product.TaxPrice = model.TaxPrice;
+            }
 
             await _context.SaveChangesAsync();
         }

@@ -123,6 +123,7 @@ public class CategoryRepository : ICategoryRepository
 
             category.Name = model.Name!;
             category.FullName = model.FullName ?? category.FullName;
+            category.DefaultLink = model.DefaultLink ?? category.DefaultLink;
             category.DisplayOrder = model.DisplayOrder == 0 ? category.DisplayOrder : model.DisplayOrder;
             category.SubCategoryId = Guid.TryParse(model.SubCategoryId, out Guid id) ? id : category.SubCategoryId;
 

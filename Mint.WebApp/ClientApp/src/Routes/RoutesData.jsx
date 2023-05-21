@@ -21,6 +21,7 @@ import SingleStore from "../Pages/Stores/SingleStore";
 import SampleCategories from "../Pages/Categories/Categories";
 import SingleCategory from "../Pages/Categories/SingleCategory";
 import Checkout from "../Pages/Checkout/Checkout";
+import Cart from "../Pages/Cart/Cart";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -35,9 +36,10 @@ const publicRoutes = [
   { path: "/categories", component: <SampleCategories /> },
   { path: "/categories/:name", component: <SingleCategory /> },
   { path: "/checkout", component: <Checkout /> },
+  { path: "/cart", component: <Cart /> },
   {
     path: "/admin/admin-signin",
-    component: <div className={"page-content"}>test</div>,
+    component: <div className={"page-content"}>Admin Signin</div>,
   },
 ];
 

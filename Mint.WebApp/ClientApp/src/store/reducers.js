@@ -6,6 +6,7 @@ import Categories from "./categories/reducer";
 import MyStore from "./userStore/reducer";
 import Products from "./products/reducer";
 import Cart from "./cart/reducer";
+import Likes from "./liked/reducer";
 
 const rootReducer = combineReducers({
   Signin,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   MyStore,
   Products,
   Cart,
+  Likes,
 });
 
 export default rootReducer;

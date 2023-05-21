@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Card, CardBody, CardHeader, Col, Row } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, Col, Row, Spinner } from "reactstrap";
 import PrivateComponent from "../../../helpers/privateComponent";
 import { Roles } from "../../../constants/Roles";
 import PromotionsTable from "../../components/Tables/PromotionsTable";
@@ -96,9 +96,9 @@ const Promotions = () => {
         <CardBody>
           {isLoading ? (
             <div className={"d-flex justify-content-center"}>
-              <div className={"spinner-border text-success"} role={"status"}>
-                <span className={"sr-only"}>Loading...</span>
-              </div>
+            <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
             </div>
           ) : (
             <Row>

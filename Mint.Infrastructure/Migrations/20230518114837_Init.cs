@@ -324,6 +324,7 @@ namespace Mint.Infrastructure.Migrations
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryMinDay = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<double>(type: "float", nullable: false),
                     DeliveryMaxDay = table.Column<int>(type: "int", nullable: false),
                     ManufactureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -466,6 +467,37 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Pluses = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Minuses = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
+                    CommentType = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Rating = table.Column<double>(type: "float", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Storage",
                 columns: table => new
                 {
@@ -491,14 +523,38 @@ namespace Mint.Infrastructure.Migrations
                         onDelete: ReferentialAction.SetNull);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ReviewPhotos",
+                columns: table => new
+                {
+                    ReviewId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReviewPhotos", x => new { x.ReviewId, x.PhotoId });
+                    table.ForeignKey(
+                        name: "FK_ReviewPhotos_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReviewPhotos_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "CreactionDate", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTime(2023, 5, 15, 19, 43, 56, 709, DateTimeKind.Local).AddTicks(8743), "Покупатель" },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTime(2023, 5, 15, 19, 43, 56, 709, DateTimeKind.Local).AddTicks(8718), "Админ" },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTime(2023, 5, 15, 19, 43, 56, 709, DateTimeKind.Local).AddTicks(8736), "Продавец" }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTime(2023, 5, 18, 18, 48, 36, 704, DateTimeKind.Local).AddTicks(7626), "Покупатель" },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTime(2023, 5, 18, 18, 48, 36, 704, DateTimeKind.Local).AddTicks(7513), "Админ" },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTime(2023, 5, 18, 18, 48, 36, 704, DateTimeKind.Local).AddTicks(7622), "Продавец" }
                 });
 
             migrationBuilder.InsertData(
@@ -506,8 +562,8 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "RoleId", "Salt", "SecondName" },
                 values: new object[,]
                 {
-                    { new Guid("3e5b83b9-3dab-4cf8-bc4f-66f9172ed09e"), new DateTime(2023, 5, 15, 19, 43, 56, 708, DateTimeKind.Local).AddTicks(530), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "ijDDICqcAiHoaXQyjGJIssBUZbqCD/zV/WoMODgojnc=", 89502768428L, null, null, new byte[] { 115, 44, 161, 156, 176, 23, 6, 11, 26, 69, 46, 2, 255, 131, 11, 201 }, "Абубакр" },
-                    { new Guid("9b60aa40-a018-4220-a183-f08007e139d1"), new DateTime(2023, 5, 15, 19, 43, 56, 709, DateTimeKind.Local).AddTicks(8628), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "jY1iVNcduo7iFWqeEI+ijjimKFZxr84btqy7f/U2/P0=", 83452763423L, null, null, new byte[] { 115, 44, 161, 156, 176, 23, 6, 11, 26, 69, 46, 2, 255, 131, 11, 201 }, "User" }
+                    { new Guid("442383b8-03df-4d49-b421-43ee49a4613e"), new DateTime(2023, 5, 18, 18, 48, 36, 703, DateTimeKind.Local).AddTicks(9228), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "qnjxBq4lV1oc2Ic8FI1km46pwcJNRrIkbunb90R/4FY=", 89502768428L, null, null, new byte[] { 150, 117, 93, 175, 203, 22, 254, 69, 114, 243, 74, 224, 172, 15, 239, 237 }, "Абубакр" },
+                    { new Guid("949c1881-3feb-4dea-9e3f-74c03c0900d1"), new DateTime(2023, 5, 18, 18, 48, 36, 704, DateTimeKind.Local).AddTicks(6161), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "/ztIKCjVDU4qomZ0n3/aPBcCNMChOjJbwImXPgW/GcA=", 83452763423L, null, null, new byte[] { 150, 117, 93, 175, 203, 22, 254, 69, 114, 243, 74, 224, 172, 15, 239, 237 }, "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -515,11 +571,11 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("9b60aa40-a018-4220-a183-f08007e139d1") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("3e5b83b9-3dab-4cf8-bc4f-66f9172ed09e") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("9b60aa40-a018-4220-a183-f08007e139d1") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("3e5b83b9-3dab-4cf8-bc4f-66f9172ed09e") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("9b60aa40-a018-4220-a183-f08007e139d1") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("949c1881-3feb-4dea-9e3f-74c03c0900d1") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("442383b8-03df-4d49-b421-43ee49a4613e") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("949c1881-3feb-4dea-9e3f-74c03c0900d1") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("442383b8-03df-4d49-b421-43ee49a4613e") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("949c1881-3feb-4dea-9e3f-74c03c0900d1") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -614,6 +670,21 @@ namespace Mint.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReviewPhotos_PhotoId",
+                table: "ReviewPhotos",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ProductId",
+                table: "Reviews",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Storage_ProductId",
                 table: "Storage",
                 column: "ProductId");
@@ -686,6 +757,9 @@ namespace Mint.Infrastructure.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
+                name: "ReviewPhotos");
+
+            migrationBuilder.DropTable(
                 name: "Storage");
 
             migrationBuilder.DropTable(
@@ -695,10 +769,13 @@ namespace Mint.Infrastructure.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Categories");

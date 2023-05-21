@@ -22,16 +22,18 @@ import { Roles } from "../../constants/Roles";
 import LogoSm from "../../assets/images/logo-sm.png";
 import LogoDark from "../../assets/images/logo-dark.png";
 import LogoLight from "../../assets/images/logo-light.png";
+import { Error } from "../Notification/Error";
 
 const Header = (props) => {
   const [value, setValue] = useState("");
   const [isSearch, setIsSearch] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const { user, myStore, isLoggedIn } = useSelector((state) => ({
-    user: state.Signin.user,
-    myStore: state.MyStore.myStore,
+  const { isLoggedIn, likes, user, message } = useSelector((state) => ({
     isLoggedIn: state.Signin.isLoggedIn,
+    likes: state.Likes.likes,
+    user: state.Signin.user,
+    message: state.Message.message,
   }));
 
   const onChangeData = (e) => {};
@@ -71,6 +73,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
+      {message ? <Error message={message} /> : null}
       <header id="page-topbar" className={props.headerClasss}>
         <div className="layout-width">
           <div className="navbar-header">
@@ -156,14 +159,14 @@ const Header = (props) => {
 
               {<LanguageList />}
               {<CartList />}
-              {<LikesList />}
+              {<LikesList isLoggedIn={isLoggedIn} likes={likes} userId={user?.id} />}
               {
                 <ThemeToggle
                   layoutModeType={props.layoutModeType}
                   onChangeLayoutMode={props.onChangeLayoutMode}
                 />
               }
-              {<NotificationList />}
+              {/* {<NotificationList />} */}
               {isLoggedIn ? (
                 <>
                   <UserMenu />

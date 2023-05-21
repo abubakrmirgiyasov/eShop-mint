@@ -135,6 +135,7 @@ public class ProductManager
                     IsDiscount = models[i].Discount != null,
                     Percent = models[i].Discount != null ? models[i].Discount!.Percent : 0,
                     DiscountId = models[i].DiscountId,
+                    Rating = models[i].Rating,
                 });
 
                 for (int j = 0; j < models[i].CommonCharacteristics?.Count; j++)
@@ -218,11 +219,27 @@ public class ProductManager
                     Price = model.Products![i].Price,
                     IsDiscount = model.Products![i].Discount != null,
                     Percent = model.Products![i].Discount?.Percent,
+                    Store = model.Name,
+                    StoreId = model.Id,
+                    DeliveryMinDay = model.Products[i].DeliveryMinDay,
+                    DeliveryMaxDay = model.Products[i].DeliveryMaxDay,
+                    CategoryId = model.Products[i].Category?.Id,
+                    Category = model.Products[i].Category?.Name,
+                    ManufactureId = model.Products[i].Manufacture?.Id,
+                    Manufacture = model.Products[i].Manufacture?.Name,
+                    Photos = new List<string>(),
                 });
 
-                for (int j = 0; j < model.Products[i].ProductPhotos?.Count; j++)
+                if (model.Products[i].ProductPhotos?.Count == 0)
                 {
-                    products[i].Photos?.Add(model.Products[i].ProductPhotos![j].Photo.GetImage64());
+                    products[i].Photos?.Add(new Photo().GetImage64());
+                }
+                else
+                {
+                    for (int j = 0; j < model.Products[i].ProductPhotos?.Count; j++)
+                    {
+                        products[i].Photos?.Add(model.Products[i].ProductPhotos![j].Photo.GetImage64());
+                    }
                 }
             }
 
@@ -238,63 +255,75 @@ public class ProductManager
     {
         try
         {
-            var product = new ProductFullViewModel()
+            if (model != null)
             {
-                Id = model.Id,
-                Name = model.Name,
-                Sku = model.Sku,
-                Gtin = model.Gtin,
-                ShortDescription = model.ShortDescription,
-                FullDescription = model.FullDescription,
-                AdminComment = model.AdminComment,
-                ShowOnHomePage = model.ShowOnHomePage,
-                CountryOfOrigin = model.CountryOfOrigin,
-                Store = model.Store?.Name,
-                StoreUrl = model.Store?.Url,
-                StoreId = model.Store?.Id,
-                TaxPrice = model.TaxPrice,
-                Price = model.Price,
-                OldPrice = model.Price,
-                DateCreate = model.DateCreate,
-                Category = model.Category?.Name,
-                DeliveryMinDay = model.DeliveryMinDay,
-                DeliveryMaxDay = model.DeliveryMaxDay,
-                Discount = model.Discount?.Name,
-                IsDiscount = model.Discount != null,
-                DiscountId = model.DiscountId,
-                Percent = model.Discount?.Percent,
-                IsFreeTax = model.IsFreeTax,
-                IsPublished = model.IsPublished,
-                Manufacture = model.Manufacture?.Name,
-                ManufactureId = model.Manufacture?.Id,
-                //Quantity = models[i].Storages?.FirstOrDefault
-                Photos = new List<string>(),
-            };
-
-            for (int i = 0; i < model.ProductPhotos?.Count; i++)
-            {
-                product.Photos?.Add(model.ProductPhotos![i].Photo.GetImage64());
-            }
-
-            for (int i = 0; i < model.CommonCharacteristics?.Count; i++)
-            {
-                product.CommonCharacteristic = new CommonCharacteristicFullViewModel()
+                var product = new ProductFullViewModel()
                 {
-                    Id = model.CommonCharacteristics[i].Id,
-                    Material = model.CommonCharacteristics[i].Material,
-                    Color = model.CommonCharacteristics[i].Color,
-                    ReleaseDate = model.CommonCharacteristics[i].ReleaseDate,
-                    Availability = model.CommonCharacteristics[i].Availability,
-                    Garanty = model.CommonCharacteristics[i].Garanty,
-                    Height = model.CommonCharacteristics[i].Height,
-                    Weight = model.CommonCharacteristics[i].Weight,
-                    Length = model.CommonCharacteristics[i].Length,
-                    Width = model.CommonCharacteristics[i].Width,
-                    Rate = model.CommonCharacteristics[i].Rate,
+                    Id = model.Id,
+                    Name = model.Name,
+                    Sku = model.Sku,
+                    Gtin = model.Gtin,
+                    ShortDescription = model.ShortDescription,
+                    FullDescription = model.FullDescription,
+                    AdminComment = model.AdminComment,
+                    ShowOnHomePage = model.ShowOnHomePage,
+                    CountryOfOrigin = model.CountryOfOrigin,
+                    Store = model.Store?.Name,
+                    StoreUrl = model.Store?.Url,
+                    StoreId = model.Store?.Id,
+                    TaxPrice = model.TaxPrice,
+                    Price = model.Price,
+                    OldPrice = model.Price,
+                    DateCreate = model.DateCreate,
+                    Category = model.Category?.Name,
+                    DeliveryMinDay = model.DeliveryMinDay,
+                    DeliveryMaxDay = model.DeliveryMaxDay,
+                    Discount = model.Discount?.Name,
+                    IsDiscount = model.Discount != null,
+                    DiscountId = model.DiscountId,
+                    Percent = model.Discount?.Percent,
+                    IsFreeTax = model.IsFreeTax,
+                    IsPublished = model.IsPublished,
+                    Manufacture = model.Manufacture?.Name,
+                    ManufactureId = model.Manufacture?.Id,
+                    Rating = Math.Round(model.Rating, 1),
+                    //Quantity = models[i].Storages?.FirstOrDefault
+                    Photos = new List<string>(),
                 };
-            }
 
-            return product;
+                if (model.ProductPhotos?.Count == 0)
+                {
+                    product.Photos?.Add(new Photo().GetImage64());
+                }
+                else
+                {
+                    for (int j = 0; j < model.ProductPhotos?.Count; j++)
+                    {
+                        product.Photos?.Add(model.ProductPhotos![j].Photo.GetImage64());
+                    }
+                }
+
+                for (int i = 0; i < model.CommonCharacteristics?.Count; i++)
+                {
+                    product.CommonCharacteristic = new CommonCharacteristicFullViewModel()
+                    {
+                        Id = model.CommonCharacteristics[i].Id,
+                        Material = model.CommonCharacteristics[i].Material,
+                        Color = model.CommonCharacteristics[i].Color,
+                        ReleaseDate = model.CommonCharacteristics[i].ReleaseDate,
+                        Availability = model.CommonCharacteristics[i].Availability,
+                        Garanty = model.CommonCharacteristics[i].Garanty,
+                        Height = model.CommonCharacteristics[i].Height,
+                        Weight = model.CommonCharacteristics[i].Weight,
+                        Length = model.CommonCharacteristics[i].Length,
+                        Width = model.CommonCharacteristics[i].Width,
+                        Rate = model.CommonCharacteristics[i].Rate,
+                    };
+                }
+
+                return product;
+            }
+            return null!;
         }
         catch (Exception ex)
         {

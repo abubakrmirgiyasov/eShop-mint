@@ -9,6 +9,7 @@ import {
   Collapse,
   Input,
   Row,
+  Spinner,
 } from "reactstrap";
 import Flatpickr from "react-flatpickr";
 import ProductsTable from "../../components/Tables/ProductsTable";
@@ -57,9 +58,9 @@ const Products = () => {
         <CardBody>
           {isLoading ? (
             <div className={"d-flex justify-content-center"}>
-              <div className={"spinner-border text-success"} role={"status"}>
-                <span className={"sr-only"}>Loading...</span>
-              </div>
+            <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
             </div>
           ) : (
             <Row>

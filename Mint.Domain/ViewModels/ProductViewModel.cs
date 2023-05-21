@@ -42,6 +42,8 @@ public class ProductFullViewModel
 
     public int DeliveryMaxDay { get; set; }
 
+    public double Rating { get; set; }
+
     public Guid? ManufactureId { get; set; }
 
     public string? Manufacture { get; set; }

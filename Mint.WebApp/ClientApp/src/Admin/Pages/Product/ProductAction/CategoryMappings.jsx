@@ -146,9 +146,9 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-            <div className={"spinner-grow text-success"} role={"status"}>
-              <span className={"visually-hidden"}>Loading...</span>
-            </div>
+          <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
           </div>
         ) : (
           <>

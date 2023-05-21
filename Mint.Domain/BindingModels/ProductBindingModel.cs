@@ -87,7 +87,7 @@ public class ProductPriceBindingModel
 
     public Guid ProductId { get; set; }
 
-    public bool IsFreeTax { get; set; }
+    public string? IsFreeTax { get; set; }
 
     public decimal TaxPrice { get; set; }
 

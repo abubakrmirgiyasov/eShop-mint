@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
+import { Card, CardBody, CardHeader, Col, Row, Spinner } from "reactstrap";
 import PieChart from "../../components/Charts/PieChart";
 import AreaChart from "../../components/Charts/AreaChart";
 import NewOrdersTable from "../../components/Tables/NewOrdersTable";
@@ -46,9 +46,9 @@ const AdminDashboard = () => {
         {error ? <Error message={error} /> : null}
         {isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-            <div className={"spinner-grow text-success"} role={"status"}>
-              <span className={"visually-hidden"}>Loading...</span>
-            </div>
+          <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
           </div>
         ) : (
           <Row>

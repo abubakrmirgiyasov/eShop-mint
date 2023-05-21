@@ -18,20 +18,20 @@ import { useFormik } from "formik";
 import { fetchWrapper } from "../../../../helpers/fetchWrapper";
 
 const Price = ({ isAdded, dataForUpdate }) => {
-  const [isFreeTax, setIsFreeTax] = useState(!dataForUpdate?.isFreeTax);
+  const [isFreeTax, setIsFreeTax] = useState(
+    dataForUpdate?.isFreeTax === true ? true : null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const taxPriceToggle = () => {
-    setIsFreeTax(!isFreeTax);
-  };
+  console.log(dataForUpdate?.isFreeTax);
 
   const validation = useFormik({
     initialValues: {
       price: 0,
       isFreeTax: null,
-      taxPrice: 1,
+      taxPrice: 0,
     },
     validationSchema: Yup.object({
       price: Yup.number()
@@ -65,6 +65,10 @@ const Price = ({ isAdded, dataForUpdate }) => {
     },
   });
 
+  const taxPriceToggle = () => {
+    setIsFreeTax(!isFreeTax);
+  };
+
   return (
     <TabPane tabId={2}>
       {error ? <Error message={error} /> : null}
@@ -72,9 +76,9 @@ const Price = ({ isAdded, dataForUpdate }) => {
       {isAdded ? (
         isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-            <div className={"spinner-grow text-success"} role={"status"}>
-              <span className={"visually-hidden"}>Loading...</span>
-            </div>
+          <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
           </div>
         ) : (
           <form
@@ -158,14 +162,15 @@ const Price = ({ isAdded, dataForUpdate }) => {
                       role={"isFreeTax"}
                       id={"SwitchCheck4"}
                       name={"isFreeTax"}
-                      defaultChecked={!isFreeTax}
+                      defaultChecked={
+                        isFreeTax === true || dataForUpdate?.isFreeTax === true
+                      }
                       onClick={taxPriceToggle}
                     />
                   </div>
                 </Col>
               </Col>
-              <Collapse isOpen={isFreeTax}>
-                {" "}
+              <Collapse isOpen={!isFreeTax}>
                 <Col
                   lg={12}
                   className={

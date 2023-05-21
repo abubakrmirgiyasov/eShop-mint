@@ -42,7 +42,7 @@ const Orders = ({ userId, activeTab }) => {
                     }
                   >
                     <div
-                      className={"spinner-grow text-success"}
+                      className={"spinner text-success"}
                       role={"status"}
                     >
                       <span className={"visually-hidden"}>Loading...</span>

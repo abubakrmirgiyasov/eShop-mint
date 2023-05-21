@@ -40,6 +40,10 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<OrderProduct> OrderProducts { get; set; }
 
+    public DbSet<Review> Reviews { get; set; }
+
+    public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -80,6 +84,13 @@ public class ApplicationDbContext : DbContext
             {
                 x.ProductId,
                 x.OrderId,
+            });
+
+        builder.Entity<ReviewPhoto>()
+            .HasKey(x => new
+            {
+                x.ReviewId,
+                x.PhotoId
             });
 
         builder.Entity<UserRole>()
@@ -207,6 +218,36 @@ public class ApplicationDbContext : DbContext
             .WithMany(x => x.Orders)
             .HasForeignKey(x => x.AddressId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Review>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.Reviews)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<Review>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.Reviews)
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<ReviewPhoto>()
+            .HasOne(x => x.Review)
+            .WithMany(x => x.ReviewPhotos)
+            .HasForeignKey(x => x.ReviewId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ReviewPhoto>()
+            .HasOne(x => x.Photo)
+            .WithMany(x => x.ReviewPhotos)
+            .HasForeignKey(x => x.PhotoId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<LikedProduct>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.LikedProducts)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         var salt = new Hasher().GetSalt();
 

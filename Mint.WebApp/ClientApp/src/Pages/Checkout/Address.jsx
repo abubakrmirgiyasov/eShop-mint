@@ -6,6 +6,7 @@ import {
   CardHeader,
   Col,
   Row,
+  Spinner,
   TabPane,
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
@@ -46,9 +47,9 @@ const Address = ({ userId, next, setAddress }) => {
         <h3>Выберете адрес доставки</h3>
         {isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-            <div className={"spinner-grow text-success"} role={"status"}>
-              <span className={"visually-hidden"}>Loading...</span>
-            </div>
+          <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
           </div>
         ) : (
           <Row>

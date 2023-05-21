@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Col, Modal, ModalBody, ModalHeader, Row } from "reactstrap";
+import { Button, Col, Modal, ModalBody, ModalHeader, Row, Spinner } from "reactstrap";
 import SubCategoryTable from "../../components/Tables/SubCategoryTable";
 import SubCategoryAction from "./SubCategoryAction";
 import { fetchWrapper } from "../../../helpers/fetchWrapper";
@@ -118,9 +118,9 @@ const SubCategories = ({ isOpen, toggle }) => {
                 <div
                   className={"d-flex justify-content-center align-items-center"}
                 >
-                  <div className={"spinner-grow text-success"} role={"status"}>
-                    <span className={"visually-hidden"}>Loading...</span>
-                  </div>
+                  <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
                 </div>
               ) : (
                 <SubCategoryTable

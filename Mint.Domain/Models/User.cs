@@ -65,4 +65,8 @@ public class User
     public List<Address> Addresses { get; set; } = null!;
 
     public List<Store>? Stores { get; set; }
+
+    public List<Review>? Reviews { get; set; }
+
+    public List<LikedProduct> LikedProducts { get; set; } = null!;
 }

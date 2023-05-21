@@ -22,7 +22,7 @@ const AreaChart = ({ dataColors }) => {
 
   const series = [
     {
-      name: "South",
+      name: "За сегодня",
       data: generateDayWiseTimeSeries(
         new Date("11 Feb 2017 GMT").getTime(),
         20,
@@ -33,7 +33,7 @@ const AreaChart = ({ dataColors }) => {
       ),
     },
     {
-      name: "North",
+      name: "За последние 7 дней",
       data: generateDayWiseTimeSeries(
         new Date("11 Feb 2017 GMT").getTime(),
         20,
@@ -44,7 +44,7 @@ const AreaChart = ({ dataColors }) => {
       ),
     },
     {
-      name: "Central",
+      name: "За последние 30 дней",
       data: generateDayWiseTimeSeries(
         new Date("11 Feb 2017 GMT").getTime(),
         20,

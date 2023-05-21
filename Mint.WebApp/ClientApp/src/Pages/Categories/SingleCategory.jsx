@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, CardBody, Col, Container, Input, Row } from "reactstrap";
+import { Button, Card, CardBody, Col, Container, Input, Row, Spinner } from "reactstrap";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import { useParams } from "react-router-dom";
 import { Error } from "../../components/Notification/Error";
@@ -78,9 +78,9 @@ const SingleCategory = () => {
       <Container fluid={true}>
         {isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-            <div className={"spinner-grow text-success"} role={"status"}>
-              <span className={"visually-hidden"}>Loading...</span>
-            </div>
+          <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
           </div>
         ) : (
           <Row>
@@ -169,8 +169,14 @@ const SingleCategory = () => {
                 )
               ) : (
                 <Card>
-                  <CardBody>
-                    <h3>Упс, товаров пока нету</h3>
+                  <CardBody className={"d-flex flex-column justify-content-center align-items-center"}>
+                  <lord-icon
+                      src={"https://cdn.lordicon.com/hrqwmuhr.json"}
+                      trigger={"loop"}
+                      colors={"primary:#121331,secondary:#08a88a"}
+                      style={{ width:"350px", "height": "350px" }}
+                    ></lord-icon>
+                    <h3>Упс! Товаров нету!</h3>
                   </CardBody>
                 </Card>
               )}

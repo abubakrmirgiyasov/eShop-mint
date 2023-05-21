@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  Button,
   Card,
   CardBody,
   Col,
@@ -8,6 +9,7 @@ import {
   NavItem,
   NavLink,
   Row,
+  Spinner,
   TabContent,
   TabPane,
   Tooltip,
@@ -15,6 +17,7 @@ import {
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Error } from "../../components/Notification/Error";
+import { Success } from "../../components/Notification/Success";
 
 import SwiperCore, { FreeMode, Navigation, Thumbs } from "swiper";
 
@@ -24,12 +27,18 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Rating from "react-rating";
 import { PricingWidget } from "../../components/Widgets/PricingWidget";
 import classNames from "classnames";
 import SimpleBar from "simplebar-react";
 import ProductReview from "../../components/Widgets/ProductReview";
+import PrivateComponent from "../../helpers/privateComponent";
+import AddComment from "./AddComment";
+import { newLike } from "../../Common/Likes/likes";
+import { NEW_LIKE } from "../../store/liked/actionType";
+
+// import { Roles } from "../../constants/Roles";
 
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
@@ -40,27 +49,38 @@ const ProductDetail = () => {
   const [editToolTip, setEditToolTip] = useState(false);
   const [customActiveTab, setCustomActiveTab] = useState(1);
   const [product, setProduct] = useState(null);
+  const [reviews, setReviews] = useState(false);
   const [isMyProduct, setIsMyProduct] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [isLikeAdding, setIsLikeAdding] = useState(false);
 
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { myStore, isLoggedIn } = useSelector((state) => ({
+  const { myStore, isLoggedIn, user, message } = useSelector((state) => ({
     myStore: state.MyStore.myStore,
     isLoggedIn: state.Signin.isLoggedIn,
+    user: state.Signin.user,
+    message: state.Message.message,
   }));
 
   useEffect(() => {
     if (params.id) {
       setIsLoading(true);
 
-      fetchWrapper
-        .get("api/product/getproductbyid/" + params.id)
+      Promise.all([
+        fetchWrapper.get("api/product/getproductbyid/" + params.id),
+        fetchWrapper.get("api/review/getproductreviewsbyid/" + params.id),
+      ])
         .then((response) => {
-          setProduct(response);
+          const [product, reviews] = response;
+          setProduct(product);
+          setReviews(reviews);
 
-          if (isLoggedIn && response && myStore) {
-            if (response.storeId === myStore.id) {
+          if (isLoggedIn && response.length && myStore) {
+            if (product.storeId === myStore.id) {
               setIsLoading(false);
               setIsMyProduct(true);
             } else {
@@ -78,7 +98,7 @@ const ProductDetail = () => {
     } else {
       navigate("/categories");
     }
-  }, [params]);
+  }, [params, isLoggedIn, myStore, navigate]);
 
   const tabChangeToggle = (tab) => {
     if (customActiveTab !== tab) setCustomActiveTab(tab);
@@ -88,18 +108,59 @@ const ProductDetail = () => {
     setEditToolTip(!editToolTip);
   };
 
+  const handleOpenModalClick = () => {
+    setIsCommentOpen(true);
+  };
+
+  const commentToggle = useCallback(() => {
+    if (isCommentOpen) {
+      setIsCommentOpen(false);
+    } else {
+      setIsCommentOpen(true);
+    }
+  }, [isCommentOpen]);
+
+  // const fiveRateSum = reviews.reduce((sum, item) => {
+  //   if (item.rating === 5) {
+  //     return sum + item.rating;
+  //   } else {
+  //     return sum;
+  //   }
+  // }, 0);
+
+  const handleNewLikeClick = () => {
+    setIsLikeAdding(true);
+    
+    const data = {
+      userId: user.id,
+      productId: params.id,
+    };
+
+    dispatch(newLike(data))
+      .then(() => {
+        setIsLikeAdding(false);
+        setSuccess("Добавлено, успешно!");
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLikeAdding(false);
+      });
+  };
+
   document.title = product?.name + " - Mint";
   return (
     <React.Fragment>
-      {error ? <Error message={error} /> : null}
+      {error || message ? <Error message={error || message} /> : null}
+      {message ? <Error message={message} /> : null}
+      {success ? <Success message={success} /> : null}
       <div className={"page-content"}>
         <Container fluid>
           <Breadcrumb title={"test"} pageTitle={"ads"} link={"test"} />
           {isLoading ? (
             <div className={"d-flex justify-content-center align-items-center"}>
-              <div className={"spinner-grow text-success"} role={"status"}>
-                <span className={"visually-hidden"}>Loading...</span>
-              </div>
+              <Spinner color={"success"} size={"sm"}>
+                Loading...
+              </Spinner>
             </div>
           ) : (
             <Row>
@@ -141,7 +202,10 @@ const ProductDetail = () => {
                               <div className={"swiper-wrapper"}>
                                 {product?.photos?.map((photo, key) => (
                                   <SwiperSlide key={key}>
-                                    <div className={"nav-slide-item"}>
+                                    <div
+                                      className={"nav-slide-item"}
+                                      style={{ width: "fit-content" }}
+                                    >
                                       <img
                                         src={photo}
                                         alt={product?.name}
@@ -204,25 +268,45 @@ const ProductDetail = () => {
                               </div>
                             </div>
                             <div className={"flex-shrink-0"}>
-                              {isMyProduct ? (
-                                <div>
-                                  <Tooltip
-                                    target={"TooltipTop"}
-                                    placement={"top"}
-                                    isOpen={editToolTip}
-                                    toggle={toggleToolTip}
+                              <div className={"d-flex justify-content-end"}>
+                                <div className={"me-2"}>
+                                  <Button
+                                    className={"btn btn-icon"}
+                                    color={"danger"}
+                                    onClick={handleNewLikeClick}
+                                    disabled={isLikeAdding}
                                   >
-                                    Изменить
-                                  </Tooltip>
-                                  <Link
-                                    to={"/admin/products/edit/" + params.id}
-                                    id={"TooltipTop"}
-                                    className={"btn btn-light"}
-                                  >
-                                    <i className="ri-pencil-fill align-bottom"></i>
-                                  </Link>
+                                    {isLikeAdding ? (
+                                      <Spinner color={"light"} size={"sm"}>
+                                        Loading...
+                                      </Spinner>
+                                    ) : (
+                                      <i
+                                        className={"bx bx-heart align-bottom"}
+                                      ></i>
+                                    )}
+                                  </Button>
                                 </div>
-                              ) : null}
+                                {isMyProduct ? (
+                                  <div>
+                                    <Tooltip
+                                      target={"TooltipTop"}
+                                      placement={"top"}
+                                      isOpen={editToolTip}
+                                      toggle={toggleToolTip}
+                                    >
+                                      Изменить
+                                    </Tooltip>
+                                    <Link
+                                      to={"/admin/products/edit/" + params.id}
+                                      id={"TooltipTop"}
+                                      className={"btn btn-outline-success"}
+                                    >
+                                      <i className="ri-pencil-fill align-bottom"></i>
+                                    </Link>
+                                  </div>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
                           <div
@@ -232,15 +316,15 @@ const ProductDetail = () => {
                           >
                             <div className={"text-muted fs-16"}>
                               <Rating
-                                initialRating={
-                                  product?.commonCharacteristic?.rate
-                                }
+                                initialRating={product?.rating}
                                 emptySymbol={"mdi mdi-star-outline text-muted"}
                                 fullSymbol={"mdi mdi-star text-warning"}
                                 className={"me-1"}
                               />
                             </div>
-                            <div className={"text-muted"}>(10 отзывов)</div>
+                            <div className={"text-muted"}>
+                              ({reviews.length} отзывов)
+                            </div>
                           </div>
                           <Row className={"mt-4"}>
                             <PricingWidget
@@ -405,9 +489,7 @@ const ProductDetail = () => {
                                       className={"d-flex align-items-center"}
                                     >
                                       <Rating
-                                        initialRating={
-                                          product?.commonCharacteristic?.rate
-                                        }
+                                        initialRating={product?.rating || 0}
                                         emptySymbol={
                                           "mdi mdi-star-outline text-muted"
                                         }
@@ -415,14 +497,13 @@ const ProductDetail = () => {
                                         className={"me-1"}
                                       />
                                       <div className={"flex-shrink-0"}>
-                                        {product?.commonCharacteristic?.rate} из
-                                        5
+                                        {product?.rating || 0} из 5
                                       </div>
                                     </div>
                                   </div>
                                   <div className={"text-center"}>
                                     <div className={"text-muted"}>
-                                      Количество отзывов: {97}
+                                      Количество отзывов: {reviews.length}
                                     </div>
                                   </div>
                                 </div>
@@ -446,7 +527,7 @@ const ProductDetail = () => {
                                             }
                                             role={"progressbar"}
                                             style={{ width: "50.16%" }}
-                                            aria-valuenow={50.16}
+                                            aria-valuenow={5}
                                             aria-valuemin={0}
                                             aria-valuemax={100}
                                           ></div>
@@ -532,7 +613,7 @@ const ProductDetail = () => {
                                   <Row className={"align-items-center g-2"}>
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
-                                        <h6 className={"mb-0"}>3 звезды</h6>
+                                        <h6 className={"mb-0"}>2 звезды</h6>
                                       </div>
                                     </Col>
                                     <Col>
@@ -566,7 +647,7 @@ const ProductDetail = () => {
                                   <Row className={"align-items-center g-2"}>
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
-                                        <h6 className={"mb-0"}>3 звезды</h6>
+                                        <h6 className={"mb-0"}>1 звезды</h6>
                                       </div>
                                     </Col>
                                     <Col>
@@ -589,7 +670,7 @@ const ProductDetail = () => {
                                     </Col>
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
-                                        <h6 className={"mb-0 text-muted"}>3</h6>
+                                        <h6 className={"mb-0 text-muted"}>1</h6>
                                       </div>
                                     </Col>
                                   </Row>
@@ -600,18 +681,33 @@ const ProductDetail = () => {
                               <div className={"ps-lg-4"}>
                                 <div
                                   className={
-                                    "d-flex flex-wrap align-items-start gap-3"
+                                    "d-flex justify-content-start align-items-center gap-3"
                                   }
                                 >
-                                  <h5 className={"fs-14"}>Отзывы</h5>
+                                  <h5 className={"fs-14 mb-0"}>Отзывы</h5>
+                                  <PrivateComponent>
+                                    <Button
+                                      className={"btn btn-icon"}
+                                      color={"primary"}
+                                      size={"sm"}
+                                      onClick={handleOpenModalClick}
+                                      // roles={[Roles.Admin, Roles.Buyer, Roles.Seller]}
+                                    >
+                                      <i className={"ri-add-line"}></i>
+                                    </Button>
+                                  </PrivateComponent>
                                 </div>
                                 <SimpleBar className={"pe-lg-4"}>
                                   <ul className={"list-unstyled mb-0"}>
-                                    {[].map((review, key) => (
-                                      <React.Fragment key={key}>
-                                        <ProductReview review={review} />
-                                      </React.Fragment>
-                                    ))}
+                                    {reviews.length ? (
+                                      reviews.map((review, key) => (
+                                        <React.Fragment key={key}>
+                                          <ProductReview review={review} />
+                                        </React.Fragment>
+                                      ))
+                                    ) : (
+                                      <h4>Отзывов нет!</h4>
+                                    )}
                                   </ul>
                                 </SimpleBar>
                               </div>
@@ -627,6 +723,12 @@ const ProductDetail = () => {
           )}
         </Container>
       </div>
+      <AddComment
+        isOpen={isCommentOpen}
+        toggle={commentToggle}
+        userId={user.id}
+        productId={params.id}
+      />
     </React.Fragment>
   );
 };

@@ -95,6 +95,66 @@ public class ProductController : ControllerBase
         }
     }
 
+    [HttpGet("{top}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTopNewProducts(int top)
+    {
+        try
+        {
+            var products = await _product.GetTopNewProductsAsync(top);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("{top}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTopDiscountedProducts(int top)
+    {
+        try
+        {
+            var products = await _product.GetTopDiscountedProductsAsync(top);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("{top}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTopProducts(int top)
+    {
+        try
+        {
+            var products = await _product.GetTopProductsAsync(top);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpGet("{top}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetTopSaledProducts(int top)
+    {
+        try
+        {
+            var products = await _product.GetTopSaledProductsAsync(top);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateProduct([FromBody] ProductInfoBindingModel model)
     {

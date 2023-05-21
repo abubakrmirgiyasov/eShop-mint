@@ -6,6 +6,7 @@ import {
   Col,
   Container,
   Row,
+  Spinner,
   TabContent,
 } from "reactstrap";
 import { Error } from "../../../components/Notification/Error";
@@ -79,9 +80,9 @@ const ProductAction = () => {
               <div
                 className={"d-flex justify-content-center align-items-center"}
               >
-                <div className={"spinner-grow text-success"} role={"status"}>
-                  <span className={"visually-hidden"}>Loading...</span>
-                </div>
+                <Spinner color={"success"} size={"sm"}>
+              Loading...
+            </Spinner>
               </div>
             ) : (
               <Row>
@@ -92,7 +93,8 @@ const ProductAction = () => {
                     }
                   >
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(1)}
                         className={classnames(
                           { active: activeTab === 1 },
@@ -100,10 +102,11 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-pencil-line"}></i> Информация
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(7)}
                         className={classnames(
                           { active: activeTab === 7 },
@@ -111,10 +114,11 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-file-list-3-line"}></i> Характеристики
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(2)}
                         className={classnames(
                           { active: activeTab === 2 },
@@ -122,10 +126,11 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-vip-diamond-line"}></i> Цена
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(3)}
                         className={classnames(
                           { active: activeTab === 3 },
@@ -133,10 +138,11 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-camera-line"}></i> Картинки
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(4)}
                         className={classnames(
                           { active: activeTab === 4 },
@@ -144,10 +150,11 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-git-merge-line"}></i> Категории
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(5)}
                         className={classnames(
                           { active: activeTab === 5 },
@@ -155,10 +162,11 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-building-4-line"}></i> Производители
-                      </a>
+                      </Link>
                     </li>
                     <li className="nav-item">
-                      <a
+                      <Link
+                        to={"#"}
                         onClick={() => tabChangeToggle(6)}
                         className={classnames(
                           { active: activeTab === 6 },
@@ -166,7 +174,7 @@ const ProductAction = () => {
                         )}
                       >
                         <i className={"ri-hand-heart-line"}></i> Скидки
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </Col>
