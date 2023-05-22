@@ -35,7 +35,7 @@ const TopBrands = () => {
               >
                 <div className={"swiper-wrapper"}>
                   <SwiperSlide className={"bg-light p-2 text-center"}>
-                    <Link to={"/brand/xiaomi"}>
+                    <Link to={"/brands/xiaomi"}>
                       <img
                         src={xiaomi}
                         width={100}
@@ -46,7 +46,7 @@ const TopBrands = () => {
                     </Link>
                   </SwiperSlide>
                   <SwiperSlide className={"bg-light p-2 text-center"}>
-                    <Link to={"/brand/xiaomi"}>
+                    <Link to={"/brands/zte"}>
                       <img
                         src={zte}
                         width={100}
@@ -57,7 +57,7 @@ const TopBrands = () => {
                     </Link>
                   </SwiperSlide>
                   <SwiperSlide className={"bg-light p-2 text-center"}>
-                    <Link to="/brand/xiaomi">
+                    <Link to="/brands/honor">
                       <img
                         src={honor}
                         width={100}
@@ -68,7 +68,7 @@ const TopBrands = () => {
                     </Link>
                   </SwiperSlide>
                   <SwiperSlide className="bg-light p-2 text-center">
-                    <Link to="/brand/xiaomi">
+                    <Link to="/brands/realme">
                       <img
                         src={realme}
                         width={100}
@@ -79,7 +79,7 @@ const TopBrands = () => {
                     </Link>
                   </SwiperSlide>
                   <SwiperSlide className="bg-light p-2 text-center">
-                    <Link to="/brand/xiaomi">
+                    <Link to="/brand/apple">
                       <img
                         src={apple}
                         width={100}
@@ -90,7 +90,7 @@ const TopBrands = () => {
                     </Link>
                   </SwiperSlide>
                   <SwiperSlide className="bg-light p-2 text-center">
-                    <Link to="/brand/xiaomi">
+                    <Link to="/brands/huawei">
                       <img
                         src={huawei}
                         width={100}
@@ -101,7 +101,7 @@ const TopBrands = () => {
                     </Link>
                   </SwiperSlide>
                   <SwiperSlide className="bg-light p-2 text-center">
-                    <Link to="/brand/xiaomi">
+                    <Link to="/brands/samsung">
                       <img
                         src={samsung}
                         width={100}

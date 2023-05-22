@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionBody,
   AccordionItem,
+  Button,
   Collapse,
   Input,
   Label,
@@ -11,6 +12,7 @@ import classnames from "classnames";
 import Select from "react-select";
 import Rating from "react-rating";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
+import { Error } from "../Notification/Error";
 
 const ProductSort = ({ data, dataForSearch, filteredData }) => {
   const [price, setPrice] = useState(true);
@@ -56,11 +58,16 @@ const ProductSort = ({ data, dataForSearch, filteredData }) => {
     }
   };
 
+  const handleRateClick = (e) => {
+    filteredData(dataForSearch.filter((item) => item.rating <= e));
+  };
+
   return (
     <Accordion
       className={"custom-accordionwithicon accordion-fill-success"}
       id={"accordionFill"}
     >
+      {error ? <Error message={error} /> : null}
       <AccordionItem>
         <h2 className={"accordion-header"} id={"accordionFillExample1"}>
           <button
@@ -139,6 +146,7 @@ const ProductSort = ({ data, dataForSearch, filteredData }) => {
               initialRating={0}
               emptySymbol={"mdi mdi-star-outline text-muted"}
               fullSymbol={"mdi mdi-star text-warning"}
+              onClick={handleRateClick}
             />
           </AccordionBody>
         </Collapse>
@@ -156,6 +164,14 @@ const ProductSort = ({ data, dataForSearch, filteredData }) => {
             Только скидки
           </Label>
         </h2>
+      </AccordionItem>
+      <AccordionItem>
+        <button
+            type={"button"}
+            style={{ cursor: "pointer" }}
+          >
+            Сбросить
+          </button>
       </AccordionItem>
     </Accordion>
   );

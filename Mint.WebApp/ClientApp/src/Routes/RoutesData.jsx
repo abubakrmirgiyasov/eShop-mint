@@ -4,7 +4,6 @@ import Profile from "../Pages/Profile/Profile";
 import Home from "../Pages/Home/Home";
 import Signout from "../Pages/Auth/Signout";
 import ProductDetail from "../Pages/Products/ProductDetail";
-import AdminSignin from "../Admin/Pages/Auth/AdminSignin";
 import AdminDashboard from "../Admin/Pages/Dashboard/AdminDashboard";
 import AdminCategories from "../Admin/Pages/Category/Categories";
 import Products from "../Admin/Pages/Product/Products";
@@ -13,7 +12,6 @@ import OrderDetails from "../Pages/Orders/OrderDetails";
 import CategoryAction from "../Admin/Pages/Category/CategoryAction";
 import Manufactures from "../Admin/Pages/Manufacture/Manufactures";
 import ManufacturesAction from "../Admin/Pages/Manufacture/ManufacturesAction";
-import PlaceHolder from "../Pages/test";
 import ProductAction from "../Admin/Pages/Product/ProductAction";
 import Promotions from "../Admin/Pages/News/Promotions";
 import Stores from "../Pages/Stores/Stores";
@@ -22,6 +20,7 @@ import SampleCategories from "../Pages/Categories/Categories";
 import SingleCategory from "../Pages/Categories/SingleCategory";
 import Checkout from "../Pages/Checkout/Checkout";
 import Cart from "../Pages/Cart/Cart";
+import Brands from "../Pages/Manufactures/Brands";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -30,13 +29,14 @@ const publicRoutes = [
   { path: "/logout", component: <Signout /> },
   { path: "/product-details/:id", component: <ProductDetail /> },
   { path: "/signup", component: <Signup /> },
-  { path: "/place", component: <PlaceHolder /> },
   { path: "/stores", component: <Stores /> },
   { path: "/stores/:name", component: <SingleStore /> },
   { path: "/categories", component: <SampleCategories /> },
   { path: "/categories/:name", component: <SingleCategory /> },
   { path: "/checkout", component: <Checkout /> },
   { path: "/cart", component: <Cart /> },
+  { path: "/brands", component: <Brands /> },
+  { path: "/brands/:name", component: <></> },
   {
     path: "/admin/admin-signin",
     component: <div className={"page-content"}>Admin Signin</div>,
@@ -64,6 +64,4 @@ const adminRoutes = [
   { path: "/admin/news/promotions", component: <Promotions /> },
 ];
 
-const emptyRoutes = [{ path: "/test", component: <AdminSignin /> }];
-
-export { privateRoutes, publicRoutes, adminRoutes, emptyRoutes };
+export { privateRoutes, publicRoutes, adminRoutes };

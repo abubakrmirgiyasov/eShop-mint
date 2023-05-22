@@ -9,21 +9,20 @@ import { toggleLikes } from "../../Common/Likes/likes";
 
 // media
 import "react-toastify/dist/ReactToastify.css";
-import PlaceHolder from "../../Pages/test";
+import PlaceHolder from "../../components/Placeholder/Placeholder";
 import Footer from "../Footer/Footer";
 
 const Layout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
   const dispatch = useDispatch();
 
-  const { layout, layoutModeType, menuData, myLikes, signIn } = useSelector(
+  const { layout, layoutModeType, menuData, signIn } = useSelector(
     (state) => ({
       layout: state.Theme.layout,
       layoutModeType: state.Theme.layoutModeType,
       menuData: state.Categories.menu,
       myLikes: state.Likes.likes,
       signIn: state.Signin,
-      l: console.log(state),
     })
   );
 
@@ -80,7 +79,7 @@ const Layout = ({ children }) => {
           pauseOnFocusLoss={true}
           draggable={true}
           pauseOnHover={true}
-          theme="colored"
+          theme={"colored"}
         />
       </div>
     </React.Fragment>

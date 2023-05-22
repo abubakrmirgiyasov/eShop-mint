@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   adminRoutes,
-  emptyRoutes,
   privateRoutes,
   publicRoutes,
 } from "./RoutesData";
@@ -11,8 +10,7 @@ import { PrivateRoutesLayout } from "../components/RoutesLayout/PrivateRoutesLay
 import AdminRoutes from "../components/RoutesLayout/AdminRoutes";
 import Layout from "../components/Layouts/Layout";
 import AdminLayout from "../components/Layouts/AdminLayout";
-import EmptyLayout from "../components/Layouts/EmptyLayout";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { myStore } from "../Common/UserStores/myStore";
 
 const MainRoute = () => {
@@ -61,20 +59,6 @@ const MainRoute = () => {
                 <AdminRoutes>
                   <AdminLayout>{route.component}</AdminLayout>
                 </AdminRoutes>
-              }
-              key={index}
-              exact={true}
-            />
-          ))}
-        </Route>
-        <Route>
-          {emptyRoutes.map((route, index) => (
-            <Route
-              path={route.path}
-              element={
-                <PublicRoutesLayout>
-                  <EmptyLayout>{route.component}</EmptyLayout>
-                </PublicRoutesLayout>
               }
               key={index}
               exact={true}

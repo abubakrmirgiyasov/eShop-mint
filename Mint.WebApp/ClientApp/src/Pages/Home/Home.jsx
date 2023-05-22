@@ -6,6 +6,7 @@ import TopSales from "../../components/HomeItems/TopSales";
 import TopBrands from "../../components/HomeItems/TopBrands";
 import NewProducts from "../../components/HomeItems/NewProducts";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
+import { Error } from "../../components/Notification/Error";
 
 // import ReviewedProducts from "../../components/HomeItems/ReviewedProducts";
 
@@ -47,13 +48,10 @@ const Home = () => {
       });
   }, []);
 
-  console.log(topDiscountedProducts);
-  console.log(topProducts);
-  console.log(topsellerswithproducts);
-
   document.title = "Интернет магазин электроники - Mint";
   return (
     <div className="page-content">
+    {error ? <Error message={error} /> : null}
       <Container>
         <Row>
           <Col className={"mb-3"} xxl={12}>

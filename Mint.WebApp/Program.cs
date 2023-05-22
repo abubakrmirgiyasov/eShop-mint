@@ -6,6 +6,7 @@ using Mint.Infrastructure;
 using Mint.Infrastructure.Repositories;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.Infrastructure.Services;
+using Mint.WebApp.Extensions;
 using Mint.WebApp.Middlewares;
 using System.Text.Json.Serialization;
 
@@ -46,6 +47,13 @@ builder.Services.AddScoped<IManufactureRepository, ManufactureRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
+//builder.Services.AddHealthChecks();
+    //.AddCheck<HealthCheckMiddleware>("Test", tags: new[] { "health" });
+
+//builder.Services
+//    .AddHealthChecksUI()
+//    .AddInMemoryStorage();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -55,6 +63,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+//app.MapHealthChecksUI();
+//app.HealthChecksRoutes();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

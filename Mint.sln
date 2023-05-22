@@ -19,9 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp", "Mint.WebApp\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{420F1A17-8122-4E08-9AD1-1CF94646F933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Payment", "Mint.WebApp.Payment\Mint.WebApp.Payment.csproj", "{B2BA3103-8E88-4820-BB1E-858D51976947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Payment", "Mint.WebApp.Payment\Mint.WebApp.Payment.csproj", "{B2BA3103-8E88-4820-BB1E-858D51976947}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Shipping", "Mint.WebApp.Shipping\Mint.WebApp.Shipping.csproj", "{1F978D21-2155-4E6E-B9E5-095C6A70D4E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Shipping", "Mint.WebApp.Shipping\Mint.WebApp.Shipping.csproj", "{1F978D21-2155-4E6E-B9E5-095C6A70D4E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.MAUI.App", "Mint.MAUI.App\Mint.MAUI.App.csproj", "{E58111B4-1459-4C9E-8273-2EA8DC48F36A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,12 @@ Global
 		{1F978D21-2155-4E6E-B9E5-095C6A70D4E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F978D21-2155-4E6E-B9E5-095C6A70D4E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F978D21-2155-4E6E-B9E5-095C6A70D4E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +78,7 @@ Global
 		{420F1A17-8122-4E08-9AD1-1CF94646F933} = {19719E9F-642C-4F1F-9D34-8AC0C664DBDF}
 		{B2BA3103-8E88-4820-BB1E-858D51976947} = {420F1A17-8122-4E08-9AD1-1CF94646F933}
 		{1F978D21-2155-4E6E-B9E5-095C6A70D4E6} = {420F1A17-8122-4E08-9AD1-1CF94646F933}
+		{E58111B4-1459-4C9E-8273-2EA8DC48F36A} = {420F1A17-8122-4E08-9AD1-1CF94646F933}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}
