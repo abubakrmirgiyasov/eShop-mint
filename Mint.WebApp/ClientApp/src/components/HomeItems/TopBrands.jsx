@@ -4,13 +4,13 @@ import { Badge, Card, CardBody, Col, Row } from "reactstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // media
-import xiaomi from "../../assets/images/brands/Xiaomi.png";
-import zte from "../../assets/images/brands/ZTE.png";
-import honor from "../../assets/images/brands/Honor.png";
-import realme from "../../assets/images/brands/RealMe.png";
-import apple from "../../assets/images/brands/Apple.png";
-import huawei from "../../assets/images/brands/Huawei.png";
-import samsung from "../../assets/images/brands/Samsung.png";
+//import xiaomi from "../../assets/images/brands/Xiaomi.png";
+//import zte from "../../assets/images/brands/ZTE.png";
+//import honor from "../../assets/images/brands/Honor.png";
+//import realme from "../../assets/images/brands/RealMe.png";
+//import apple from "../../assets/images/brands/Apple.png";
+//import huawei from "../../assets/images/brands/Huawei.png";
+//import samsung from "../../assets/images/brands/Samsung.png";
 
 const TopBrands = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,7 @@ const TopBrands = () => {
                   <SwiperSlide className={"bg-light p-2 text-center"}>
                     <Link to={"/brand/xiaomi"}>
                       <img
-                        src={xiaomi}
+                        src={""}
                         width={100}
                         height={70}
                         className={"rounded"}
@@ -50,7 +50,7 @@ const TopBrands = () => {
                   <SwiperSlide className={"bg-light p-2 text-center"}>
                     <Link to={"/brand/xiaomi"}>
                       <img
-                        src={zte}
+                        src={""}
                         width={100}
                         height={70}
                         className={"rounded"}
@@ -60,7 +60,7 @@ const TopBrands = () => {
                   <SwiperSlide className={"bg-light p-2 text-center"}>
                     <Link to="/brand/xiaomi">
                       <img
-                        src={honor}
+                        src={""}
                         width={100}
                         height={70}
                         className="rounded"
@@ -70,7 +70,7 @@ const TopBrands = () => {
                   <SwiperSlide className="bg-light p-2 text-center">
                     <Link to="/brand/xiaomi">
                       <img
-                        src={realme}
+                        src={""}
                         width={100}
                         height={70}
                         className="rounded"
@@ -80,7 +80,7 @@ const TopBrands = () => {
                   <SwiperSlide className="bg-light p-2 text-center">
                     <Link to="/brand/xiaomi">
                       <img
-                        src={apple}
+                        src={""}
                         width={100}
                         height={70}
                         className="rounded"
@@ -90,7 +90,7 @@ const TopBrands = () => {
                   <SwiperSlide className="bg-light p-2 text-center">
                     <Link to="/brand/xiaomi">
                       <img
-                        src={huawei}
+                        src={""}
                         width={100}
                         height={70}
                         className="rounded"
@@ -100,7 +100,7 @@ const TopBrands = () => {
                   <SwiperSlide className="bg-light p-2 text-center">
                     <Link to="/brand/xiaomi">
                       <img
-                        src={samsung}
+                        src={""}
                         width={100}
                         height={70}
                         className="rounded"
