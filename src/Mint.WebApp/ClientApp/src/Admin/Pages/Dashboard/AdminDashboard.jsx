@@ -110,7 +110,8 @@ const AdminDashboard = () => {
                 </CardHeader>
                 <CardBody>
                   <AreaChart
-                    dataColors={'["--vz-success", "--vz-info", "--vz-danger"]'}
+                    dataColors={'["--vz-success", "--vz-primary", "--vz-danger"]'}
+                    orders={orders}
                   />
                 </CardBody>
               </Card>
