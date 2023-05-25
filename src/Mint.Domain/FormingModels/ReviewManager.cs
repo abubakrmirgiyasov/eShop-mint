@@ -92,7 +92,32 @@ public class ReviewManager
                     DateCreate = models[i].DateCreate,
                     Rating = models[i].Rating,
                     FullName = $"{models[i].User?.FirstName} {models[i].User?.SecondName}",
+                    RateArr = new List<RateViewModel>(),
                 });
+
+                if (models[i].Rating >= 0 && models[i].Rating <= 1)
+                {
+                    reviews[i].RateArr?.Add(new RateViewModel()
+                    {
+                        FifthStar = new double[2] { models.Where(x => x.Rating >= 0 && x.Rating <= 1).Count(), models[i].Rating }
+                    });
+                }
+                else if (models[i].Rating >= 2 && models[i].Rating <= 3)
+                {
+                    reviews[i].RateArr?.Add(new RateViewModel()
+                    {
+                        Count = i + 1,
+                        Rating = models[i].Rating,
+                    });
+                }
+                else if (models[i].Rating >= 4 && models[i].Rating <= 5)
+                {
+                    reviews[i].RateArr?.Add(new RateViewModel()
+                    {
+                        Count = i + 1,
+                        Rating = models[i].Rating,
+                    });
+                }
 
                 for (int j = 0; j < models[i].ReviewPhotos?.Count; j++)
                 {

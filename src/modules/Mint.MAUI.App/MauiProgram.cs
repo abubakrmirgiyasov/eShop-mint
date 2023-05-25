@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Mint.MAUI.App.Extensions;
 using Mint.MAUI.App.Middlewares;
 
 namespace Mint.MAUI.App;
@@ -10,6 +11,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .RegisterScopedServices()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -19,8 +21,6 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-
-        builder.Services.AddScoped<IProductService, ProductService>();
 
         return builder.Build();
     }

@@ -62,7 +62,7 @@ const AdminDashboard = () => {
                 </CardBody>
               </Card>
             </Col>
-            <Col lg={12}>
+            {/* <Col lg={12}>
               <Card>
                 <CardHeader>
                   <h2>Незавершенные заказы</h2>
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
                   </div>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
             <Col lg={12}>
               <Card>
                 <CardHeader>

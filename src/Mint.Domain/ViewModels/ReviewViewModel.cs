@@ -21,4 +21,21 @@ public class ReviewViewModel
     public Guid? UserId { get; set; }
 
     public List<string>? Photos { get; set; }
+
+    public List<RateViewModel>? RateArr { get; set; }
+}
+
+public class RateViewModel
+{
+    public double[] OneStar { get; set; } = new double[2];
+
+    public double[] SecondStar { get; set; } = new double[2];
+
+    public double[] ThirdStar { get; set; } = new double[2];
+
+    public double[] FourthStar { get; set; } = new double[2];
+
+    public double[] FifthStar { get; set; } = new double[2];
+
+    public int Percentage { get; set; }
 }

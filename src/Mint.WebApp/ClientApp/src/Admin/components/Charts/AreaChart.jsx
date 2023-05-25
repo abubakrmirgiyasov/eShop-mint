@@ -6,7 +6,10 @@ const AreaChart = ({ dataColors, orders }) => {
   const areaChartColors = getChartColorsArray(dataColors);
   
   const getOrderRange = (time) => {
-    return orders?.filter((order) => order.dateCreate >= time);
+    return orders?.map((order) => {
+      const temp = order.dateCreate >= time;
+      return temp ? new Date(order.dateCreate).getDay() : 0;
+    });
   };
 
   const today = new Date();
@@ -16,11 +19,7 @@ const AreaChart = ({ dataColors, orders }) => {
 
   const month = new Date();
   month.setMonth(today.getDate() - 30);
-
-  console.log(getOrderRange(today.toISOString().split("T")[0]));
-  console.log(getOrderRange(week.toISOString().split("T")[0]));
-  console.log(getOrderRange(month.toISOString().split("T")[0]));
-
+  
   const series = [
     {
       name: "За сегодня",
@@ -53,7 +52,7 @@ const AreaChart = ({ dataColors, orders }) => {
       categories: [
         today.toISOString().split("T")[0],
         week.toISOString().split("T")[0],
-        month.toISOString().split("T")[0],
+        month.toISOString().split("T")[0]
       ],
     },
     tooltip: {

@@ -112,9 +112,11 @@ public class AuthenticationRepository : IAuthenticationRepository
         try
         {
             var user = _user.GetUserByToken(token);
-            var refreshToken = user.RefreshTokens?.FirstOrDefault(x => x.Token == token);
+            var refreshToken = user.RefreshTokens?
+                .FirstOrDefault(x => x.Token == token)
+                ?? throw new NullReferenceException("Invalid token");
 
-            if (refreshToken!.IsRevoked)
+            if (refreshToken.IsRevoked)
             {
                 RevokeDescendantRefreshTokens(refreshToken, user, ip, $"Attempted reuse of revoked ancestor token: {token}");
 
@@ -122,7 +124,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 _context.SaveChanges();
             }
 
-            if (!refreshToken.IsActive) throw new Exception("Invalid token.");
+            if (!refreshToken.IsActive) throw new ArgumentException("Invalid token.");
 
             var newRefreshToken = RotateRefreshToken(refreshToken, ip);
             user.RefreshTokens?.Add(newRefreshToken);
