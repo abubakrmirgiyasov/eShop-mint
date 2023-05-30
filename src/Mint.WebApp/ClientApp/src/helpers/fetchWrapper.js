@@ -131,7 +131,10 @@ function request(method) {
                 requestOptions.headers["Authorization"] = authHeader(url);
                 return fetch(url, requestOptions).then(handleResponse);
               });
-          } else {
+            } else if (error === "Forbidden") { 
+              localStorage.removeItem("auth_user");
+              window.location.reload();
+            } else {
             return Promise.reject(error);
           }
         });

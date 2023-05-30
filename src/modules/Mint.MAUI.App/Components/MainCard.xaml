@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mint.MAUI.App.Components.MainCard">
+    <VerticalStackLayout>
+
+        <StackLayout HorizontalOptions="Start"
+                     Orientation="Horizontal">
+            <Button Text="Топ"
+                    CornerRadius="10" 
+                    BackgroundColor="{StaticResource Success}"
+                    TextColor="{StaticResource Light}"
+                    WidthRequest="75" 
+                    HeightRequest="20" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center"
+                    Margin="0,0,0,0"/>
+            <Button Text="Новинки"
+                    CornerRadius="10" 
+                    BackgroundColor="{StaticResource Light}"
+                    TextColor="{StaticResource Black}"
+                    WidthRequest="75" 
+                    HeightRequest="20" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center"
+                    Margin="10,0,0,0"/>
+            <Button Text="Скидки"
+                    CornerRadius="10" 
+                    BackgroundColor="{StaticResource Light}" 
+                    TextColor="{StaticResource Black}"
+                    WidthRequest="75" 
+                    HeightRequest="20" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center"
+                    Margin="10,0,0,0"/>
+        </StackLayout>
+
+        <Grid Margin="0, 10, 0, 0">
+            <StackLayout>
+                <Image Source="product1.png"
+                   WidthRequest="150"
+                   HeightRequest="225"/>
+                <Label Text="Наушники TWS"
+                       TextColor="{StaticResource Black}"
+                       FontAttributes="Bold"
+                       FontSize="12"/>
+                <Label Text="9 $"
+                   TextColor="{StaticResource Gray500}"/>
+            </StackLayout>
+            <StackLayout>
+                <Image Source="product2.png"
+                   WidthRequest="150"
+                   HeightRequest="225"/>
+                <Label Text="Наушники TWS"
+                       TextColor="{StaticResource Black}"
+                       FontAttributes="Bold"
+                       FontSize="12"/>
+                <Label Text="9 $"
+                   TextColor="{StaticResource Gray500}"/>
+            </StackLayout>
+        </Grid>
+
+    </VerticalStackLayout>
+</ContentView>

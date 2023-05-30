@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Mint.MAUI.App.Pages.Footer"
+             x:Class="Mint.MAUI.App.Pages.MainPage"
+             Title="View">
+    
+    <VerticalStackLayout>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="109" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            
+            <!--Main View-->
+            <Grid x:Name="Child" Background="{StaticResource Danger}"
+                  Grid.Row="0">
+                <local:Home />
+            </Grid>
+
+            <Grid Grid.Row="1"
+                  HeightRequest="50"
+                  Background="{StaticResource Light}">
+                <Grid.Shadow>
+                    <Shadow Brush="{StaticResource BlackBrush}"
+                            Offset="0,-15"
+                            Radius="30"/>
+                </Grid.Shadow>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Frame Grid.Column="0" 
+                       WidthRequest="45" 
+                       HeightRequest="45"
+                       BorderColor="Transparent"
+                       Background="Transparent">
+                    <Button ImageSource="house.svg"
+                            x:Name="Home"
+                            WidthRequest="45"
+                            HeightRequest="45"
+                            BackgroundColor="{StaticResource Success}"
+                            TextColor="{StaticResource Light}" 
+                            CornerRadius="50"/>
+                </Frame>
+                <Frame Grid.Column="1"
+                       WidthRequest="45"
+                       HeightRequest="45"
+                       BorderColor="Transparent"
+                       Background="Transparent">
+                    <Button ImageSource="search.svg"
+                            x:Name="Search"
+                            WidthRequest="45"
+                            HeightRequest="45"
+                            BackgroundColor="{StaticResource Light}"
+                            TextColor="{StaticResource Light}" 
+                            CornerRadius="50"/>
+                </Frame>
+                <Frame Grid.Column="2">
+                    <Button ImageSource="menu.svg" 
+                            x:Name="Menu"
+                            WidthRequest="32"
+                            HeightRequest="32"/>
+                </Frame>
+                <Frame Grid.Column="3">
+                    <Button ImageSource="cart.svg"
+                            x:Name="Cart"
+                            WidthRequest="32"
+                            HeightRequest="32"/>
+                </Frame>
+                <Frame Grid.Column="4">
+                    <Button ImageSource="person.svg" 
+                            x:Name="Person"
+                            WidthRequest="32"
+                            HeightRequest="32"/>
+                </Frame>
+
+            </Grid>
+            
+        </Grid>
+
+    </VerticalStackLayout>
+        
+</ContentPage>

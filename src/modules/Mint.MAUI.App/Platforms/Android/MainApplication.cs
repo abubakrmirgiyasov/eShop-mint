@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace Mint.MAUI.App
+namespace Mint.MAUI.App.Platforms.Android
 {
     [Application]
     public class MainApplication : MauiApplication

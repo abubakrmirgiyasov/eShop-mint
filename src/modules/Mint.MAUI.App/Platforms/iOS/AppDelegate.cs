@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Mint.MAUI.App
+namespace Mint.MAUI.App.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

@@ -3,12 +3,34 @@
     x:Class="Mint.MAUI.App.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Mint.MAUI.App"
+    xmlns:local="clr-namespace:Mint.MAUI.App.Pages"
+    Shell.NavBarIsVisible="False"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <ShellContent Icon="house.png"
+                  Title="Главная"
+                  ContentTemplate="{DataTemplate local:MainPage}"
+                  Route="MainPage" />
+    
+    <!--<TabBar>
+        
+        <ShellContent Icon="search.png"
+                      Title="Поиск"
+                      ContentTemplate="{DataTemplate local:Search}"
+                      Route="MainPage" />
+        <ShellContent Icon="menu.png"
+                      x:Name="Menu"
+                      Title="Меню"
+                      ContentTemplate="{DataTemplate local:Menu}"
+                      Route="MainPage" />
+        <ShellContent Icon="cart.png"
+                      Title="Корзина"
+                      ContentTemplate="{DataTemplate local:Cart}"
+                      Route="MainPage" />
+        <ShellContent Title="Профиль"
+                      Icon="person.png"
+                      ContentTemplate="{DataTemplate local:Profile}"
+                      Route="MainPage" />
+    </TabBar>-->
 
 </Shell>

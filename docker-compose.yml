@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  mint.webapp:
+    image: ${DOCKER_REGISTRY-}mintwebapp
+    build:
+      context: .
+      dockerfile: src\Mint.WebApp\Dockerfile

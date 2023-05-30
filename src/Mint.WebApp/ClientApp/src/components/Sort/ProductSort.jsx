@@ -168,6 +168,8 @@ const ProductSort = ({ data, dataForSearch, filteredData }) => {
       <AccordionItem>
         <button
             type={"button"}
+            color={"primary"}
+            className={"btn btn-warning"}
             style={{ cursor: "pointer" }}
           >
             Сбросить

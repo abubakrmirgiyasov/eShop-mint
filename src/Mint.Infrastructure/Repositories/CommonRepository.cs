@@ -35,6 +35,34 @@ public class CommonRepository : ICommonRepository
         }
     }
 
+    public async Task<List<ProductFullViewModel>> SearchAsync(string query)
+    {
+        try
+        {
+            var products = await _context.Products
+               .Include(x => x.Discount)
+               .Include(x => x.Manufacture)
+               .Include(x => x.Category)
+               .Include(x => x.CommonCharacteristics)
+               .Include(x => x.Store)
+               .Include(x => x.Storages)
+               .Include(x => x.ProductPhotos!)
+               .ThenInclude(x => x.Photo)
+               .ToListAsync();
+
+            products = products.Where(x => x.Name.IndexOf(query) != -1 
+                || x.FullDescription?.IndexOf(query) != -1 
+                || x.Category?.Name.IndexOf(query) != -1)
+                .ToList();
+
+            return new ProductManager().FormingFullProductViewModels(products);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public async Task<List<LikeViewModel>> GetMyLikesAsync(Guid id)
     {
         try

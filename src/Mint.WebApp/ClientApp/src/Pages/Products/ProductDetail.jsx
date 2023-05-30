@@ -36,8 +36,8 @@ import ProductReview from "../../components/Widgets/ProductReview";
 import PrivateComponent from "../../helpers/privateComponent";
 import AddComment from "./AddComment";
 import { newLike } from "../../Common/Likes/likes";
-import { NEW_LIKE } from "../../store/liked/actionType";
 
+// import { NEW_LIKE } from "../../store/liked/actionType";
 // import { Roles } from "../../constants/Roles";
 
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
@@ -49,7 +49,7 @@ const ProductDetail = () => {
   const [editToolTip, setEditToolTip] = useState(false);
   const [customActiveTab, setCustomActiveTab] = useState(1);
   const [product, setProduct] = useState(null);
-  const [reviews, setReviews] = useState(false);
+  const [reviews, setReviews] = useState([]);
   const [isMyProduct, setIsMyProduct] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [success, setSuccess] = useState("");
@@ -130,7 +130,7 @@ const ProductDetail = () => {
 
   const handleNewLikeClick = () => {
     setIsLikeAdding(true);
-    
+
     const data = {
       userId: user.id,
       productId: params.id,
@@ -183,7 +183,7 @@ const ProductDetail = () => {
                                   <img
                                     src={photo}
                                     alt={product.name}
-                                    className={"img-fluid d-block"}
+                                    className={"img-fluid d-block m-auto"}
                                   />
                                 </SwiperSlide>
                               ))}
@@ -526,8 +526,24 @@ const ProductDetail = () => {
                                               "progress-bar bg-success"
                                             }
                                             role={"progressbar"}
-                                            style={{ width: "50.16%" }}
-                                            aria-valuenow={5}
+                                            style={{
+                                              width: `${
+                                                reviews.length
+                                                  ? reviews
+                                                      .at(0)
+                                                      .rateArr.at(0)
+                                                      .fifthStar.at(2)
+                                                  : 0
+                                              }%`,
+                                            }}
+                                            aria-valuenow={
+                                              reviews.length
+                                                ? reviews
+                                                    .at(0)
+                                                    .rateArr.at(0)
+                                                    .fifthStar.at(2)
+                                                : 0
+                                            }
                                             aria-valuemin={0}
                                             aria-valuemax={100}
                                           ></div>
@@ -537,7 +553,12 @@ const ProductDetail = () => {
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
                                         <h6 className={"mb-0 text-muted"}>
-                                          1235
+                                          {reviews.length
+                                            ? reviews
+                                                .at(0)
+                                                .rateArr.at(0)
+                                                .fifthStar.at(0)
+                                            : 0}
                                         </h6>
                                       </div>
                                     </Col>
@@ -560,8 +581,24 @@ const ProductDetail = () => {
                                               "progress-bar bg-success"
                                             }
                                             role={"progressbar"}
-                                            style={{ width: "39%" }}
-                                            aria-valuenow={39}
+                                            style={{
+                                              width: `${
+                                                reviews.length
+                                                  ? reviews
+                                                      .at(0)
+                                                      .rateArr.at(0)
+                                                      .fourthStar.at(2)
+                                                  : 0
+                                              }%`,
+                                            }}
+                                            aria-valuenow={
+                                              reviews.length
+                                                ? reviews
+                                                    .at(0)
+                                                    .rateArr.at(0)
+                                                    .fourthStar.at(2)
+                                                : 0
+                                            }
                                             aria-valuemin={0}
                                             aria-valuemax={100}
                                           ></div>
@@ -571,7 +608,12 @@ const ProductDetail = () => {
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
                                         <h6 className={"mb-0 text-muted"}>
-                                          666
+                                          {reviews.length
+                                            ? reviews
+                                                .at(0)
+                                                .rateArr.at(0)
+                                                .fourthStar.at(0)
+                                            : 0}
                                         </h6>
                                       </div>
                                     </Col>
@@ -594,8 +636,24 @@ const ProductDetail = () => {
                                               "progress-bar bg-warning"
                                             }
                                             role={"progressbar"}
-                                            style={{ width: "23%" }}
-                                            aria-valuenow={23}
+                                            style={{
+                                              width: `${
+                                                reviews.length
+                                                  ? reviews
+                                                      .at(0)
+                                                      .rateArr.at(0)
+                                                      .thirdStar.at(2)
+                                                  : 0
+                                              }%`,
+                                            }}
+                                            aria-valuenow={
+                                              reviews.length
+                                                ? reviews
+                                                    .at(0)
+                                                    .rateArr.at(0)
+                                                    .thirdStar.at(2)
+                                                : 0
+                                            }
                                             aria-valuemin={0}
                                             aria-valuemax={100}
                                           ></div>
@@ -605,7 +663,12 @@ const ProductDetail = () => {
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
                                         <h6 className={"mb-0 text-muted"}>
-                                          333
+                                          {reviews.length
+                                            ? reviews
+                                                .at(0)
+                                                .rateArr.at(0)
+                                                .thirdStar.at(0)
+                                            : 0}
                                         </h6>
                                       </div>
                                     </Col>
@@ -628,8 +691,24 @@ const ProductDetail = () => {
                                               "progress-bar bg-warning"
                                             }
                                             role={"progressbar"}
-                                            style={{ width: "13%" }}
-                                            aria-valuenow={13}
+                                            style={{
+                                              width: `${
+                                                reviews.length
+                                                  ? reviews
+                                                      .at(0)
+                                                      .rateArr.at(0)
+                                                      .secondStar.at(2)
+                                                  : 0
+                                              }%`,
+                                            }}
+                                            aria-valuenow={
+                                              reviews.length
+                                                ? reviews
+                                                    .at(0)
+                                                    .rateArr.at(0)
+                                                    .secondStar.at(2)
+                                                : 0
+                                            }
                                             aria-valuemin={0}
                                             aria-valuemax={100}
                                           ></div>
@@ -639,7 +718,12 @@ const ProductDetail = () => {
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
                                         <h6 className={"mb-0 text-muted"}>
-                                          32
+                                          {reviews.length
+                                            ? reviews
+                                                .at(0)
+                                                .rateArr.at(0)
+                                                .secondStar.at(0)
+                                            : 0}
                                         </h6>
                                       </div>
                                     </Col>
@@ -660,8 +744,24 @@ const ProductDetail = () => {
                                           <div
                                             className={"progress-bar bg-danger"}
                                             role={"progressbar"}
-                                            style={{ width: "3%" }}
-                                            aria-valuenow={3}
+                                            style={{
+                                              width: `${
+                                                reviews.length
+                                                  ? reviews
+                                                      .at(0)
+                                                      .rateArr.at(0)
+                                                      .oneStar.at(2)
+                                                  : 0
+                                              }%`,
+                                            }}
+                                            aria-valuenow={
+                                              reviews.length
+                                                ? reviews
+                                                    .at(0)
+                                                    .rateArr.at(0)
+                                                    .oneStar.at(2)
+                                                : 0
+                                            }
                                             aria-valuemin={0}
                                             aria-valuemax={100}
                                           ></div>
@@ -670,7 +770,14 @@ const ProductDetail = () => {
                                     </Col>
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
-                                        <h6 className={"mb-0 text-muted"}>1</h6>
+                                        <h6 className={"mb-0 text-muted"}>
+                                          {reviews.length
+                                            ? reviews
+                                                .at(0)
+                                                .rateArr.at(0)
+                                                .oneStar.at(0)
+                                            : 0}
+                                        </h6>
                                       </div>
                                     </Col>
                                   </Row>
@@ -726,7 +833,7 @@ const ProductDetail = () => {
       <AddComment
         isOpen={isCommentOpen}
         toggle={commentToggle}
-        userId={user.id}
+        userId={user?.id}
         productId={params.id}
       />
     </React.Fragment>

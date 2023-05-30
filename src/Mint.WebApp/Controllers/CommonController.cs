@@ -29,4 +29,19 @@ public class CommonController : ControllerBase
 			return BadRequest(new { message = ex.Message });
 		}
     }
+
+    [HttpGet("{query}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Search(string query)
+    {
+        try
+        {
+            var products = await _common.SearchAsync(query);
+            return Ok(products);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
 }

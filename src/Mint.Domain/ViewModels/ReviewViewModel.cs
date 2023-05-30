@@ -27,15 +27,13 @@ public class ReviewViewModel
 
 public class RateViewModel
 {
-    public double[] OneStar { get; set; } = new double[2];
+    public double[] OneStar { get; set; } = new double[3];
 
-    public double[] SecondStar { get; set; } = new double[2];
+    public double[] SecondStar { get; set; } = new double[3];
 
-    public double[] ThirdStar { get; set; } = new double[2];
+    public double[] ThirdStar { get; set; } = new double[3];
 
-    public double[] FourthStar { get; set; } = new double[2];
+    public double[] FourthStar { get; set; } = new double[3];
 
-    public double[] FifthStar { get; set; } = new double[2];
-
-    public int Percentage { get; set; }
+    public double[] FifthStar { get; set; } = new double[3];
 }

@@ -17,7 +17,7 @@ internal class Request<T>
 
     private void SetHttpClient()
     {
-        Client = new HttpClient() { BaseAddress = new Uri("https://localhost:44411/") };
+        Client = new HttpClient() { BaseAddress = new Uri("https://192.168.0.104:7121/") };
         Client.DefaultRequestHeaders.Accept.Clear();
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         if (_auth)

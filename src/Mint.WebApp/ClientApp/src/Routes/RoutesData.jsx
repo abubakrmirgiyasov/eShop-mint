@@ -21,6 +21,7 @@ import SingleCategory from "../Pages/Categories/SingleCategory";
 import Checkout from "../Pages/Checkout/Checkout";
 import Cart from "../Pages/Cart/Cart";
 import Brands from "../Pages/Manufactures/Brands";
+import Search from "../Pages/Search/Search";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -37,6 +38,7 @@ const publicRoutes = [
   { path: "/cart", component: <Cart /> },
   { path: "/brands", component: <Brands /> },
   { path: "/brands/:name", component: <></> },
+  { path: "/search/query=:query", component: <Search /> },
   {
     path: "/admin/admin-signin",
     component: <div className={"page-content"}>Admin Signin</div>,

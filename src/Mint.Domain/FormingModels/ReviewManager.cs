@@ -95,29 +95,20 @@ public class ReviewManager
                     RateArr = new List<RateViewModel>(),
                 });
 
-                if (models[i].Rating >= 0 && models[i].Rating <= 1)
+                var one = models.Where(x => x.Rating >= 1 && x.Rating < 2).ToList();
+                var two = models.Where(x => x.Rating >= 2 && x.Rating < 3).ToList();
+                var three = models.Where(x => x.Rating >= 3 && x.Rating < 4).ToList();
+                var four = models.Where(x => x.Rating >= 4 && x.Rating < 5).ToList();
+                var five = models.Where(x => x.Rating >= 5 && x.Rating <= 5).ToList();
+
+                reviews[i].RateArr?.Add(new RateViewModel()
                 {
-                    reviews[i].RateArr?.Add(new RateViewModel()
-                    {
-                        FifthStar = new double[2] { models.Where(x => x.Rating >= 0 && x.Rating <= 1).Count(), models[i].Rating }
-                    });
-                }
-                else if (models[i].Rating >= 2 && models[i].Rating <= 3)
-                {
-                    reviews[i].RateArr?.Add(new RateViewModel()
-                    {
-                        Count = i + 1,
-                        Rating = models[i].Rating,
-                    });
-                }
-                else if (models[i].Rating >= 4 && models[i].Rating <= 5)
-                {
-                    reviews[i].RateArr?.Add(new RateViewModel()
-                    {
-                        Count = i + 1,
-                        Rating = models[i].Rating,
-                    });
-                }
+                    OneStar = new double[3] { one.Count, 1, (one.Count / (double)models.Count) * 100.0 },
+                    SecondStar = new double[3] { two.Count, 2, (two.Count / (double)models.Count) * 100 },
+                    ThirdStar = new double[3] { three.Count, 3, (three.Count / (double)models.Count) * 100 },
+                    FourthStar = new double[3] { four.Count, 4, (four.Count / (double)models.Count) * 100 },
+                    FifthStar = new double[3] { five.Count, 5, (five.Count / (double)models.Count) * 100 },
+                });
 
                 for (int j = 0; j < models[i].ReviewPhotos?.Count; j++)
                 {

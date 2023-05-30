@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Mint.MAUI.App
+namespace Mint.MAUI.App.Platforms.MacCatalyst
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

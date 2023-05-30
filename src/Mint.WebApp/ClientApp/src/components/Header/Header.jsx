@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Dropdown,
   DropdownMenu,
@@ -29,6 +29,8 @@ const Header = (props) => {
   const [isSearch, setIsSearch] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const { isLoggedIn, likes, user, message } = useSelector((state) => ({
     isLoggedIn: state.Signin.isLoggedIn,
     likes: state.Likes.likes,
@@ -36,7 +38,9 @@ const Header = (props) => {
     message: state.Message.message,
   }));
 
-  const onChangeData = (e) => {};
+  const onChangeData = (e) => {
+    setValue(e.target.value);
+  };
 
   const toggleLoginModal = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
@@ -71,6 +75,11 @@ const Header = (props) => {
     }
   };
 
+  const handleSearchSubmit = (e) => {
+      e.preventDefault();
+      navigate("/search/query=" + value);
+  };
+
   return (
     <React.Fragment>
       {message ? <Error message={message} /> : null}
@@ -99,57 +108,60 @@ const Header = (props) => {
               </div>
               <button
                 onClick={toggleMenuBtn}
-                type="button"
-                className="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
-                id="topnav-hamburger-icon"
+                type={"button"}
+                className={"btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"}
+                id={"topnav-hamburger-icon"}
               >
-                <span className="hamburger-icon">
+                <span className={"hamburger-icon"}>
                   <span></span>
                   <span></span>
                   <span></span>
                 </span>
               </button>
-              <Form className="app-search d-none d-md-block">
-                <div className="position-relative">
+              <Form 
+                className={"app-search d-none d-md-block"}
+                onSubmit={handleSearchSubmit}
+              >
+                <div className={"position-relative"}>
                   <Input
-                    type="text"
-                    className="form-control"
-                    placeholder="Поиск..."
+                    type={"text"}
+                    className={"form-control"}
+                    placeholder={"Поиск..."}
                     defaultValue={value}
                     onChange={onChangeData}
                   />
-                  <span className="mdi mdi-magnify search-widget-icon"></span>
+                  <span className={"mdi mdi-magnify search-widget-icon"}></span>
                   <span
-                    className="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
-                    id="search-close-options"
+                    className={"mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"}
+                    id={"search-close-options"}
                   ></span>
                 </div>
               </Form>
             </div>
-            <div className="d-flex align-items-center">
+            <div className={"d-flex align-items-center"}>
               <Dropdown
                 isOpen={isSearch}
                 toggle={() => setIsSearch(!isSearch)}
-                className="d-md-none topbar-head-dropdown header-item"
+                className={"d-md-none topbar-head-dropdown header-item"}
               >
                 <DropdownToggle
-                  tag="button"
-                  className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
+                  tag={"button"}
+                  className={"btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"}
                 >
-                  <i className="bx bx-search fs-22"></i>
+                  <i className={"bx bx-search fs-22"}></i>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-lg dropdown-menu-end p-0">
-                  <Form className="p-3">
-                    <div className="form-group m-0">
-                      <div className="input-group">
+                <DropdownMenu className={"dropdown-menu-lg dropdown-menu-end p-0"}>
+                  <Form className={"p-3"}>
+                    <div className={"form-group m-0"}>
+                      <div className={"input-group"}>
                         <Input
-                          type="text"
-                          className="form-control"
-                          placeholder="Поиск..."
+                          type={"text"}
+                          className={"form-control"}
+                          placeholder={"Поиск..."}
                           defaultValue={""}
                         />
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify"></i>
+                        <button className={"btn btn-primary"} type={"submit"}>
+                          <i className={"mdi mdi-magnify"}></i>
                         </button>
                       </div>
                     </div>

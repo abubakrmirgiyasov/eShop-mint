@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Mint.MAUI.App
+namespace Mint.MAUI.App.Platforms.iOS
 {
     public class Program
     {
