@@ -1,27 +1,38 @@
-using CommunityToolkit.Maui.Views;
-using Mint.Domain.FormingModels;
-using Mint.MAUI.App.Components;
+using Microsoft.Maui.Controls;
 using Mint.MAUI.App.Middlewares;
 
 namespace Mint.MAUI.App.Views.Footer;
 
 public partial class Home : ContentView
 {
-	private readonly ProductService _product;
+    private readonly ProductService _product;
 
-	public Home()
-	{
+    public static readonly BindableProperty HeaderTextProperty =
+        BindableProperty.Create(
+            propertyName: nameof(HeaderText), 
+            returnType: typeof(string), 
+            declaringType: typeof(Home),
+            defaultValue: default(string));
+
+    public string HeaderText
+    {
+        get => (string)GetValue(HeaderTextProperty);
+        set => SetValue(HeaderTextProperty, value);
+    }
+
+    public Home()
+    {
         InitializeComponent();
 
-		_product = new ProductService();
-		//Application.Current.UserAppTheme = AppTheme.Dark;
-	}
+        _product = new ProductService();
+        //Application.Current.UserAppTheme = AppTheme.Dark;
+    }
 
-    private async void OnLoaded(object sender, EventArgs e)
+    private void OnLoaded(object sender, EventArgs e)
     {
-		try
-		{
-            bool isLoading = true;
+        //try
+        //{
+            //bool isLoading = true;
 
             //var loader = new Loader();
 
@@ -31,23 +42,23 @@ public partial class Home : ContentView
 
             //loader.Close();
 
-            isLoading = false;
-        }
-		catch (Exception ex)
-		{
-			//await DisplayAlert("Œ¯Ë·Í‡", ex.Message, "Œ ");
-		}
+            //isLoading = false;
+        //}
+        //catch (Exception ex)
+        //{
+            //await DisplayAlert("Œ¯Ë·Í‡", ex.Message, "Œ ");
+        //}
     }
 
-	private void FillRow()
-	{
-		try
-		{
+    private void FillRow()
+    {
+        try
+        {
 
-		}
-		catch (Exception ex)
-		{
-			throw new Exception(ex.Message, ex);
-		}
-	}
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
 }

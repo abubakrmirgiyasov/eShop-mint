@@ -203,7 +203,7 @@ public class ProductRepository : IProductRepository
                 .Include(x => x.Storages)
                 .Include(x => x.ProductPhotos!)
                 .ThenInclude(x => x.Photo)
-                .Where(x => x.CommonCharacteristics!.Count(x => x.Rate > 4.5) > 0)
+                .Where(x => x.Discount !=null && x.Discount.Percent > 15)
                 .Take(top)
                 .ToListAsync();
             return new ProductManager().FormingFullProductViewModels(products);

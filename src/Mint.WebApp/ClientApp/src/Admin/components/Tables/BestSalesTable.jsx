@@ -37,7 +37,7 @@ const BestSalesTable = ({ orders }) => {
       //   sortable: true,
       // },
     ],
-    [orders]
+    []
   );
 
   return (

@@ -1,4 +1,4 @@
-import { refreshToken } from "./authentication";
+// import { refreshToken } from "./authentication";
 
 export const fetchWrapper = {
   get: request("GET"),
@@ -34,6 +34,8 @@ function handleResponseFile(fileName, response) {
 
 function handleResponse(response) {
   return response.text().then((text) => {
+    console.log("handleResponse:37");
+    console.log(response);
     const data = text && JSON.parse(text);
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
@@ -113,6 +115,7 @@ function request(method) {
           }
         });
     } else {
+      console.log("wrapper: 118");
       return fetch(url, requestOptions)
         .then(handleResponse)
         .catch((error) => {
@@ -123,6 +126,7 @@ function request(method) {
               .unwrap()
               .then((response) => {
                 console.log(response);
+                console.log("wrapper: 118");
 
                 const user = JSON.parse(localStorage.getItem("auth_user"));
                 user.accessToken = response.accessToken;

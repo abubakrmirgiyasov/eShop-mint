@@ -22,6 +22,7 @@ import Checkout from "../Pages/Checkout/Checkout";
 import Cart from "../Pages/Cart/Cart";
 import Brands from "../Pages/Manufactures/Brands";
 import Search from "../Pages/Search/Search";
+import Employees from "../Admin/Pages/Employees/Employees";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -64,6 +65,7 @@ const adminRoutes = [
   { path: "/admin/products/add", component: <ProductAction /> },
   { path: "/admin/products/edit/:id", component: <ProductAction /> },
   { path: "/admin/news/promotions", component: <Promotions /> },
+  { path: "admin/customer/employees", component: <Employees />}
 ];
 
 export { privateRoutes, publicRoutes, adminRoutes };

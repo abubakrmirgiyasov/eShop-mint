@@ -2,12 +2,17 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Mint.MAUI.App.Components"
-             x:Class="Mint.MAUI.App.Views.Footer.Home">
+             x:Class="Mint.MAUI.App.Views.Footer.Home"
+             ControlTemplate="{StaticResource PageLayoutTemplate}"
+             HeaderText="Test">
     
     <VerticalStackLayout Padding="34">
         
         <Grid>
-            <Grid.RowDefinitions>
+
+            <Label Text="test21312" />
+
+            <!--<Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="155" />
                 <RowDefinition />
@@ -18,8 +23,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <!--Header-->
-            <StackLayout Grid.Row="0"
+            --><!--Header-->
+            <!--<StackLayout Grid.Row="0"
                          Grid.Column="0"
                          Padding="5">
             
@@ -45,9 +50,9 @@
                         ImageSource="avatar.png"
                         BackgroundColor="Transparent"
                         CornerRadius="50"/>
-            </Frame>
+            </Frame>-->
         
-            <!--Carousel View-->
+            <!--Carousel View--><!--
             <StackLayout Grid.Row="1"
                          Grid.Column="0"
                          Grid.ColumnSpan="2"
@@ -55,13 +60,13 @@
                 <local:Carousel />
             </StackLayout>
         
-            <!--Products View-->
+            --><!--Products View--><!--
             <StackLayout Grid.Row="2"
                          Grid.Column="0"
                          Grid.ColumnSpan="2"
                          Margin="0, 0, 0, 0">
                 <local:MainCard />
-            </StackLayout>
+            </StackLayout>-->
 
         </Grid>
     </VerticalStackLayout>

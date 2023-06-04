@@ -1,9 +1,7 @@
 import React from "react";
-import Rating from "react-rating";
 import { Link } from "react-router-dom";
 import {
   Badge,
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -15,7 +13,6 @@ import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // media
-import product1 from "../../assets/images/products/img-5.png";
 import { ProductCardTable } from "../Products/ProductCard";
 
 const TopSales = ({ products, isLoading }) => {

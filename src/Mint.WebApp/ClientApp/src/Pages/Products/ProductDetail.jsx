@@ -38,7 +38,7 @@ import AddComment from "./AddComment";
 import { newLike } from "../../Common/Likes/likes";
 
 // import { NEW_LIKE } from "../../store/liked/actionType";
-// import { Roles } from "../../constants/Roles";
+import { Roles } from "../../constants/Roles";
 
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
@@ -798,7 +798,7 @@ const ProductDetail = () => {
                                       color={"primary"}
                                       size={"sm"}
                                       onClick={handleOpenModalClick}
-                                      // roles={[Roles.Admin, Roles.Buyer, Roles.Seller]}
+                                      // roles={[Roles.Admin]}
                                     >
                                       <i className={"ri-add-line"}></i>
                                     </Button>

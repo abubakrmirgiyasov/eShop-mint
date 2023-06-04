@@ -13,17 +13,15 @@ import { Error } from "../../components/Notification/Error";
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [topDiscountedProducts, setDiscountedProducts] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
   const [topSaledProducts, setTopSaledProducts] = useState([]);
-  const [topsellerswithproducts, setTopsellerswithproducts] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
 
     Promise.all([
-      fetchWrapper.get("api/product/gettopdiscountedproducts/6"),
+      // fetchWrapper.get("api/product/gettopdiscountedproducts/6"),
       fetchWrapper.get("api/product/gettopproducts/6"),
       fetchWrapper.get("api/product/gettopsaledproducts/6"),
       fetchWrapper.get("api/product/gettopnewproducts/6"),
@@ -31,13 +29,13 @@ const Home = () => {
     ])
       .then((response) => {
         const [
-          topDiscountedProducts,
+          // topDiscountedProducts,
           topProducts,
           topSales,
           newProducts,
         ] = response;
         setIsLoading(false);
-        setDiscountedProducts(topDiscountedProducts);
+        // setDiscountedProducts(topDiscountedProducts);
         setTopProducts(topProducts);
         setTopSaledProducts(topSales);
         setNewProducts(newProducts);
@@ -61,7 +59,7 @@ const Home = () => {
         <TopBrands />
         <NewProducts isLoading={isLoading} products={newProducts} />
         <TopProducts products={topProducts} isLoading={isLoading} />
-        <TopSales products={topDiscountedProducts} isLoading={isLoading} />
+        <TopSales products={topSaledProducts} isLoading={isLoading} />
         {/*{true ? <ReviewedProducts /> : null}*/}
       </Container>
     </div>

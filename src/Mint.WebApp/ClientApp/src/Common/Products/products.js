@@ -9,7 +9,6 @@ export const products = () => (dispatch) => {
         type: GET_ALL_PRODCUTS,
         payload: response,
       });
-      console.log("trest");
       return Promise.resolve();
     },
     (error) => {

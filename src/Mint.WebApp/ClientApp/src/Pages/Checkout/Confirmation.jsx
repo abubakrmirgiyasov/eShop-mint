@@ -60,8 +60,6 @@ const Confirmation = ({
       description: description,
     };
 
-    console.log(data);
-
     fetchWrapper
       .post("api/order/createorder", data)
       .then((response) => {

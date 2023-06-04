@@ -7,8 +7,6 @@ const PromotionDelete = ({ id, isOpen, toggle, removeData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(id);
-
   const hadnleDeleteClick = () => {
     setIsLoading(true);
     fetchWrapper

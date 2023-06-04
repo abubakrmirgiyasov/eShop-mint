@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -11,54 +10,48 @@ import {
   Row,
   Spinner,
 } from "reactstrap";
-import Flatpickr from "react-flatpickr";
-import ProductsTable from "../../components/Tables/ProductsTable";
-import Select from "react-select";
 import { fetchWrapper } from "../../../helpers/fetchWrapper";
-import { useSelector } from "react-redux";
-import PrivateComponent from "../../../helpers/privateComponent";
-import { Roles } from "../../../constants/Roles";
 import { Error } from "../../../components/Notification/Error";
+import { Link } from "react-router-dom";
+import { Roles } from "../../../constants/Roles";
+import EmployeesTable from "../../components/Tables/EmployeesTable";
+import Select from "react-select";
+import PrivateComponent from "../../../helpers/privateComponent";
+import Flatpickr from "react-flatpickr";
 
-const Products = () => {
+const Employees = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [employees, setEmployees] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [data, setIsData] = useState(null);
-
-  const { store } = useSelector((state) => ({
-    store: state.MyStore.myStore,
-  }));
 
   useEffect(() => {
-    if (store) {
-      setIsLoading(true);
-      fetchWrapper
-        .get("api/product/getsellerproductsbyid/" + store.id)
-        .then((response) => {
-          setIsLoading(false);
-          setIsData(response);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          setError(error);
-        });
-    } else {
-      setError("Возникла, ошибка. Откройте магазин.");
-    }
-  }, [store]);
+    setIsLoading(true);
+
+    fetchWrapper
+      .get("api/employee/getemployees")
+      .then((response) => {
+        setIsLoading(false);
+        setEmployees(response);
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div className={"page-content"}>
       {error ? <Error message={error} /> : null}
       <Card>
         <CardHeader>
-          <h2>Управление продуктами</h2>
+          <h2>Управление сотрудниками</h2>
         </CardHeader>
         <CardBody>
           {isLoading ? (
             <div className={"d-flex justify-content-center"}>
-              <Spinner color={"success"} size={"sm"}>
+              {" "}
+              <Spinner size={"sm"} color={"success"}>
                 Loading...
               </Spinner>
             </div>
@@ -75,12 +68,12 @@ const Products = () => {
                   </Button>
                   <PrivateComponent>
                     <Link
-                      to="/admin/products/add"
+                      to="/admin/customer/add"
                       className="fs-14 btn btn-success"
-                      roles={[Roles.Admin, Roles.Seller]}
+                      roles={[Roles.Admin]}
                     >
                       <i className="ri-add-line align-middle"></i> Добавить
-                      новое ...
+                      сотрудника ...
                     </Link>
                   </PrivateComponent>
                 </div>
@@ -119,7 +112,7 @@ const Products = () => {
                 </Collapse>
               </Col>
               <Col lg={12}>
-                <ProductsTable data={data} />
+                <EmployeesTable employees={employees} />
               </Col>
             </Row>
           )}
@@ -129,4 +122,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Employees;

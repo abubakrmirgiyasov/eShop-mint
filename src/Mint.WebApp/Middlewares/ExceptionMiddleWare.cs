@@ -27,6 +27,7 @@ public class ExceptionMiddleWare
             response.StatusCode = error switch
             {
                 UserNotFoundException => (int)HttpStatusCode.NotFound,
+                BlockedException => (int)HttpStatusCode.Locked,
                 _ => (int)HttpStatusCode.BadRequest,
             };
 

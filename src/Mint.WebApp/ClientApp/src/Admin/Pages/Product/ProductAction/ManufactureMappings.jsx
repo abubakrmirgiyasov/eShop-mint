@@ -41,7 +41,6 @@ const ManufactureMappings = ({ isAdded, dataForUpdate }) => {
       const data = {
         manufactureId: selectedManufacture,
         productId: dataForUpdate?.id,
-        // displayOrder: console.log(e.target),
       };
 
       fetchWrapper

@@ -6,7 +6,6 @@ using Mint.Infrastructure;
 using Mint.Infrastructure.Repositories;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.Infrastructure.Services;
-using Mint.WebApp.Extensions;
 using Mint.WebApp.Middlewares;
 using System.Text.Json.Serialization;
 
@@ -17,6 +16,16 @@ builder.Services.Configure<AppSettings>(settings);
 
 var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+
+//builder.Services
+//    .AddHealthChecksUI(options =>
+//    {
+//        options.SetEvaluationTimeInSeconds(10);
+//        options.MaximumHistoryEntriesPerEndpoint(10);
+//        options.AddHealthCheckEndpoint("Health Checks API", "/health");
+//    }).AddSqlServerStorage(connection);
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -40,19 +49,14 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<ISellerRepository, SellerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddScoped<IManufactureRepository, ManufactureRepository>();
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-
-//builder.Services.AddHealthChecks();
-    //.AddCheck<HealthCheckMiddleware>("Test", tags: new[] { "health" });
-
-//builder.Services
-//    .AddHealthChecksUI()
-//    .AddInMemoryStorage();
 
 var app = builder.Build();
 
@@ -64,8 +68,14 @@ if (!app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-//app.MapHealthChecksUI();
-//app.HealthChecksRoutes();
+app.MapHealthChecks("/healthz");
+
+//app.UseHealthChecks("/admin/api/monitoring/health", new HealthCheckOptions()
+//{
+//    Predicate = p => true,
+//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+//});
+app.UseHealthChecksUI();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

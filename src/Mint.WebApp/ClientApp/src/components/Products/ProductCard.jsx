@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Badge, Button, Card, CardBody, Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 import Rating from "react-rating";
-import { dateConverter } from "../../helpers/dateConverter";
 import { addToCart } from "../../store/cart";
 import { useDispatch } from "react-redux";
 import { Success } from "../Notification/Success";
@@ -15,7 +14,6 @@ const ProductCardRow = ({ product }) => {
   const dispatch = useDispatch();
 
   const handleCartAddClick = (item) => {
-    console.log(item);
     dispatch(addToCart({ ...item }));
     setSuccess("Успешно добавлено");
   };
@@ -154,7 +152,6 @@ const ProductCardTable = ({ product }) => {
   const dispatch = useDispatch();
 
   const handleCartAddClick = (item) => {
-    console.log(item);
     dispatch(addToCart({ ...item }));
     setSuccess("Успешно добавлено");
   };

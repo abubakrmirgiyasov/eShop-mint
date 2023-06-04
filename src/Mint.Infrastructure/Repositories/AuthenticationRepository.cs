@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Mint.Domain.BindingModels;
 using Mint.Domain.Common;
+using Mint.Domain.Exceptions;
 using Mint.Domain.FormingModels;
 using Mint.Domain.Models;
 using Mint.Infrastructure.Repositories.Interfaces;
@@ -42,7 +43,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                     newUser.IsActive = false;
                     _context.SaveChanges();
 
-                    throw new Exception("Учетная запись заблокировано");
+                    throw new BlockedException("Учетная запись заблокировано");
                 }
                 else
                 {
@@ -91,15 +92,23 @@ public class AuthenticationRepository : IAuthenticationRepository
                             _context.SaveChanges();
                         }
 
-                        throw new Exception("Не правильный Email/Пароль");
+                        throw new UnauthorizedAccessException("Не правильный Email/Пароль");
                     }
                 }
             }
             else
             {
-                throw new Exception("Не правильный Email/Пароль");
+                throw new UnauthorizedAccessException("Не правильный Email/Пароль");
             }
 
+        }
+        catch (BlockedException ex)
+        {
+            throw new BlockedException(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new UnauthorizedAccessException(ex.Message, ex);
         }
         catch (Exception ex)
         {

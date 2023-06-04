@@ -39,14 +39,12 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleAcceptClick = () => {
-    console.log(selectedCategory);
     if (selectedCategory) {
       setAddingLoading(true);
 
       const data = {
         categoryId: selectedCategory,
         productId: dataForUpdate?.id,
-        // displayOrder: console.log(e.target),
       };
 
       fetchWrapper
@@ -70,7 +68,6 @@ const CategoryMappings = ({ isAdded, dataForUpdate }) => {
   };
 
   const handleCategoryChange = (e) => {
-    console.log(e);
     setSelectedCategory(e.value);
   };
 

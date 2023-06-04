@@ -199,9 +199,15 @@ const AdminNavdata = () => {
       stateVariables: isCustomer,
       subItems: [
         {
+          id: "customer",
+          label: "Сотрудники",
+          link: "/admin/customer/employees",
+          parentId: "customers",
+        },
+        {
           id: "test",
           label: "test",
-          link: "/admin/news/banners",
+          link: "/admin/customer/test",
           parentId: "customers",
         },
       ],

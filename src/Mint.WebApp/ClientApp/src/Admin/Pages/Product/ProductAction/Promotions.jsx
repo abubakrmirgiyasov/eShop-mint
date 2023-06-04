@@ -47,7 +47,6 @@ const Promotions = ({ isAdded, dataForUpdate }) => {
       const data = {
         promotionId: selectedPromotion,
         productId: dataForUpdate?.id,
-        // displayOrder: console.log(e.target),
       };
 
       fetchWrapper

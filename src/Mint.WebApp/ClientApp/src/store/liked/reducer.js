@@ -15,10 +15,6 @@ export default function (state = initState, action) {
       };
     case NEW_LIKE:
       const isItemExist = state.likes.some((item) => item.id === payload.id);
-      
-      console.log("isItemExist" + isItemExist)
-      console.log("teset" + state.likes)
-      console.log("pat" + payload)
 
       if (!isItemExist) {
         return {

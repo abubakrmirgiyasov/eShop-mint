@@ -1,25 +1,73 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Mint.MAUI.App.Pages.Footer"
+             xmlns:local="clr-namespace:Mint.MAUI.App.Views.Footer"
              x:Class="Mint.MAUI.App.Pages.MainPage"
              Title="View">
-    
-    <VerticalStackLayout>
+
+    <ContentPage.Resources>
+        <ControlTemplate x:Key="PageLayoutTemplate">
+            <Grid RowDefinitions="Auto,*,Auto">
+                
+                <!--Header-->
+                <Grid Grid.Row="0" 
+                      ColumnDefinitions="*,*" 
+                      Background="{StaticResource Success}">
+                    <StackLayout Grid.Column="0"
+                                 Padding="5">
+
+                        <Label Text="{TemplateBinding HeaderText}"
+                               FontSize="24"
+                               TextTransform="Uppercase" 
+                               FontAttributes="Bold"/>
+
+                    </StackLayout>
+
+                    <Frame Background="{StaticResource LightBrush}"
+                           CornerRadius="50"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           HorizontalOptions="End"
+                           VerticalOptions="Center"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           Margin="0, 10,0,0"
+                           HasShadow="True">
+                        <Button WidthRequest="35"
+                                HeightRequest="35" 
+                                ImageSource="avatar.png"
+                                BackgroundColor="Transparent"
+                                CornerRadius="50"/>
+                    </Frame>
+                </Grid>
+                
+                <!--Content-->
+                <ContentPresenter Grid.Row="1" />
+
+                <Grid Background="{StaticResource Danger}">
+                    
+                </Grid>
+
+            </Grid>
+        </ControlTemplate>
+    </ContentPage.Resources>
+
+    <!--<VerticalStackLayout>
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="109" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            
-            <!--Main View-->
+
+            --><!--Main View--><!--
             <Grid x:Name="Child" Background="{StaticResource Danger}"
                   Grid.Row="0">
                 <local:Home />
             </Grid>
 
-            <Grid Grid.Row="1"
+            <Grid Grid.Row="2"
                   HeightRequest="50"
                   Background="{StaticResource Light}">
                 <Grid.Shadow>
@@ -81,9 +129,9 @@
                 </Frame>
 
             </Grid>
-            
+
         </Grid>
 
-    </VerticalStackLayout>
-        
+    </VerticalStackLayout>-->
+
 </ContentPage>

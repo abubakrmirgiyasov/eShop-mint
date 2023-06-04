@@ -25,8 +25,6 @@ const Price = ({ isAdded, dataForUpdate }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  console.log(dataForUpdate?.isFreeTax);
-
   const validation = useFormik({
     initialValues: {
       price: 0,
@@ -130,7 +128,7 @@ const Price = ({ isAdded, dataForUpdate }) => {
                   ) : null}
                 </Col>
               </Col>
-              <Col
+              {/* <Col
                 lg={12}
                 className={
                   "d-flex justify-content-between align-items-center mb-3"
@@ -169,7 +167,7 @@ const Price = ({ isAdded, dataForUpdate }) => {
                     />
                   </div>
                 </Col>
-              </Col>
+              </Col> */}
               <Collapse isOpen={!isFreeTax}>
                 <Col
                   lg={12}

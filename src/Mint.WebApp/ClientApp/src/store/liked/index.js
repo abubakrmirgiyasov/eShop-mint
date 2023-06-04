@@ -8,7 +8,6 @@ export const toggleLike = (toggle) => {
 };
 
 export const newLike = (item) => {
-  console.log(item);
   return {
     type: NEW_LIKE,
     payload: item,
@@ -16,7 +15,6 @@ export const newLike = (item) => {
 };
 
 export const removeLike = (item) => {
-  console.log(item);
   return {
     type: REMOVE_LIKE,
     payload: item,

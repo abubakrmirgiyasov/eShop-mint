@@ -68,6 +68,9 @@ public class Jwt : IJwt
     {
         try
         {
+            if (token == "Object]")
+                return null;
+
             if (token == null)
                 return null;
 

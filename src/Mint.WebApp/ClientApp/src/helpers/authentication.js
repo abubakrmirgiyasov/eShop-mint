@@ -47,8 +47,6 @@ export const refreshToken = () => (dispatch) => {
       return Promise.resolve();
     },
     (error) => {
-      console.log(error);
-
       const message =
         (error.response &&
           error.response.data &&

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.BindingModels;
+using Mint.Domain.Exceptions;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Attributes;
 using Mint.WebApp.Extensions;
@@ -27,6 +28,14 @@ public class AuthenticationController : ControllerBase
             var response = _authentication.Signin(model, Request.GetIp()!);
             Response.SetTokenCookie(response.RefreshToken!);
             return Ok(response);
+        }
+        catch (BlockedException ex)
+        {
+            throw new BlockedException(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new UnauthorizedAccessException(ex.Message, ex);
         }
         catch (Exception ex)
         {

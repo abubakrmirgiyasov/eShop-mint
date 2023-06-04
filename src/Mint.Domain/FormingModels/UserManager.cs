@@ -68,6 +68,35 @@ public class UserManager
 		}
     }
 
+    public List<UserFullViewModel> FormingMultiViewModels(List<User> models)
+    {
+        try
+        {
+            var employees = new List<UserFullViewModel>();
+
+            for (int i = 0; i < models.Count; i++)
+            {
+                employees.Add(new UserFullViewModel()
+                {
+                    Id = models[i].Id,
+                    FirstName = models[i].FirstName,
+                    SecondName = models[i].SecondName,
+                    DateBirth = models[i].DateBirth,
+                    Email = models[i].Email,
+                    Phone = models[i].Phone,
+                    Gender = models[i].Gender,
+                    ImagePath = models[i].Photo.GetImage64(),
+                });
+            }
+
+            return employees;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public UserFullViewModel FormingUpdateViewModel(User model)
     {
         try

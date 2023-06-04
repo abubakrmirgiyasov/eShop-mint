@@ -34,7 +34,6 @@ const Cart = () => {
     });
 
     setSum(res);
-    console.log(sum);
   }, [products]);
 
   const handleIncrementClick = (id) => {
