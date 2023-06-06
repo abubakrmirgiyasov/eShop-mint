@@ -1,1 +1,12 @@
-﻿
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "mint-webapp": "StartDebugging",
+        "mint.webapp": "StartDebugging"
+      }
+    }
+  }
+}

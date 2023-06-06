@@ -1,10 +1,13 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Mint.Domain.Common;
 using Mint.Domain.Models;
 using Mint.Infrastructure;
+using Mint.Infrastructure.HealthChekcs;
 using Mint.Infrastructure.MessageBrokers;
-using Mint.Infrastructure.MessageBrokers.Models;
 using Mint.Infrastructure.Repositories;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.Infrastructure.Services;
@@ -25,9 +28,28 @@ builder.Services.Configure<AppSettings>(settings);
 var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
+var healthChecksBuilder = builder.Services
+    .AddHealthChecks()
+    .AddDbSqlServer(
+        connectionString: connection!,
+        healthQuery: "SELECT 1",
+        name: "Sql Server",
+        failureStatus: HealthStatus.Degraded)
+    .AddHttp(
+        uri: "https://localhost:44411/",
+        name: "Identity Server",
+        failureStatus: HealthStatus.Degraded);
+builder.Services
+    .AddHealthChecksUI(
+        setupSettings: setup =>
+        {
+            setup.AddHealthCheckEndpoint("Basic Health Check", $"https://localhost:44411/healthz");
+            setup.DisableDatabaseMigrations();
+        })
+    .AddInMemoryStorage();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHealthChecks();
 
 builder.Services
     .AddControllersWithViews()
@@ -70,7 +92,17 @@ if (!app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapHealthChecks("/healthz");
+app.UseHealthChecks("/healthz", new HealthCheckOptions
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status500InternalServerError,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable,
+    }
+});
 app.UseHealthChecksUI();
 
 app.UseHttpsRedirection();

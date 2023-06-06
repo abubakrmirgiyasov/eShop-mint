@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Mint.Domain.Models.Base;
+using Mint.Domain.Models.Base.Interfaces;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.Infrastructure.MessageBrokers.Test;
 
 namespace Mint.Infrastructure.Services;
 
@@ -10,11 +11,11 @@ public class MessageBusReceiver : BackgroundService
 {
     private readonly ILogger<MessageBusReceiver> _logger;
     private readonly IServiceProvider _service;
-    private readonly IMessageReceiver<AuditLogEntryTest> _auditMessageReceiver;
+    private readonly IMessageReceiver<AuditLogEntry> _auditMessageReceiver;
 
     public MessageBusReceiver(
         ILogger<MessageBusReceiver> logger, 
-        IMessageReceiver<AuditLogEntryTest> auditMessageReceiver,
+        IMessageReceiver<AuditLogEntry> auditMessageReceiver,
         IServiceProvider service)
     {
         _logger = logger;
@@ -30,7 +31,7 @@ public class MessageBusReceiver : BackgroundService
             var dispatcher = scope.ServiceProvider.GetRequiredService<Dispatcher>();
             data.Id = Guid.Empty;
 
-            await dispatcher.DispatchAsync(new AddOrUpdateEntityCommand<AuditLogEntryTest>(data));
+            await dispatcher.DispatchAsync(new AddOrUpdateEntityCommand<AuditLogEntry>(data));
 
             _logger.LogInformation(data.Action);
 
@@ -42,7 +43,7 @@ public class MessageBusReceiver : BackgroundService
 }
 
 public class AddOrUpdateEntityCommand<TEntity> : ICommand
-    where TEntity : EntityTest<Guid>, IAggregateRoot
+    where TEntity : Entity<Guid>, IAggregateRoot
 {
     public AddOrUpdateEntityCommand(TEntity entity)
     {
@@ -53,7 +54,7 @@ public class AddOrUpdateEntityCommand<TEntity> : ICommand
 }
 
 internal class AddOrUpdateEntityCommandHandler<TEntity> : ICommandHandler<AddOrUpdateEntityCommand<TEntity>>
-    where TEntity : EntityTest<Guid>, IAggregateRoot
+    where TEntity : Entity<Guid>, IAggregateRoot
 {
     private readonly ICrudService<TEntity> _crud;
 
@@ -69,7 +70,7 @@ internal class AddOrUpdateEntityCommandHandler<TEntity> : ICommandHandler<AddOrU
 }
 
 public interface ICrudService<T>
-    where T : EntityTest<Guid>, IAggregateRoot
+    where T : Entity<Guid>, IAggregateRoot
 {
     Task AddOrUpdateAsync(T entity, CancellationToken cancellationToken = default);
 }
