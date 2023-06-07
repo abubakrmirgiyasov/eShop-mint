@@ -5,9 +5,9 @@ import { Collapse, Container } from "reactstrap";
 import nav from "../AdminLayoutMenuData";
 import PrivateComponent from "../../helpers/privateComponent";
 
-import LogoSm from "../../assets/images/logo-sm.png";
-import LogoDark from "../../assets/images/logo-dark.png";
-import LogoLight from "../../assets/images/logo-light.png";
+import LogoSm from "../../assets/images/test-logo.png";
+import LogoDark from "../../assets/images/test-logo.png";
+import LogoLight from "../../assets/images/test-logo.png";
 
 const AdminSidebar = (props) => {
   const navData = nav().props.children;

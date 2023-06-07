@@ -180,6 +180,7 @@ public class UserRepository : IUserRepository
     {
         try
         {
+            model.Id = Guid.NewGuid();
             var address = new AddressManager().FormingBindingModel(model);
             await _context.Addresses.AddAsync(address);
             await _context.SaveChangesAsync();
