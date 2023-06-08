@@ -19,8 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 var options = new MessageBrokerOptions();
 builder.Configuration.Bind(options);
 
-var settings = builder.Configuration.GetSection("AppSettings");
-builder.Services.Configure<AppSettings>(settings);
+//var settings = builder.Configuration.GetSection("AppSettings");
+//builder.Services.Configure<AppSettings>(settings);
 
 //var brokers = builder.Configuration.GetSection("MessageBroker");
 //builder.Services.Configure<MessageBrokerOptions>(brokers);

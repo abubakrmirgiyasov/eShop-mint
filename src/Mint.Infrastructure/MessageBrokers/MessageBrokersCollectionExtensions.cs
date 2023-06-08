@@ -62,9 +62,9 @@ public static class MessageBrokersCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddMessageBusReceiver<T>(this IServiceCollection services, MessageBrokerOptions options)
+    public static IServiceCollection AddMessageBusReceiver<T>(this IServiceCollection services, MessageBrokerOptions? options = null)
     {
-        if (options.UseRabbitMQ())
+        if (options != null && options.UseRabbitMQ())
         {
             services.AddRabbitMQReceiver<T>(options.RabbitMQ);
         }
