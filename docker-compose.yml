@@ -5,7 +5,7 @@ services:
     image: datalust/seq:latest
 
   rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq:latest
     container_name: 'rabbitmq'
     ports:
       - 5672:5672
@@ -16,5 +16,7 @@ services:
     build:
       context: .
       dockerfile: src/Mint.WebApp/Dockerfile
+    ports:
+      - 44411
     depends_on:
       - rabbitmq
