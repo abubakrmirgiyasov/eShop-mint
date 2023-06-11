@@ -1,8 +1,4 @@
-﻿using Cronos;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Mint.Domain.Models.Base;
+﻿using Mint.Domain.Models.Base;
 using Mint.Domain.Models.Base.Interfaces;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Services.Interfaces;
@@ -11,25 +7,33 @@ namespace Mint.Infrastructure.Services;
 
 public class MessageBusReceiverBackgroundService : CronService
 {
-    public MessageBusReceiverBackgroundService(IScheduleConfig<MessageBusReceiverBackgroundService> config) 
+    public MessageBusReceiverBackgroundService(IScheduleConfig<MessageBusReceiverBackgroundService> config)
         : base(config.CronExpression, config.TimeZone) { }
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"[{DateTime.Now:hh:mm:ss}] Started...", ConsoleColor.Green);
+        ConsoleWriteLine(ConsoleColor.Cyan, $"[{DateTime.Now:hh:mm:ss}] Started...");
         return base.StartAsync(cancellationToken);
     }
 
     public override Task DoWork(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"[{DateTime.Now:hh:mm:ss}] Working...", ConsoleColor.Blue);
+        ConsoleWriteLine(ConsoleColor.Cyan, $"[{DateTime.Now:hh:mm:ss}] Working...");
         return base.DoWork(cancellationToken);
     }
 
     public override Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"[{DateTime.Now:hh:mm:ss}] Stopping...", ConsoleColor.Cyan);
+        ConsoleWriteLine(ConsoleColor.Cyan, $"[{DateTime.Now:hh:mm:ss}] Stopping...");
         return base.StopAsync(cancellationToken);
+    }
+
+    public void ConsoleWriteLine(ConsoleColor color, string text)
+    {
+        ConsoleColor originalColor = Console.ForegroundColor;
+        Console.ForegroundColor = color;
+        Console.WriteLine(text);
+        Console.ForegroundColor = originalColor;
     }
 }
 

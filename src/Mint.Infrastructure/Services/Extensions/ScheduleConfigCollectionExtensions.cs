@@ -9,13 +9,13 @@ public static class ScheduleConfigCollectionExtensions
         where T : CronService
     {
         if (options == null)
-            throw new ArgumentNullException(nameof(options), "Please provide Schedule Configuration");
+            throw new ArgumentNullException(nameof(options), @"Please provide Schedule Configuration");
 
         var config = new ScheduleConfig<T>();
         options.Invoke(config);
 
         if (string.IsNullOrWhiteSpace(config.CronExpression))
-            throw new ArgumentNullException(nameof(ScheduleConfig<T>.CronExpression), "Empty cron expression is not allowed");
+            throw new ArgumentNullException(nameof(ScheduleConfig<T>.CronExpression), @"Empty cron expression is not allowed");
 
         services.AddSingleton<IScheduleConfig<T>>(config);
         services.AddHostedService<T>();

@@ -3,7 +3,7 @@ using Mint.Domain.Models;
 using Mint.Domain.Models.Base;
 using Mint.Infrastructure.MessageBrokers;
 
-namespace Mint.Infrastructure.Services;
+namespace Mint.Infrastructure.Services.Extensions;
 
 public static class StorageModuleServiceCollectionExtensions
 {

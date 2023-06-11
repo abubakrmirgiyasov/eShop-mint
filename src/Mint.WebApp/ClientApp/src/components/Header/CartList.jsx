@@ -75,7 +75,7 @@ const CartList = () => {
                 <h6 className={"m-0 fs-16 fw-semibol"}>Корзина</h6>
               </Col>
               <Col className={"col-auto"}>
-                <span className={"badge badge-soft-warning fs-13"}>
+                <span className={"badge badge-soft-success fs-13"}>
                   <span className={"cartitem-badge"}>
                     Товаров в корзине:{" "}
                     {cartData.length === 0 ? 0 : cartData.length}

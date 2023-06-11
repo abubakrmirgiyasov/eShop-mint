@@ -101,7 +101,7 @@ const Addresses = ({ activeTab, userId }) => {
         {error ? <Error message={error} /> : null}
         {isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-          <Spinner color={"success"} size={"sm"}>
+            <Spinner color={"success"} size={"sm"}>
               Loading...
             </Spinner>
           </div>

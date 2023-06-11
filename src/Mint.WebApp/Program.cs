@@ -11,6 +11,7 @@ using Mint.Infrastructure.MessageBrokers;
 using Mint.Infrastructure.Repositories;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.Infrastructure.Services;
+using Mint.Infrastructure.Services.Extensions;
 using Mint.WebApp.Middlewares;
 using System.Text.Json.Serialization;
 
@@ -19,8 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 var options = new MessageBrokerOptions();
 builder.Configuration.Bind(options);
 
-//var settings = builder.Configuration.GetSection("AppSettings");
-//builder.Services.Configure<AppSettings>(settings);
+var settings = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(settings);
 
 //var brokers = builder.Configuration.GetSection("MessageBroker");
 //builder.Services.Configure<MessageBrokerOptions>(brokers);

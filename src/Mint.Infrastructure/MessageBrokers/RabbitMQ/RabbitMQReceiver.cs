@@ -36,7 +36,9 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 
     private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
     {
-        // TODO: Add log here 
+        // TODO: Add log here
+
+        Console.WriteLine("Connection_ConnectionShutdown. RabbitMQReceiver:41", ConsoleColor.DarkYellow);
     }
 
     public Task ReceiveAsync(Func<T, MetaData, Task> action, CancellationToken cancellationToken)
@@ -56,6 +58,8 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
         {
             var body = Encoding.UTF8.GetString(e.Body.Span);
             var message = JsonSerializer.Deserialize<Message<T>>(body);
+
+            Console.WriteLine(message);
 
             await action(message.Data, message.MetaData);
             _channel.BasicAck(deliveryTag: e.DeliveryTag, multiple: false);

@@ -103,7 +103,7 @@ const Signup = () => {
         .then((response) => {
           setIsLoading(false);
           // toggle Signin Model
-          navigate("/");
+          navigate("/signin");
         })
         .catch((error) => {
           setError(error);
@@ -116,7 +116,7 @@ const Signup = () => {
     if (isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   function handleFileChange(newFile) {
     setImageFile(newFile);
@@ -124,15 +124,15 @@ const Signup = () => {
 
   document.title = "Регистрация - Mint";
   return (
-    <div className="page-content">
+    <div className={"page-content"}>
       <Container>
         {!isLoading ? error ? <Error message={error} /> : null : null}
         <Card>
           <CardBody>
-            <h1 className="mb-2">Регистрация</h1>
-            <h4 className="text-muted mb-2 fs-14">ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h4>
+            <h1 className={"mb-2"}>Регистрация</h1>
+            <h4 className={"text-muted mb-2 fs-14"}>ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h4>
             <Form
-              className="form-horizontal"
+              className={"form-horizontal"}
               onSubmit={(e) => {
                 e.preventDefault();
                 validation.handleSubmit();

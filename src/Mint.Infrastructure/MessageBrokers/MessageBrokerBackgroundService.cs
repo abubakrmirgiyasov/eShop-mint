@@ -25,7 +25,7 @@ public class MessageBrokerBackgroundService : BackgroundService
 
             _logger.LogInformation(message);
 
-            await Task.Delay(5000);
+            await Task.Delay(1000);
         }, stoppingToken);
 
         return Task.CompletedTask;
