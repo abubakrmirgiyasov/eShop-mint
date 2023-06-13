@@ -164,8 +164,8 @@ const Signin = (props) => {
                   <Spinner size={"sm"} className="me-2">
                     Loading...
                   </Spinner>
-                ) : null}
-                <i className="ri-login-box-line"></i>&nbsp;Войти
+                ) : <i className="ri-login-box-line"></i>}{" "}
+                Войти
               </button>
             </div>
           </Form>

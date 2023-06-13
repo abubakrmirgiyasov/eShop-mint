@@ -1,4 +1,4 @@
-﻿namespace Mint.Gateaway;
+﻿namespace Mint.Gateway;
 
 public class DebuggingHandler : DelegatingHandler
 {

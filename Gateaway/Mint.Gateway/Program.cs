@@ -1,7 +1,8 @@
-using Mint.Gateaway;
 using Mint.Gateaway.Common;
+using Mint.Gateway;
 using Ocelot.Configuration.File;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,7 @@ builder.Services
 
 builder.Services.PostConfigure<FileConfiguration>(configuration =>
 {
-Console.Write("asdasdassssssssssssssssssss");
-    foreach (var route in appSettings!.Ocelot.Routes.Select(x => x.Value))
+    foreach (var route in appSettings!.Routes.Select(x => x.Value))
     {
         var uri = new Uri(route.Downstream);
 
@@ -49,6 +49,9 @@ Console.Write("asdasdassssssssssssssssssss");
 });
 
 var app = builder.Build();
+
+app.UseWebSockets();
+app.UseOcelot().Wait();
 
 app.MapGet("/", () => "Hello World!");
 

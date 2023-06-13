@@ -1,20 +1,28 @@
-using Microsoft.OpenApi.Models;
-using Mint.Infrastructure.Services;
-using Mint.Infrastructure.Services.Extensions;
+using Mint.Infrastructure.MessageBrokers;
+using Mint.WebApp.Ordering.Infrastructure;
+using Mint.WebApp.Ordering.Infrastructure.Repositories;
+using Mint.WebApp.Ordering.Infrastructure.Services;
+using Mint.WebApp.Ordering.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var config = builder.Configuration.GetSection("MessageBroker");
-//var appSettings = config.Get<MessageBrokerOptions>();
+var config = builder.Configuration.GetSection("MessageBroker");
+var appSettings = config.Get<MessageBrokerOptions>();
 
-//builder.Services.AddMessageBusReceiver<Test>(appSettings);
-//builder.Services.AddHostedService<MessageBrokerBackgroundService>();
+MongoDbPersistence.Configure();
 
-builder.Services.AddCron<MessageBusReceiverBackgroundService>(options =>
-{
-    options.TimeZone = TimeZoneInfo.Local;
-    options.CronExpression = @"*/1 * * * *";
-});
+builder.Services.AddMessageBusReceiver<Test>(appSettings);
+builder.Services.AddHostedService<MessageBrokerBackgroundService>();
+
+builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+//builder.Services.AddCron<MessageBusReceiverBackgroundService>(options =>
+//{
+//    options.TimeZone = TimeZoneInfo.Local;
+//    options.CronExpression = @"*/1 * * * *";
+//});
 
 builder.Services.AddControllers();
 

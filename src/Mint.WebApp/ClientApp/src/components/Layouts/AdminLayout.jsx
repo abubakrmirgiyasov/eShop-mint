@@ -101,7 +101,7 @@ const AdminLayout = ({ children }) => {
 
       if (!isAccessed) navigate("/admin/admin-signin");
     }
-  }, [user]);
+  }, [navigate, user]);
 
   return (
     <React.Fragment>
