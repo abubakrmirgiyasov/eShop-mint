@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.Ordering.Infrastructure.Repositories;
-using Mint.WebApp.Ordering.Interfaces;
+using Mint.WebApp.Ordering.Infrastructure.Interfaces;
+using Mint.WebApp.Ordering.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Ordering.Models;
 
 namespace Mint.WebApp.Ordering.Controllers
@@ -10,59 +10,66 @@ namespace Mint.WebApp.Ordering.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private readonly IOrderRepository _order;
-        private readonly IUnitOfWork _uow;
+        private readonly IRepository<Order> _repository;
 
-        public ValuesController(IOrderRepository order, IUnitOfWork uow)
+        public ValuesController(IRepository<Order> repository)
         {
-            _order = order;
-            _uow = uow;
+            _repository = repository;
         }
+
+        //private readonly IOrderRepository _order;
+        //private readonly IUnitOfWork _uow;
+
+        //public ValuesController(IOrderRepository order, IUnitOfWork uow)
+        //{
+        //    _order = order;
+        //    _uow = uow;
+        //}
 
         [HttpGet("Get")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(new { Id = Guid.NewGuid() });
-        }
-
-        [HttpGet("All")]
-        public async Task<IActionResult> GetAll()
-        {
-            var products = await _order.GetAllAsync();
-            return Ok(products);
-        }
-
-        [HttpGet("GetById/{id:int}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var product = await _order.GetByIdAsync(Guid.NewGuid());
-            return Ok(product);
+            var get = await _repository.GetAllAsync();
+            return Ok(get);
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add(Order order)
+        public IActionResult Add(Order order)
         {
-            var s = _order.Add(order);
-
-            await _uow.Commit();
-
+            var s = _repository.Add(order);
             return Ok(s);
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> Update(Order order)
-        {
-            var s = _order.Update(order);
-            await _uow.Commit();
-            return Ok(s);
-        }
+        //[HttpGet("All")]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var products = await _order.GetAllAsync();
+        //    return Ok(products);
+        //}
 
-        [HttpDelete("Delete/{id:int}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            _order.Delete(Guid.NewGuid());
-            await _uow.Commit();
-            return Ok();
-        }
+        //[HttpGet("GetById/{id:int}")]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var product = await _order.GetByIdAsync(Guid.NewGuid());
+        //    return Ok(product);
+        //}
+
+
+
+        //[HttpPut("Update")]
+        //public async Task<IActionResult> Update(Order order)
+        //{
+        //    var s = _order.Update(order);
+        //    await _uow.Commit();
+        //    return Ok(s);
+        //}
+
+        //[HttpDelete("Delete/{id:int}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    _order.Delete(Guid.NewGuid());
+        //    await _uow.Commit();
+        //    return Ok();
+        //}
     }
 }

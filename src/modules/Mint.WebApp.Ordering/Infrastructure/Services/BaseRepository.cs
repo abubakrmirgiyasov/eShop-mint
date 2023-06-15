@@ -1,52 +1,56 @@
-﻿using Mint.WebApp.Ordering.Interfaces;
+﻿#nullable disable
+
+using Mint.WebApp.Ordering.Attributes;
+using Mint.WebApp.Ordering.Common;
+using Mint.WebApp.Ordering.Infrastructure.Interfaces;
+using Mint.WebApp.Ordering.Models;
 using MongoDB.Driver;
 using ServiceStack;
 
 namespace Mint.WebApp.Ordering.Infrastructure.Services;
 
-public abstract class BaseRepository<TEntity, TKey> : IRepository<TEntity, TKey>
-    where TEntity : class
+public class BaseRepository<TEntity> : IRepository<TEntity>
+    where TEntity : IDocument
 {
-    protected readonly IMongoDbContext Context;
-    protected IMongoCollection<TEntity> DbSet;
+    private readonly IMongoCollection<TEntity> _collection;
 
-    public BaseRepository(IMongoDbContext context)
+    public BaseRepository(IMongoDbSettings settings)
     {
-        Context = context;
-        DbSet = Context.GetCollection<TEntity>(typeof(TEntity).Name);
+        var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
+        _collection = database.GetCollection<TEntity>(GetCollectionName(typeof(TEntity)));
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    private protected string GetCollectionName(Type documentType)
     {
-        var all = await DbSet.FindAsync(Builders<TEntity>.Filter.Empty);
-        return all.ToList();
+        return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
+            typeof(BsonCollectionAttribute),
+            true)
+            .FirstOrDefault())?.CollectionName;
     }
 
-    public virtual async Task<TEntity> GetByIdAsync(TKey key)
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        var data = await DbSet.FindAsync(Builders<TEntity>.Filter.Eq("_id", key));
-        return data.SingleOrDefault();
+        return await _collection.AsQueryable().ToListAsync();
     }
 
-    public virtual TEntity Add(TEntity entity)
+    public Task<TEntity> GetByIdAsync(Guid key)
     {
-        Context.AddCommand(() => DbSet.InsertOneAsync(entity));
+        throw new NotImplementedException();
+    }
+
+    public TEntity Add(TEntity entity)
+    {
+        _collection.InsertOne(entity);
         return entity;
     }
 
-    public virtual TEntity Update(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
-        Context.AddCommand(() => DbSet.ReplaceOneAsync(Builders<TEntity>.Filter.Eq("_id", entity.GetId()), entity));
-        return entity;
+        throw new NotImplementedException();
     }
 
-    public virtual void Delete(TKey key)
+    public void Delete(Guid key)
     {
-        Context.AddCommand(() => DbSet.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", key)));
-    }
-
-    public void Dispose()
-    {
-        Context?.Dispose();
+        throw new NotImplementedException();
     }
 }

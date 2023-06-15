@@ -23,7 +23,7 @@ public class MessageBrokerBackgroundService : BackgroundService
         {
             string message = data.Name;
 
-            _logger.LogInformation(message);
+            _logger.LogInformation("Message: " + message);
 
             await Task.Delay(1000);
         }, stoppingToken);

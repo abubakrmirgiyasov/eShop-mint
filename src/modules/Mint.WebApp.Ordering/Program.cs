@@ -1,28 +1,29 @@
+using Microsoft.Extensions.Options;
 using Mint.Infrastructure.MessageBrokers;
-using Mint.WebApp.Ordering.Infrastructure;
-using Mint.WebApp.Ordering.Infrastructure.Repositories;
+using Mint.Infrastructure.Services;
+using Mint.WebApp.Ordering.Common;
+using Mint.WebApp.Ordering.Infrastructure.Interfaces;
 using Mint.WebApp.Ordering.Infrastructure.Services;
-using Mint.WebApp.Ordering.Interfaces;
+using Mint.Infrastructure.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration.GetSection("MessageBroker");
 var appSettings = config.Get<MessageBrokerOptions>();
 
-MongoDbPersistence.Configure();
-
 builder.Services.AddMessageBusReceiver<Test>(appSettings);
 builder.Services.AddHostedService<MessageBrokerBackgroundService>();
-
-builder.Services.AddScoped<IMongoDbContext, MongoDbContext>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //builder.Services.AddCron<MessageBusReceiverBackgroundService>(options =>
 //{
 //    options.TimeZone = TimeZoneInfo.Local;
 //    options.CronExpression = @"*/1 * * * *";
 //});
+
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+builder.Services.AddSingleton<IMongoDbSettings>(options => options.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
 builder.Services.AddControllers();
 

@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace Mint.WebApp.Ordering.Interfaces;
+namespace Mint.WebApp.Ordering.Infrastructure.Interfaces;
 
 public interface IMongoDbContext : IDisposable
 {

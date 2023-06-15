@@ -1,4 +1,4 @@
-﻿using Mint.WebApp.Ordering.Interfaces;
+﻿using Mint.WebApp.Ordering.Infrastructure.Interfaces;
 
 namespace Mint.WebApp.Ordering.Infrastructure.Services;
 

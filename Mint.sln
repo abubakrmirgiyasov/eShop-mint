@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Ordering", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.Gateway", "Gateaway\Mint.Gateway\Mint.Gateway.csproj", "{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Ordering.Tests", "src\modules\tests\Mint.WebApp.Ordering.Tests\Mint.WebApp.Ordering.Tests.csproj", "{4F1AADD0-B296-4A3C-87F4-5FFC5EA030E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F1AADD0-B296-4A3C-87F4-5FFC5EA030E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F1AADD0-B296-4A3C-87F4-5FFC5EA030E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F1AADD0-B296-4A3C-87F4-5FFC5EA030E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F1AADD0-B296-4A3C-87F4-5FFC5EA030E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{8BB724A0-4A8F-4D89-AF7D-8E00151C0F85} = {F976BC5F-E04C-4C20-A3F5-501390700DD2}
 		{71ABDFCD-4BA0-473D-BD84-92B560B7CF87} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D} = {C208C3BB-D549-4454-9B8A-15D495F3B613}
+		{4F1AADD0-B296-4A3C-87F4-5FFC5EA030E2} = {F976BC5F-E04C-4C20-A3F5-501390700DD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}

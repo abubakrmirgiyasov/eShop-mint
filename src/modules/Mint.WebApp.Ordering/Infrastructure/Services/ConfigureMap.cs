@@ -9,9 +9,9 @@ public static class ConfigureMap
     {
         BsonClassMap.RegisterClassMap<Order>(map =>
         {
-            map.AutoMap();
-            map.SetIgnoreExtraElements(true);
-            map.MapIdMember(x => x.OrderId);
+            //map.AutoMap();
+            //map.SetIgnoreExtraElements(true);
+            //map.MapIdMember(x => x.OrderId);
             //map.MapMember(x => x.Id);
             //map.MapMember(x => x.RowVersion);
             //map.MapMember(x => x.UpdateDateTime);
