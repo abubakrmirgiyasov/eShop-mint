@@ -3,11 +3,6 @@ using Mint.Domain.BindingModels;
 using Mint.Domain.FormingModels;
 using Mint.Domain.ViewModels;
 using Mint.Infrastructure.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mint.Infrastructure.Repositories;
 
@@ -27,7 +22,7 @@ public class DiscountRepository : IDiscountRepository
             var discounts = await _context.Discounts
                 .AsNoTracking()
                 .ToListAsync();
-            return new DiscountManager().FomingMultiViewModels(discounts);
+            return new DiscountManager().FomingMultiViewModels(discounts.Where(x => x.CreatedDate > DateTime.Now).ToList());
         }
         catch (Exception ex)
         {

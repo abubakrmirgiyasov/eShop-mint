@@ -1,15 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models;
 
-public class Address
+public class Address : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
-    [DataType(DataType.DateTime)]
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
-
     [Required(ErrorMessage = "Заполните поле Адрес")]
     [MaxLength(255, ErrorMessage = "Перевышено макс. длина строки (255).")]
     public string FullAddress { get; set; } = null!;

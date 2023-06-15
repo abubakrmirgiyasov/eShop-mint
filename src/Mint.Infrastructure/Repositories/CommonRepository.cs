@@ -39,6 +39,8 @@ public class CommonRepository : ICommonRepository
     {
         try
         {
+            query = query.ToLower();
+
             var products = await _context.Products
                .Include(x => x.Discount)
                .Include(x => x.Manufacture)
@@ -50,9 +52,9 @@ public class CommonRepository : ICommonRepository
                .ThenInclude(x => x.Photo)
                .ToListAsync();
 
-            products = products.Where(x => x.Name.IndexOf(query) != -1 
-                || x.FullDescription?.IndexOf(query) != -1 
-                || x.Category?.Name.IndexOf(query) != -1)
+            products = products.Where(x => x.Name.ToLower().IndexOf(query) != -1 
+                || x.FullDescription?.ToLower().IndexOf(query) != -1 
+                || x.Category?.Name.ToLower().IndexOf(query) != -1)
                 .ToList();
 
             return new ProductManager().FormingFullProductViewModels(products);

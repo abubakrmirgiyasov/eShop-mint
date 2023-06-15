@@ -11,6 +11,7 @@ using Mint.Infrastructure.MessageBrokers;
 using Mint.Infrastructure.Repositories;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.Infrastructure.Services;
+using Mint.Infrastructure.Services.Extensions;
 using Mint.WebApp.Middlewares;
 using System.Text.Json.Serialization;
 

@@ -36,9 +36,9 @@ public static class MessageBrokersCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddMessageBusSender<T>(this IServiceCollection services, MessageBrokerOptions options, IHealthChecksBuilder healthChecksBuilder = null!, HashSet<string> checkDuplicated = null!)
+    public static IServiceCollection AddMessageBusSender<T>(this IServiceCollection services, MessageBrokerOptions? options = null, IHealthChecksBuilder? healthChecksBuilder = null, HashSet<string>? checkDuplicated = null)
     {
-        if (options.UseRabbitMQ())
+        if (options != null && options.UseRabbitMQ())
         {
             services.AddRabbitMQSender<T>(options.RabbitMQ);
 
@@ -62,9 +62,9 @@ public static class MessageBrokersCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddMessageBusReceiver<T>(this IServiceCollection services, MessageBrokerOptions options)
+    public static IServiceCollection AddMessageBusReceiver<T>(this IServiceCollection services, MessageBrokerOptions? options = null)
     {
-        if (options.UseRabbitMQ())
+        if (options != null && options.UseRabbitMQ())
         {
             services.AddRabbitMQReceiver<T>(options.RabbitMQ);
         }

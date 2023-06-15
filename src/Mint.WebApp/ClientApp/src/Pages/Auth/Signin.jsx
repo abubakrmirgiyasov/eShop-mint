@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Col,
   Form,
@@ -21,7 +21,11 @@ import { Error } from "../../components/Notification/Error";
 import LogoLight from "../../assets/images/logo-mint-light.png";
 
 const Signin = (props) => {
+  const { isOpen, toggle } = props;
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [passwordShow, setPasswordShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,10 +45,12 @@ const Signin = (props) => {
       setIsLoading(true);
       dispatch(signin(values))
         .then(() => {
+          navigate("/");
           window.location.reload();
           setIsLoading(false);
         })
         .catch((error) => {
+          console.error(error);
           setIsLoading(false);
         });
     },
@@ -53,7 +59,7 @@ const Signin = (props) => {
   return (
     <React.Fragment>
       {error ? <Error message={error} /> : null}
-      <Modal isOpen={props.isOpen} toggle={props.toggle} centered={true}>
+      <Modal isOpen={isOpen} toggle={toggle} centered={true}>
         <ModalBody>
           <Form
             onSubmit={(e) => {
@@ -70,20 +76,20 @@ const Signin = (props) => {
                 alt={"logo"}
                 width={100}
                 height={100}
-                className="logo-dark"
+                className={"logo-dark"}
               />
             </div>
             <Row>
-              <Col lg={12} className="mb-2">
-                <Label className="form-label" htmlFor="email">
+              <Col lg={12} className={"mb-2"}>
+                <Label className={"form-label"} htmlFor={"email"}>
                   Email
                 </Label>
                 <Input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="form-control"
-                  placeholder="Введите адрес электроной почты"
+                  type={"email"}
+                  id={"email"}
+                  name={"email"}
+                  className={"form-control"}
+                  placeholder={"Введите адрес электроной почты"}
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
                   defaultValue={validation.values.email || ""}
@@ -92,17 +98,17 @@ const Signin = (props) => {
                   }
                 />
                 {validation.touched.email && validation.errors.email ? (
-                  <FormFeedback type="invalid">
+                  <FormFeedback type={"invalid"}>
                     {validation.errors.email}
                   </FormFeedback>
                 ) : null}
               </Col>
-              <Col lg={12} className="mb-2">
-                <div className="mb-3">
-                  <Label htmlFor="password" className="form-label">
+              <Col lg={12} className={"mb-2"}>
+                <div className={"mb-3"}>
+                  <Label htmlFor={"password"} className={"form-label"}>
                     Пароль
                   </Label>
-                  <div className="position-relative auth-pass-inputgroup mb-3">
+                  <div className={"position-relative auth-pass-inputgroup mb-3"}>
                     <Input
                       type={passwordShow ? "text" : "password"}
                       name="password"
@@ -158,8 +164,8 @@ const Signin = (props) => {
                   <Spinner size={"sm"} className="me-2">
                     Loading...
                   </Spinner>
-                ) : null}
-                <i className="ri-login-box-line"></i>&nbsp;Войти
+                ) : <i className="ri-login-box-line"></i>}{" "}
+                Войти
               </button>
             </div>
           </Form>
@@ -168,7 +174,7 @@ const Signin = (props) => {
             <Link
               to="/signup"
               className="fw-semibold text-primary text-decoration-underline"
-              onClick={() => props.toggle()}
+              onClick={toggle}
             >
               Регистрация
             </Link>

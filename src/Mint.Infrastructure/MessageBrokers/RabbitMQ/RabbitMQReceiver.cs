@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using Microsoft.Extensions.Logging;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.MessageBrokers.Models;
 using RabbitMQ.Client;
@@ -11,14 +12,16 @@ namespace Mint.Infrastructure.MessageBrokers.RabbitMQ;
 
 public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 {
+    private readonly ILogger<RabbitMQReceiver<T>> _logger;
     private readonly RabbitMQReceiverOptions _options;
     private readonly IConnection _connection;
     private readonly string _queueName;
     private IModel _channel;
 
-    public RabbitMQReceiver(RabbitMQReceiverOptions options)
+    public RabbitMQReceiver(RabbitMQReceiverOptions options, ILogger<RabbitMQReceiver<T>> logger)
     {
         _options = options;
+        _logger = logger;
 
         _connection = new ConnectionFactory()
         {
@@ -36,7 +39,8 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 
     private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
     {
-        // TODO: Add log here 
+        // TODO: Add log here
+        _logger.LogWarning("Connection_ConnectionShutdown. RabbitMQReceiver:41");
     }
 
     public Task ReceiveAsync(Func<T, MetaData, Task> action, CancellationToken cancellationToken)
@@ -56,6 +60,8 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
         {
             var body = Encoding.UTF8.GetString(e.Body.Span);
             var message = JsonSerializer.Deserialize<Message<T>>(body);
+
+            Console.WriteLine(message);
 
             await action(message.Data, message.MetaData);
             _channel.BasicAck(deliveryTag: e.DeliveryTag, multiple: false);

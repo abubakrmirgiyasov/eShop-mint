@@ -88,4 +88,22 @@ public class ProductTest
         // Assert
         Assert.IsType<OkObjectResult>(result);
     }
+
+    [Fact]
+    public void Should_Update_Product_Info()
+    {
+
+    }
+
+    [Fact]
+    public void Should_Update_Product_Characteristic()
+    {
+
+    }
+
+    [Fact]
+    public void Should_Update_Product_Price()
+    {
+
+    }
 }

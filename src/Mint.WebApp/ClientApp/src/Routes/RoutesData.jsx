@@ -23,6 +23,8 @@ import Cart from "../Pages/Cart/Cart";
 import Brands from "../Pages/Manufactures/Brands";
 import Search from "../Pages/Search/Search";
 import Employees from "../Admin/Pages/Employees/Employees";
+import Test from "../Pages/Test";
+import SigninBase from "../Pages/Auth/SigninBase";
 
 const publicRoutes = [
   { path: "*", component: <Error /> },
@@ -31,6 +33,7 @@ const publicRoutes = [
   { path: "/logout", component: <Signout /> },
   { path: "/product-details/:id", component: <ProductDetail /> },
   { path: "/signup", component: <Signup /> },
+  { path: "/signin", component: <SigninBase /> },
   { path: "/stores", component: <Stores /> },
   { path: "/stores/:name", component: <SingleStore /> },
   { path: "/categories", component: <SampleCategories /> },
@@ -40,6 +43,7 @@ const publicRoutes = [
   { path: "/brands", component: <Brands /> },
   { path: "/brands/:name", component: <></> },
   { path: "/search/query=:query", component: <Search /> },
+  { path: "/rabbitmq", component: <Test /> },
   {
     path: "/admin/admin-signin",
     component: <div className={"page-content"}>Admin Signin</div>,

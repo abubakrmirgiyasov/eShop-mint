@@ -101,7 +101,7 @@ const AdminLayout = ({ children }) => {
 
       if (!isAccessed) navigate("/admin/admin-signin");
     }
-  }, [user]);
+  }, [navigate, user]);
 
   return (
     <React.Fragment>
@@ -124,9 +124,9 @@ const AdminLayout = ({ children }) => {
       </div>
 
       <ToastContainer
-        position="top-right"
+        position={"top-right"}
         autoClose={5000}
-        limit={1}
+        limit={10}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick={true}
@@ -134,7 +134,7 @@ const AdminLayout = ({ children }) => {
         pauseOnFocusLoss={true}
         draggable={true}
         pauseOnHover={true}
-        theme="colored"
+        theme={"colored"}
       />
     </React.Fragment>
   );

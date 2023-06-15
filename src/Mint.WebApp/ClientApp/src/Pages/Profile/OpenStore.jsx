@@ -19,6 +19,7 @@ import { fetchWrapper } from "../../helpers/fetchWrapper";
 import { Error } from "../../components/Notification/Error";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { Roles } from "../../constants/Roles";
 
 const OpenStore = ({ userId, newData }) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
@@ -80,6 +81,12 @@ const OpenStore = ({ userId, newData }) => {
           .then((response) => {
             setIsLoading(false);
             newData(response);
+
+            const user = JSON.parse(localStorage.getItem("auth_user"));
+            user.roles = [...user.roles, Roles.Seller];
+            localStorage.setItem("auth_user", JSON.stringify(user));
+            console.log("user saved");
+            console.log(user);
           })
           .catch((error) => {
             setIsLoading(false);
@@ -356,8 +363,8 @@ const OpenStore = ({ userId, newData }) => {
                   <Spinner size={"sm"} className="me-2">
                     Loading...
                   </Spinner>
-                ) : null}
-                <i className="ri-check-double-fill"></i> Создать
+                ) : <i className="ri-check-double-fill"></i>}{" "}
+                Создать
               </Button>
             </Col>
           </Row>

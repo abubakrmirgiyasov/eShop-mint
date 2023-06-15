@@ -11,7 +11,6 @@ import LanguageList from "./LanguageList";
 import CartList from "./CartList";
 import ThemeToggle from "./ThemeToggle";
 import LikesList from "./LikesList";
-import NotificationList from "./NotificationList";
 import UserMenu from "./UserMenu";
 import Signin from "../../Pages/Auth/Signin";
 import { useSelector } from "react-redux";
@@ -19,9 +18,7 @@ import PrivateComponent from "../../helpers/privateComponent";
 import { Roles } from "../../constants/Roles";
 
 //images
-import LogoSm from "../../assets/images/logo-sm.png";
-import LogoDark from "../../assets/images/logo-dark.png";
-import LogoLight from "../../assets/images/logo-light.png";
+import LogoLight from "../../assets/images/test-logo.png";
 import { Error } from "../Notification/Error";
 
 const Header = (props) => {
@@ -90,19 +87,19 @@ const Header = (props) => {
               <div className="navbar-brand-box horizontal-logo">
                 <Link to="/" className="logo logo-dark">
                   <span className="logo-sm">
-                    <img src={LogoSm} alt="" height="22" />
+                    <img src={LogoLight} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={LogoDark} alt="" height="17" />
+                    <img src={LogoLight} alt="" width={97} height={17} />
                   </span>
                 </Link>
 
                 <Link to="/" className="logo logo-light">
                   <span className="logo-sm">
-                    <img src={LogoSm} alt="" height="22" />
+                    <img src={LogoLight} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={LogoLight} alt="" height="17" />
+                    <img src={LogoLight} alt="" height={17} width={97} />
                   </span>
                 </Link>
               </div>

@@ -66,24 +66,20 @@ public class StoreRepository : IStoreRepository
                 var store = await new StoreManager().FormingBindingModel(model);
 
                 var role = await _context.Roles
-                    .FirstOrDefaultAsync(x => x.Name == Constants.SELLER) 
-                    ?? throw new Exception("Что то пошло не так");
+                    .FirstOrDefaultAsync(x => x.Name == Constants.SELLER)
+                    ?? throw new Exception("Code[1020]: Что то пошло не так");
 
                 var userRoles = await _context.UserRoles
                     .Where(x => x.UserId == user.Id)
                     .ToListAsync();
 
-                if (userRoles.Count == 0)
+                var userRole = new UserRole()
                 {
-                    var userRole = new UserRole()
-                    {
-                        UserId = user.Id,
-                        RoleId = role.Id,
-                    };
+                    UserId = user.Id,
+                    RoleId = role.Id,
+                };
 
-                    await _context.UserRoles.AddAsync(userRole);
-                }
-
+                await _context.UserRoles.AddAsync(userRole);
                 await _context.Stores.AddAsync(store);
                 await _context.SaveChangesAsync();
 

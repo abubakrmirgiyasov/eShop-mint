@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>648da8a8-6825-4a7c-895e-e1c42b164352</ProjectGuid>
+    <ProjectGuid>6ad5c31f-c007-4b36-8d94-a69500e8662c</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>mint.webapp</DockerServiceName>

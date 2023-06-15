@@ -129,22 +129,25 @@ const ProductDetail = () => {
   // }, 0);
 
   const handleNewLikeClick = () => {
-    setIsLikeAdding(true);
+    if (isLoggedIn) {
+      setIsLikeAdding(true);
+      const data = {
+        userId: user.id,
+        productId: params.id,
+      };
 
-    const data = {
-      userId: user.id,
-      productId: params.id,
-    };
-
-    dispatch(newLike(data))
-      .then(() => {
-        setIsLikeAdding(false);
-        setSuccess("Добавлено, успешно!");
-      })
-      .catch((error) => {
-        setError(error);
-        setIsLikeAdding(false);
-      });
+      dispatch(newLike(data))
+        .then(() => {
+          setIsLikeAdding(false);
+          setSuccess("Добавлено, успешно!");
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLikeAdding(false);
+        });
+    } else {
+      setError("Чтобы добавить, вам нужно войти.");
+    }
   };
 
   document.title = product?.name + " - Mint";

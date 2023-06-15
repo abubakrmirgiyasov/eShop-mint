@@ -68,7 +68,7 @@ const Orders = ({ userId, activeTab }) => {
                           <Col xl={9} className={"mb-2"}>
                             <h3 className={"fs-14"}>
                               {item.orderProducts.length ? (
-                                item.orderProducts[0].sum
+                                item.orderProducts.at(0).sum
                               ) : (
                                 <Error message={"Возникла ошибка"} />
                               )}{" "}
@@ -83,7 +83,7 @@ const Orders = ({ userId, activeTab }) => {
                               item.dateCreate
                             ).getDay()} / ${
                               new Date(item.dateCreate).getMonth() + 1
-                            } ${new Date(item.dateCreate).getFullYear()}`}</h3>
+                            } / ${new Date(item.dateCreate).getFullYear()}`}</h3>
                           </Col>
                         </Row>
                       </CardBody>

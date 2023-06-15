@@ -61,6 +61,7 @@ public class OrderController : ControllerBase
 		}
 	}
 
+	[HttpPost]
 	public async Task<IActionResult> CreateOrder([FromBody] OrderProductBindingModel model)
 	{
 		try
