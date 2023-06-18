@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Ordering.Infrastructure.Interfaces;
 using Mint.WebApp.Ordering.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Ordering.Models;
@@ -11,65 +12,30 @@ namespace Mint.WebApp.Ordering.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly IRepository<Order> _repository;
+        //private readonly IMessageReceiver<Order> _message;
 
-        public ValuesController(IRepository<Order> repository)
+        public ValuesController(IRepository<Order> repository) // , IMessageReceiver<Order> message
         {
             _repository = repository;
+            //_message = message;
         }
 
-        //private readonly IOrderRepository _order;
-        //private readonly IUnitOfWork _uow;
-
-        //public ValuesController(IOrderRepository order, IUnitOfWork uow)
-        //{
-        //    _order = order;
-        //    _uow = uow;
-        //}
-
         [HttpGet("Get")]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
-            var get = await _repository.GetAllAsync();
+            var get = _repository.FilterBy(
+                filter => filter.FirstName != "{}",
+                projection => projection.FirstName);
             return Ok(get);
         }
 
         [HttpPost("Add")]
         public IActionResult Add(Order order)
         {
-            var s = _repository.Add(order);
-            return Ok(s);
+            //_message.ReceiveAsync()
+
+            _repository.InsertOne(order);
+            return Ok(new { message = "Add Success" });
         }
-
-        //[HttpGet("All")]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var products = await _order.GetAllAsync();
-        //    return Ok(products);
-        //}
-
-        //[HttpGet("GetById/{id:int}")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var product = await _order.GetByIdAsync(Guid.NewGuid());
-        //    return Ok(product);
-        //}
-
-
-
-        //[HttpPut("Update")]
-        //public async Task<IActionResult> Update(Order order)
-        //{
-        //    var s = _order.Update(order);
-        //    await _uow.Commit();
-        //    return Ok(s);
-        //}
-
-        //[HttpDelete("Delete/{id:int}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    _order.Delete(Guid.NewGuid());
-        //    await _uow.Commit();
-        //    return Ok();
-        //}
     }
 }

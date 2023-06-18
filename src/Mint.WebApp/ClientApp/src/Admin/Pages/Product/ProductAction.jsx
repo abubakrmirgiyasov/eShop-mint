@@ -27,7 +27,7 @@ const ProductAction = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
   const [addingData, setAddingData] = useState(false);
-  const [dataForUpdate, setDataForUpdate] = useState([]);
+  const [dataForUpdate, setDataForUpdate] = useState(null);
 
   const params = useParams();
 

@@ -17,14 +17,11 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var options = new MessageBrokerOptions();
-builder.Configuration.Bind(options);
-
 var settings = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(settings);
 
-//var brokers = builder.Configuration.GetSection("MessageBroker");
-//builder.Services.Configure<MessageBrokerOptions>(brokers);
+var config = builder.Configuration.GetSection("MessageBroker");
+var brokers = config.Get<MessageBrokerOptions>();
 
 var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
@@ -65,7 +62,7 @@ builder.Services.Configure<FormOptions>(option =>
     option.MemoryBufferThreshold = int.MaxValue;
 });
 
-builder.Services.AddStorageModule(options);
+builder.Services.AddStorageModule(brokers!);
 builder.Services.AddHostServiceStorageModule();
 
 builder.Services.AddScoped<IJwt, Jwt>();

@@ -4,7 +4,7 @@ using MongoDB.Bson;
 
 namespace Mint.WebApp.Ordering.Models;
 
-[BsonCollection("people")]
+[BsonCollection("orders")]
 public class Order : Document
 {
     public int OrderNumber { get; set; }

@@ -14,11 +14,11 @@ var appSettings = config.Get<MessageBrokerOptions>();
 builder.Services.AddMessageBusReceiver<Test>(appSettings);
 builder.Services.AddHostedService<MessageBrokerBackgroundService>();
 
-//builder.Services.AddCron<MessageBusReceiverBackgroundService>(options =>
-//{
-//    options.TimeZone = TimeZoneInfo.Local;
-//    options.CronExpression = @"*/1 * * * *";
-//});
+builder.Services.AddCron<MessageBusReceiverBackgroundService>(options =>
+{
+    options.TimeZone = TimeZoneInfo.Local;
+    options.CronExpression = @"*/1 * * * *";
+});
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 builder.Services.AddSingleton<IMongoDbSettings>(options => options.GetRequiredService<IOptions<MongoDbSettings>>().Value);

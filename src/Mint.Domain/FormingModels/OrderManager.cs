@@ -18,6 +18,7 @@ public class OrderManager
 				ShippingType = model.ShippingType!,
 				UserId = model.UserId,
 				AddressId = model.AddressId,
+				OrderStatus = model.OrderStatus,
 			};
 		}
 		catch (Exception ex)

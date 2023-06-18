@@ -32,6 +32,13 @@ public class RabbitMQSender<T> : IMessageSender<T>
             using var connection = _connectionFactory.CreateConnection();
             using var channel = connection.CreateModel();
 
+            channel.QueueDeclare(
+                queue: _routingKey,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+
             var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new Message<T>()
             {
                 Data = message,
@@ -42,7 +49,7 @@ public class RabbitMQSender<T> : IMessageSender<T>
             properties.Persistent = true;
 
             channel.BasicPublish(
-                exchange: _exchangeName,
+                exchange: "", // _exchangeName
                 routingKey: _routingKey,
                 basicProperties: properties,
                 body: body);

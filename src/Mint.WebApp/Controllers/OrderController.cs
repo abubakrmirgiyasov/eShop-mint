@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.BindingModels;
 using Mint.Domain.Common;
+using Mint.Domain.FormingModels;
+using Mint.Domain.Models;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Attributes;
+using System.Text.Json;
 
 namespace Mint.WebApp.Controllers;
 
@@ -12,10 +16,14 @@ namespace Mint.WebApp.Controllers;
 public class OrderController : ControllerBase
 {
 	private readonly IOrderRepository _order;
+	private readonly IMessageSender<Order> _message;
+	private readonly ILogger<OrderController> _logger;
 
-	public OrderController(IOrderRepository order)
+	public OrderController(IOrderRepository order, IMessageSender<Order> message, ILogger<OrderController> logger)
 	{
 		_order = order;
+		_message = message;
+		_logger = logger;
 	}
 
     [HttpGet]
@@ -67,6 +75,10 @@ public class OrderController : ControllerBase
 		try
 		{
             var newOrder = await _order.CreateOrder(model);
+
+			_logger.LogInformation(JsonSerializer.Serialize(model));
+			await _message.SendAsync(new OrderManager().FormingBindingModel(model));
+
             return Ok(new { id = newOrder });
 		}
 		catch (Exception ex)
