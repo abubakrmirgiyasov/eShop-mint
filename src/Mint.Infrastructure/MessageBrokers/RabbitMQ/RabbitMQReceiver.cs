@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using Microsoft.Extensions.Logging;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.MessageBrokers.Models;
 using RabbitMQ.Client;

@@ -1,4 +1,4 @@
-﻿namespace Mint.WebApp.Ordering.Attributes;
+﻿namespace Mint.Infrastructure.MongoDb.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class BsonCollectionAttribute : Attribute

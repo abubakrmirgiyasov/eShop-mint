@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Mint.Domain.Common;
-using Mint.Domain.Models;
 using Mint.Infrastructure;
 using Mint.Infrastructure.HealthChekcs;
 using Mint.Infrastructure.MessageBrokers;
