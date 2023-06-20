@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.MongoDb.Interfaces;
 using Mint.WebApp.Ordering.Models;
 

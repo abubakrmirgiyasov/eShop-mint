@@ -10,15 +10,14 @@ public static class StorageModuleServiceCollectionExtensions
     public static IServiceCollection AddStorageModule(this IServiceCollection services, MessageBrokerOptions settings)
     {
         services
-            .AddMessageBusSender<Order>(settings)
-            ; // .AddMessageBusReceiver<AuditLogEntryTest>(settings)
+            .AddMessageBusSender<Order>(settings);
 
         return services;
     }
 
-    public static IServiceCollection AddHostServiceStorageModule(this IServiceCollection services)
+    public static IServiceCollection AddHostedServicesStorageModule(this IServiceCollection services)
     {
-        //services.AddHostedService<MessageBusReceiver>();
+        services.AddHostedService<MessageBrokerBackgroundService>();
 
         return services;
     }

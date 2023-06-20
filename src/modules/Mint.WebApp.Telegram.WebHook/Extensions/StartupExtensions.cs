@@ -1,4 +1,7 @@
-﻿using Mint.WebApp.Telegram.WebHook.Common;
+﻿using Mint.Domain.Common;
+using Mint.Infrastructure.MongoDb.Interfaces;
+using Mint.Infrastructure.MongoDb.Services;
+using Mint.WebApp.Telegram.WebHook.Common;
 using Mint.WebApp.Telegram.WebHook.Interfaces;
 using Mint.WebApp.Telegram.WebHook.Services;
 using System.Text.Json;
@@ -36,6 +39,7 @@ public static class StartupExtensions
             var options = new TelegramBotClientOptions(botConfiguration.BotToken);
             return new TelegramBotClient(options, factory.CreateClient(nameof(WebHook)));
         });
+
         builder.Services.AddScoped<UpdateHandlerServiceBase, TranslatorUpdateHandlerService>();
 
         builder.Services.AddCommandManager((service, builder) =>
@@ -50,7 +54,12 @@ public static class StartupExtensions
             builder.RegisterCommand(new SourceLanguageSetterCommand(languageManager, serializeOptions, ReplyKeyboardColumns));
             //
         });
-        
+
+        var settings = builder.Configuration.GetSection("MongoDbSettings");
+        builder.Services.Configure<MongoDbSettings>(settings);
+
+        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
         builder.Services
             .AddControllers()
             .AddNewtonsoftJson();

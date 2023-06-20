@@ -62,7 +62,7 @@ builder.Services.Configure<FormOptions>(option =>
 });
 
 builder.Services.AddStorageModule(brokers!);
-builder.Services.AddHostServiceStorageModule();
+//builder.Services.AddHostServiceStorageModule();
 
 builder.Services.AddScoped<IJwt, Jwt>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
