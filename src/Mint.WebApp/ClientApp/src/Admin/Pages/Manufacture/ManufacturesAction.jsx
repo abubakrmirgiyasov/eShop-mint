@@ -236,7 +236,7 @@ const ManufacturesAction = () => {
                     <Row className="align-items-center">
                       <Col xl={2}>
                         <Label className="form-label fw-bold">
-                          Картинка{" "}
+                          Описание{" "}
                           <Popover
                             placement={"right"}
                             text={`Картинка производителя.`}

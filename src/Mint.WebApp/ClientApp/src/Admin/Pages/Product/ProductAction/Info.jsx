@@ -471,7 +471,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
                 htmlFor={"adminComment"}
                 id={"adminComment"}
               >
-                Коментарии адимна
+                Комментарии адимна
                 <Popover
                   id={"shortDescription"}
                   placement={"top"}
@@ -483,7 +483,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
               <textarea
                 className={"form-control"}
                 name={"adminComment"}
-                placeholder={"Коментарии адимна"}
+                placeholder={"Комментарии адимна"}
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
                 defaultValue={

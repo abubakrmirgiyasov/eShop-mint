@@ -226,7 +226,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
                   type={"number"}
                   className={"form-control"}
                   name={"width"}
-                  placeholder={"Введите ширину товара (м)"}
+                  placeholder={"Введите ширину товара (см)"}
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
                   defaultValue={
@@ -241,7 +241,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
                   type={"number"}
                   className={"form-control"}
                   name={"height"}
-                  placeholder={"Введите высоту товара (м)"}
+                  placeholder={"Введите высоту товара (см)"}
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
                   defaultValue={
@@ -269,7 +269,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
                     id={"releaseDate"}
                     placement={"top"}
                     text={
-                      "Дата релиза и срок годности продукта (указываете год. Например: 1 год)."
+                      "Дата релиза и срок годности продукта (указываете в месяце, например: 12)"
                     }
                   />
                 </Label>
