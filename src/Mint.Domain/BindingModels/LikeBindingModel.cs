@@ -1,4 +1,6 @@
-﻿namespace Mint.Domain.BindingModels;
+﻿using Mint.Domain.ViewModels;
+
+namespace Mint.Domain.BindingModels;
 
 public class LikeBindingModel
 {
@@ -7,4 +9,6 @@ public class LikeBindingModel
     public Guid UserId { get; set; }
 
     public Guid ProductId { get; set; }
+
+    public ProductFullViewModel? Product { get; set; }
 }

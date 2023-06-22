@@ -13,13 +13,13 @@ import ThemeToggle from "./ThemeToggle";
 import LikesList from "./LikesList";
 import UserMenu from "./UserMenu";
 import Signin from "../../Pages/Auth/Signin";
-import { useSelector } from "react-redux";
 import PrivateComponent from "../../helpers/privateComponent";
+import { useSelector } from "react-redux";
 import { Roles } from "../../constants/Roles";
+import { Error } from "../Notification/Error";
 
 //images
 import LogoLight from "../../assets/images/test-logo.png";
-import { Error } from "../Notification/Error";
 
 const Header = (props) => {
   const [value, setValue] = useState("");

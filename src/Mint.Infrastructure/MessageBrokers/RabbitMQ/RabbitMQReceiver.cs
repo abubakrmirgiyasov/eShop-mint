@@ -31,10 +31,10 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 
         _queueName = options.QueueName;
 
-        _connection.ConnectionShutdown += Connection_ConnectionShutdown;
+        _connection.ConnectionShutdown += OnConnectionShutdown;
     }
 
-    private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
+    private void OnConnectionShutdown(object sender, ShutdownEventArgs e)
     {
         // TODO: Add log here
         Console.WriteLine("Connection_ConnectionShutdown. RabbitMQReceiver:41");

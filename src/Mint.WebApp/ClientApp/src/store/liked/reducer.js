@@ -27,7 +27,7 @@ export default function (state = initState, action) {
     case REMOVE_LIKE:
       return {
         ...state,
-        likes: state.likes.filter((item) => item.id !== payload),
+        likes: state.likes.filter((item) => item.productId !== payload),
       };
     default:
       return state;

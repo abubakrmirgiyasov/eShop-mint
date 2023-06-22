@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.MongoDb.Interfaces;
 using Mint.WebApp.Ordering.Models;
 
@@ -9,12 +10,14 @@ namespace Mint.WebApp.Ordering.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IRepository<Order> _repository;
-    //private readonly IMessageReceiver<Order> _message;
+    private readonly IMessageSender<Order> _sender;
+    private readonly IMessageReceiver<Order> _receive;
 
-    public OrderController(IRepository<Order> repository)//, IMessageReceiver<Order> message)
+    public OrderController(IRepository<Order> repository, IMessageSender<Order> sender, IMessageReceiver<Order> receive)
     {
         _repository = repository;
-        //_message = message;
+        _sender = sender;
+        _receive = receive;
     }
 
     [HttpGet("Get")]
@@ -22,14 +25,17 @@ public class OrderController : ControllerBase
     {
         var get = _repository.FilterBy(
             filter => filter.FirstName != "{}",
-            projection => projection.FirstName);
+            projection => projection);
         return Ok(get);
     }
 
     [HttpPost("Add")]
-    public IActionResult Add(Order order)
+    public async Task<IActionResult> Add(Order order)
     {
         _repository.InsertOne(order);
+
+        await _sender.SendAsync(order);
+
         return Ok(new { message = "Add Success" });
     }
 }

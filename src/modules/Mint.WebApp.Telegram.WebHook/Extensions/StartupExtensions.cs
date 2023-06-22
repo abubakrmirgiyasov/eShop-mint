@@ -1,8 +1,11 @@
 ﻿using Mint.Domain.Common;
+using Mint.Infrastructure.MessageBrokers;
 using Mint.Infrastructure.MongoDb.Interfaces;
 using Mint.Infrastructure.MongoDb.Services;
+using Mint.Infrastructure.Services.Extensions;
 using Mint.WebApp.Telegram.WebHook.Common;
 using Mint.WebApp.Telegram.WebHook.Interfaces;
+using Mint.WebApp.Telegram.WebHook.Models;
 using Mint.WebApp.Telegram.WebHook.Services;
 using System.Text.Json;
 using Telegram.Bot;
@@ -57,8 +60,12 @@ public static class StartupExtensions
 
         var settings = builder.Configuration.GetSection("MongoDbSettings");
         builder.Services.Configure<MongoDbSettings>(settings);
-
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+        var brokers = builder.Configuration.GetSection("MessageBroker");
+        var brokersSettings = brokers.Get<MessageBrokerOptions>();
+        builder.Services.AddStorageModule(brokersSettings!);
+        builder.Services.AddMessageBusReceiver<User>();
 
         builder.Services
             .AddControllers()
@@ -67,6 +74,7 @@ public static class StartupExtensions
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddHostedService<WebHookService>();
+        //builder.Services.AddHostedService
         return builder;
     }
 

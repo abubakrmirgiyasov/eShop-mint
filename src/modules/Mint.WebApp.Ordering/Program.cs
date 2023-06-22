@@ -7,14 +7,13 @@ using Mint.Infrastructure.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var config = builder.Configuration.GetSection("MessageBroker");
-var appSettings = config.Get<MessageBrokerOptions>();
+var brokers = builder.Configuration.GetSection("MessageBroker");
+var appSettings = brokers.Get<MessageBrokerOptions>();
+builder.Services.AddStorageModule(appSettings!);
 builder.Services.AddMessageBusReceiver<Order>(appSettings);
 
 var settings = builder.Configuration.GetSection("MongoDbSettings");
 builder.Services.Configure<MongoDbSettings>(settings);
-
-builder.Services.AddScoped<>();
 
 builder.Services.AddHostedServicesStorageModule();
 

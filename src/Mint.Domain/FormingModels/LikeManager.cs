@@ -42,11 +42,17 @@ public class LikeManager
         }
     }
 
-    public List<LikeViewModel> FormingSingleViewModel(LikedProduct likes)
+    public LikeViewModel FormingSingleViewModel(LikedProduct like, ProductFullViewModel product)
     {
         try
         {
-            return new List<LikeViewModel>();
+            return new LikeViewModel()
+            {
+                Id = like.Id,
+                UserId = like.UserId,
+                ProductId = like.ProductId,
+                Product = product,
+            };
         }
         catch (Exception ex)
         {
