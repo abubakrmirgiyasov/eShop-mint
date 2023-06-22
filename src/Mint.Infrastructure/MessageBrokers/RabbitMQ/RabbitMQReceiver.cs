@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using Microsoft.Extensions.Logging;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.MessageBrokers.Models;
 using RabbitMQ.Client;
@@ -12,16 +11,14 @@ namespace Mint.Infrastructure.MessageBrokers.RabbitMQ;
 
 public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 {
-    private readonly ILogger<RabbitMQReceiver<T>> _logger;
     private readonly RabbitMQReceiverOptions _options;
     private readonly IConnection _connection;
     private readonly string _queueName;
     private IModel _channel;
 
-    public RabbitMQReceiver(RabbitMQReceiverOptions options, ILogger<RabbitMQReceiver<T>> logger)
+    public RabbitMQReceiver(RabbitMQReceiverOptions options)
     {
         _options = options;
-        _logger = logger;
 
         _connection = new ConnectionFactory()
         {
@@ -34,13 +31,13 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 
         _queueName = options.QueueName;
 
-        _connection.ConnectionShutdown += Connection_ConnectionShutdown;
+        _connection.ConnectionShutdown += OnConnectionShutdown;
     }
 
-    private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
+    private void OnConnectionShutdown(object sender, ShutdownEventArgs e)
     {
         // TODO: Add log here
-        _logger.LogWarning("Connection_ConnectionShutdown. RabbitMQReceiver:41");
+        Console.WriteLine("Connection_ConnectionShutdown. RabbitMQReceiver:41");
     }
 
     public Task ReceiveAsync(Func<T, MetaData, Task> action, CancellationToken cancellationToken)

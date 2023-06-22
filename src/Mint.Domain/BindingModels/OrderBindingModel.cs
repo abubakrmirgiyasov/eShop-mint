@@ -35,6 +35,8 @@ public class OrderProductBindingModel
 
     public string? Description { get; set; }
 
+    public string? OrderStatus { get; set; }
+
     public List<OrderProductOnlyBindingModel>? OrderProducts { get; set; }
 
     public Guid UserId { get; set; }

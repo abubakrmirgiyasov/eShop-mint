@@ -11,7 +11,7 @@ public interface ICommonRepository
 
     Task<List<LikeViewModel>> GetMyLikesAsync(Guid id);
 
-    Task<List<LikeViewModel>> NewLikeAsync(LikeBindingModel model);
+    Task<LikeViewModel> NewLikeAsync(LikeBindingModel model);
 
     Task RemoveLike(LikeBindingModel model);
 }

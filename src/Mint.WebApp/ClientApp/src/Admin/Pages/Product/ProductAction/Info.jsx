@@ -86,7 +86,7 @@ const Info = ({ setAddingData, dataForUpdate }) => {
         countryOfOrigin: country,
       };
 
-      if (dataForUpdate.length) {
+      if (dataForUpdate) {
         fetchWrapper
           .put("api/product/updateproductinfo", data)
           .then((response) => {

@@ -11,6 +11,7 @@ namespace Mint.WebApp.Controllers;
 public class LikeController : ControllerBase
 {
     private readonly ICommonRepository _common;
+
     public LikeController(ICommonRepository common)
     {
         _common = common;

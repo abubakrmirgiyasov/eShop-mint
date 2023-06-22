@@ -83,22 +83,25 @@ public class CommonRepository : ICommonRepository
         }
     }
 
-    public async Task<List<LikeViewModel>> NewLikeAsync(LikeBindingModel model)
+    public async Task<LikeViewModel> NewLikeAsync(LikeBindingModel model)
     {
         try
         {
             var myLikes = await _context.LikedProducts
                 .Where(x => x.UserId == model.UserId)
-                .FirstOrDefaultAsync(x => x.ProductId == model.ProductId);
+                .Include(x => x.Product)
+                .ToListAsync();
 
-            if (myLikes == null)
+            var first = myLikes.FirstOrDefault(x => x.ProductId == model.ProductId);
+
+            if (first == null)
             {
-                var likes = new LikeManager().FormingBindingModel(model);
+                var like = new LikeManager().FormingBindingModel(model);
                 
-                await _context.LikedProducts.AddAsync(likes);
+                await _context.LikedProducts.AddAsync(like);
                 await _context.SaveChangesAsync();
 
-                return new LikeManager().FormingSingleViewModel(likes);
+                return new LikeManager().FormingSingleViewModel(like, model.Product);
             }
             else
             {

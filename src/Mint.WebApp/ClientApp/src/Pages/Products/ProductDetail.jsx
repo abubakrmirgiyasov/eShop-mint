@@ -38,7 +38,7 @@ import AddComment from "./AddComment";
 import { newLike } from "../../Common/Likes/likes";
 
 // import { NEW_LIKE } from "../../store/liked/actionType";
-import { Roles } from "../../constants/Roles";
+// import { Roles } from "../../constants/Roles";
 
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
@@ -120,22 +120,14 @@ const ProductDetail = () => {
     }
   }, [isCommentOpen]);
 
-  // const fiveRateSum = reviews.reduce((sum, item) => {
-  //   if (item.rating === 5) {
-  //     return sum + item.rating;
-  //   } else {
-  //     return sum;
-  //   }
-  // }, 0);
-
   const handleNewLikeClick = () => {
     if (isLoggedIn) {
       setIsLikeAdding(true);
       const data = {
         userId: user.id,
         productId: params.id,
+        product: product,
       };
-
       dispatch(newLike(data))
         .then(() => {
           setIsLikeAdding(false);
@@ -157,8 +149,8 @@ const ProductDetail = () => {
       {message ? <Error message={message} /> : null}
       {success ? <Success message={success} /> : null}
       <div className={"page-content"}>
+        <Breadcrumb title={"test"} pageTitle={"ads"} link={"test"} />
         <Container fluid>
-          <Breadcrumb title={"test"} pageTitle={"ads"} link={"test"} />
           {isLoading ? (
             <div className={"d-flex justify-content-center align-items-center"}>
               <Spinner color={"success"} size={"sm"}>

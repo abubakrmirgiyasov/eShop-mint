@@ -9,7 +9,6 @@ import { Error } from "../Notification/Error";
 
 const LikesList = ({ isLoggedIn, likes, userId }) => {
   const [isLikeDropdown, setIsLikeDropdown] = useState(false);
-  const [likeItem, setLikeItem] = useState(0);
   const [isRemoving, setIsRemoving] = useState(false);
   const [sum, setSum] = useState(0);
   const [success, setSuccess] = useState(null);
@@ -19,7 +18,6 @@ const LikesList = ({ isLoggedIn, likes, userId }) => {
 
   const toggleLikeDropdown = () => {
     setIsLikeDropdown(!isLikeDropdown);
-    setLikeItem(0);
   };
 
   const handleRemoveClick = (id) => {
@@ -32,12 +30,9 @@ const LikesList = ({ isLoggedIn, likes, userId }) => {
     };
 
     dispatch(removeLike(data))
-      .then((response) => {
+      .then(() => {
         setIsRemoving(false);
-        setSuccess(response);
-
-        const temp = likes.filter((item) => item.id!== data);
-        setLikeItem(temp);
+        setSuccess("Удалено, успешно");
       })
       .catch((error) => {
         setIsRemoving(false);

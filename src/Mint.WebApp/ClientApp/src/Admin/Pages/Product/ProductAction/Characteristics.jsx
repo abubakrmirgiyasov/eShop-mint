@@ -47,7 +47,7 @@ const Characteristics = ({ isAdded, dataForUpdate }) => {
         height: values.height,
         releaseDate: values.releaseDate,
         garanty: values.garanty,
-        productId: dataForUpdate.id,
+        productId: dataForUpdate?.id,
       };
 
       fetchWrapper

@@ -1,10 +1,9 @@
-﻿using Mint.Domain.Models.Base;
-using Mint.WebApp.Ordering.Attributes;
-using MongoDB.Bson;
+﻿using Mint.Infrastructure.MongoDb.Attributes;
+using Mint.Infrastructure.MongoDb.Models;
 
 namespace Mint.WebApp.Ordering.Models;
 
-[BsonCollection("people")]
+[BsonCollection("orders")]
 public class Order : Document
 {
     public int OrderNumber { get; set; }

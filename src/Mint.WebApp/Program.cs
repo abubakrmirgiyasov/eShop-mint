@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Mint.Domain.Common;
-using Mint.Domain.Models;
 using Mint.Infrastructure;
 using Mint.Infrastructure.HealthChekcs;
 using Mint.Infrastructure.MessageBrokers;
@@ -17,14 +16,11 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var options = new MessageBrokerOptions();
-builder.Configuration.Bind(options);
-
 var settings = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(settings);
 
-//var brokers = builder.Configuration.GetSection("MessageBroker");
-//builder.Services.Configure<MessageBrokerOptions>(brokers);
+var config = builder.Configuration.GetSection("MessageBroker");
+var brokers = config.Get<MessageBrokerOptions>();
 
 var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
@@ -65,8 +61,7 @@ builder.Services.Configure<FormOptions>(option =>
     option.MemoryBufferThreshold = int.MaxValue;
 });
 
-builder.Services.AddStorageModule(options);
-builder.Services.AddHostServiceStorageModule();
+builder.Services.AddStorageModule(brokers!);
 
 builder.Services.AddScoped<IJwt, Jwt>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

@@ -9,8 +9,8 @@ namespace Mint.Infrastructure.MessageBrokers.RabbitMQ;
 public class RabbitMQSender<T> : IMessageSender<T>
 {
     private readonly IConnectionFactory _connectionFactory;
-    private readonly string _exchangeName;
     private readonly string _routingKey;
+    //private readonly string _exchangeName;
 
     public RabbitMQSender(RabbitMQSenderOptions options)
     {
@@ -21,8 +21,8 @@ public class RabbitMQSender<T> : IMessageSender<T>
             Password = options.Password,
         };
 
-        _exchangeName = options.ExchangeName;
         _routingKey = options.RoutingKey;
+        //_exchangeName = options.ExchangeName;
     }
 
     public async Task SendAsync(T message, MetaData? metaData = null, CancellationToken cancellationToken = default)
@@ -31,6 +31,13 @@ public class RabbitMQSender<T> : IMessageSender<T>
         {
             using var connection = _connectionFactory.CreateConnection();
             using var channel = connection.CreateModel();
+
+            channel.QueueDeclare(
+                queue: "Test", // _routingKey, // routingKey
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
             var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new Message<T>()
             {
@@ -42,8 +49,8 @@ public class RabbitMQSender<T> : IMessageSender<T>
             properties.Persistent = true;
 
             channel.BasicPublish(
-                exchange: _exchangeName,
-                routingKey: _routingKey,
+                exchange: "", // _exchangeName
+                routingKey: "Test", // _routingKey, // routingKey
                 basicProperties: properties,
                 body: body);
         }, cancellationToken);

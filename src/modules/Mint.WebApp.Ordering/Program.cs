@@ -1,29 +1,23 @@
-using Microsoft.Extensions.Options;
+using Mint.Domain.Common;
+using Mint.Domain.Models;
 using Mint.Infrastructure.MessageBrokers;
-using Mint.Infrastructure.Services;
-using Mint.WebApp.Ordering.Common;
-using Mint.WebApp.Ordering.Infrastructure.Interfaces;
-using Mint.WebApp.Ordering.Infrastructure.Services;
+using Mint.Infrastructure.MongoDb.Interfaces;
+using Mint.Infrastructure.MongoDb.Services;
 using Mint.Infrastructure.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var config = builder.Configuration.GetSection("MessageBroker");
-var appSettings = config.Get<MessageBrokerOptions>();
+var brokers = builder.Configuration.GetSection("MessageBroker");
+var appSettings = brokers.Get<MessageBrokerOptions>();
+builder.Services.AddStorageModule(appSettings!);
+builder.Services.AddMessageBusReceiver<Order>(appSettings);
 
-builder.Services.AddMessageBusReceiver<Test>(appSettings);
-builder.Services.AddHostedService<MessageBrokerBackgroundService>();
+var settings = builder.Configuration.GetSection("MongoDbSettings");
+builder.Services.Configure<MongoDbSettings>(settings);
 
-//builder.Services.AddCron<MessageBusReceiverBackgroundService>(options =>
-//{
-//    options.TimeZone = TimeZoneInfo.Local;
-//    options.CronExpression = @"*/1 * * * *";
-//});
+builder.Services.AddHostedServicesStorageModule();
 
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
-builder.Services.AddSingleton<IMongoDbSettings>(options => options.GetRequiredService<IOptions<MongoDbSettings>>().Value);
-
-builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddControllers();
 
