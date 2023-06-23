@@ -4,7 +4,6 @@ const toggleLikes = (id) => {
   return fetchWrapper
     .get("api/like/getmylikes/" + id)
     .then((response) => {
-        console.log(response)
       return response;
     })
     .catch((error) => {

@@ -19,6 +19,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState(1);
+
   const params = useParams();
   const navigate = useNavigate();
 
@@ -35,10 +36,22 @@ const Profile = () => {
     switch (params.wh) {
       case "info":
         setActiveTab(1);
+        break;
+      case "addresses":
+        setActiveTab(2);
+        break;
       case "orders":
         setActiveTab(3);
+        break;
+      case "change-password":
+        setActiveTab(4);
+        break;
+      case "create-store":
+        setActiveTab(5);
+        break;
       default:
         setActiveTab(1);
+        break;
     }
   }, [params]);
 
@@ -64,6 +77,7 @@ const Profile = () => {
                     className={"rounded-circle"}
                     width={100}
                     height={100}
+                    alt={user.firstName + " " + user.secondName}
                   />
                 </div>
                 <div className={"text-center"}>
@@ -85,7 +99,7 @@ const Profile = () => {
               </ListGroupItem>
               <ListGroupItem
                 tag={"a"}
-                to={"#"}
+                to={"/profile/info"}
                 onClick={() => tabChangeToggle(1)}
                 className={classnames(
                   { active: activeTab === 1 },
@@ -96,7 +110,7 @@ const Profile = () => {
               </ListGroupItem>
               <ListGroupItem
                 tag="a"
-                to="#"
+                to="/profile/addresses"
                 onClick={() => tabChangeToggle(2)}
                 className={classnames(
                   { active: activeTab === 2 },
@@ -107,7 +121,7 @@ const Profile = () => {
               </ListGroupItem>
               <ListGroupItem
                 tag={"a"}
-                to={"#"}
+                to={"/profile/orders"}
                 onClick={() => tabChangeToggle(3)}
                 className={classnames(
                   { active: activeTab === 3 },
@@ -118,7 +132,7 @@ const Profile = () => {
               </ListGroupItem>
               <ListGroupItem
                 tag={"a"}
-                to={"#"}
+                to={"/profile/change-password"}
                 onClick={() => tabChangeToggle(4)}
                 className={classnames(
                   { active: activeTab === 4 },
@@ -129,7 +143,7 @@ const Profile = () => {
               </ListGroupItem>
               <ListGroupItem
                 tag={"a"}
-                to={"#"}
+                to={"/profile/create-store"}
                 onClick={() => tabChangeToggle(5)}
                 className={classnames(
                   { active: activeTab === 5 },

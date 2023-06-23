@@ -47,7 +47,7 @@ const Address = ({ userId, next, setAddress }) => {
         <h3>Выберете адрес доставки</h3>
         {isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-          <Spinner color={"success"} size={"sm"}>
+            <Spinner color={"success"} size={"sm"}>
               Loading...
             </Spinner>
           </div>
@@ -55,51 +55,52 @@ const Address = ({ userId, next, setAddress }) => {
           <Row>
             {addresses.length ? (
               addresses.map((item, key) => (
-                <>
-                  <Col lg={4} key={key}>
-                    <Card>
-                      <CardHeader>
-                        <Button
-                          color={"success"}
-                          className={"btn btn-success w-100"}
-                          onClick={() => handleNextClick(item)}
-                        >
-                          На этот адрес
-                        </Button>
-                      </CardHeader>
-                      <CardBody>
-                        <h3 className={"fw-semibold"}>{item.fullName}</h3>
-                        <div className={"d-flex justify-content-between"}>
-                          <h5 className={"text-muted"}>Email:</h5>
-                          <h5 className={"fw-medium"}>{item.email}</h5>
-                        </div>
-                        <div className={"d-flex justify-content-between"}>
-                          <h5 className={"text-muted"}>Телефон:</h5>
-                          <h5 className={"fw-medium"}>{item.phone}</h5>
-                        </div>
-                        <div className={"d-flex justify-content-between"}>
-                          <h5 className={"text-muted"}>Страна:</h5>
-                          <h5 className={"fw-medium"}>{item.country}</h5>
-                        </div>
-                        <div className={"d-flex justify-content-between"}>
-                          <h5 className={"text-muted"}>Город:</h5>
-                          <h5 className={"fw-medium"}>{item.city}</h5>
-                        </div>
-                        <div className={"d-flex justify-content-between"}>
-                          <h5 className={"text-muted"}>Почтовый индекс:</h5>
-                          <h5 className={"fw-medium"}>{item.zipCode}</h5>
-                        </div>
-                        <div className={"d-flex flex-column"}>
-                          <h5 className={"text-muted"}>Описание к адресу:</h5>
-                          <p className={"fw-medium"}>{item.description}</p>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </>
+                <Col lg={4} key={key}>
+                  <Card>
+                    <CardHeader>
+                      <Button
+                        color={"success"}
+                        className={"btn btn-success w-100"}
+                        onClick={() => handleNextClick(item)}
+                      >
+                        На этот адрес
+                      </Button>
+                    </CardHeader>
+                    <CardBody>
+                      <h3 className={"fw-semibold"}>{item.fullName}</h3>
+                      <div className={"d-flex justify-content-between"}>
+                        <h5 className={"text-muted"}>Email:</h5>
+                        <h5 className={"fw-medium"}>{item.email}</h5>
+                      </div>
+                      <div className={"d-flex justify-content-between"}>
+                        <h5 className={"text-muted"}>Телефон:</h5>
+                        <h5 className={"fw-medium"}>{item.phone}</h5>
+                      </div>
+                      <div className={"d-flex justify-content-between"}>
+                        <h5 className={"text-muted"}>Страна:</h5>
+                        <h5 className={"fw-medium"}>{item.country}</h5>
+                      </div>
+                      <div className={"d-flex justify-content-between"}>
+                        <h5 className={"text-muted"}>Город:</h5>
+                        <h5 className={"fw-medium"}>{item.city}</h5>
+                      </div>
+                      <div className={"d-flex justify-content-between"}>
+                        <h5 className={"text-muted"}>Почтовый индекс:</h5>
+                        <h5 className={"fw-medium"}>{item.zipCode}</h5>
+                      </div>
+                      <div className={"d-flex flex-column"}>
+                        <h5 className={"text-muted"}>Описание к адресу:</h5>
+                        <p className={"fw-medium"}>{item.description}</p>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
               ))
             ) : (
-              <Link to={"/profile/address"} className={"btn btn-warning mt-3"}>
+              <Link
+                to={"/profile/addresses"}
+                className={"btn btn-warning mt-3"}
+              >
                 Добавить новый адрес
               </Link>
             )}

@@ -91,6 +91,10 @@ public class StoreRepository : IStoreRepository
             }
             return null!;
         }
+        catch (DbUpdateException ex) when (ex.InnerException != null && ex.InnerException.Message.StartsWith("Не удается вставить"))
+        {
+            throw new DbUpdateException("Указанный путь уже существует");
+        }
         catch (Exception ex)
         {
             throw new Exception(ex.Message, ex);

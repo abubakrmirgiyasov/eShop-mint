@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Mint.Domain.Models;
 
@@ -60,6 +61,7 @@ public class User
 
     public List<UserRole>? UserRoles { get; set; }
 
+    [JsonIgnore]
     public List<RefreshToken>? RefreshTokens { get; set; }
 
     public List<Address> Addresses { get; set; } = null!;

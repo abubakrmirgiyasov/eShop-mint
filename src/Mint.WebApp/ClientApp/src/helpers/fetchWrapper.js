@@ -1,5 +1,3 @@
-// import { refreshToken } from "./authentication";
-
 export const fetchWrapper = {
   get: request("GET"),
   post: request("POST"),
@@ -34,8 +32,6 @@ function handleResponseFile(fileName, response) {
 
 function handleResponse(response) {
   return response.text().then((text) => {
-    console.log("handleResponse:37");
-    console.log(response);
     const data = text && JSON.parse(text);
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
@@ -48,9 +44,7 @@ function handleResponse(response) {
 function authHeader(url) {
   const token = authToken();
   const isLoggedIn = !!token;
-  const isApiUrl = url;
-
-  return isLoggedIn && isApiUrl ? `Bearer ${token}` : {};
+  return isLoggedIn && url ? `Bearer ${token}` : {};
 }
 
 function requestFileShow() {
@@ -115,7 +109,6 @@ function request(method) {
           }
         });
     } else {
-      console.log("wrapper: 118");
       return fetch(url, requestOptions)
         .then(handleResponse)
         .catch((error) => {
@@ -123,10 +116,8 @@ function request(method) {
             return fetch("api/authentication/refreshtoken", {
               method: "POST",
             })
-              .unwrap()
               .then((response) => {
                 console.log(response);
-                console.log("wrapper: 118");
 
                 const user = JSON.parse(localStorage.getItem("auth_user"));
                 user.accessToken = response.accessToken;
@@ -134,7 +125,10 @@ function request(method) {
 
                 requestOptions.headers["Authorization"] = authHeader(url);
                 return fetch(url, requestOptions).then(handleResponse);
-              });
+              })
+                .catch((error) => {
+                  console.log("wrapper:141",error);
+                });
             } else if (error === "Forbidden") { 
               localStorage.removeItem("auth_user");
               window.location.reload();

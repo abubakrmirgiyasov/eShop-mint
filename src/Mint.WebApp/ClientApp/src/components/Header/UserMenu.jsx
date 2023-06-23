@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 const UserMenu = () => {
   const { Signin: isLoggedIn } = useSelector((user) => user);
@@ -17,46 +18,66 @@ const UserMenu = () => {
       <Dropdown
         isOpen={isProfileDropDown}
         toggle={() => setIsProfileDropDown(!isProfileDropDown)}
-        className="ms-sm-3 header-item topbar-user"
+        className={"ms-sm-3 header-item topbar-user"}
       >
-        <DropdownToggle tag="button" type="button" className="btn">
-          <span className="d-flex align-items-center">
+        <DropdownToggle tag={"button"} type={"button"} className={"btn"}>
+          <span className={"d-flex align-items-center"}>
             <img
-              className="rounded-circle header-profile-user"
+              className={"rounded-circle header-profile-user"}
               src={isLoggedIn.user.imagePath}
-              alt="Header Avatar"
+              alt={"Header Avatar"}
             />
-            <span className="text-start ms-xl-2">
-              <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+            <span className={"text-start ms-xl-2"}>
+              <span
+                className={
+                  "d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                }
+              >
                 {`${isLoggedIn.user?.firstName} ${isLoggedIn.user?.secondName}`}
               </span>
-              <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
+              <span
+                className={
+                  "d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text"
+                }
+              >
                 {/*Role*/}
               </span>
             </span>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu-end">
-          <h6 className="dropdown-header">
+        <DropdownMenu className={"dropdown-menu-end"}>
+          <h6 className={"dropdown-header"}>
             Добро пожаловать {isLoggedIn.user?.email}!
           </h6>
-          <DropdownItem href={process.env.PUBLIC_URL + "/profile/info"}>
+          <Link
+            to={process.env.PUBLIC_URL + "/profile/info"}
+            className={"dropdown-item"}
+          >
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Мой профиль</span>
-          </DropdownItem>
-          <DropdownItem href={process.env.PUBLIC_URL + "/wishlist"}>
+          </Link>
+          <Link
+            to={process.env.PUBLIC_URL + "/wishlist"}
+            className={"dropdown-item"}
+          >
             <i className="bx bx-heart text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Список желаний</span>
-          </DropdownItem>
-          <DropdownItem href={process.env.PUBLIC_URL + "/profile/orders"}>
+          </Link>
+          <Link
+            to={process.env.PUBLIC_URL + "/profile/orders"}
+            className={"dropdown-item"}
+          >
             <i className="ri-shopping-bag-3-line text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Заказы</span>
-          </DropdownItem>
+          </Link>
           <div className="dropdown-divider"></div>
-          <DropdownItem href={process.env.PUBLIC_URL + "/logout"}>
+          <Link
+            to={process.env.PUBLIC_URL + "/logout"}
+            className={"dropdown-item"}
+          >
             <i className="ri-logout-box-line text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle">Выйти</span>
-          </DropdownItem>
+          </Link>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

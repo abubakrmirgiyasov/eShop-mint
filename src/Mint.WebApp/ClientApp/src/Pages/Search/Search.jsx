@@ -13,7 +13,7 @@ import {
   Row,
   Spinner,
 } from "reactstrap";
-import { ProductSort } from "../../components/Sort/ProductSort";
+import { ProductSort } from "../../components/Products/ProductSort";
 import {
   ProductCardRow,
   ProductCardTable,
@@ -78,7 +78,11 @@ const Search = () => {
   document.title = "Поиск - Mint";
   return (
     <div className={"page-content"}>
-      <Breadcrumb title={"Поиск"} pageTitle={"Категории"} link={"/categories"} />
+      <Breadcrumb
+        title={"Поиск"}
+        pageTitle={"Категории"}
+        link={"/categories"}
+      />
       {error ? <Error message={error} /> : null}
       <Container fluid={true}>
         {isLoading ? (

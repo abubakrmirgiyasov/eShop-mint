@@ -2,12 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import { Error } from "../../components/Notification/Error";
-import { Button, Card, CardBody, Col, Container, Input, Row, Spinner } from "reactstrap";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Input,
+  Row,
+  Spinner,
+} from "reactstrap";
 import {
   ProductCardRow,
   ProductCardTable,
 } from "../../components/Products/ProductCard";
-import { ProductSort } from "../../components/Sort/ProductSort";
+import { ProductSort } from "../../components/Products/ProductSort";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 
 const SingleStore = () => {
@@ -169,12 +178,16 @@ const SingleStore = () => {
                 )
               ) : (
                 <Card>
-                  <CardBody className={"d-flex flex-column justify-content-center align-items-center"}>
+                  <CardBody
+                    className={
+                      "d-flex flex-column justify-content-center align-items-center"
+                    }
+                  >
                     <lord-icon
                       src={"https://cdn.lordicon.com/hrqwmuhr.json"}
                       trigger={"loop"}
                       colors={"primary:#121331,secondary:#08a88a"}
-                      style={{ width:"350px", "height": "350px" }}
+                      style={{ width: "350px", height: "350px" }}
                     ></lord-icon>
                     <h3>Упс! Товаров нету!</h3>
                   </CardBody>

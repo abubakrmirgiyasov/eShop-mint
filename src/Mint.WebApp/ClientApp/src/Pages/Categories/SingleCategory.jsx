@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, CardBody, Col, Container, Input, Row, Spinner } from "reactstrap";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Input,
+  Row,
+  Spinner,
+} from "reactstrap";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import { useParams } from "react-router-dom";
 import { Error } from "../../components/Notification/Error";
@@ -8,16 +17,16 @@ import {
   ProductCardTable,
 } from "../../components/Products/ProductCard";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
-import { ProductSort } from "../../components/Sort/ProductSort";
+import { ProductSort } from "../../components/Products/ProductSort";
 
 const SingleCategory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const [isRow, setIsRow] = useState(false);
-  const [searchValue, setSearchValue] = useState(null);
   const [searchParam] = useState(["name", "fullDescription"]);
   const [dataForSearch, setDataForSearch] = useState([]);
+  // const [searchValue, setSearchValue] = useState(null);
 
   const params = useParams();
 
@@ -78,7 +87,7 @@ const SingleCategory = () => {
       <Container fluid={true}>
         {isLoading ? (
           <div className={"d-flex justify-content-center align-items-center"}>
-          <Spinner color={"success"} size={"sm"}>
+            <Spinner color={"success"} size={"sm"}>
               Loading...
             </Spinner>
           </div>
@@ -169,12 +178,16 @@ const SingleCategory = () => {
                 )
               ) : (
                 <Card>
-                  <CardBody className={"d-flex flex-column justify-content-center align-items-center"}>
-                  <lord-icon
+                  <CardBody
+                    className={
+                      "d-flex flex-column justify-content-center align-items-center"
+                    }
+                  >
+                    <lord-icon
                       src={"https://cdn.lordicon.com/hrqwmuhr.json"}
                       trigger={"loop"}
                       colors={"primary:#121331,secondary:#08a88a"}
-                      style={{ width:"350px", "height": "350px" }}
+                      style={{ width: "350px", height: "350px" }}
                     ></lord-icon>
                     <h3>Упс! Товаров нету!</h3>
                   </CardBody>

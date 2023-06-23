@@ -85,8 +85,6 @@ const OpenStore = ({ userId, newData }) => {
             const user = JSON.parse(localStorage.getItem("auth_user"));
             user.roles = [...user.roles, Roles.Seller];
             localStorage.setItem("auth_user", JSON.stringify(user));
-            console.log("user saved");
-            console.log(user);
           })
           .catch((error) => {
             setIsLoading(false);
@@ -363,7 +361,9 @@ const OpenStore = ({ userId, newData }) => {
                   <Spinner size={"sm"} className="me-2">
                     Loading...
                   </Spinner>
-                ) : <i className="ri-check-double-fill"></i>}{" "}
+                ) : (
+                  <i className="ri-check-double-fill"></i>
+                )}{" "}
                 Создать
               </Button>
             </Col>
