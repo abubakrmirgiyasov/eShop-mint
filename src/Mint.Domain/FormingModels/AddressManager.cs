@@ -12,7 +12,7 @@ public class AddressManager
         {
             return new Address()
             {
-                Id = model.Id,
+                Id = Guid.NewGuid(),
                 Country = model.Country!,
                 City = model.City!,
                 ZipCode = model.ZipCode,

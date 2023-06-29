@@ -21,7 +21,6 @@ public class ReviewManager
                 ReviewPhotos = new List<ReviewPhoto>(),
                 Text = model.Text,
                 UserId = model.UserId,
-                DateCreate = DateTime.Now,
                 Rating = model.Rating,
             };
 
@@ -55,7 +54,7 @@ public class ReviewManager
                 Photos = new List<string>(),
                 ProductId = model.ProductId,
                 UserId = model.UserId,
-                DateCreate = model.DateCreate,
+                DateCreate = model.CreatedDate.Date,
                 Rating = model.Rating,
             };
 
@@ -89,7 +88,7 @@ public class ReviewManager
                     Photos = new List<string>(),
                     ProductId = models[i].ProductId,
                     UserId = models[i].UserId,
-                    DateCreate = models[i].DateCreate,
+                    DateCreate = models[i].CreatedDate.Date,
                     Rating = models[i].Rating,
                     FullName = $"{models[i].User?.FirstName} {models[i].User?.SecondName}",
                     RateArr = new List<RateViewModel>(),

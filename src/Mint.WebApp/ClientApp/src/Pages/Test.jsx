@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from 'bootstrap';
-import { fetchWrapper } from '../helpers/fetchWrapper';
+import React from "react";
 
 const Test = () => {
-    const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = () => {};
 
-    useEffect(() => {
-
-        fetchWrapper.post("").then((response) =>{
-            console.log(response);
-        }).catch((error) => {
-            console.error(error);
-        });
-
-    }, [   ]);
-
-    return (
-        <div className={"page-content"}>
-            <Button color={"primary"}>
-                Отправить
-            </Button>
-        </div>
-    );
-}
+  return (
+    <div className={"page-content"}>
+      <button className="btn btn-primary btn-sm mt-2" onClick={handleSubmit}>
+        Submit
+      </button>
+    </div>
+  );
+};
 
 export default Test;

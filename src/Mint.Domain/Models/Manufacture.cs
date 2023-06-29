@@ -1,17 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models;
 
-public class Manufacture
+public class Manufacture : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     [Required(ErrorMessage = "Заполните поле Название")]
-    [MaxLength(100)]
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string Name { get; set; } = null!;
 
-    [MaxLength(800, ErrorMessage = "Перевышено макс. длина строки (100).")]
+    [MaxLength(800, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string? Description { get; set; }
 
     public int DisplayOrder { get; set; }

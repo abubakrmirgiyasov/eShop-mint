@@ -19,7 +19,7 @@ const AdminSidebar = (props) => {
       behavior: "smooth",
     });
 
-    const initMneu = () => {
+    const initMenu = () => {
       const pathName = process.env.PUBLIC_URL + location.pathname;
       const ul = document.getElementById("navbar-nav");
       const items = ul.getElementsByTagName("a");
@@ -35,39 +35,35 @@ const AdminSidebar = (props) => {
         activateParentDropdown(matchingMenuItem);
       }
 
-      if (props.latyoutType === "vertical") {
-        initMneu();
+      if (props.layoutType === "vertical") {
+        initMenu();
       }
     };
-  }, [location.pathname, props.latyoutType]);
+  }, [location.pathname, props.layoutType]);
 
-  const activateParentDropdown = (item) => {
+  function activateParentDropdown(item) {
     item.classList.add("active");
-
     let parentCollapseDiv = item.closest(".collapse.menu-dropdown");
 
     if (parentCollapseDiv) {
+      // to set aria expand true remaining
       parentCollapseDiv.classList.add("show");
       parentCollapseDiv.parentElement.children[0].classList.add("active");
       parentCollapseDiv.parentElement.children[0].setAttribute(
         "aria-expanded",
         "true"
       );
-
       if (parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
         parentCollapseDiv.parentElement
           .closest(".collapse")
           .classList.add("show");
-
         if (
           parentCollapseDiv.parentElement.closest(".collapse")
             .previousElementSibling
-        ) {
+        )
           parentCollapseDiv.parentElement
             .closest(".collapse")
             .previousElementSibling.classList.add("active");
-        }
-
         if (
           parentCollapseDiv.parentElement
             .closest(".collapse")
@@ -86,7 +82,7 @@ const AdminSidebar = (props) => {
       return false;
     }
     return false;
-  };
+  }
 
   const removeActivation = (items) => {
     let activeItems = items.filter((x) => x.classList.contains("active"));
@@ -96,20 +92,16 @@ const AdminSidebar = (props) => {
         if (!item.classList.contains("active")) {
           item.setAttribute("aria-expanded", false);
         }
-
         if (item.nextElementSibling) {
           item.nextElementSibling.classList.remove("show");
         }
       }
-
       if (item.classList.contains("nav-link")) {
         if (item.nextElementSibling) {
           item.nextElementSibling.classList.remove("show");
         }
-
         item.setAttribute("aria-expanded", false);
       }
-
       item.classList.remove("active");
     });
   };

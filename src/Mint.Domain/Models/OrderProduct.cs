@@ -1,15 +1,20 @@
-﻿namespace Mint.Domain.Models;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
-public class OrderProduct
+namespace Mint.Domain.Models;
+
+public class OrderProduct : Entity<Guid>
 {
-    public Guid Id { get; set; }
-
+    [Required]
     public int Quantity { get; set; }
 
+    [Required]
     public decimal Price { get; set; }
 
+    [Required]
     public int Percent { get; set; }
 
+    [Required]
     public decimal Sum { get; set; }
 
     public Guid ProductId { get; set; }

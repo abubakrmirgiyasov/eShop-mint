@@ -180,14 +180,14 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            model.Id = Guid.NewGuid();
             var address = new AddressManager().FormingBindingModel(model);
             await _context.Addresses.AddAsync(address);
             await _context.SaveChangesAsync();
 
             var temp = await _context.Addresses
                 .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.UserId == model.UserId);
+                .FirstOrDefaultAsync(x => x.UserId == model.UserId)
+                ?? throw new Exception("Произошла ошибка. Адрес не найден");
             return new AddressManager().FormingSingleViewMdoel(temp!);
         }
         catch (Exception ex)

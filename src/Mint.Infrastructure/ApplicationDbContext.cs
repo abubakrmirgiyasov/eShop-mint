@@ -44,6 +44,16 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
 
+    public DbSet<Pdf> Pdfs { get; set; }
+
+    public DbSet<ProductAttribute> ProductAttributes { get; set; }
+
+    public DbSet<Domain.Models.Attribute> Attributes { get; set; }
+
+    public DbSet<Characteristic> Characteristics { get; set; }
+
+    public DbSet<CategoryAttribute> CategoryAttributes { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -63,6 +73,14 @@ public class ApplicationDbContext : DbContext
 
         builder.Entity<Product>()
             .HasIndex(x => x.Sku)
+            .IsUnique(true);
+
+        builder.Entity<Category>()
+            .HasIndex(x => x.DefaultLink)
+            .IsUnique(true);
+
+        builder.Entity<Domain.Models.Attribute>()
+            .HasIndex(x => x.Name)
             .IsUnique(true);
 
         builder.Entity<UserRole>()
@@ -91,6 +109,20 @@ public class ApplicationDbContext : DbContext
             {
                 x.ReviewId,
                 x.PhotoId
+            });
+
+        builder.Entity<ProductAttribute>()
+            .HasKey(x => new
+            {
+                x.ProductId,
+                x.AttributeId,
+            });
+
+        builder.Entity<CategoryAttribute>()
+            .HasKey(x => new
+            {
+                x.AttributeId,
+                x.CategoryId,
             });
 
         builder.Entity<UserRole>()
@@ -249,12 +281,33 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Entity<Product>()
+            .HasOne(x => x.Characteristic)
+            .WithMany(x => x.Products)
+            .HasForeignKey(x => x.CharacteristicId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ProductAttribute>()
+            .HasOne(x => x.Product)
+            .WithMany(x => x.ProductAttributes)
+            .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<CategoryAttribute>()
+            .HasOne(x => x.Attribute)
+            .WithMany(x => x.CategoryAttributes)
+            .HasForeignKey(x => x.AttributeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        //builder.Entity<Pdf>()
+
         var salt = new Hasher().GetSalt();
 
         var users = new User[]
         {
             new User()
             {
+                Id = Guid.NewGuid(),
                 FirstName = "Миргиясов",
                 SecondName = "Абубакр",
                 LastName = "Мукимжонович",
@@ -273,6 +326,7 @@ public class ApplicationDbContext : DbContext
             },
             new User()
             {
+                Id = Guid.NewGuid(),
                 FirstName = "Test",
                 SecondName = "User",
                 Email = "admin@mint.com",
@@ -296,19 +350,16 @@ public class ApplicationDbContext : DbContext
             {
                 Id = Guid.Parse("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
                 Name = Constants.ADMIN,
-                CreactionDate = DateTime.Now
             },
             new Role
             {
                 Id = Guid.Parse("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
                 Name = Constants.SELLER,
-                CreactionDate = DateTime.Now
             },
             new Role
             {
                 Id = Guid.Parse("4d442669-abe7-4726-af0f-5734879a113c"),
                 Name = Constants.BUYER,
-                CreactionDate = DateTime.Now
             },
         };
 

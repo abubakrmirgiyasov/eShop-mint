@@ -1,22 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models;
 
-public class Photo
+public class Photo : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
-    [MaxLength(2000, ErrorMessage = "Перевышено макс. длина строки (2000).")]
+    [StringLength(4000, ErrorMessage = "Превышено макс. длина строки (2000).")]
     public string FileName { get; set; } = null!;
 
-    [MaxLength(30, ErrorMessage = "Перевышено макс. длина строки (30).")]
+    [MaxLength(30, ErrorMessage = "Превышено макс. длина строки (30).")]
     public string FileExtension { get; set; } = null!;
 
-    [MaxLength(400, ErrorMessage = "Перевышено макс. длина строки (400).")]
+    [MaxLength(400, ErrorMessage = "Превышено макс. длина строки (400).")]
     public string FilePath { get; set; } = null!;
 
-    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
+    [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
     public string FileType { get; set; } = null!;
 
     public long FileSize { get; set; }

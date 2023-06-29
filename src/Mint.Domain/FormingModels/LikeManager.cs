@@ -11,7 +11,7 @@ public class LikeManager
         return new LikedProduct()
         {
             Id = Guid.NewGuid(),
-            CreateDate = DateTime.Now,
+            CreatedDate = DateTime.Now,
             ProductId = model.ProductId,
             UserId = model.UserId,
         };
@@ -42,7 +42,7 @@ public class LikeManager
         }
     }
 
-    public LikeViewModel FormingSingleViewModel(LikedProduct like, ProductFullViewModel product)
+    public LikeViewModel FormingSingleViewModel(LikedProduct like, ProductFullViewModel? product)
     {
         try
         {

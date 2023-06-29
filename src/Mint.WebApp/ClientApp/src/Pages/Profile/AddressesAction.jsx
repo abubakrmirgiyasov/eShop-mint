@@ -14,16 +14,12 @@ import {
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import { Error } from "../../components/Notification/Error";
 import Select from "react-select";
+import { Countries } from "../../constants/Common";
 
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [country, setCountry] = useState(null);
-
-  const countries = [
-    { label: "Россия", value: "1" },
-    { label: "Казахстан", value: "2" },
-  ];
 
   const handleSubmit = (e) => {
     setIsLoading(true);
@@ -103,7 +99,7 @@ const AddressesAction = (props) => {
                   id={"country"}
                   name={"country"}
                   defaultValue={props.address?.country}
-                  options={countries}
+                  options={Countries}
                   onChange={handleChange}
                 />
                 {!country ? (
@@ -186,8 +182,10 @@ const AddressesAction = (props) => {
                     <Spinner size={"sm"} className={"me-2"}>
                       Loading...
                     </Spinner>
-                  ) : null}
-                  <i className={"ri-check-double-fill"}></i> Сохранить
+                  ) : (
+                    <i className={"ri-check-double-fill"}></i>
+                  )}{" "}
+                  Сохранить
                 </Button>
               </div>
             </Row>

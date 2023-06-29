@@ -1,17 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models;
 
-public class Storage
+public class Storage : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; }
-
+    [Required]
     public int Quantity { get; set; }
 
-    public Guid ProductId { get; set; }
+    public Guid? ProductId { get; set; }
 
-    public Product Product { get; set; } = null!;
+    public Product? Product { get; set; }
 
     public Guid? StoreId { get; set; }
 

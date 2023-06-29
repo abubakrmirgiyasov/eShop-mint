@@ -15,6 +15,7 @@ import { myStore } from "../../Common/UserStores/myStore";
 
 const AdminLayout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -74,15 +75,6 @@ const AdminLayout = ({ children }) => {
     if (!user) {
       navigate("/admin/admin-signin");
     }
-
-    // const requiredRoles = [Roles.Seller, Roles.Admin];
-    // const hasRequiredRoles =
-    //   user.roles.filter((role) => requiredRoles.includes(role)).length ===
-    //   requiredRoles.length;
-    //
-    // if (!hasRequiredRoles) {
-    //   navigate("/admin/admin-signin");
-    // }
 
     if (user.roles.length !== 3) {
       let isAccessed = false;

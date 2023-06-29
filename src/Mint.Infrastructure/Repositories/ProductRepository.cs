@@ -134,7 +134,7 @@ public class ProductRepository : IProductRepository
                 .Include(x => x.Storages)
                 .Include(x => x.ProductPhotos!)
                 .ThenInclude(x => x.Photo)
-                .Where(x => x.DateCreate >= DateTime.Now.AddDays(-7))
+                .Where(x => x.CreatedDate >= DateTime.Now.AddDays(-7))
                 .ToListAsync();
             return new ProductManager().FormingFullProductViewModels(products);
         }
@@ -323,7 +323,7 @@ public class ProductRepository : IProductRepository
                 characteristic.Garanty = model.Garanty == characteristic.Garanty ? characteristic.Garanty : model.Garanty;
                 characteristic.Availability = model.Availability;
                 characteristic.Weight = model.Weight == characteristic.Weight ? characteristic.Weight : model.Weight;
-                characteristic.Length = model.Length == characteristic.Length ? characteristic.Weight : model.Length;
+                characteristic.Length = model.Length == characteristic.Length ? characteristic.Length : model.Length;
                 characteristic.Width = model.Width == characteristic.Width ? characteristic.Weight : model.Width;
                 characteristic.Height = model.Height == characteristic.Height ? characteristic.Weight : model.Height;
                 characteristic.Rate = model.Rate == characteristic.Rate ? characteristic.Weight : model.Rate;

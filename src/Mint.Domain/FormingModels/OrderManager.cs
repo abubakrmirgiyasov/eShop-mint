@@ -42,7 +42,7 @@ public class OrderManager
 					Description = models[i].Description,
 					ShippingType = models[i].ShippingType,
 					PaymentType = models[i].PaymentType,
-					DateCreate = models[i].OrderDate,
+					DateCreate = models[i].CreatedDate.Date,
 					OrderProducts = new List<OrderProductFullViewModel>(),
 				});
 

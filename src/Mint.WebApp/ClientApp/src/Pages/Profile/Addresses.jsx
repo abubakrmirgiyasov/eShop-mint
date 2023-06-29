@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -82,12 +81,12 @@ const Addresses = ({ activeTab, userId }) => {
     [actionToggle]
   );
 
-  function setNewAddress(newAdress) {
-    setAddresses([...addresses, newAdress]);
+  function setNewAddress(newAddress) {
+    setAddresses([...addresses, newAddress]);
   }
 
-  function setUpdatedAdress(updatedAdress) {
-    console.log(updatedAdress);
+  function setUpdatedAddress(updatedAddress) {
+    console.log(updatedAddress);
   }
 
   function setAddressAfterDeleting(id) {
@@ -209,7 +208,7 @@ const Addresses = ({ activeTab, userId }) => {
         address={address}
         isEdit={isEdit}
         setNewAddress={setNewAddress}
-        setUpdatedAdress={setUpdatedAdress}
+        setUpdatedAdress={setUpdatedAddress}
       />
       <DeleteAddress
         isOpen={isDeleteModal}

@@ -1,7 +1,6 @@
-﻿using Mint.Domain.BindingModels;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Mint.Domain.Models;
+namespace Mint.Domain.BindingModels;
 
 public class AuthenticationResponse
 {

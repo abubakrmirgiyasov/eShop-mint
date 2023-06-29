@@ -108,7 +108,9 @@ const Signin = (props) => {
                   <Label htmlFor={"password"} className={"form-label"}>
                     Пароль
                   </Label>
-                  <div className={"position-relative auth-pass-inputgroup mb-3"}>
+                  <div
+                    className={"position-relative auth-pass-inputgroup mb-3"}
+                  >
                     <Input
                       type={passwordShow ? "text" : "password"}
                       name="password"
@@ -164,7 +166,9 @@ const Signin = (props) => {
                   <Spinner size={"sm"} className="me-2">
                     Loading...
                   </Spinner>
-                ) : <i className="ri-login-box-line"></i>}{" "}
+                ) : (
+                  <i className="ri-login-box-line"></i>
+                )}{" "}
                 Войти
               </button>
             </div>

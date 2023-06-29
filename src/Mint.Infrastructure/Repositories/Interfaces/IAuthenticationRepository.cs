@@ -1,5 +1,4 @@
 ﻿using Mint.Domain.BindingModels;
-using Mint.Domain.Models;
 
 namespace Mint.Infrastructure.Repositories.Interfaces;
 

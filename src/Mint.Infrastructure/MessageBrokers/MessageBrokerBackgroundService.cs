@@ -27,7 +27,7 @@ public class MessageBrokerBackgroundService : BackgroundService
 
         _receiver?.ReceiveAsync(async (data, metaData) =>
         {
-            string message = data.AddressId.ToString();
+            string message = $"{data.AddressId}";
 
             _logger.LogInformation("Message: {Message}", message);
 

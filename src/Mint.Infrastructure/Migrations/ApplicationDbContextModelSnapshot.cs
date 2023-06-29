@@ -71,11 +71,48 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.Attribute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Translate")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Attributes");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DefaultLink")
                         .HasMaxLength(60)
@@ -103,10 +140,22 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<Guid?>("PhotoId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<Guid?>("SubCategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DefaultLink")
+                        .IsUnique()
+                        .HasFilter("[DefaultLink] IS NOT NULL");
 
                     b.HasIndex("ManufactureId");
 
@@ -115,6 +164,53 @@ namespace Mint.Infrastructure.Migrations
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.CategoryAttribute", b =>
+                {
+                    b.Property<Guid?>("AttributeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AttributeId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryAttributes");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Characteristic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Characteristics");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.CommonCharacteristic", b =>
@@ -129,6 +225,9 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<string>("Color")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Garanty")
                         .HasColumnType("int");
@@ -151,6 +250,14 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");
@@ -177,9 +284,13 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsExpired")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Percent")
                         .HasColumnType("int");
@@ -195,11 +306,19 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -219,6 +338,9 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("Description")
                         .HasMaxLength(800)
                         .HasColumnType("nvarchar(800)");
@@ -233,6 +355,14 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<Guid?>("PhotoId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -250,11 +380,16 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
 
                     b.Property<int>("OrderNumber")
                         .ValueGeneratedOnAdd()
@@ -263,15 +398,32 @@ namespace Mint.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderNumber"));
 
                     b.Property<string>("OrderStatus")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("PaidDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ShippingType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -293,6 +445,9 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
@@ -305,11 +460,19 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<Guid>("StoreId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Sum")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("ProductId", "OrderId");
 
@@ -320,11 +483,36 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("OrderProducts");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.Pdf", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pdfs");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.Photo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("FileExtension")
                         .IsRequired()
@@ -333,8 +521,8 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
@@ -348,6 +536,14 @@ namespace Mint.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -367,11 +563,14 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CharacteristicId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CountryOfOrigin")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("DeliveryMaxDay")
                         .HasColumnType("int");
@@ -415,6 +614,11 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("ShortDescription")
                         .HasMaxLength(800)
                         .HasColumnType("nvarchar(800)");
@@ -433,12 +637,14 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<decimal>("TaxPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CharacteristicId");
 
                     b.HasIndex("DiscountId");
 
@@ -450,6 +656,21 @@ namespace Mint.Infrastructure.Migrations
                     b.HasIndex("StoreId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.ProductAttribute", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AttributeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "AttributeId");
+
+                    b.HasIndex("AttributeId");
+
+                    b.ToTable("ProductAttributes");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.ProductPhoto", b =>
@@ -523,8 +744,8 @@ namespace Mint.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Minuses")
                         .HasMaxLength(255)
@@ -540,9 +761,17 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Text")
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -577,13 +806,21 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreactionDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -593,19 +830,19 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            CreactionDate = new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9511),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4850), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Админ"
                         },
                         new
                         {
                             Id = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            CreactionDate = new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9514),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4932), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Продавец"
                         },
                         new
                         {
                             Id = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            CreactionDate = new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9518),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4935), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Покупатель"
                         });
                 });
@@ -616,14 +853,25 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<Guid?>("StoreId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -644,27 +892,43 @@ namespace Mint.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<bool>("IsOwnStorage")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid?>("PhotoId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -698,6 +962,9 @@ namespace Mint.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
@@ -710,6 +977,14 @@ namespace Mint.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
                     b.HasKey("Id");
 
                     b.ToTable("SubCategories");
@@ -721,8 +996,11 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("AcceptLanguage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<DateTime>("DateBirth")
                         .HasColumnType("datetime2");
@@ -776,6 +1054,11 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<byte[]>("Salt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -784,6 +1067,12 @@ namespace Mint.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -802,8 +1091,8 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5fc342ce-528b-4dd7-a128-2be974331d48"),
-                            CreatedDate = new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(4347),
+                            Id = new Guid("4f7f39c7-7472-47e4-9940-6ab6ac9fe787"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 69, DateTimeKind.Unspecified).AddTicks(7484), new TimeSpan(0, 7, 0, 0, 0)),
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             Email = "abubakrmirgiyasov@gmail.com",
@@ -814,15 +1103,15 @@ namespace Mint.Infrastructure.Migrations
                             IsConfirmedEmail = true,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "O0k6Qkw3UQAg1TA7nqLHN3XIQVQNkgW/X/8HmLBcNtk=",
+                            Password = "lLHQYBCxsXwqqoY1YCTa/GP0VfPvH2tqz6o4yDnuJUw=",
                             Phone = 89502768428L,
-                            Salt = new byte[] { 40, 109, 215, 17, 234, 224, 172, 2, 87, 230, 92, 159, 52, 9, 95, 213 },
+                            Salt = new byte[] { 10, 245, 217, 163, 76, 157, 28, 142, 211, 131, 83, 224, 79, 116, 78, 78 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
-                            Id = new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72"),
-                            CreatedDate = new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9482),
+                            Id = new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4814), new TimeSpan(0, 7, 0, 0, 0)),
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             Email = "admin@mint.com",
@@ -832,9 +1121,9 @@ namespace Mint.Infrastructure.Migrations
                             IsActive = true,
                             IsConfirmedEmail = true,
                             NumOfAttempts = 0,
-                            Password = "36oSU9G4kFGv/efkK5HltPbGMw6A16UyrJ7DuIVff+g=",
+                            Password = "HsipMjd9IkXC2vUBRs3xbGFOiQ0aI0WnrR0uKvjEfBs=",
                             Phone = 83452763423L,
-                            Salt = new byte[] { 40, 109, 215, 17, 234, 224, 172, 2, 87, 230, 92, 159, 52, 9, 95, 213 },
+                            Salt = new byte[] { 10, 245, 217, 163, 76, 157, 28, 142, 211, 131, 83, 224, 79, 116, 78, 78 },
                             SecondName = "User"
                         });
                 });
@@ -857,27 +1146,27 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("5fc342ce-528b-4dd7-a128-2be974331d48")
+                            UserId = new Guid("4f7f39c7-7472-47e4-9940-6ab6ac9fe787")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("5fc342ce-528b-4dd7-a128-2be974331d48")
+                            UserId = new Guid("4f7f39c7-7472-47e4-9940-6ab6ac9fe787")
                         },
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72")
+                            UserId = new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72")
+                            UserId = new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72")
+                            UserId = new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb")
                         });
                 });
 
@@ -913,6 +1202,25 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Photo");
 
                     b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.CategoryAttribute", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Attribute", "Attribute")
+                        .WithMany("CategoryAttributes")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Category", "Category")
+                        .WithMany("CategoryAttributes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.CommonCharacteristic", b =>
@@ -1003,6 +1311,11 @@ namespace Mint.Infrastructure.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("Mint.Domain.Models.Characteristic", "Characteristic")
+                        .WithMany("Products")
+                        .HasForeignKey("CharacteristicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Mint.Domain.Models.Discount", "Discount")
                         .WithMany("Products")
                         .HasForeignKey("DiscountId")
@@ -1020,11 +1333,32 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("Characteristic");
+
                     b.Navigation("Discount");
 
                     b.Navigation("Manufacture");
 
                     b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.ProductAttribute", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Attribute", "Attribute")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Product", "Product")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.ProductPhoto", b =>
@@ -1097,8 +1431,7 @@ namespace Mint.Infrastructure.Migrations
                     b.HasOne("Mint.Domain.Models.Product", "Product")
                         .WithMany("Storages")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Mint.Domain.Models.Store", "Store")
                         .WithMany("Storages")
@@ -1163,7 +1496,21 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.Attribute", b =>
+                {
+                    b.Navigation("CategoryAttributes");
+
+                    b.Navigation("ProductAttributes");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.Category", b =>
+                {
+                    b.Navigation("CategoryAttributes");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Characteristic", b =>
                 {
                     b.Navigation("Products");
                 });
@@ -1205,6 +1552,8 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("LikedProducts");
 
                     b.Navigation("OrderProducts");
+
+                    b.Navigation("ProductAttributes");
 
                     b.Navigation("ProductPhotos");
 

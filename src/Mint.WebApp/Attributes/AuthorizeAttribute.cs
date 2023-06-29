@@ -5,7 +5,7 @@ using Mint.Domain.Models;
 namespace Mint.WebApp.Attributes;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class AuthorizeAttribute : Attribute, IAuthorizationFilter
+public class AuthorizeAttribute : System.Attribute, IAuthorizationFilter
 {
     public string? Roles { get; set; }
 

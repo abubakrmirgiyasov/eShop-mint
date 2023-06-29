@@ -1,17 +1,25 @@
-﻿namespace Mint.Domain.Models;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
-public class Store
+namespace Mint.Domain.Models;
+
+public class Store : Entity<Guid>
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-
+    [Required(ErrorMessage = "Заполните обязательное поле")]
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string Name { get; set; } = null!;
 
+    [Required(ErrorMessage = "Заполните обязательное поле")]
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")] 
     public string Url { get; set; } = null!;
 
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string? Country { get; set; }
 
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string? City { get; set; }
 
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string? Street { get; set; }
 
     public int ZipCode { get; set; }

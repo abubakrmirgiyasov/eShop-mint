@@ -1,23 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models;
 
-public class Category
+public class Category : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
-    [Required(ErrorMessage = "Заполните объязательное поле")]
-    [MaxLength(100, ErrorMessage = "Перевышено макс. длина строки (100).")]
+    [Required(ErrorMessage = "Заполните обязательное поле")]
+    [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string Name { get; set; } = null!;
 
-    [MaxLength(400, ErrorMessage = "Перевышено макс. длина строки (400).")]
+    [MaxLength(400, ErrorMessage = "Превышено макс. длина строки (400).")]
     public string? FullName { get; set; }
 
-    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
+    [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
     public string? ExternalLink { get; set; }
 
-    [MaxLength(60, ErrorMessage = "Перевышено макс. длина строки (60).")]
+    [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
     public string? DefaultLink { get; set; }
 
     public int DisplayOrder { get; set; }
@@ -35,4 +33,6 @@ public class Category
     public Manufacture? Manufacture { get; set; }
 
     public List<Product>? Products { get; set; }
+
+    public List<CategoryAttribute>? CategoryAttributes { get; set; }
 }

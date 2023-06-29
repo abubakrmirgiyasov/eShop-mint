@@ -1,4 +1,4 @@
-﻿using Mint.Domain.Models;
+﻿using Mint.Domain.BindingModels;
 
 namespace Min.Web.UI.Tests.Constants;
 

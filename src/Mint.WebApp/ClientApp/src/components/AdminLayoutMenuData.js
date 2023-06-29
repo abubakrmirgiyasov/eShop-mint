@@ -4,7 +4,9 @@ import { Roles } from "../constants/Roles";
 
 const AdminNavdata = () => {
   const history = useNavigate();
-  const [iscurrentState, setIscurrentState] = useState("Dashboard");
+
+  const [isCurrentState, setIsCurrentState] = useState("Dashboard");
+
   const [isDashboard, setIsDashboard] = useState(false);
   const [isCatalog, setIsCatalog] = useState(false);
   const [isSales, setIsSales] = useState(false);
@@ -28,35 +30,33 @@ const AdminNavdata = () => {
 
   useEffect(() => {
     document.body.classList.remove("twocolumn-panel");
-    if (iscurrentState === "Dashboard") {
+
+    if (isCurrentState === "Dashboard") {
       history("/admin/admin-dashboard");
       document.body.classList.add("twocolumn-panel");
     }
-    if (iscurrentState === "Widgets") {
+    if (isCurrentState === "Widgets") {
       history("/widgets");
       document.body.classList.add("twocolumn-panel");
     }
-    if (iscurrentState !== "Dashboard") {
-      setIsDashboard(false);
-    }
-    if (iscurrentState !== "Catalog") {
+    if (isCurrentState !== "Catalog") {
       setIsCatalog(false);
     }
-    if (iscurrentState !== "Sales") {
+    if (isCurrentState !== "Sales") {
       setIsSales(false);
     }
-    if (iscurrentState !== "News") {
+    if (isCurrentState !== "News") {
       setIsNews(false);
     }
-    if (iscurrentState !== "Customer") {
+    if (isCurrentState !== "Customer") {
       setIsCustomer(false);
     }
-    if (iscurrentState !== "Seller") {
+    if (isCurrentState !== "Seller") {
       setIsSeller(false);
     }
   }, [
     history,
-    iscurrentState,
+    isCurrentState,
     isCatalog,
     isSales,
     isNews,
@@ -77,8 +77,7 @@ const AdminNavdata = () => {
       stateVariables: isDashboard,
       click: function (e) {
         e.preventDefault();
-        setIsDashboard(!isDashboard);
-        setIscurrentState("Dashboard");
+        setIsCurrentState("Dashboard");
       },
     },
     {
@@ -90,13 +89,13 @@ const AdminNavdata = () => {
       label: "Каталог",
       icon: "ri-article-line",
       link: "/#",
+      stateVariables: isCatalog,
       click: function (e) {
         e.preventDefault();
         setIsCatalog(!isCatalog);
-        setIscurrentState("Catalog");
+        setIsCurrentState("Catalog");
         updateIconSidebar(e);
       },
-      stateVariables: isCatalog,
       subItems: [
         {
           id: "categories",
@@ -129,13 +128,13 @@ const AdminNavdata = () => {
       label: "Продажи",
       icon: "ri-pie-chart-line",
       link: "/#",
+      stateVariables: isSales,
       click: function (e) {
         e.preventDefault();
         setIsSales(!isSales);
-        setIscurrentState("Sales");
+        setIsCurrentState("Sales");
         updateIconSidebar(e);
       },
-      stateVariables: isSales,
       subItems: [
         {
           id: "orders",
@@ -160,7 +159,7 @@ const AdminNavdata = () => {
       click: function (e) {
         e.preventDefault();
         setIsNews(!isNews);
-        setIscurrentState("News");
+        setIsCurrentState("News");
         updateIconSidebar(e);
       },
       stateVariables: isNews,
@@ -193,7 +192,7 @@ const AdminNavdata = () => {
       click: function (e) {
         e.preventDefault();
         setIsCustomer(!isCustomer);
-        setIscurrentState("Customer");
+        setIsCurrentState("Customer");
         updateIconSidebar(e);
       },
       stateVariables: isCustomer,
@@ -221,7 +220,7 @@ const AdminNavdata = () => {
       click: function (e) {
         e.preventDefault();
         setIsSeller(!isSeller);
-        setIscurrentState("Seller");
+        setIsCurrentState("Seller");
         updateIconSidebar(e);
       },
       stateVariables: isSeller,
@@ -241,7 +240,7 @@ const AdminNavdata = () => {
       link: "/widgets",
       click: function (e) {
         e.preventDefault();
-        setIscurrentState("Widgets");
+        setIsCurrentState("Widgets");
       },
     },
   ];

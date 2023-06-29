@@ -21,6 +21,7 @@
     "lottie-web": "^5.11.0",
     "merge": "^2.1.1",
     "oidc-client": "^1.11.5",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-data-table-component": "^7.5.3",

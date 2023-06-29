@@ -1,16 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models;
 
-public class CommonCharacteristic
+public class CommonCharacteristic : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
-    [MaxLength(50, ErrorMessage = "Перевышено макс. длина строки (50).")]
+    [MaxLength(50, ErrorMessage = "Превышено макс. длина строки (50).")]
     public string? Color { get; set; }
 
-    [MaxLength(50, ErrorMessage = "Перевышено макс. длина строки (50).")]
+    [MaxLength(50, ErrorMessage = "Превышено макс. длина строки (50).")]
     public string? Material { get; set; }
 
     public double Rate { get; set; }

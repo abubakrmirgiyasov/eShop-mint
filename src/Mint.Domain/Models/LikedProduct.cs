@@ -1,14 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mint.Domain.Models.Base;
 
 namespace Mint.Domain.Models;
 
-public class LikedProduct
+public class LikedProduct : Entity<Guid>
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
-    public DateTime CreateDate { get; set; } = DateTime.Now;
-
     public Guid UserId { get; set; }
 
     public User User { get; set; } = null!;

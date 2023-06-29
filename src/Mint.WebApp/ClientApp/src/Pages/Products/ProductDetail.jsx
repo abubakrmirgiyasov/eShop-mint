@@ -149,7 +149,11 @@ const ProductDetail = () => {
       {message ? <Error message={message} /> : null}
       {success ? <Success message={success} /> : null}
       <div className={"page-content"}>
-        <Breadcrumb title={"test"} pageTitle={"ads"} link={"test"} />
+        <Breadcrumb
+          title={product?.name}
+          pageTitle={"Продовец"}
+          link={"/categories/" + product?.storeUrl}
+        />
         <Container fluid>
           {isLoading ? (
             <div className={"d-flex justify-content-center align-items-center"}>
@@ -726,7 +730,7 @@ const ProductDetail = () => {
                                   <Row className={"align-items-center g-2"}>
                                     <Col className={"col-auto"}>
                                       <div className={"p-2"}>
-                                        <h6 className={"mb-0"}>1 звезды</h6>
+                                        <h6 className={"mb-0"}>1 звезда</h6>
                                       </div>
                                     </Col>
                                     <Col>

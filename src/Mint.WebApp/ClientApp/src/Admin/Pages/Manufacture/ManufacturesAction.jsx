@@ -28,8 +28,8 @@ const ManufacturesAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [data, setData] = useState([]);
-  const [getDataLaoading, setGetDataLoading] = useState(false);
+  const [manufacture, setManufacture] = useState(null);
+  const [getDataLoading, setGetDataLoading] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -41,7 +41,7 @@ const ManufacturesAction = () => {
         .get(`api/manufacture/getmanufacturebyid/${params.id}`)
         .then((response) => {
           setGetDataLoading(false);
-          setData(response);
+          setManufacture(response);
         })
         .catch((error) => {
           setGetDataLoading(false);
@@ -53,13 +53,14 @@ const ManufacturesAction = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: "",
-      displayOrder: 0,
-      image: null,
-      description: "",
+      name: manufacture?.name || "",
+      displayOrder: manufacture?.displayOrder || 0,
+      image: manufacture?.photo || null,
+      description: manufacture?.description || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Заполните обязательное поле"),
+      displayOrder: Yup.number().required("Заполните обязательное поле"),
     }),
     onSubmit: (values) => {
       setIsLoading(true);
@@ -78,7 +79,7 @@ const ManufacturesAction = () => {
         formData.append("id", params.id);
         fetchWrapper
           .put("api/manufacture/updatemanufacture", formData, false)
-          .then((response) => {
+          .then(() => {
             setIsLoading(false);
             navigate("/admin/manufactures");
           })
@@ -89,7 +90,7 @@ const ManufacturesAction = () => {
       } else {
         fetchWrapper
           .post("api/manufacture/addmanufacture", formData, false)
-          .then((response) => {
+          .then(() => {
             setIsLoading(false);
             navigate("/admin/manufactures");
           })
@@ -130,7 +131,7 @@ const ManufacturesAction = () => {
             </h3>
           </CardHeader>
           <CardBody>
-            {params.id && getDataLaoading ? (
+            {params.id && getDataLoading ? (
               <div className="d-flex justify-content-center align-items-center">
                 <div className="spinner text-success" role="status">
                   <span className="visually-hidden">Loading...</span>
@@ -167,10 +168,22 @@ const ManufacturesAction = () => {
                           onBlur={validation.handleBlur}
                           defaultValue={
                             validation.values.displayOrder ||
-                            data.displayOrder ||
+                            manufacture?.displayOrder ||
                             ""
                           }
+                          invalid={
+                            !!(
+                              validation.touched.displayOrder &&
+                              validation.errors.displayOrder
+                            )
+                          }
                         />
+                        {validation.touched.displayOrder &&
+                        validation.errors.displayOrder ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.displayOrder}
+                          </FormFeedback>
+                        ) : null}
                       </Col>
                     </Row>
                   </Col>
@@ -195,7 +208,7 @@ const ManufacturesAction = () => {
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           defaultValue={
-                            validation.values.name || data.name || ""
+                            validation.values.name || manufacture?.name || ""
                           }
                           invalid={
                             !!(
@@ -226,8 +239,8 @@ const ManufacturesAction = () => {
                       <Col xl={10}>
                         <PreviewSingleImage
                           setSelectedImage={setSelectedImage}
-                          image={data?.photo}
-                          name={data?.name}
+                          image={manufacture?.photo}
+                          name={manufacture?.name}
                         />
                       </Col>
                     </Row>
@@ -247,11 +260,11 @@ const ManufacturesAction = () => {
                       <Col xl={10}>
                         <CKEditor
                           editor={ClassicEditor}
-                          id="text"
+                          id={"text"}
                           onChange={(event, editor) => {
                             validation.values.description = editor.getData();
                           }}
-                          data={data?.description || ""}
+                          data={manufacture?.description || ""}
                         />
                       </Col>
                     </Row>
@@ -267,8 +280,10 @@ const ManufacturesAction = () => {
                     >
                       {isLoading ? (
                         <Spinner size={"sm"}>Loading...</Spinner>
-                      ) : null}
-                      <i className={"ri-check-double-fill"}></i> Сохранить
+                      ) : (
+                        <i className={"ri-check-double-fill"}></i>
+                      )}{" "}
+                      Сохранить
                     </Button>
                   </Col>
                 </Form>

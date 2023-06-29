@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Min.Web.UI.Tests.Constants;
 using Min.Web.UI.Tests.Services;
-using Mint.Domain.Models;
+using Mint.Domain.BindingModels;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Controllers;
 using Moq;

@@ -14,12 +14,45 @@ namespace Mint.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Attributes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Translate = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attributes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Characteristics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Characteristics", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Discounts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Percent = table.Column<int>(type: "int", nullable: false),
+                    IsExpired = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ActiveDateUntil = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -29,15 +62,32 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pdfs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pdfs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
                     FileExtension = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
                     FileType = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    FileSize = table.Column<long>(type: "bigint", nullable: false)
+                    FileSize = table.Column<long>(type: "bigint", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,7 +100,9 @@ namespace Mint.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreactionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,7 +118,10 @@ namespace Mint.Infrastructure.Migrations
                     Ico = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
                     BadgeText = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    BadgeStyle = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
+                    BadgeStyle = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,7 +136,10 @@ namespace Mint.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: true),
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
-                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -102,7 +160,6 @@ namespace Mint.Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     SecondName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Phone = table.Column<long>(type: "bigint", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -114,8 +171,13 @@ namespace Mint.Infrastructure.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     NumOfAttempts = table.Column<int>(type: "int", nullable: false),
                     IsConfirmedEmail = table.Column<bool>(type: "bit", nullable: false),
+                    UserAgent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AcceptLanguage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -145,7 +207,10 @@ namespace Mint.Infrastructure.Migrations
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
                     PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SubCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ManufactureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ManufactureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -227,16 +292,19 @@ namespace Mint.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ZipCode = table.Column<int>(type: "int", nullable: false),
                     AddressDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsOwnStorage = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,19 +346,48 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategoryAttributes",
+                columns: table => new
+                {
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttributeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryAttributes", x => new { x.AttributeId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_CategoryAttributes_Attributes_AttributeId",
+                        column: x => x.AttributeId,
+                        principalTable: "Attributes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryAttributes_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderNumber = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShippingType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShippingType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PaymentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: false),
+                    OrderStatus = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    PaidDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ShipDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -326,15 +423,17 @@ namespace Mint.Infrastructure.Migrations
                     IsPublished = table.Column<bool>(type: "bit", nullable: false),
                     IsFreeTax = table.Column<bool>(type: "bit", nullable: false),
                     TaxPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryMinDay = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<double>(type: "float", nullable: false),
                     DeliveryMaxDay = table.Column<int>(type: "int", nullable: false),
                     ManufactureId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CharacteristicId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -345,6 +444,12 @@ namespace Mint.Infrastructure.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Products_Characteristics_CharacteristicId",
+                        column: x => x.CharacteristicId,
+                        principalTable: "Characteristics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Products_Discounts_DiscountId",
                         column: x => x.DiscountId,
@@ -380,7 +485,10 @@ namespace Mint.Infrastructure.Migrations
                     Length = table.Column<double>(type: "float", nullable: false),
                     Width = table.Column<double>(type: "float", nullable: false),
                     Height = table.Column<double>(type: "float", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -398,9 +506,11 @@ namespace Mint.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -425,12 +535,15 @@ namespace Mint.Infrastructure.Migrations
                 {
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Percent = table.Column<int>(type: "int", nullable: false),
                     Sum = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -451,6 +564,30 @@ namespace Mint.Infrastructure.Migrations
                         name: "FK_OrderProducts_Stores_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Stores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductAttributes",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttributeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductAttributes", x => new { x.ProductId, x.AttributeId });
+                    table.ForeignKey(
+                        name: "FK_ProductAttributes_Attributes_AttributeId",
+                        column: x => x.AttributeId,
+                        principalTable: "Attributes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductAttributes_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -489,9 +626,11 @@ namespace Mint.Infrastructure.Migrations
                     Text = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
                     CommentType = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Rating = table.Column<double>(type: "float", nullable: false),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -516,8 +655,11 @@ namespace Mint.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -562,21 +704,21 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "CreactionDate", "Name" },
+                columns: new[] { "Id", "CreatedDate", "Name", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9518), "Покупатель" },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9511), "Админ" },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9514), "Продавец" }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4935), new TimeSpan(0, 7, 0, 0, 0)), "Покупатель", null },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4850), new TimeSpan(0, 7, 0, 0, 0)), "Админ", null },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4932), new TimeSpan(0, 7, 0, 0, 0)), "Продавец", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedDate", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "RoleId", "Salt", "SecondName" },
+                columns: new[] { "Id", "AcceptLanguage", "CreatedDate", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "RoleId", "Salt", "SecondName", "UpdateDateTime", "UserAgent" },
                 values: new object[,]
                 {
-                    { new Guid("5fc342ce-528b-4dd7-a128-2be974331d48"), new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(4347), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "O0k6Qkw3UQAg1TA7nqLHN3XIQVQNkgW/X/8HmLBcNtk=", 89502768428L, null, null, new byte[] { 40, 109, 215, 17, 234, 224, 172, 2, 87, 230, 92, 159, 52, 9, 95, 213 }, "Абубакр" },
-                    { new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72"), new DateTime(2023, 6, 7, 18, 6, 38, 734, DateTimeKind.Local).AddTicks(9482), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "36oSU9G4kFGv/efkK5HltPbGMw6A16UyrJ7DuIVff+g=", 83452763423L, null, null, new byte[] { 40, 109, 215, 17, 234, 224, 172, 2, 87, 230, 92, 159, 52, 9, 95, 213 }, "User" }
+                    { new Guid("4f7f39c7-7472-47e4-9940-6ab6ac9fe787"), null, new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 69, DateTimeKind.Unspecified).AddTicks(7484), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "lLHQYBCxsXwqqoY1YCTa/GP0VfPvH2tqz6o4yDnuJUw=", 89502768428L, null, null, new byte[] { 10, 245, 217, 163, 76, 157, 28, 142, 211, 131, 83, 224, 79, 116, 78, 78 }, "Абубакр", null, null },
+                    { new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb"), null, new DateTimeOffset(new DateTime(2023, 6, 29, 18, 44, 5, 70, DateTimeKind.Unspecified).AddTicks(4814), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "HsipMjd9IkXC2vUBRs3xbGFOiQ0aI0WnrR0uKvjEfBs=", 83452763423L, null, null, new byte[] { 10, 245, 217, 163, 76, 157, 28, 142, 211, 131, 83, 224, 79, 116, 78, 78 }, "User", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -584,17 +726,30 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("5fc342ce-528b-4dd7-a128-2be974331d48") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("5fc342ce-528b-4dd7-a128-2be974331d48") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("fef6ac1b-c3ca-4814-b86b-6a7d9b67cf72") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("4f7f39c7-7472-47e4-9940-6ab6ac9fe787") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("4f7f39c7-7472-47e4-9940-6ab6ac9fe787") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("6c73b402-579c-4b83-ac10-c7a1b9e784eb") }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
                 table: "Addresses",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attributes_Name",
+                table: "Attributes",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_DefaultLink",
+                table: "Categories",
+                column: "DefaultLink",
+                unique: true,
+                filter: "[DefaultLink] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ManufactureId",
@@ -610,6 +765,11 @@ namespace Mint.Infrastructure.Migrations
                 name: "IX_Categories_SubCategoryId",
                 table: "Categories",
                 column: "SubCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryAttributes_CategoryId",
+                table: "CategoryAttributes",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommonCharacteristics_ProductId",
@@ -652,6 +812,11 @@ namespace Mint.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductAttributes_AttributeId",
+                table: "ProductAttributes",
+                column: "AttributeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductPhotos_PhotoId",
                 table: "ProductPhotos",
                 column: "PhotoId");
@@ -660,6 +825,11 @@ namespace Mint.Infrastructure.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CharacteristicId",
+                table: "Products",
+                column: "CharacteristicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_DiscountId",
@@ -760,6 +930,9 @@ namespace Mint.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CategoryAttributes");
+
+            migrationBuilder.DropTable(
                 name: "CommonCharacteristics");
 
             migrationBuilder.DropTable(
@@ -767,6 +940,12 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderProducts");
+
+            migrationBuilder.DropTable(
+                name: "Pdfs");
+
+            migrationBuilder.DropTable(
+                name: "ProductAttributes");
 
             migrationBuilder.DropTable(
                 name: "ProductPhotos");
@@ -787,6 +966,9 @@ namespace Mint.Infrastructure.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Attributes");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
@@ -797,6 +979,9 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Characteristics");
 
             migrationBuilder.DropTable(
                 name: "Discounts");

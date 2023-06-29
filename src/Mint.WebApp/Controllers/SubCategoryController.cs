@@ -65,8 +65,8 @@ public class SubCategoryController : ControllerBase
     {
         try
         {
-            var subCateory = await _subCategory.AddSubCategoryAsync(model);
-            return Ok(subCateory);
+            var subCategory = await _subCategory.AddSubCategoryAsync(model);
+            return Ok(subCategory);
         }
         catch (Exception ex)
         {
