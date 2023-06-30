@@ -32,23 +32,35 @@ const Orders = ({ userId, activeTab }) => {
       <TabPane tabId={3}>
         <Card>
           <CardBody>
-            <h2 className={"mb-3"}>Заказы</h2>
+            <h2>Мои заказы</h2>
+            <div
+              style={{
+                width: "100%",
+                height: "1px",
+                background: "rgb(210 210 210)",
+              }}
+              className={"mb-3"}
+            ></div>
             <Row>
               <Col>
+                <div
+                  className={"d-flex justify-content-start align-items-center"}
+                >
+                  <Link to={"/categories"} className={"btn btn-success"}>
+                    <i className={"ri-shopping-cart-line"}></i> К покупкам
+                  </Link>
+                </div>
                 {isLoading ? (
                   <div
                     className={
                       "d-flex justify-content-center align-items-center"
                     }
                   >
-                    <div
-                      className={"spinner text-success"}
-                      role={"status"}
-                    >
+                    <div className={"spinner text-success"} role={"status"}>
                       <span className={"visually-hidden"}>Loading...</span>
                     </div>
                   </div>
-                ) : (
+                ) : orders.length ? (
                   orders.map((item, key) => (
                     <Card key={key}>
                       <CardBody className={"bg-light"}>
@@ -83,7 +95,9 @@ const Orders = ({ userId, activeTab }) => {
                               item.dateCreate
                             ).getDay()} / ${
                               new Date(item.dateCreate).getMonth() + 1
-                            } / ${new Date(item.dateCreate).getFullYear()}`}</h3>
+                            } / ${new Date(
+                              item.dateCreate
+                            ).getFullYear()}`}</h3>
                           </Col>
                         </Row>
                       </CardBody>
@@ -99,6 +113,25 @@ const Orders = ({ userId, activeTab }) => {
                       </CardFooter>
                     </Card>
                   ))
+                ) : (
+                  <div>
+                    <h3 className={"mt-3 text-center fs-18 text-muted"}>
+                      У вас еще нет заказа
+                    </h3>
+                    <div
+                      className={
+                        "d-flex justify-content-center align-items-center"
+                      }
+                    >
+                      <lord-icon
+                        src="https://cdn.lordicon.com/nkmsrxys.json"
+                        trigger={"loop"}
+                        delay={"2000"}
+                        colors={"primary:#121331,secondary:#08a88a"}
+                        style={{ width: "250px", height: "250px" }}
+                      ></lord-icon>
+                    </div>
+                  </div>
                 )}
               </Col>
             </Row>

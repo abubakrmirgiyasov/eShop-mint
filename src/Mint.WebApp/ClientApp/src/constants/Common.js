@@ -1,6 +1,10 @@
 const Countries = [
-  { label: "Россия", value: "1" },
-  { label: "Казахстан", value: "2" },
+  { label: "Азербайджан", value: "1" },
+  { label: "Армения", value: "2" },
+  { label: "Казахстан", value: "3" },
+  { label: "Россия", value: "4" },
+  { label: "Таджикистан", value: "5" },
+  { label: "Узбекситан", value: "6" },
 ];
 
 const BadgesStyle = [

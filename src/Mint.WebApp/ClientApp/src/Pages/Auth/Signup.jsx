@@ -130,7 +130,9 @@ const Signup = () => {
         <Card>
           <CardBody>
             <h1 className={"mb-2"}>Регистрация</h1>
-            <h4 className={"text-muted mb-2 fs-14"}>ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h4>
+            <h4 className={"text-muted mb-2 fs-14"}>
+              ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ
+            </h4>
             <Form
               className={"form-horizontal"}
               onSubmit={(e) => {
@@ -162,16 +164,19 @@ const Signup = () => {
                   </div>
                   <div className="form-check form-check-inline">
                     <Input
-                      type="radio"
-                      className="form-check-input"
+                      type={"radio"}
+                      className={"form-check-input"}
                       defaultValue={"F"}
                       defaultChecked={""}
-                      id="gender-female"
-                      name="gender"
+                      id={"gender-female"}
+                      name={"gender"}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                     />
-                    <label className="form-check-label" htmlFor="gender-female">
+                    <label
+                      className={"form-check-label"}
+                      htmlFor={"gender-female"}
+                    >
                       Женский
                     </label>
                   </div>
@@ -181,8 +186,8 @@ const Signup = () => {
                       className="form-check-input"
                       defaultValue={"N"}
                       defaultChecked={true}
-                      id="gender-private"
-                      name="gender"
+                      id={"gender-private"}
+                      name={"gender"}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                     />

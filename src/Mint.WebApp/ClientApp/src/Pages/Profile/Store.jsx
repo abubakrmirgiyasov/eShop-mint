@@ -7,7 +7,7 @@ import { Error } from "../../components/Notification/Error";
 
 const Store = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setErorr] = useState(null);
+  const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [newStore, setNewStore] = useState(null);
 
@@ -21,7 +21,7 @@ const Store = ({ userId }) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        setErorr(error);
+        setError(error);
         setIsLoading(false);
       });
   }, [userId]);
@@ -43,7 +43,15 @@ const Store = ({ userId }) => {
         ) : (
           <Card>
             <CardBody>
-              <h2 className={"mb-3"}>Ваш магазин</h2>
+              <h2>Мои магазины</h2>
+              <div
+                style={{
+                  width: "100%",
+                  height: "1px",
+                  background: "rgb(210 210 210)",
+                }}
+                className={"mb-3"}
+              ></div>
               {!newStore ? (
                 <OpenStore userId={userId} newData={handleNewData} />
               ) : (

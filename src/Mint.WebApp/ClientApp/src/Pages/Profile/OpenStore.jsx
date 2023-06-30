@@ -24,7 +24,7 @@ import { Roles } from "../../constants/Roles";
 const OpenStore = ({ userId, newData }) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setEror] = useState(null);
+  const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [country, setCountry] = useState(null);
 
@@ -88,7 +88,7 @@ const OpenStore = ({ userId, newData }) => {
           })
           .catch((error) => {
             setIsLoading(false);
-            setEror(error);
+            setError(error);
           });
       }
     },
@@ -109,9 +109,6 @@ const OpenStore = ({ userId, newData }) => {
           return false;
         }}
       >
-        <span className={"text-muted"}>
-          У вас еще нет магазина, хотите открыть?
-        </span>
         <div
           className={
             "d-flex justify-content-start align-items-center mt-3 mb-3"
@@ -119,13 +116,30 @@ const OpenStore = ({ userId, newData }) => {
         >
           <Button
             type={"button"}
-            color={"primary"}
-            className={"btn btn-primary"}
+            color={"success"}
+            className={"btn btn-success"}
             onClick={toggleForm}
           >
             <i className={"ri-store-2-line"}></i> Октрыть магазин
           </Button>
         </div>
+        {!isFormOpened && (
+          <div>
+            <h3 className={"mt-3 text-center fs-18 text-muted"}>
+              У вас еще нет магазина
+            </h3>
+            <div className={"d-flex justify-content-center align-items-center"}>
+              <lord-icon
+                src={"https://cdn.lordicon.com/vaeagfzc.json"}
+                trigger={"loop"}
+                colors={"primary:#121331,secondary:#08a88a"}
+                state={"loop"}
+                style={{ width: "250px", height: "250px" }}
+              ></lord-icon>
+            </div>
+          </div>
+        )}
+
         <Collapse isOpen={isFormOpened}>
           <Row>
             <Col lg={12} className={"mb-3"}>

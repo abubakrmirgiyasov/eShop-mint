@@ -107,7 +107,15 @@ const Addresses = ({ activeTab, userId }) => {
         ) : (
           <Card>
             <CardBody>
-              <h2 className={"mb-3"}>Адреса</h2>
+              <h2>Мои адреса</h2>
+              <div
+                style={{
+                  width: "100%",
+                  height: "1px",
+                  background: "rgb(210 210 210)",
+                }}
+                className={"mb-3"}
+              ></div>
               <Row>
                 <Col md={12} lg={12}>
                   <div
@@ -116,8 +124,8 @@ const Addresses = ({ activeTab, userId }) => {
                     }
                   >
                     <Button
-                      className={"btn btn-primary"}
-                      color={"primary"}
+                      className={"btn btn-success"}
+                      color={"success"}
                       onClick={() => {
                         setIsEdit(false);
                         actionToggle();
@@ -141,9 +149,9 @@ const Addresses = ({ activeTab, userId }) => {
                               <h5 className={"text-muted fs-6"}>
                                 ФИО: {item.fullName}
                               </h5>
-                              <h5 className={"text-muted fs-6"}>
-                                Компания: John Smith LLC
-                              </h5>
+                              {/*<h5 className={"text-muted fs-6"}>*/}
+                              {/*  Компания: John Smith LLC*/}
+                              {/*</h5>*/}
                               <h5 className={"text-muted fs-6"}>
                                 Адрес: {item.fullAddress}
                               </h5>
@@ -189,9 +197,22 @@ const Addresses = ({ activeTab, userId }) => {
                       ))
                     ) : (
                       <Col>
-                        <h3 className={"mt-3 text-center fs-18"}>
-                          Вы пока не добавляли адрес!
+                        <h3 className={"mt-3 text-center fs-18 text-muted"}>
+                          Адрес ещё не был добавлен
                         </h3>
+                        <div
+                          className={
+                            "d-flex justify-content-center align-items-center"
+                          }
+                        >
+                          <lord-icon
+                            src={"https://cdn.lordicon.com/zzcjjxew.json"}
+                            trigger={"loop"}
+                            colors={"primary:#121331,secondary:#08a88a"}
+                            state={"hover-jump-spin"}
+                            style={{ width: "250px", height: "250px" }}
+                          ></lord-icon>
+                        </div>
                       </Col>
                     )}
                   </Row>

@@ -363,10 +363,29 @@ public class ApplicationDbContext : DbContext
             },
         };
 
+        var stores = new List<Store>()
+        {
+            new Store()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Mint",
+                Url = "mint",
+                CreatedDate = DateTimeOffset.Now,
+                Country = "",
+                City = "",
+                Street = "",
+                ZipCode = 0,
+                IsOwnStorage = true,
+                UserId = users[1].Id, // users[0].Id,
+                AddressDescription = "",
+            }
+        };
+
         var userRoles = new UserRole[]
         {
             new UserRole { UserId = users[0].Id, RoleId = roles[0].Id, }, 
             new UserRole { UserId = users[0].Id, RoleId = roles[1].Id, },
+            new UserRole { UserId = users[0].Id, RoleId = roles[2].Id, },
             new UserRole { UserId = users[1].Id, RoleId = roles[0].Id, },
             new UserRole { UserId = users[1].Id, RoleId = roles[1].Id, },
             new UserRole { UserId = users[1].Id, RoleId = roles[2].Id, },
@@ -375,5 +394,6 @@ public class ApplicationDbContext : DbContext
         builder.Entity<User>().HasData(users);
         builder.Entity<Role>().HasData(roles);
         builder.Entity<UserRole>().HasData(userRoles);
+        builder.Entity<Store>().HasData(stores);
     }
 }

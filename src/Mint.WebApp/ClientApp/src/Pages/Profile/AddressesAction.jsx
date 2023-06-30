@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Form,
+  FormFeedback,
   Input,
   Label,
   Modal,
@@ -13,13 +14,45 @@ import {
 } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import { Error } from "../../components/Notification/Error";
-import Select from "react-select";
 import { Countries } from "../../constants/Common";
+import Select from "react-select";
+import * as Yup from "yup";
+import { Field, useFormik } from "formik";
 
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [country, setCountry] = useState(null);
+
+  const validation = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      fullAddress: props.address?.address || "",
+      country: props.address?.country || "",
+      city: props.address?.city || "",
+      zipcode: props.address?.zipCode || "",
+      description: props.address?.description || "",
+    },
+    validationSchema: Yup.object({
+      fullAddress: Yup.string()
+        .required("Заполните обязательное поле")
+        .max(255, "Превышено макс. длина строки (255)")
+        .min(4, "Минисальная длина строки 4 символа"),
+      country: Yup.string().required("Выберите страну"),
+      city: Yup.string()
+        .required("Заполните обязательное поле")
+        .max(60, "Превышено макс. длина строки (60).")
+        .min(2, "Минисальная длина строки 2 символа"),
+      zipCode: Yup.number()
+        .required("Заполните обязательное поле")
+        .max(999999, "Почтовый индекс не может быть больше 999 999")
+        .min(10000, "Почтовый индекс не может быть меньше 10 000"),
+      description: Yup.string()
+        .notRequired()
+        .max(777, "Превышено макс. длина строки (777)."),
+    }),
+    onSubmit: (values) => {},
+  });
 
   const handleSubmit = (e) => {
     setIsLoading(true);
@@ -37,7 +70,7 @@ const AddressesAction = (props) => {
     if (!!props.isEdit) {
       fetchWrapper
         .put("api/user/updateuseraddress", address)
-        .then((response) => {
+        .then(() => {
           setIsLoading(false);
           props.toggle();
           props.setUpdatedAdress(address);
@@ -85,7 +118,7 @@ const AddressesAction = (props) => {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              handleSubmit(e);
+              validation.handleSubmit(e);
               return false;
             }}
           >
@@ -98,7 +131,9 @@ const AddressesAction = (props) => {
                   type={"text"}
                   id={"country"}
                   name={"country"}
-                  defaultValue={props.address?.country}
+                  defaultValue={Countries.find(
+                    (x) => x.label === props.address?.country
+                  )}
                   options={Countries}
                   onChange={handleChange}
                 />
@@ -117,9 +152,18 @@ const AddressesAction = (props) => {
                     placeholder={"Введите ваш город"}
                     id={"city"}
                     name={"city"}
-                    defaultValue={props.address?.city}
-                    required={true}
+                    defaultValue={props.address?.city || ""}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    invalid={
+                      !!(validation.touched.city && validation.errors.city)
+                    }
                   />
+                  {validation.touched.city && validation.errors.city ? (
+                    <FormFeedback typeof={"invalid"}>
+                      {validation.errors.city}
+                    </FormFeedback>
+                  ) : null}
                 </div>
               </Col>
               <Col lg={6}>
@@ -128,14 +172,25 @@ const AddressesAction = (props) => {
                     Почтовый индекс
                   </Label>
                   <Input
-                    type={"text"}
+                    type={"number"}
                     className={"form-control"}
                     placeholder={"Ваш почтовый индекс"}
                     id={"zipCode"}
                     name={"zipCode"}
-                    defaultValue={props.address?.zipCode}
-                    required={true}
+                    defaultValue={props.address?.zipCode || ""}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    invalid={
+                      !!(
+                        validation.touched.zipCode && validation.errors.zipCode
+                      )
+                    }
                   />
+                  {validation.touched.zipCode && validation.errors.zipCode ? (
+                    <FormFeedback typeof={"invalid"}>
+                      {validation.errors.zipCode}
+                    </FormFeedback>
+                  ) : null}
                 </div>
               </Col>
               <Col lg={12}>
@@ -149,9 +204,22 @@ const AddressesAction = (props) => {
                     placeholder={"Введите ваш адрес"}
                     id={"address"}
                     name={"address"}
-                    defaultValue={props.address?.address}
-                    required={true}
+                    defaultValue={props.address?.address || ""}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    invalid={
+                      !!(
+                        validation.touched.fullAddress &&
+                        validation.errors.fullAddress
+                      )
+                    }
                   />
+                  {validation.touched.fullAddress &&
+                  validation.errors.fullAddress ? (
+                    <FormFeedback typeof={"invalid"}>
+                      {validation.errors.fullAddress}
+                    </FormFeedback>
+                  ) : null}
                 </div>
               </Col>
               <Col lg={12}>
@@ -159,13 +227,28 @@ const AddressesAction = (props) => {
                   <Label className={"form-label"} htmlFor={"description"}>
                     Описание
                   </Label>
-                  <textarea
+                  <Field
+                    as={"textarea"}
                     className={"form-control"}
                     placeholder={"Дополнительные сведения"}
                     id={"description"}
                     name={"description"}
-                    defaultValue={props.address?.description}
-                  ></textarea>
+                    defaultValue={props.address?.description || ""}
+                    onChange={validation.handleChange}
+                    onBlur={validation.handleBlur}
+                    invalid={
+                      !!(
+                        validation.touched.description &&
+                        validation.errors.description
+                      )
+                    }
+                  />
+                  {validation.touched.description &&
+                  validation.errors.description ? (
+                    <FormFeedback typeof={"invalid"}>
+                      {validation.errors.description}
+                    </FormFeedback>
+                  ) : null}
                 </div>
               </Col>
               <div className={"d-flex justify-content-end align-items-center"}>

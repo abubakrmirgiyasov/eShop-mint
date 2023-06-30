@@ -1,9 +1,24 @@
-const dateConverter = ({ date }) => {
+function dateConverter(date) {
   const newDate = new Date(date);
-  const month = newDate.getUTCMonth() + 1; //months from 1-12
-  const day = newDate.getUTCDate();
-  const year = newDate.getUTCFullYear();
-  return day + " / " + month + " / " + year;
-};
+  const month = newDate.getMonth() + 1; //months from 1-12
+  const day = newDate.getDate();
+  const year = newDate.getFullYear();
+  return day + "-" + month + "-" + year;
+}
 
-export { dateConverter };
+function getDay(date) {
+  const newDate = new Date(date);
+  return newDate.getDate();
+}
+
+function getMonth(date) {
+  const newDate = new Date(date);
+  return newDate.getMonth() + 1; //months from 1-12
+}
+
+function getYear(date) {
+  const newDate = new Date(date);
+  return newDate.getFullYear();
+}
+
+export { dateConverter, getDay, getYear, getMonth };

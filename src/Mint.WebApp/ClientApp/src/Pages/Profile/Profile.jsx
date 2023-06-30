@@ -29,7 +29,7 @@ const Profile = () => {
   }));
 
   if (!isLoggedIn) {
-    navigate("/");
+    navigate("/signin");
   }
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Profile = () => {
                 </div>
               </CardBody>
             </Card>
-            <ListGroup>
+            <ListGroup className={"list-group-fill-success"}>
               <ListGroupItem
                 tag={"a"}
                 to={"#"}

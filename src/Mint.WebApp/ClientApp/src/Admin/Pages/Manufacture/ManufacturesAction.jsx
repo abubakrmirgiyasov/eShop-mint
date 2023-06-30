@@ -146,10 +146,10 @@ const ManufacturesAction = () => {
                     return false;
                   }}
                 >
-                  <Col lg={12} className="mb-3">
-                    <Row className="align-items-center">
+                  <Col lg={12} className={"mb-3"}>
+                    <Row className={"align-items-center"}>
                       <Col xl={2}>
-                        <Label className="form-label fw-bold">
+                        <Label className={"form-label fw-bold"}>
                           Отобразить по порядку{" "}
                           <Popover
                             placement={"right"}
@@ -160,10 +160,10 @@ const ManufacturesAction = () => {
                       </Col>
                       <Col xl={10}>
                         <Input
-                          type="number"
-                          name="displayOrder"
-                          className="form-control"
-                          placeholder="Отобразить по порядку"
+                          type={"number"}
+                          name={"displayOrder"}
+                          className={"form-control"}
+                          placeholder={"Отобразить по порядку"}
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           defaultValue={
@@ -180,17 +180,17 @@ const ManufacturesAction = () => {
                         />
                         {validation.touched.displayOrder &&
                         validation.errors.displayOrder ? (
-                          <FormFeedback type="invalid">
+                          <FormFeedback type={"invalid"}>
                             {validation.errors.displayOrder}
                           </FormFeedback>
                         ) : null}
                       </Col>
                     </Row>
                   </Col>
-                  <Col lg={12} className="mb-3">
-                    <Row className="align-items-center">
+                  <Col lg={12} className={"mb-3"}>
+                    <Row className={"align-items-center"}>
                       <Col xl={2}>
-                        <Label className="form-label fw-bold">
+                        <Label className={"form-label fw-bold"}>
                           Название{" "}
                           <Popover
                             placement={"right"}
@@ -201,10 +201,10 @@ const ManufacturesAction = () => {
                       </Col>
                       <Col xl={10}>
                         <Input
-                          type="text"
-                          name="name"
-                          className="form-control"
-                          placeholder="Название"
+                          type={"text"}
+                          name={"name"}
+                          className={"form-control"}
+                          placeholder={"Название"}
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           defaultValue={
