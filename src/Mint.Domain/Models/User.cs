@@ -49,6 +49,8 @@ public class User : Entity<Guid>
 
     public bool IsConfirmedEmail { get; set; } = false;
 
+    //public bool IsConfirmedPhone { get; set; } = false;
+
     public string? UserAgent { get; set; }
 
     public string? AcceptLanguage { get; set; }

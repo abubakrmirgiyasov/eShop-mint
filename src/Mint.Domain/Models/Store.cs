@@ -36,6 +36,8 @@ public class Store : Entity<Guid>
 
     public Photo? Photo { get; set; }
 
+    //public List<StoreCategory>? StoreCategories { get; set; }
+
     public List<Product>? Products { get; set; }
 
     public List<Storage>? Storages { get; set; }

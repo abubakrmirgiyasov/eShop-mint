@@ -32,6 +32,8 @@ public class Category : Entity<Guid>
 
     public Manufacture? Manufacture { get; set; }
 
+    //public List<StoreCategory>? StoreCategories { get; set; }
+
     public List<Product>? Products { get; set; }
 
     public List<CategoryAttribute>? CategoryAttributes { get; set; }

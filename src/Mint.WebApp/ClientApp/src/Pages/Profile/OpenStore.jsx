@@ -21,7 +21,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Roles } from "../../constants/Roles";
 
-const OpenStore = ({ userId, newData }) => {
+const OpenStore = ({ userId, newData, categories }) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -197,6 +197,24 @@ const OpenStore = ({ userId, newData }) => {
               ) : null}
             </Col>
             <Col lg={12} className={"mb-3"}>
+              <Label id={"categories"}>
+                Категории{" "}
+                <Popover
+                  id={"categories"}
+                  placement={"right"}
+                  text={
+                    "Выберите категории ваших товаров, так покупатели могу найти вас еще быстрее."
+                  }
+                />
+              </Label>
+              <Select
+                options={categories || []}
+                name={"categories"}
+                placeholder={"Выберите категории"}
+                isMulti={true}
+              />
+            </Col>
+            <Col lg={12} className={"mb-3"}>
               <Label className={"form-label"} id={"country"}>
                 Страна{" "}
                 <Popover
@@ -210,7 +228,6 @@ const OpenStore = ({ userId, newData }) => {
                 placeholder={"Выберете страну"}
                 options={Countries}
                 onChange={handleCountryChange}
-                defaultValue={""}
               />
               {!country ? (
                 <div className="text-danger mt-1">Выберете страну</div>

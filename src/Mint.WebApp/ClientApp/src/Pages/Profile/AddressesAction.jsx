@@ -17,12 +17,14 @@ import { Error } from "../../components/Notification/Error";
 import { Countries } from "../../constants/Common";
 import Select from "react-select";
 import * as Yup from "yup";
-import { Field, useFormik } from "formik";
+import { useFormik } from "formik";
 
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [country, setCountry] = useState(null);
+  const [isCountryValid, setIsCountryValid] = useState(true);
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -30,7 +32,7 @@ const AddressesAction = (props) => {
       fullAddress: props.address?.address || "",
       country: props.address?.country || "",
       city: props.address?.city || "",
-      zipcode: props.address?.zipCode || "",
+      zipCode: props.address?.zipCode || "",
       description: props.address?.description || "",
     },
     validationSchema: Yup.object({
@@ -38,7 +40,6 @@ const AddressesAction = (props) => {
         .required("Заполните обязательное поле")
         .max(255, "Превышено макс. длина строки (255)")
         .min(4, "Минисальная длина строки 4 символа"),
-      country: Yup.string().required("Выберите страну"),
       city: Yup.string()
         .required("Заполните обязательное поле")
         .max(60, "Превышено макс. длина строки (60).")
@@ -51,51 +52,55 @@ const AddressesAction = (props) => {
         .notRequired()
         .max(777, "Превышено макс. длина строки (777)."),
     }),
-    onSubmit: (values) => {},
+    onSubmit: (values) => {
+      if (!country) {
+        setIsCountryValid(false);
+        return false;
+      }
+
+      setIsLoading(true);
+
+      const address = {
+        id: props.address?.id,
+        fullAddress: values.fullAddress,
+        country: country,
+        city: values.city,
+        zipCode: values.zipCode,
+        description: values.description,
+        userId: props.userId,
+      };
+
+      if (!!props.isEdit) {
+        fetchWrapper
+          .put("api/user/updateuseraddress", address)
+          .then(() => {
+            setIsLoading(false);
+            props.toggle();
+            props.setUpdatedAdress(address);
+          })
+          .catch((error) => {
+            setError(error);
+            setIsLoading(false);
+          });
+      } else {
+        fetchWrapper
+          .post("api/user/adduseraddress", address)
+          .then((response) => {
+            setIsLoading(false);
+            props.toggle();
+            props.setNewAddress(response);
+          })
+          .catch((error) => {
+            setError(error);
+            setIsLoading(false);
+          });
+      }
+    },
   });
 
-  const handleSubmit = (e) => {
-    setIsLoading(true);
-
-    const address = {
-      id: props.address?.id,
-      fullAddress: e.target.address.value,
-      country: country,
-      city: e.target.city.value,
-      zipCode: e.target.zipCode.value,
-      description: e.target.description.value,
-      userId: props.userId,
-    };
-
-    if (!!props.isEdit) {
-      fetchWrapper
-        .put("api/user/updateuseraddress", address)
-        .then(() => {
-          setIsLoading(false);
-          props.toggle();
-          props.setUpdatedAdress(address);
-        })
-        .catch((error) => {
-          setError(error);
-          setIsLoading(false);
-        });
-    } else {
-      fetchWrapper
-        .post("api/user/adduseraddress", address)
-        .then((response) => {
-          setIsLoading(false);
-          props.toggle();
-          props.setNewAddress(response);
-        })
-        .catch((error) => {
-          setError(error);
-          setIsLoading(false);
-        });
-    }
-  };
-
-  const handleChange = (e) => {
+  const handleCountryChange = (e) => {
     setCountry(e.label);
+    setIsCountryValid(true);
   };
 
   return (
@@ -135,10 +140,15 @@ const AddressesAction = (props) => {
                     (x) => x.label === props.address?.country
                   )}
                   options={Countries}
-                  onChange={handleChange}
+                  onChange={handleCountryChange}
                 />
-                {!country ? (
-                  <div className={"text-danger mt-1"}>Выберете страну</div>
+                {!isCountryValid ? (
+                  <FormFeedback
+                    typeof={"invalid"}
+                    className={isCountryValid ? "d-none" : "d-block"}
+                  >
+                    {"Выберете страну"}
+                  </FormFeedback>
                 ) : null}
               </Col>
               <Col lg={6}>
@@ -195,15 +205,15 @@ const AddressesAction = (props) => {
               </Col>
               <Col lg={12}>
                 <div className={"form-group mb-3"}>
-                  <Label className={"form-label"} htmlFor={"address"}>
+                  <Label className={"form-label"} htmlFor={"fullAddress"}>
                     Адрес
                   </Label>
                   <Input
                     type={"text"}
                     className={"form-control"}
                     placeholder={"Введите ваш адрес"}
-                    id={"address"}
-                    name={"address"}
+                    id={"fullAddress"}
+                    name={"fullAddress"}
                     defaultValue={props.address?.address || ""}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
@@ -227,8 +237,7 @@ const AddressesAction = (props) => {
                   <Label className={"form-label"} htmlFor={"description"}>
                     Описание
                   </Label>
-                  <Field
-                    as={"textarea"}
+                  <textarea
                     className={"form-control"}
                     placeholder={"Дополнительные сведения"}
                     id={"description"}
@@ -236,13 +245,7 @@ const AddressesAction = (props) => {
                     defaultValue={props.address?.description || ""}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
-                    invalid={
-                      !!(
-                        validation.touched.description &&
-                        validation.errors.description
-                      )
-                    }
-                  />
+                  ></textarea>
                   {validation.touched.description &&
                   validation.errors.description ? (
                     <FormFeedback typeof={"invalid"}>

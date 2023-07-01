@@ -56,6 +56,26 @@ const Profile = () => {
   }, [params]);
 
   const tabChangeToggle = (tab) => {
+    switch (tab) {
+      case 1:
+        navigate("/profile/info");
+        break;
+      case 2:
+        navigate("/profile/addresses");
+        break;
+      case 3:
+        navigate("/profile/orders");
+        break;
+      case 4:
+        navigate("/profile/change-password");
+        break;
+      case 5:
+        navigate("/profile/create-store");
+        break;
+      default:
+        navigate("/profile/info");
+        break;
+    }
     if (activeTab !== tab) setActiveTab(tab);
   };
 
@@ -109,8 +129,8 @@ const Profile = () => {
                 <i className={"ri-user-line fs-16"}></i> Личная информация
               </ListGroupItem>
               <ListGroupItem
-                tag="a"
-                to="/profile/addresses"
+                tag={"a"}
+                to={"/profile/addresses"}
                 onClick={() => tabChangeToggle(2)}
                 className={classnames(
                   { active: activeTab === 2 },
@@ -157,11 +177,15 @@ const Profile = () => {
           </Col>
           <Col md={8}>
             <TabContent activeTab={activeTab}>
-              <CustomerInfo userId={user.id} userImage={user.imagePath} />
+              <CustomerInfo
+                userId={user.id}
+                userImage={user.imagePath}
+                activeTab={activeTab}
+              />
               <Addresses activeTab={activeTab} userId={user.id} />
               <Orders userId={user.id} activeTab={activeTab} />
               <ChangePassword userId={user.id} />
-              <Store userId={user.id} />
+              <Store userId={user.id} activeTab={activeTab} />
             </TabContent>
           </Col>
         </Row>

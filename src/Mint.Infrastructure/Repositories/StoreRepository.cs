@@ -59,9 +59,16 @@ public class StoreRepository : IStoreRepository
                 .Include(x => x.UserRoles)
                 .Include(x => x.Stores)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(model.UserId!));
+                .ToListAsync();
 
-            if (user != null && user.Stores?.Count == 0)
+            var singleUser = user.FirstOrDefault(x => x.Id == Guid.Parse(model.UserId!));
+
+            var isExistStore = await _context.Stores.ToListAsync();
+
+            if (isExistStore.Any(x => x.Url.ToLower() ==  model.Url?.ToLower()))
+                throw new Exception("Существует магазин по пути " + model.Url);
+
+            if (singleUser != null && singleUser.Stores?.Count == 0)
             {
                 var store = await new StoreManager().FormingBindingModel(model);
 
@@ -70,12 +77,12 @@ public class StoreRepository : IStoreRepository
                     ?? throw new Exception("Code[1020]: Что то пошло не так");
 
                 var userRoles = await _context.UserRoles
-                    .Where(x => x.UserId == user.Id)
+                    .Where(x => x.UserId == singleUser.Id)
                     .ToListAsync();
 
                 var userRole = new UserRole()
                 {
-                    UserId = user.Id,
+                    UserId = singleUser.Id,
                     RoleId = role.Id,
                 };
 

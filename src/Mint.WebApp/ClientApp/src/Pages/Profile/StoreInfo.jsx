@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, CardBody, CardFooter, Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const StoreInfo = ({ data }) => {
+const StoreInfo = ({ data, categories }) => {
   return (
     <React.Fragment>
       <Row>
@@ -21,12 +21,21 @@ const StoreInfo = ({ data }) => {
                 Путь: <Link to={"/stores/" + data?.url}>{data?.url}</Link>
               </h5>
               <div>
-                Страна:
-                <h5 className={"text-muted fs-12"}>{data?.country},</h5> Город:
-                <h5 className={"text-muted fs-12"}>{data?.city},</h5> Поч.
-                индекс:
-                <h5 className={"text-muted fs-12"}>{data?.zipCode},</h5> Ул.
-                <h5 className={"text-muted fs-12"}>{data?.street}</h5>{" "}
+                <h5 className={"fs-12"}>
+                  <span className={"text-muted"}>Страна: </span>
+                  {data?.country},
+                </h5>
+                <h5 className={"fs-12"}>
+                  <span className={"text-muted"}>Город:</span> {data?.city},
+                </h5>
+                <h5 className={"fs-12"}>
+                  <span className={"text-muted"}>Поч. индекс: </span>
+                  {data?.zipCode},
+                </h5>
+                <h5 className={"fs-12"}>
+                  <span className={"text-muted"}>Ул. </span>
+                  {data?.street}
+                </h5>{" "}
               </div>
               Описание:{" "}
               <div

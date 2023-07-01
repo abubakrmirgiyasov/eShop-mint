@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardBody, Spinner, TabPane } from "reactstrap";
+import { Button, Card, CardBody, Spinner, TabPane } from "reactstrap";
 import { fetchWrapper } from "../../helpers/fetchWrapper";
 import OpenStore from "./OpenStore";
 import StoreInfo from "./StoreInfo";
 import { Error } from "../../components/Notification/Error";
 
-const Store = ({ userId }) => {
+const Store = ({ userId, activeTab }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [store, setStore] = useState(null);
   const [newStore, setNewStore] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setIsLoading(true);
+    if (activeTab === 5) {
+      setIsLoading(true);
 
-    fetchWrapper
-      .get("api/store/getmystore/" + userId)
-      .then((response) => {
-        setData(response);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setIsLoading(false);
-      });
-  }, [userId]);
+      Promise.all([
+        fetchWrapper.get("api/store/getmystore/" + userId),
+        fetchWrapper.get("api/category/getonlycategories"),
+      ])
+        .then((response) => {
+          const [storeResp, categoriesResp] = response;
+          setStore(storeResp);
+          setCategories(categoriesResp);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setIsLoading(false);
+        });
+    }
+  }, [userId, activeTab]);
 
   function handleNewData(newData) {
     setNewStore(newData);
@@ -52,10 +59,14 @@ const Store = ({ userId }) => {
                 }}
                 className={"mb-3"}
               ></div>
-              {!newStore ? (
-                <OpenStore userId={userId} newData={handleNewData} />
+              {!newStore && !store ? (
+                <OpenStore
+                  userId={userId}
+                  newData={handleNewData}
+                  categories={categories}
+                />
               ) : (
-                <StoreInfo data={newStore} />
+                <StoreInfo data={newStore || store} categories={categories} />
               )}
             </CardBody>
           </Card>

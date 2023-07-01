@@ -15,7 +15,7 @@ public class StoreManager
 			{
 				Id = Guid.NewGuid(),
 				Name = model.Name!,
-				Url = model.Url!,
+				Url = model.Url!.ToLower(),
 				IsOwnStorage = model.IsOwnStorage,
 				Country = model.Country,
 				City = model.City,

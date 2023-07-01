@@ -18,11 +18,22 @@ import { Error } from "../../components/Notification/Error";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PreviewSingleImage from "../../Admin/components/Dropzone/PreviewSingleImage";
+import { dateConverter } from "../../helpers/dateConverter";
+import DatePicker from "../../components/Forms/DatePicker";
 
 const Signup = () => {
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [isDateBirthValid, setIsDateBirthValid] = useState(false);
+  const [dateBirth, setDateBirth] = useState(null);
+
+  const options = {
+    minDate: "31-12-1945",
+    maxDate: "31-12-2019",
+    dateFormat: "d-m-Y",
+  };
 
   const navigate = useNavigate();
 
@@ -52,11 +63,18 @@ const Signup = () => {
     validationSchema: Yup.object({
       firstName: Yup.string().required("Заполните обязательное поле"),
       secondName: Yup.string().required("Заполните обязательное поле"),
-      day: Yup.number()
-        .min(1, "День обычно начинается с 1")
-        .required("Заполните обязательное поле"),
-      month: Yup.number().required("Заполните обязательное поле"),
-      year: Yup.number().required("Заполните обязательное поле"),
+      // day: Yup.number()
+      //   .min(1, "День начинается с 1")
+      //   .max(31, "День заканчивается на 31")
+      //   .required("Заполните обязательное поле"),
+      // month: Yup.number()
+      //   .min(1, "Месяц обычно начинается с 1")
+      //   .max(12, "День заканчивается на 12")
+      //   .required("Заполните обязательное поле"),
+      // year: Yup.number()
+      //   .min(1945, "Вы слишком старый, идите лучше молитесь")
+      //   .max(2020, "Ты еще маленький")
+      //   .required("Заполните обязательное поле"),
       email: Yup.string()
         .email("Введите корректный E-mail")
         .required("Заполните обязательное поле"),
@@ -68,7 +86,7 @@ const Signup = () => {
       confirmPassword: Yup.string()
         .required("Заполните обязательное поле")
         .test("len", "Слишком короткый пароль", (val) => val.length >= 6)
-        .matches(strongRegex, "Не надежный пароль (Newuser_2023)")
+        .matches(strongRegex, "Не надежный пароль (Test_1)")
         .oneOf([Yup.ref("password")], "Пароли не совпадают."),
       phone: Yup.string()
         .min(10, "мин. 10 цифр")
@@ -77,6 +95,8 @@ const Signup = () => {
         .required("Заполните обязательное поле"),
     }),
     onSubmit: (values) => {
+      if (!isDateBirthValid) return false;
+
       setIsLoading(true);
 
       let formData = new FormData();
@@ -87,10 +107,7 @@ const Signup = () => {
       formData.append("phone", values.phone);
       formData.append("password", values.password);
       formData.append("gender", values.gender);
-      formData.append(
-        "dateOfBirth",
-        `${values.day}.${values.month}.${values.year}`
-      );
+      formData.append("dateOfBirth", dateConverter(dateBirth));
       formData.append("description", values.description);
 
       if (imageFile) {
@@ -100,9 +117,8 @@ const Signup = () => {
 
       fetchWrapper
         .post("api/user/registration", formData, false)
-        .then((response) => {
+        .then(() => {
           setIsLoading(false);
-          // toggle Signin Model
           navigate("/signin");
         })
         .catch((error) => {
@@ -130,9 +146,17 @@ const Signup = () => {
         <Card>
           <CardBody>
             <h1 className={"mb-2"}>Регистрация</h1>
+            <div
+              style={{
+                width: "100%",
+                height: "1px",
+                background: "rgb(210 210 210)",
+              }}
+              className={"mb-3"}
+            ></div>
             <h4 className={"text-muted mb-2 fs-14"}>
-              ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ
-            </h4>
+              Ваши персональные данные
+            </h4>{" "}
             <Form
               className={"form-horizontal"}
               onSubmit={(e) => {
@@ -140,34 +164,37 @@ const Signup = () => {
                 validation.handleSubmit();
                 return false;
               }}
-              encType="multipart/form-data"
+              encType={"multipart/form-data"}
             >
-              <Row className="fs-16">
+              <Row className={"fs-16"}>
                 <Col lg={4}>
-                  <label className="col-lg-3 col-form-label w-100">Пол</label>
+                  <label className={"col-lg-3 col-form-label w-100"}>Пол</label>
                 </Col>
                 <Col lg={8}>
-                  <div className="form-check form-check-inline">
+                  <div className={"form-check form-check-inline"}>
                     <Input
-                      type="radio"
+                      type={"radio"}
                       className="form-check-input"
                       defaultValue={"M"}
-                      defaultChecked={""}
-                      id="gender-male"
-                      name="gender"
+                      defaultChecked={false}
+                      id={"gender-male"}
+                      name={"gender"}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                     />
-                    <label className="form-check-label" htmlFor="gender-male">
+                    <label
+                      className={"form-check-label"}
+                      htmlFor={"gender-male"}
+                    >
                       Мужской
                     </label>
                   </div>
-                  <div className="form-check form-check-inline">
+                  <div className={"form-check form-check-inline"}>
                     <Input
                       type={"radio"}
                       className={"form-check-input"}
                       defaultValue={"F"}
-                      defaultChecked={""}
+                      defaultChecked={false}
                       id={"gender-female"}
                       name={"gender"}
                       onChange={validation.handleChange}
@@ -180,10 +207,10 @@ const Signup = () => {
                       Женский
                     </label>
                   </div>
-                  <div className="form-check form-check-inline">
+                  <div className={"form-check form-check-inline"}>
                     <Input
-                      type="radio"
-                      className="form-check-input"
+                      type={"radio"}
+                      className={"form-check-input"}
                       defaultValue={"N"}
                       defaultChecked={true}
                       id={"gender-private"}
@@ -192,8 +219,8 @@ const Signup = () => {
                       onBlur={validation.handleBlur}
                     />
                     <label
-                      className="form-check-label"
-                      htmlFor="gender-private"
+                      className={"form-check-label"}
+                      htmlFor={"gender-private"}
                     >
                       Не указать
                     </label>
@@ -201,20 +228,20 @@ const Signup = () => {
                 </Col>
                 <Col lg={4}>
                   <label
-                    className="col-lg-3 col-form-label w-100"
-                    htmlFor="firstName"
+                    className={"col-lg-3 col-form-label w-100"}
+                    htmlFor={"firstName"}
                   >
                     Фамилия
                   </label>
                 </Col>
                 <Col lg={8} className="mb-3">
                   <Input
-                    type="text"
-                    className="form-control"
+                    type={"text"}
+                    className={"form-control"}
                     defaultValue={""}
-                    id="firstName"
-                    name="firstName"
-                    placeholder="Введите вашу фамилию"
+                    id={"firstName"}
+                    name={"firstName"}
+                    placeholder={"Введите вашу фамилию"}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
@@ -226,27 +253,27 @@ const Signup = () => {
                   />
                   {validation.touched.firstName &&
                   validation.errors.firstName ? (
-                    <FormFeedback type="invalid">
+                    <FormFeedback type={"invalid"}>
                       {validation.errors.firstName}
                     </FormFeedback>
                   ) : null}
                 </Col>
                 <Col lg={4}>
                   <label
-                    className="col-lg-3 col-form-label"
-                    htmlFor="secondName"
+                    className={"col-lg-3 col-form-label"}
+                    htmlFor={"secondName"}
                   >
                     Имя
                   </label>
                 </Col>
-                <Col lg={8} className="mb-3">
+                <Col lg={8} className={"mb-3"}>
                   <Input
-                    type="text"
-                    className="form-control"
+                    type={"text"}
+                    className={"form-control"}
                     defaultValue={""}
-                    id="secondName"
-                    name="secondName"
-                    placeholder="Введите ваше имя"
+                    id={"secondName"}
+                    name={"secondName"}
+                    placeholder={"Введите ваше имя"}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                     invalid={
@@ -258,106 +285,55 @@ const Signup = () => {
                   />
                   {validation.touched.secondName &&
                   validation.errors.secondName ? (
-                    <FormFeedback type="invalid">
+                    <FormFeedback type={"invalid"}>
                       {validation.errors.secondName}
                     </FormFeedback>
                   ) : null}
                 </Col>
                 <Col lg={4}>
                   <label
-                    className="col-lg-3 col-form-label w-100"
-                    htmlFor="lastName"
+                    className={"col-lg-3 col-form-label w-100"}
+                    htmlFor={"lastName"}
                   >
                     Отчество
                   </label>
                 </Col>
-                <Col md={8} className="mb-3">
+                <Col md={8} className={"mb-3"}>
                   <Input
-                    type="text"
-                    className="form-control"
+                    type={"text"}
+                    className={"form-control"}
                     defaultValue={""}
-                    id="lastName"
-                    name="lastName"
-                    placeholder="Введите ваше отчество"
+                    id={"lastName"}
+                    name={"lastName"}
+                    placeholder={"Введите ваше отчество"}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                   />
                 </Col>
                 <Col lg={4}>
-                  <label className="form-label">Дата рождения</label>
+                  <label className={"form-label"}>Дата рождения</label>
                 </Col>
-                <Col md={8} className="mb-3">
-                  <Row>
-                    <Col lg={4}>
-                      <Input
-                        type="number"
-                        className="form-control me-2"
-                        name="day"
-                        placeholder="День"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
-                        invalid={
-                          !!(validation.touched.day && validation.errors.day)
-                        }
-                      />
-                      {validation.touched.day && validation.errors.day ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.day}
-                        </FormFeedback>
-                      ) : null}
-                    </Col>
-                    <Col lg={4}>
-                      <Input
-                        type="number"
-                        className="form-control me-2"
-                        name="month"
-                        placeholder="Месяц"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
-                        invalid={
-                          !!(
-                            validation.touched.month && validation.errors.month
-                          )
-                        }
-                      />
-                      {validation.touched.month && validation.errors.month ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.month}
-                        </FormFeedback>
-                      ) : null}
-                    </Col>
-                    <Col lg={4}>
-                      <Input
-                        type="number"
-                        className="form-control"
-                        name="year"
-                        placeholder="Год"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
-                        invalid={
-                          !!(validation.touched.year && validation.errors.year)
-                        }
-                      />
-                      {validation.touched.year && validation.errors.year ? (
-                        <FormFeedback type="invalid">
-                          {validation.errors.year}
-                        </FormFeedback>
-                      ) : null}
-                    </Col>
-                  </Row>
+                <Col md={8} className={"mb-3"}>
+                  <DatePicker
+                    isEdit={false}
+                    date={null}
+                    newDate={setDateBirth}
+                    options={options}
+                    isValid={setIsDateBirthValid}
+                  />
                 </Col>
-                <Col lg={4} className="mb-3">
-                  <label className="form-label" htmlFor="email">
+                <Col lg={4} className={"mb-3"}>
+                  <label className={"form-label"} htmlFor={"email"}>
                     Почта
                   </label>
                 </Col>
                 <Col lg={8}>
                   <Input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    id="email"
-                    placeholder="Введите адрес электроной почты"
+                    type={"email"}
+                    className={"form-control"}
+                    name={"email"}
+                    id={"email"}
+                    placeholder={"Введите адрес электроной почты"}
                     defaultValue={""}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
@@ -366,23 +342,23 @@ const Signup = () => {
                     }
                   />
                   {validation.touched.email && validation.errors.email ? (
-                    <FormFeedback type="invalid">
+                    <FormFeedback type={"invalid"}>
                       {validation.errors.email}
                     </FormFeedback>
                   ) : null}
                 </Col>
-                <Col lg={4} className="mb-3">
-                  <label className="form-label" htmlFor="password">
-                    Пароль <span className="text-danger">*</span>
+                <Col lg={4} className={"mb-3"}>
+                  <label className={"form-label"} htmlFor={"password"}>
+                    Пароль
                   </label>
                 </Col>
                 <Col lg={8}>
                   <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    id="password"
-                    placeholder="Введите пароль"
+                    type={"password"}
+                    className={"form-control"}
+                    name={"password"}
+                    id={"password"}
+                    placeholder={"Введите пароль"}
                     defaultValue={""}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
@@ -394,22 +370,22 @@ const Signup = () => {
                     }
                   />
                   {validation.touched.email && validation.errors.password ? (
-                    <FormFeedback type="invalid">
+                    <FormFeedback type={"invalid"}>
                       {validation.errors.password}
                     </FormFeedback>
                   ) : null}
                 </Col>
-                <Col lg={4} className="mb-3">
-                  <label className="form-label" htmlFor="confirmPassword">
-                    Повторите Пароль <span className="text-danger">*</span>
+                <Col lg={4} className={"mb-3"}>
+                  <label className={"form-label"} htmlFor={"confirmPassword"}>
+                    Повторите Пароль
                   </label>
                 </Col>
                 <Col lg={8}>
                   <Input
-                    type="password"
-                    className="form-control"
-                    id="confirmPassword"
-                    placeholder="Введите пароль"
+                    type={"password"}
+                    className={"form-control"}
+                    id={"confirmPassword"}
+                    placeholder={"Введите пароль"}
                     defaultValue={""}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
@@ -421,25 +397,25 @@ const Signup = () => {
                     }
                   />
                   {validation.touched.email && validation.errors.password ? (
-                    <FormFeedback type="invalid">
+                    <FormFeedback type={"invalid"}>
                       {validation.errors.password}
                     </FormFeedback>
                   ) : null}
                 </Col>
                 <Col lg={4}>
-                  <label className="form-label" htmlFor="tel">
+                  <label className={"form-label"} htmlFor={"tel"}>
                     Телефон
                   </label>
                 </Col>
                 <Col lg={8}>
                   <Input
-                    type="text"
-                    className="form-control"
-                    name="phone"
-                    id="tel"
+                    type={"text"}
+                    className={"form-control"}
+                    name={"phone"}
+                    id={"tel"}
                     min={10}
                     max={11}
-                    placeholder="Введите телефон"
+                    placeholder={"Введите телефон"}
                     defaultValue={""}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
@@ -448,17 +424,17 @@ const Signup = () => {
                     }
                   />
                   {validation.touched.email && validation.errors.phone ? (
-                    <FormFeedback type="invalid">
+                    <FormFeedback type={"invalid"}>
                       {validation.errors.phone}
                     </FormFeedback>
                   ) : null}
                 </Col>
                 <Col lg={4}>
-                  <label className="form-label mt-3" htmlFor="photo">
+                  <label className={"form-label mt-3"} htmlFor={"photo"}>
                     Аватарка
                   </label>
                 </Col>
-                <Col lg={8} className="mt-3 mb-3">
+                <Col lg={8} className={"mt-3 mb-3"}>
                   <PreviewSingleImage
                     name={null}
                     image={null}
@@ -466,34 +442,34 @@ const Signup = () => {
                   />
                 </Col>
                 <Col lg={4}>
-                  <label className="form-label" htmlFor="description">
+                  <label className={"form-label"} htmlFor={"description"}>
                     Описание
                   </label>
                 </Col>
                 <Col lg={8}>
                   <textarea
-                    className="form-control"
-                    id="description"
-                    name="description"
-                    placeholder="Описание"
+                    className={"form-control"}
+                    id={"description"}
+                    name={"description"}
+                    placeholder={"Описание"}
                     onChange={validation.handleChange}
                     onBlur={validation.handleBlur}
                   ></textarea>
                 </Col>
               </Row>
-              <div className="container text-muted fs-14 mt-2">
+              <div className={"container text-muted fs-14 mt-2"}>
                 Создав учетную запись на Mint.com, мы будем хранить и
                 обрабатывать данные о вас. Вы всегда можете прочитать полные и
                 последние условия @здесь@ и политику конфиденциальности @здесь@.
               </div>
-              <div className="d-flex justify-content-end align-items-end">
+              <div className={"d-flex justify-content-end align-items-end"}>
                 <Button
-                  type="submit"
-                  className="btn btn-success"
+                  type={"submit"}
+                  className={"btn btn-success"}
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <Spinner size={"sm"} className="me-2">
+                    <Spinner size={"sm"} className={"me-2"}>
                       Loading...
                     </Spinner>
                   ) : null}

@@ -371,13 +371,13 @@ public class ApplicationDbContext : DbContext
                 Name = "Mint",
                 Url = "mint",
                 CreatedDate = DateTimeOffset.Now,
-                Country = "",
-                City = "",
-                Street = "",
-                ZipCode = 0,
+                Country = "test",
+                City = "test",
+                Street = "test",
+                ZipCode = 12345,
                 IsOwnStorage = true,
                 UserId = users[1].Id, // users[0].Id,
-                AddressDescription = "",
+                AddressDescription = "test",
             }
         };
 
