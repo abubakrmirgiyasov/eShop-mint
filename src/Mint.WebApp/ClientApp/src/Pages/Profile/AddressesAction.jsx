@@ -18,6 +18,7 @@ import { Countries } from "../../constants/Common";
 import Select from "react-select";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import MySelect from "../../components/Forms/Select";
 
 const AddressesAction = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -129,27 +130,18 @@ const AddressesAction = (props) => {
           >
             <Row>
               <Col lg={12} className={"mb-3"}>
-                <Label className={"form-label"} htmlFor={"country"}>
-                  Страна
-                </Label>
-                <Select
-                  type={"text"}
+                <MySelect
                   id={"country"}
                   name={"country"}
                   defaultValue={Countries.find(
                     (x) => x.label === props.address?.country
                   )}
                   options={Countries}
+                  isRequired={isCountryValid}
                   onChange={handleCountryChange}
+                  label={"Страна"}
+                  placeholder={"Выберите страну"}
                 />
-                {!isCountryValid ? (
-                  <FormFeedback
-                    typeof={"invalid"}
-                    className={isCountryValid ? "d-none" : "d-block"}
-                  >
-                    {"Выберете страну"}
-                  </FormFeedback>
-                ) : null}
               </Col>
               <Col lg={6}>
                 <div className={"form-group mb-3"}>

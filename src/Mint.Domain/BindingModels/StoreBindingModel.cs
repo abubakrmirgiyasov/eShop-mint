@@ -26,5 +26,7 @@ public class StoreFullBindingModel
 
     public string? UserId { get; set; }
 
+    public List<CategoryOnlyBindingModel>? Categories { get; set; }
+
     public IFormFile? Photo { get; set; }
 }

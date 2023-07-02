@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, CardBody, CardFooter, Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const StoreInfo = ({ data, categories }) => {
+const StoreInfo = ({ data }) => {
   return (
     <React.Fragment>
       <Row>
@@ -14,13 +14,25 @@ const StoreInfo = ({ data, categories }) => {
                   "d-flex flex-column justify-content-center align-items-center"
                 }
               >
-                <img className={"img-fluid"} src={data?.photo} />
+                <img
+                  className={"img-fluid"}
+                  src={data?.photo}
+                  alt={data?.name}
+                />
                 <h3>{data?.name}</h3>
               </div>
               <h5 className={"text-muted fs-6"}>
                 Путь: <Link to={"/stores/" + data?.url}>{data?.url}</Link>
               </h5>
               <div>
+                <h5 className={"fs-12"}>
+                  <span className={"text-muted"}>Категории: </span>
+                  {data?.categories.map((x) => (
+                    <Link to={"#"} className={""}>
+                      {x.label}{" "}
+                    </Link>
+                  ))}
+                </h5>
                 <h5 className={"fs-12"}>
                   <span className={"text-muted"}>Страна: </span>
                   {data?.country},

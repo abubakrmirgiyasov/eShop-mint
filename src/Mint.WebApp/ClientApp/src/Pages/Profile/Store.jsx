@@ -10,20 +10,15 @@ const Store = ({ userId, activeTab }) => {
   const [error, setError] = useState(null);
   const [store, setStore] = useState(null);
   const [newStore, setNewStore] = useState(null);
-  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (activeTab === 5) {
       setIsLoading(true);
 
-      Promise.all([
-        fetchWrapper.get("api/store/getmystore/" + userId),
-        fetchWrapper.get("api/category/getonlycategories"),
-      ])
+      Promise.all([fetchWrapper.get("api/store/getmystore/" + userId)])
         .then((response) => {
-          const [storeResp, categoriesResp] = response;
+          const [storeResp] = response;
           setStore(storeResp);
-          setCategories(categoriesResp);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -60,13 +55,9 @@ const Store = ({ userId, activeTab }) => {
                 className={"mb-3"}
               ></div>
               {!newStore && !store ? (
-                <OpenStore
-                  userId={userId}
-                  newData={handleNewData}
-                  categories={categories}
-                />
+                <OpenStore userId={userId} newData={handleNewData} />
               ) : (
-                <StoreInfo data={newStore || store} categories={categories} />
+                <StoreInfo data={newStore || store} />
               )}
             </CardBody>
           </Card>

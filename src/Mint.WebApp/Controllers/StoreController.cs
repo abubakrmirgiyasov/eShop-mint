@@ -3,6 +3,7 @@ using Mint.Domain.BindingModels;
 using Mint.Domain.Common;
 using Mint.Infrastructure.Repositories.Interfaces;
 using Mint.WebApp.Attributes;
+using System.Text.Json;
 
 namespace Mint.WebApp.Controllers;
 
@@ -50,6 +51,7 @@ public class StoreController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateStore([FromForm] StoreFullBindingModel model)
     {
+        var x = JsonSerializer.Deserialize<List<CategoryOnlyBindingModel>>(Request.Form["categories"]);
         try
         {
             var store = await _store.CreateStoreAsync(model);

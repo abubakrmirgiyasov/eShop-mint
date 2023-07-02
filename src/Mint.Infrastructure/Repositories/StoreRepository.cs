@@ -39,10 +39,12 @@ public class StoreRepository : IStoreRepository
             var store = await _context.Stores
                 .Include(x => x.Photo)
                 .Include(x => x.Products)
+                .Include(x => x.StoreCategories!)
+                .ThenInclude(x => x.Category)
                 .Include(x => x.User)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.User != null && x.User.Id == id)
-                ?? throw new Exception("Error store");
+                ?? throw new Exception("Создайте свой магазин, чтобы стать продавцом");
             return new StoreManager().FormingViewModel(store);
         }
         catch (Exception ex)

@@ -144,7 +144,7 @@ const Addresses = ({ activeTab, userId }) => {
                               <h5 className={"text-muted fs-6"}>
                                 Email: {item.email}
                                 <br />
-                                Телеон: {item.phone}
+                                Телефон: {item.phone}
                               </h5>
                               <h5 className={"text-muted fs-6"}>
                                 ФИО: {item.fullName}
@@ -159,7 +159,10 @@ const Addresses = ({ activeTab, userId }) => {
                                 Город: {item.city} Поч. Индекс: {item.zipCode}
                               </h5>
                               <h5 className={"text-muted fs-6"}>
-                                Страна: {item.country}
+                                Страна:{" "}
+                                <span className={"fw-semibold"}>
+                                  {item.country}
+                                </span>
                               </h5>
                             </CardBody>
                             <CardFooter

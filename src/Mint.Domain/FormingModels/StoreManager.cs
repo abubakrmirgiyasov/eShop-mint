@@ -23,7 +23,17 @@ public class StoreManager
 				ZipCode = model.ZipCode,
 				AddressDescription = model.AddressDescription,
 				UserId = Guid.Parse(model.UserId!),
+				StoreCategories = new List<StoreCategory>(),
 			};
+
+			for (int i = 0; i < model.Categories?.Count; i++)
+			{
+				store.StoreCategories.Add(new StoreCategory()
+				{
+					StoreId = store.Id,
+					CategoryId = model.Categories[i].Value,
+				});
+			}
 
 			if (model.FileType != null && model.Photo != null) 
 				store.Photo = await PhotoManager.CopyPhotoAsync(model.Photo, store.Id, model.FileType);
@@ -41,7 +51,18 @@ public class StoreManager
     {
 		try
 		{
-			return new StoreFullViewModel()
+			var categories = new List<CategoryOnlyViewModel>();
+
+			for (int i = 0; i < model.StoreCategories?.Count; i++)
+			{
+                categories.Add(new CategoryOnlyViewModel()
+                {
+                    Label = model.StoreCategories[i].Category?.Name,
+                    Value = model.StoreCategories[i].Category!.Id,
+                });
+            }
+
+            return new StoreFullViewModel()
 			{
 				Id = model.Id,
 				Name = model.Name,
@@ -53,6 +74,7 @@ public class StoreManager
 				IsOwnStorage = model.IsOwnStorage,
 				AddressDescription = model.AddressDescription,
 				Photo = model.Photo.GetImage64(),
+				Categories = categories,
 			};
 		}
 		catch (Exception ex)

@@ -54,6 +54,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<CategoryAttribute> CategoryAttributes { get; set; }
 
+    public DbSet<StoreCategory> StoreCategories { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
@@ -122,6 +124,13 @@ public class ApplicationDbContext : DbContext
             .HasKey(x => new
             {
                 x.AttributeId,
+                x.CategoryId,
+            });
+
+        builder.Entity<StoreCategory>()
+            .HasKey(x => new
+            {
+                x.StoreId,
                 x.CategoryId,
             });
 
@@ -299,6 +308,18 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.AttributeId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Entity<StoreCategory>()
+            .HasOne(x => x.Category)
+            .WithMany(x => x.StoreCategories)
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<StoreCategory>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.StoreCategories)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         //builder.Entity<Pdf>()
 
         var salt = new Hasher().GetSalt();
@@ -363,7 +384,7 @@ public class ApplicationDbContext : DbContext
             },
         };
 
-        var stores = new List<Store>()
+        var stores = new Store[]
         {
             new Store()
             {
@@ -381,9 +402,45 @@ public class ApplicationDbContext : DbContext
             }
         };
 
+        var subCategory = new SubCategory[]
+        {
+            new SubCategory()
+            {
+                Id = Guid.NewGuid(),
+                DisplayOrder = 1,
+                Name = "Test",
+                Ico = "ri-home-line",
+                BadgeText = "test",
+                BadgeStyle = "Primary",
+            },
+        };
+
+        var categories = new Category[]
+        {
+            new Category()
+            {
+                Id = Guid.NewGuid(),
+                DisplayOrder = 1,
+                Name = "Test Child",
+                ExternalLink = "test-child",
+                DefaultLink = "test-child",
+                FullName = "Test child",
+                SubCategoryId = subCategory[0].Id,
+            }
+        };
+
+
+        var storeCategories = new StoreCategory[]
+        {
+            new StoreCategory()
+            {
+                StoreId = stores[0].Id, CategoryId = categories[0].Id,
+            }
+        };
+
         var userRoles = new UserRole[]
         {
-            new UserRole { UserId = users[0].Id, RoleId = roles[0].Id, }, 
+            new UserRole { UserId = users[0].Id, RoleId = roles[0].Id, },
             new UserRole { UserId = users[0].Id, RoleId = roles[1].Id, },
             new UserRole { UserId = users[0].Id, RoleId = roles[2].Id, },
             new UserRole { UserId = users[1].Id, RoleId = roles[0].Id, },
@@ -395,5 +452,8 @@ public class ApplicationDbContext : DbContext
         builder.Entity<Role>().HasData(roles);
         builder.Entity<UserRole>().HasData(userRoles);
         builder.Entity<Store>().HasData(stores);
+        builder.Entity<Category>().HasData(categories);
+        builder.Entity<SubCategory>().HasData(subCategory);
+        builder.Entity<StoreCategory>().HasData(storeCategories);
     }
 }

@@ -316,7 +316,7 @@ const Signup = () => {
                 <Col md={8} className={"mb-3"}>
                   <DatePicker
                     isEdit={false}
-                    date={null}
+                    date={"01-12-2000"}
                     newDate={setDateBirth}
                     options={options}
                     isValid={setIsDateBirthValid}

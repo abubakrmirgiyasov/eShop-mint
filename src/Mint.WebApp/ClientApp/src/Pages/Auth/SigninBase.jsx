@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 const SigninBase = () => {
   const navigate = useNavigate();
 
-  const toggle = () => {};
+  const toggle = () => {
+    navigate("/");
+  };
 
   const { isLoggedIn } = useSelector((state) => ({
     isLoggedIn: state.Signin.isLoggedIn,
@@ -18,7 +20,7 @@ const SigninBase = () => {
 
   return (
     <div className={"page-content"}>
-      <Signin isOpen={true} toggle={true} />
+      <Signin isOpen={true} toggle={toggle} />
     </div>
   );
 };

@@ -3,28 +3,28 @@ import Flatpickr from "react-flatpickr";
 import { FormFeedback } from "reactstrap";
 
 const DatePicker = ({ isEdit, newDate, date, isValid, options }) => {
-  const [isDateBirthValid, setIsDateBirthValid] = useState(!!date);
+  const [isDateValid, setIsDateValid] = useState(!!date);
 
-  const handleDateBirthBlur = (e) => {
+  const handleDateBlur = (e) => {
     if (e.target.value) {
       newDate(e.target.value);
-      setIsDateBirthValid(true);
+      setIsDateValid(true);
       isValid(true);
     } else {
       newDate("");
-      setIsDateBirthValid(false);
+      setIsDateValid(false);
       isValid(false);
     }
   };
 
-  const handleDateBirthChange = (e) => {
+  const handleDateChange = (e) => {
     if (e.length) {
       newDate(e);
-      setIsDateBirthValid(true);
+      setIsDateValid(true);
       isValid(true);
     } else {
       newDate("");
-      setIsDateBirthValid(false);
+      setIsDateValid(false);
       isValid(false);
     }
   };
@@ -35,16 +35,16 @@ const DatePicker = ({ isEdit, newDate, date, isValid, options }) => {
         type={"date"}
         name={"dateBirth"}
         id={"dateBirth"}
-        className={`form-control ${isDateBirthValid ? "" : "is-invalid"}`}
+        className={`form-control ${isDateValid ? "" : "is-invalid"}`}
         disabled={isEdit}
-        onChange={handleDateBirthChange}
-        onBlur={handleDateBirthBlur}
+        onChange={handleDateChange}
+        onBlur={handleDateBlur}
         value={date}
         options={options}
       />
       <FormFeedback
         type={"invalid"}
-        className={isDateBirthValid ? "d-none" : "d-block"}
+        className={isDateValid ? "d-none" : "d-block"}
       >
         {"Заполните обязательное поле"}
       </FormFeedback>

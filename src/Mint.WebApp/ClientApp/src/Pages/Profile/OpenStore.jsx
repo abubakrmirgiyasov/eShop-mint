@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
   Collapse,
+  Form,
   FormFeedback,
   Input,
   Label,
@@ -10,7 +11,6 @@ import {
   Spinner,
 } from "reactstrap";
 import Popover from "../../components/Popover/Popover";
-import Select from "react-select";
 import { Countries } from "../../constants/Common";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -20,13 +20,35 @@ import { Error } from "../../components/Notification/Error";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Roles } from "../../constants/Roles";
+import MySelect from "../../components/Forms/Select";
 
-const OpenStore = ({ userId, newData, categories }) => {
+const OpenStore = ({ userId, newData }) => {
   const [isFormOpened, setIsFormOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [categories, setCategories] = useState([]);
+
   const [country, setCountry] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const [isCountryRequired, setIsCountryRequired] = useState(true);
+  const [isCategoriesRequired, setIsCategoriesRequired] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetchWrapper
+      .get("api/category/getonlycategories")
+      .then((response) => {
+        setIsLoading(false);
+        setCategories(response);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  }, []);
 
   const toggleForm = () => {
     setIsFormOpened(!isFormOpened);
@@ -53,55 +75,68 @@ const OpenStore = ({ userId, newData, categories }) => {
       url: Yup.string().required("Заполните обязательное поле"),
       city: Yup.string().required("Заполните обязательное поле"),
       street: Yup.string().required("Заполните обязательное поле"),
-      zipCode: Yup.number().required("Заполните обязательное поле"),
-      isOwnStore: Yup.bool().required("Выберете вид склада"),
+      zipCode: Yup.number()
+        .min(10000, "Почтовый индекс не может быть меньше 10 000")
+        .max(999999, "Почтовый индекс не может быть больше 999 999")
+        .required("Заполните обязательное поле"),
     }),
     onSubmit: (values) => {
-      if (country) {
-        setIsLoading(true);
-
-        const formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("url", values.url);
-        formData.append("country", country);
-        formData.append("city", values.city);
-        formData.append("street", values.street);
-        formData.append("zipCode", values.zipCode);
-        formData.append("addressDescription", values.addressDescription);
-        formData.append("userId", userId);
-        formData.append("isOwnStore", values.isOwnStore);
-
-        if (selectedImage) {
-          formData.append("fileType", "storeLogos");
-          formData.append("photo", selectedImage[0]);
-        }
-
-        fetchWrapper
-          .post("api/store/createstore", formData, false)
-          .then((response) => {
-            setIsLoading(false);
-            newData(response);
-
-            const user = JSON.parse(localStorage.getItem("auth_user"));
-            user.roles = [...user.roles, Roles.Seller];
-            localStorage.setItem("auth_user", JSON.stringify(user));
-          })
-          .catch((error) => {
-            setIsLoading(false);
-            setError(error);
-          });
+      if (!country && !selectedCategories.length) {
+        setIsCountryRequired(false);
+        setIsCategoriesRequired(false);
+        return false;
       }
+
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("url", values.url);
+      formData.append("country", country);
+      formData.append("city", values.city);
+      formData.append("street", values.street);
+      formData.append("zipCode", values.zipCode);
+      formData.append("addressDescription", values.addressDescription);
+      formData.append("userId", userId);
+      formData.append("categories", JSON.stringify(selectedCategories));
+      formData.append("isOwnStore", values.isOwnStore);
+
+      if (selectedImage) {
+        formData.append("fileType", "storeLogos");
+        formData.append("photo", selectedImage[0]);
+      }
+
+      fetchWrapper
+        .post("api/store/createstore", formData, false)
+        .then((response) => {
+          setIsLoading(false);
+          newData(response);
+
+          const user = JSON.parse(localStorage.getItem("auth_user"));
+          user.roles = [...user.roles, Roles.Seller];
+          localStorage.setItem("auth_user", JSON.stringify(user));
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setError(error);
+        });
     },
   });
 
-  const handleCountryChange = (e) => {
-    setCountry(e.label);
+  const handleCountryChange = (item) => {
+    setCountry(item.label);
+    setIsCountryRequired(true);
+  };
+
+  const handleCategoriesChange = (item) => {
+    setSelectedCategories(item);
+    setIsCategoriesRequired(true);
   };
 
   return (
     <React.Fragment>
       {error ? <Error message={error} /> : null}
-      <form
+      <Form
         className={"form-horizontal"}
         onSubmit={(e) => {
           e.preventDefault();
@@ -197,41 +232,37 @@ const OpenStore = ({ userId, newData, categories }) => {
               ) : null}
             </Col>
             <Col lg={12} className={"mb-3"}>
-              <Label id={"categories"}>
-                Категории{" "}
-                <Popover
-                  id={"categories"}
-                  placement={"right"}
-                  text={
-                    "Выберите категории ваших товаров, так покупатели могу найти вас еще быстрее."
-                  }
-                />
-              </Label>
-              <Select
-                options={categories || []}
+              <Popover
+                id={"categories"}
+                placement={"right"}
+                text={
+                  "Выберите категории ваших товаров, так покупатели могу найти вас еще быстрее."
+                }
+              />
+              <MySelect
                 name={"categories"}
                 placeholder={"Выберите категории"}
+                options={categories || []}
                 isMulti={true}
+                isRequired={isCategoriesRequired}
+                label={"Категории"}
+                newData={handleCategoriesChange}
               />
             </Col>
             <Col lg={12} className={"mb-3"}>
-              <Label className={"form-label"} id={"country"}>
-                Страна{" "}
-                <Popover
-                  id={"country"}
-                  placement={"right"}
-                  text={"Здесь вы выбыраете страну, где ваш магазин находится."}
-                />
-              </Label>
-              <Select
+              <Popover
+                id={"country"}
+                placement={"right"}
+                text={"Здесь вы выбыраете страну, где ваш магазин находится."}
+              />
+              <MySelect
                 name={"country"}
                 placeholder={"Выберете страну"}
                 options={Countries}
-                onChange={handleCountryChange}
+                isRequired={isCountryRequired}
+                label={"Страна"}
+                newData={handleCountryChange}
               />
-              {!country ? (
-                <div className="text-danger mt-1">Выберете страну</div>
-              ) : null}
             </Col>
             <Col lg={12} className={"mb-3"}>
               <Label className={"form-label"} id={"city"}>
@@ -297,7 +328,7 @@ const OpenStore = ({ userId, newData, categories }) => {
                 />
               </Label>
               <Input
-                type={"text"}
+                type={"number"}
                 id={"zipCode"}
                 name={"zipCode"}
                 className={"form-control"}
@@ -400,7 +431,7 @@ const OpenStore = ({ userId, newData, categories }) => {
             </Col>
           </Row>
         </Collapse>
-      </form>
+      </Form>
     </React.Fragment>
   );
 };

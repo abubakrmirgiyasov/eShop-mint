@@ -471,6 +471,34 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StoreCategories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreCategories", x => new { x.StoreId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_StoreCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StoreCategories_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CommonCharacteristics",
                 columns: table => new
                 {
@@ -707,37 +735,52 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "Name", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTimeOffset(new DateTime(2023, 6, 30, 21, 15, 57, 265, DateTimeKind.Unspecified).AddTicks(7731), new TimeSpan(0, 7, 0, 0, 0)), "Покупатель", null },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTimeOffset(new DateTime(2023, 6, 30, 21, 15, 57, 265, DateTimeKind.Unspecified).AddTicks(7700), new TimeSpan(0, 7, 0, 0, 0)), "Админ", null },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTimeOffset(new DateTime(2023, 6, 30, 21, 15, 57, 265, DateTimeKind.Unspecified).AddTicks(7728), new TimeSpan(0, 7, 0, 0, 0)), "Продавец", null }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(232), new TimeSpan(0, 7, 0, 0, 0)), "Покупатель", null },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(214), new TimeSpan(0, 7, 0, 0, 0)), "Админ", null },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(230), new TimeSpan(0, 7, 0, 0, 0)), "Продавец", null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "SubCategories",
+                columns: new[] { "Id", "BadgeStyle", "BadgeText", "CreatedDate", "DisplayOrder", "Ico", "Name", "UpdateDateTime" },
+                values: new object[] { new Guid("b6eee632-befd-4ea3-96cc-e77531c538e7"), "Primary", "test", new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(255), new TimeSpan(0, 7, 0, 0, 0)), 1, "ri-home-line", "Test", null });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AcceptLanguage", "CreatedDate", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "RoleId", "Salt", "SecondName", "UpdateDateTime", "UserAgent" },
                 values: new object[,]
                 {
-                    { new Guid("206b4ca3-85f7-4060-a5a1-f430194c25f6"), null, new DateTimeOffset(new DateTime(2023, 6, 30, 21, 15, 57, 264, DateTimeKind.Unspecified).AddTicks(7164), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "K1mIgGbi/j2PlUTIxad6Lrvs+GesVOrYVmcDNeB0tKY=", 89502768428L, null, null, new byte[] { 229, 29, 28, 177, 101, 146, 95, 125, 65, 167, 250, 162, 153, 236, 204, 230 }, "Абубакр", null, null },
-                    { new Guid("d270f07b-3464-4763-9a36-c732a3b143c3"), null, new DateTimeOffset(new DateTime(2023, 6, 30, 21, 15, 57, 265, DateTimeKind.Unspecified).AddTicks(7681), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "pu5l4Um3UMMYCq3wJ8WBIJmaVvPH42jk4WioeZalfcs=", 83452763423L, null, null, new byte[] { 229, 29, 28, 177, 101, 146, 95, 125, 65, 167, 250, 162, 153, 236, 204, 230 }, "User", null, null }
+                    { new Guid("5901f2e5-0a19-45db-8734-a9d4a9138f16"), null, new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 243, DateTimeKind.Unspecified).AddTicks(4837), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, "Мукимжонович", 0, "vK/pnW43e+pta4YqgvxePtEQomivYTnpdXAnuEOdWiw=", 89502768428L, null, null, new byte[] { 164, 46, 130, 234, 45, 248, 152, 87, 16, 195, 160, 53, 11, 15, 38, 162 }, "Абубакр", null, null },
+                    { new Guid("e0ad9bda-806d-4aee-91ab-ea869ea55372"), null, new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(205), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, null, 0, "wE6RRZIDnFLYG7g07/93V3iT2fNZNhtersF6GgPeq7M=", 83452763423L, null, null, new byte[] { 164, 46, 130, 234, 45, 248, 152, 87, 16, 195, 160, 53, 11, 15, 38, 162 }, "User", null, null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedDate", "DefaultLink", "DisplayOrder", "ExternalLink", "FullName", "ManufactureId", "Name", "PhotoId", "SubCategoryId", "UpdateDateTime" },
+                values: new object[] { new Guid("b5cee66d-e7b0-4242-95b3-c3020ee15755"), new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(260), new TimeSpan(0, 7, 0, 0, 0)), "test-child", 1, "test-child", "Test child", null, "Test Child", null, new Guid("b6eee632-befd-4ea3-96cc-e77531c538e7"), null });
 
             migrationBuilder.InsertData(
                 table: "Stores",
                 columns: new[] { "Id", "AddressDescription", "City", "Country", "CreatedDate", "IsOwnStorage", "Name", "PhotoId", "Street", "UpdateDateTime", "Url", "UserId", "ZipCode" },
-                values: new object[] { new Guid("d1ecaa72-0937-4822-b261-d2158eed6fe2"), "", "", "", new DateTimeOffset(new DateTime(2023, 6, 30, 21, 15, 57, 265, DateTimeKind.Unspecified).AddTicks(7751), new TimeSpan(0, 7, 0, 0, 0)), true, "Mint", null, "", null, "mint", new Guid("d270f07b-3464-4763-9a36-c732a3b143c3"), 0 });
+                values: new object[] { new Guid("f0b23006-941c-43e8-865e-b14df9298061"), "test", "test", "test", new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(247), new TimeSpan(0, 7, 0, 0, 0)), true, "Mint", null, "test", null, "mint", new Guid("e0ad9bda-806d-4aee-91ab-ea869ea55372"), 12345 });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("206b4ca3-85f7-4060-a5a1-f430194c25f6") },
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("d270f07b-3464-4763-9a36-c732a3b143c3") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("206b4ca3-85f7-4060-a5a1-f430194c25f6") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("d270f07b-3464-4763-9a36-c732a3b143c3") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("206b4ca3-85f7-4060-a5a1-f430194c25f6") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("d270f07b-3464-4763-9a36-c732a3b143c3") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("5901f2e5-0a19-45db-8734-a9d4a9138f16") },
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("e0ad9bda-806d-4aee-91ab-ea869ea55372") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("5901f2e5-0a19-45db-8734-a9d4a9138f16") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("e0ad9bda-806d-4aee-91ab-ea869ea55372") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("5901f2e5-0a19-45db-8734-a9d4a9138f16") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("e0ad9bda-806d-4aee-91ab-ea869ea55372") }
                 });
+
+            migrationBuilder.InsertData(
+                table: "StoreCategories",
+                columns: new[] { "CategoryId", "StoreId", "CreatedDate", "Id", "UpdateDateTime" },
+                values: new object[] { new Guid("b5cee66d-e7b0-4242-95b3-c3020ee15755"), new Guid("f0b23006-941c-43e8-865e-b14df9298061"), new DateTimeOffset(new DateTime(2023, 7, 2, 16, 19, 42, 244, DateTimeKind.Unspecified).AddTicks(266), new TimeSpan(0, 7, 0, 0, 0)), new Guid("00000000-0000-0000-0000-000000000000"), null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
@@ -889,6 +932,11 @@ namespace Mint.Infrastructure.Migrations
                 column: "StoreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StoreCategories_CategoryId",
+                table: "StoreCategories",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stores_PhotoId",
                 table: "Stores",
                 column: "PhotoId");
@@ -964,6 +1012,9 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Storage");
+
+            migrationBuilder.DropTable(
+                name: "StoreCategories");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");

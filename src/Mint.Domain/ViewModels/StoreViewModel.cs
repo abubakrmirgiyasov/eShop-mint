@@ -21,4 +21,6 @@ public class StoreFullViewModel
     public bool IsOwnStorage { get; set; }
 
     public string? Photo { get; set; }
+
+    public List<CategoryOnlyViewModel>? Categories { get; set; }
 }

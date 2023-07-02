@@ -26,3 +26,10 @@ public class CategoryFullBindingModel
 
     public IFormFile? Photo { get; set; }
 }
+
+public class CategoryOnlyBindingModel
+{
+    public Guid? Value { get; set; }
+
+    public string? Label { get; set; }
+}

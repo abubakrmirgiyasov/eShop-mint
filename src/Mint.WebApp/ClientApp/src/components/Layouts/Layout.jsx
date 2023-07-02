@@ -16,33 +16,28 @@ const Layout = ({ children }) => {
   const [headerClass, setHeaderClass] = useState("");
   const dispatch = useDispatch();
 
-  const { layout, layoutModeType, menuData, signIn } = useSelector(
-    (state) => ({
-      layout: state.Theme.layout,
-      layoutModeType: state.Theme.layoutModeType,
-      menuData: state.Categories.menu,
-      myLikes: state.Likes.likes,
-      signIn: state.Signin,
-    })
-  );
+  const { layout, layoutModeType, menuData, signIn } = useSelector((state) => ({
+    layout: state.Theme.layout,
+    layoutModeType: state.Theme.layoutModeType,
+    menuData: state.Categories.menu,
+    myLikes: state.Likes.likes,
+    signIn: state.Signin,
+  }));
 
   useEffect(() => {
     if (layout) dispatch(changeLayoutMode(layout));
 
-    if (signIn.isLoggedIn)
-      dispatch(toggleLikes(signIn.user.id));
-  
-      dispatch(menu());
+    if (signIn.isLoggedIn) dispatch(toggleLikes(signIn.user.id));
+
+    dispatch(menu());
     dispatch(changeLayoutType("horizontal"));
+
+    window.addEventListener("scroll", scrollNavigation, true);
   }, [layout, layoutModeType, dispatch]);
 
   const onChangeLayoutMode = (value) => {
     if (changeLayoutMode) dispatch(changeLayoutMode(value));
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", scrollNavigation, true);
-  });
 
   function scrollNavigation() {
     let scrollUp = document.documentElement.scrollTop;
