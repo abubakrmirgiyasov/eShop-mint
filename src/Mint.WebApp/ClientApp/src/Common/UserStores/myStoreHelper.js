@@ -6,8 +6,9 @@ const myStoreHelper = () => {
 
   if (user) {
     return fetchWrapper
-      .get("api/store/getmystore/" + user?.id)
+      .get("api/store/getmystore/" + user.id)
       .then((response) => {
+        console.log(response);
         localStorage.setItem("my_store", JSON.stringify(response));
         return response;
       })

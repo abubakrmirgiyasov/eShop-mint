@@ -8,15 +8,18 @@ import {
   Col,
   Collapse,
   Input,
+  Label,
   Row,
   Spinner,
 } from "reactstrap";
-import CategoriesTable from "../../components/Tables/CategoriesTable";
 import { fetchWrapper } from "../../../helpers/fetchWrapper";
 import { Error } from "../../../components/Notification/Error";
 import DeleteCategory from "./DeleteCategory";
 import PrivateComponent from "../../../helpers/privateComponent";
 import { Roles } from "../../../constants/Roles";
+
+//import CategoriesGridTable from "../../components/Tables/Grid/CategoriesGridTable";
+import CategoriesTable from "../../components/Tables/CategoriesTable";
 
 const Categories = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,15 +95,19 @@ const Categories = () => {
                 </PrivateComponent>
               </div>
               <Collapse isOpen={isFilterOpen}>
-                <div className="d-flex mt-3">
+                <div className={"d-flex mt-3"}>
                   <Input
-                    type="text"
-                    className="w-25 me-3"
-                    placeholder="Поиск по названию"
+                    type={"text"}
+                    className={"w-25 me-3"}
+                    placeholder={"Поиск по названию"}
                   />
-                  <Button color="danger">
-                    <i className="ri-search-2-line"></i>
-                  </Button>
+                  <Input
+                    type={"checkbox"}
+                    id={"resizable"}
+                    className={"form-check-input"}
+                    color={"success"}
+                  />
+                  <Label htmlFor={"resizable"}>Изменяемый</Label>
                 </div>
               </Collapse>
             </Col>
@@ -110,8 +117,8 @@ const Categories = () => {
                   className={"d-flex justify-content-center align-items-center"}
                 >
                   <Spinner color={"success"} size={"sm"}>
-              Loading...
-            </Spinner>
+                    Loading...
+                  </Spinner>
                 </div>
               ) : (
                 <CategoriesTable

@@ -51,7 +51,8 @@ public class StoreController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateStore([FromForm] StoreFullBindingModel model)
     {
-        var x = JsonSerializer.Deserialize<List<CategoryOnlyBindingModel>>(Request.Form["categories"]);
+        var y = Request.Form["categories"].ToString().Trim('{', '}');
+        var x = JsonSerializer.Deserialize<CategoryOnlyBindingModel>(y);
         try
         {
             var store = await _store.CreateStoreAsync(model);
