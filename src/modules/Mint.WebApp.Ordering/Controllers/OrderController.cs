@@ -10,14 +10,14 @@ namespace Mint.WebApp.Ordering.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IRepository<Order> _repository;
-    private readonly IMessageSender<Order> _sender;
-    private readonly IMessageReceiver<Order> _receive;
+    //private readonly IMessageSender<Order> _sender;
+    //private readonly IMessageReceiver<Order> _receive;
 
-    public OrderController(IRepository<Order> repository, IMessageSender<Order> sender, IMessageReceiver<Order> receive)
+    public OrderController(IRepository<Order> repository/*, IMessageSender<Order> sender, IMessageReceiver<Order> receive*/)
     {
         _repository = repository;
-        _sender = sender;
-        _receive = receive;
+        //_sender = sender;
+        //_receive = receive;
     }
 
     [HttpGet("Get")]
@@ -34,7 +34,7 @@ public class OrderController : ControllerBase
     {
         _repository.InsertOne(order);
 
-        await _sender.SendAsync(order);
+        //await _sender.SendAsync(order);
 
         return Ok(new { message = "Add Success" });
     }

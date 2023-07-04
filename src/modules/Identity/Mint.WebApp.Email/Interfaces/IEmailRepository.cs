@@ -9,4 +9,6 @@ public interface IEmailRepository
     Task SendEmailConfirmation(User user);
 
     Task SendEmailForgotPassword(User user);
+
+    Task SendEmailSpam(User user);
 }
