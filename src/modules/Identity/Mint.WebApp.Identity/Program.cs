@@ -18,6 +18,7 @@ builder.Services.Configure<MongoDbSettings>(mongoDb);
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<AuthenticationRepository>();
+builder.Services.AddScoped<RoleRepository>();
 
 builder.Services.AddControllers();
 

@@ -12,7 +12,7 @@ public class User : Document
 
     public string? LastName { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
     public long Phone { get; set; }
 
@@ -28,7 +28,7 @@ public class User : Document
 
     public string? Ip { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; } = false;
 
     public int NumOfAttempts { get; set; } = 0;
 
@@ -43,4 +43,8 @@ public class User : Document
     public Guid? PhotoId { get; set; }
 
     public Photo? Photo { get; set; }
+
+    public List<UserRole> UserRoles { get; set; } = null!;
+
+    public List<RefreshToken> RefreshTokens { get; set; } = null!;
 }

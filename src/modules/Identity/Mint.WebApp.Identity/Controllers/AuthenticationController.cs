@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.Identity.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Mint.WebApp.Identity.DTO_s;
+using Mint.WebApp.Identity.Extensions;
 using Mint.WebApp.Identity.Repositories;
 
 namespace Mint.WebApp.Identity.Controllers;
@@ -16,20 +16,65 @@ public class AuthenticationController : ControllerBase
         _authentication = authentication;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
-    {
-        var x = _authentication.FilterBy(x => x.FirstName != ".");
-        return Ok(x);
-    }
-
     [HttpPost]
-    public async Task<IActionResult> SignIn([FromBody] User model)
+    public async Task<IActionResult> SignIn([FromBody] UserFullBindingModel model)
     {
         try
         {
-            _authentication.InsertOne(model);
-            return Ok(_authentication.FilterBy(x => x.FirstName != "."));
+            model.Ip = Request.GetIp();
+
+            var response = await _authentication.SignInAsync(model);
+            Response.SetTokenCookie(response.RefreshToken!);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SingUp([FromBody] UserFullBindingModel model)
+    {
+        try
+        {
+            model.UserAgent = Request.GetUserAgent();
+            model.Ip = Request.GetIp();
+            model.AcceptLanguage = Request.GetUserAcceptLanguage();
+
+            await _authentication.SignUpAsync(model);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RefreshToken()
+    {
+        try
+        {
+            var refreshToken = Request.Cookies["refresh_token"];
+            var response = await _authentication.RefreshToken(refreshToken, Request.GetIp());
+            Response.SetTokenCookie(response.RefreshToken!);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SignOut(RevokeTokenRequest model)
+    {
+        try
+        {
+            var token = model.Token ?? Request.Cookies["refresh_token"];
+            await _authentication.RevokeToken(token, Request.GetIp());
+            return Ok(new { message = "Token was revoked successfully" });
         }
         catch (Exception ex)
         {

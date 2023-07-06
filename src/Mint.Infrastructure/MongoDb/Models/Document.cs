@@ -7,7 +7,7 @@ public abstract class Document : IDocument
 {
     public ObjectId Id { get; set; }
 
-    public DateTime CreationDate { get; }
+    public DateTime CreationDate { get; } = DateTime.Now;
 
     public DateTime? UpdateDate { get; set; }
 }
