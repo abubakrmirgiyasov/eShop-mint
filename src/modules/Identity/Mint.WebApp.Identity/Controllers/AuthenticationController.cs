@@ -42,8 +42,8 @@ public class AuthenticationController : ControllerBase
             model.Ip = Request.GetIp();
             model.AcceptLanguage = Request.GetUserAcceptLanguage();
 
-            await _authentication.SignUpAsync(model);
-            return Ok();
+            var user = await _authentication.SignUpAsync(model);
+            return Ok(user);
         }
         catch (Exception ex)
         {

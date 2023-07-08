@@ -1,22 +1,24 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
-using Mint.Infrastructure.MongoDb.Services;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.FormingModels;
 using Mint.WebApp.Identity.Models;
+using Mint.WebApp.Identity.Repositories.Interfaces;
+using Mint.WebApp.Identity.Services;
 using Mint.WebApp.Identity.Services.Interfaces;
-using System.Security.Cryptography;
 
 namespace Mint.WebApp.Identity.Repositories;
 
 /// <summary>
 /// Authentication Repository
 /// </summary>
-public class AuthenticationRepository : Repository<User>
+public class AuthenticationRepository : IAuthenticationRepository
 {
     private readonly ILogger<AuthenticationRepository> _logger;
     private readonly AppSettings _appSettings;
+    private readonly ApplicationDbContext _context;
     private readonly IJwt _jwt;
 
     /// <summary>
@@ -27,14 +29,14 @@ public class AuthenticationRepository : Repository<User>
     /// <param name="appSettings"></param>
     /// <param name="jwt"></param>
     public AuthenticationRepository(
-        IOptions<MongoDbSettings> settings,
-        ILogger<AuthenticationRepository> logger,
         IOptions<AppSettings> appSettings,
+        ILogger<AuthenticationRepository> logger,
+        ApplicationDbContext context,
         IJwt jwt)
-        : base(settings)
     {
         _logger = logger;
         _appSettings = appSettings.Value;
+        _context = context;
         _jwt = jwt;
     }
 
@@ -50,25 +52,31 @@ public class AuthenticationRepository : Repository<User>
     {
         try
         {
-            var user = await FindOneAsync(x => x.Email.ToLower() == model.Email!.ToLower())
+            var users = await _context.Users
+                .Include(x => x.RefreshTokens)
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .ToListAsync();
+
+            var user = users.FirstOrDefault(x => x.Email.ToLower() == model.Email!.ToLower())
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+
+            if (!user.IsActive)
+                throw new Exception("Аккаунт не активен");
 
             if (user.NumOfAttempts >= 10)
             {
                 user.IsActive = false;
-                await ReplaceOneAsync(user);
+                await _context.SaveChangesAsync();
                 throw new BlockedException("Аккаунт заблокирован");
             }
 
-            if (user.Password != new Hasher().GetHash(model.Password ?? "", user.Salt ?? Array.Empty<byte>()))
+            if (user.Password != new Hasher().GetHash(model.Password ?? "", user.Salt))
             {
                 user.NumOfAttempts++;
-                await ReplaceOneAsync(user);
+                await _context.SaveChangesAsync();
                 throw new UnauthorizedAccessException("Не правильный Email/Пароль");
             }
-
-            if (!user.IsActive)
-                throw new Exception("Аккаунт не активен");
 
             var jwt = _jwt.GenerateJwtToken(user);
             var refreshToken = _jwt.GenerateRefreshToken(model.Ip);
@@ -76,7 +84,8 @@ public class AuthenticationRepository : Repository<User>
 
             RemoveOldRefreshToken(user);
 
-            await ReplaceOneAsync(user);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
 
             return new AuthenticationResponse()
             {
@@ -117,7 +126,30 @@ public class AuthenticationRepository : Repository<User>
     {
         try
         {
-            await InsertOneAsync(UserDTOConverter.FormingSingleBindingModel(model));
+            const string Buyer = "buyer_key";
+
+            var salt = new Hasher().GetSalt();
+            var password = new Hasher().GetHash(model.Password!, salt);
+
+            model.Password = password;
+            model.Salt = salt;
+
+            var role = _context.Roles.FirstOrDefault(x => x.UniqueKey == Buyer)
+                ?? throw new Exception("Что-то пошло не так");
+
+            var user = UserDTOConverter.FormingSingleBindingModel(model);
+
+            user.UserRoles = new List<UserRole>()
+            {
+                new UserRole()
+                {
+                    RoleId = role.Id,
+                    UserId = user.Id,
+                },
+            };
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
             return UserDTOConverter.FormingSingleViewModel(new User());
         }
         catch (Exception ex)
@@ -143,29 +175,35 @@ public class AuthenticationRepository : Repository<User>
             if (string.IsNullOrEmpty(refreshToken))
                 throw new ArgumentNullException(nameof(refreshToken), "Refresh token null");
 
-            var user = FilterBy(x => x.FirstName != ".")
-                .FirstOrDefault(x => x.RefreshTokens.FirstOrDefault(y => y.Token == refreshToken) != null)
-                ?? throw new ArgumentNullException(nameof(User), "refresh token doesn't exists {refresh token}");
+            var user = GetUserByRefreshToken(refreshToken);
+            var token = user.RefreshTokens.FirstOrDefault(x => x.Token == refreshToken)
+                ?? throw new ArgumentNullException(nameof(RefreshToken), "Invalid token");
 
-            if (user.RefreshTokens.First().IsRevoked)
+            if (token.IsRevoked)
             {
-                RevokeDescendantRefreshTokens(user.RefreshTokens.First(), user, ip!, $"Attempted reuse of revoked ancestor token: {refreshToken}");
+                RevokeDescendantRefreshTokens(
+                    refreshToken: token,
+                    user: user,
+                    ip: ip!,
+                    reason: $"Attempted reuse of revoked ancestor token: {refreshToken}");
 
-                await ReplaceOneAsync(user);
+                _context.Update(user);
+                await _context.SaveChangesAsync();
             }
 
-            if (!user.RefreshTokens.First().IsActive)
+            if (!token.IsActive)
                 throw new InvalidOperationException("Invalid token");
 
-            var newRefreshToken = RotateRefreshToken(user.RefreshTokens.First(), ip!);
+            var newRefreshToken = RotateRefreshToken(token, ip!);
             user.RefreshTokens.Add(newRefreshToken);
 
             RemoveOldRefreshToken(user);
 
-            await ReplaceOneAsync(user);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
 
             var jwt = _jwt.GenerateJwtToken(user);
-            
+
             return new AuthenticationResponse()
             {
                 Id = user.Id,
@@ -196,6 +234,28 @@ public class AuthenticationRepository : Repository<User>
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Task NewPassword(UserFullBindingModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Task ForgotPassword(UserFullBindingModel model)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
     /// Logout || revoke token
     /// </summary>
     /// <param name="refreshToken"></param>
@@ -210,16 +270,18 @@ public class AuthenticationRepository : Repository<User>
             if (string.IsNullOrEmpty(refreshToken))
                 throw new Exception("Token is required");
 
-            var user = FilterBy(x => x.FirstName != ".")
-                .FirstOrDefault(x => x.RefreshTokens.FirstOrDefault(y => y.Token == refreshToken) != null)
-                ?? throw new ArgumentNullException(nameof(User), "refresh token doesn't exists {refresh token}");
+            var user = GetUserByRefreshToken(refreshToken);
 
-            if (!user.RefreshTokens.First().IsActive)
+            var token = user.RefreshTokens.FirstOrDefault(x => x.Token == refreshToken)
+                ?? throw new ArgumentNullException(nameof(refreshToken), "Invalid token");
+
+            if (!token.IsActive)
                 throw new InvalidOperationException("Invalid token");
 
             RevokeRefreshToken(user.RefreshTokens.First(), ip!, "Revoked without replacement");
 
-            await ReplaceOneAsync(user);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
         }
         catch (InvalidOperationException ex)
         {
@@ -239,20 +301,6 @@ public class AuthenticationRepository : Repository<User>
     }
 
     #region Helpers
-    public string GetUniqueToken()
-    {
-        try
-        {
-            var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-            var isUniqueToken = !FilterBy(x => x.RefreshTokens.Any(y => y.Token == token)).Any();
-            return isUniqueToken ? token : GetUniqueToken();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex);
-        }
-    }
-
     private void RevokeDescendantRefreshTokens(RefreshToken refreshToken, User user, string ip, string reason)
     {
         if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
@@ -286,7 +334,16 @@ public class AuthenticationRepository : Repository<User>
 
     private void RemoveOldRefreshToken(User user)
     {
-        user.RefreshTokens.RemoveAll(x => x.IsActive && x.CreationDate.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+        user.RefreshTokens.RemoveAll(x => x.IsActive && x.CreatedDate.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+    }
+
+    private User GetUserByRefreshToken(string token)
+    {
+        var user = _context.Users
+            .Include(x => x.RefreshTokens)
+            .ToList();
+        return user.FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token))
+            ?? throw new ArgumentNullException(nameof(User), "Invalid token");
     }
     #endregion
 }

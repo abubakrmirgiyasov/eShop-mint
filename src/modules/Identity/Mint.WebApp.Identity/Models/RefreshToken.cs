@@ -1,10 +1,8 @@
-﻿using Mint.Infrastructure.MongoDb.Attributes;
-using Mint.Infrastructure.MongoDb.Models;
+﻿using Mint.Domain.Models.Base;
 
 namespace Mint.WebApp.Identity.Models;
 
-[BsonCollection("refresh_tokens")]
-public class RefreshToken : Document
+public class RefreshToken : Entity<Guid>
 {
     public string? Token { get; set; }
 
@@ -20,13 +18,17 @@ public class RefreshToken : Document
 
     public string? ReasonRevoked { get; set; }
 
+    public string? UserAgent { get; set; }
+
+    public string? AcceptLanguage { get; set; }
+
     public bool IsExpired => DateTime.UtcNow >= Expires;
 
     public bool IsRevoked => Revoked != null;
 
     public bool IsActive => !IsRevoked && !IsExpired;
 
-    public Guid? UserId { get; set; }
+    public Guid UserId { get; set; }
 
-    public User? User { get; set; }
+    public User User { get; set; } = null!;
 }

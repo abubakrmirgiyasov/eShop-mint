@@ -1,24 +1,21 @@
+using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Common;
-using Mint.Infrastructure.MongoDb.Interfaces;
-using Mint.Infrastructure.MongoDb.Services;
 using Mint.WebApp.Identity.Repositories;
+using Mint.WebApp.Identity.Repositories.Interfaces;
+using Mint.WebApp.Identity.Services;
+using Mint.WebApp.Identity.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var brokers = builder.Configuration
-//    .GetSection("MessageBroker")
-//    .Get<MessageBrokerOptions>();
-//builder.Services.AddStorageModule(brokers!);
-//
+var appSettings = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettings);
 
-var mongoDb = builder.Configuration.GetSection("MongoDbSettings");
-builder.Services.Configure<MongoDbSettings>(mongoDb);
+var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
-//builder.Services.AddHostedServicesStorageModule();
-
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<AuthenticationRepository>();
-builder.Services.AddScoped<RoleRepository>();
+builder.Services.AddScoped<IJwt, Jwt>();
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddControllers();
 

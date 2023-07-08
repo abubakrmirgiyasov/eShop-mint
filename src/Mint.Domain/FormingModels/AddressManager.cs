@@ -16,7 +16,6 @@ public class AddressManager
                 Country = model.Country!,
                 City = model.City!,
                 ZipCode = model.ZipCode,
-                CreatedDate = DateTime.Now,
                 Description = model.Description,
                 FullAddress = model.FullAddress!,
                 UserId = model.UserId,

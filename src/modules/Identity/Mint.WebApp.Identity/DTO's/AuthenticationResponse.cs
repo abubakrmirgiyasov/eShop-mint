@@ -1,11 +1,10 @@
-﻿using MongoDB.Bson;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Mint.WebApp.Identity.DTO_s;
 
 public class AuthenticationResponse
 {
-    public ObjectId Id { get; set; }
+    public Guid Id { get; set; }
 
     public string? FirstName { get; set; }
 

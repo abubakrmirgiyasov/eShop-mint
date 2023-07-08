@@ -35,14 +35,17 @@ public class UserDTOConverter
                 FirstName = model.FirstName!,
                 SecondName = model.SecondName!,
                 LastName = model.LastName!,
-                AcceptLanguage = model.AcceptLanguage,
-                UserAgent = model.UserAgent,
                 DateBirth = model.DateBirth,
                 Description = model.Description,
+                Password = model.Password!,
                 Email = model.Email!,
                 Gender = model.Gender!,
                 Ip = model.Ip,
                 Phone = (long)model.Phone!,
+                IsActive = true,
+                NumOfAttempts = 0,
+                IsConfirmedEmail = false,
+                IsConfirmedPhone = false,
             };
         }
         catch (ArgumentNullException ex)

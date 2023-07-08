@@ -3,7 +3,7 @@
 namespace Mint.WebApp.Identity.DTO_s;
 
 public record RoleDTO(
-    ObjectId? Id = null,
+    Guid? Id = null,
     string? Name = null,
     string? TranslateEn = null,
     string? UniqueKey = null,
@@ -11,5 +11,5 @@ public record RoleDTO(
     DateTime? UpdateDate = null);
 
 public record RoleSampleDTO(
-    ObjectId? Value = null,
+    Guid? Value = null,
     string? Label = null);

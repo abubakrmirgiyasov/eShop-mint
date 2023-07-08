@@ -11,7 +11,6 @@ public class LikeManager
         return new LikedProduct()
         {
             Id = Guid.NewGuid(),
-            CreatedDate = DateTime.Now,
             ProductId = model.ProductId,
             UserId = model.UserId,
         };

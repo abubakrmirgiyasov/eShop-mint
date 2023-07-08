@@ -1,10 +1,8 @@
-﻿using Mint.Infrastructure.MongoDb.Attributes;
-using Mint.Infrastructure.MongoDb.Models;
+﻿using Mint.Domain.Models.Base;
 
 namespace Mint.WebApp.Identity.Models;
 
-[BsonCollection("photos")]
-public class Photo : Document
+public class Photo : Entity<Guid>
 {
     public string FileName { get; set; } = null!;
 
@@ -15,4 +13,6 @@ public class Photo : Document
     public string FileType { get; set; } = null!;
 
     public long FileSize { get; set; }
+
+    public List<User>? Users { get; set; }
 }

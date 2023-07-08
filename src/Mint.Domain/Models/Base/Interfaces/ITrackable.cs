@@ -6,7 +6,7 @@ public interface ITrackable
 {
     byte[] RowVersion { get; set; }
 
-    DateTimeOffset CreatedDate { get; set; }
+    DateTimeOffset CreatedDate { get; }
 
     DateTimeOffset? UpdateDateTime { get; set; }
 }

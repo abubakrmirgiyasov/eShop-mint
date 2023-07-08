@@ -13,7 +13,7 @@ public class Entity<TKey> : IHasKey<TKey>, ITrackable
     [Timestamp]
     public byte[] RowVersion { get; set; }
     
-    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.Now;
+    public DateTimeOffset CreatedDate { get; } = DateTimeOffset.Now;
     
     public DateTimeOffset? UpdateDateTime { get; set; }
 }

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.Repositories;
-using MongoDB.Bson;
 
 namespace Mint.WebApp.Identity.Controllers;
 
@@ -22,7 +20,7 @@ public class RoleController : ControllerBase
     {
         try
         {
-            var roles = await _role.GetRolesAsync(cancellationToken);
+            var roles = await _role.GetRolesAsync();
             return Ok(roles);
         }
         catch (Exception ex)
@@ -31,8 +29,8 @@ public class RoleController : ControllerBase
         }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetRoleById(string id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetRoleById(Guid id)
     {
         try
         {
@@ -73,8 +71,8 @@ public class RoleController : ControllerBase
         }
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteRole(string id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRole(Guid id)
     {
         try
         {

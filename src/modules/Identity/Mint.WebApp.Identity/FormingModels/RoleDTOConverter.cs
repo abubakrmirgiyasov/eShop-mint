@@ -25,10 +25,10 @@ public class RoleDTOConverter
 				{
                     Id = model.Id,
                     Name = model.Name,
-                    CreationDate = model.CreationDate,
+                    CreationDate = model.CreatedDate.Date,
                     TranslateEn = model.TranslateEn,
                     UniqueKey = model.UniqueKey,
-                    UpdateDate = model.UpdateDate,
+                    UpdateDate = model.UpdateDateTime?.Date,
                 });
 			}
 			return roles;
@@ -83,9 +83,9 @@ public class RoleDTOConverter
 				Id = role.Id,
 				Name = role.Name,
 				TranslateEn = role.TranslateEn,
-				CreationDate = role.CreationDate,
+				CreationDate = role.CreatedDate.Date,
 				UniqueKey = role.UniqueKey,
-				UpdateDate = role.UpdateDate,
+				UpdateDate = role.UpdateDateTime?.Date,
 			};
 		}
 		catch (ArgumentNullException ex)

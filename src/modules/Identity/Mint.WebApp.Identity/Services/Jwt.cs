@@ -2,11 +2,10 @@
 using Microsoft.IdentityModel.Tokens;
 using Mint.Domain.Common;
 using Mint.WebApp.Identity.Models;
-using Mint.WebApp.Identity.Repositories;
 using Mint.WebApp.Identity.Services.Interfaces;
-using MongoDB.Bson;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Mint.WebApp.Identity.Services;
@@ -15,16 +14,16 @@ public class Jwt : IJwt
 {
     private readonly ILogger<Jwt> _logger;
     private readonly AppSettings _appSettings;
-    private readonly AuthenticationRepository _authentication;
+    private readonly ApplicationDbContext _context;
 
     public Jwt(
         ILogger<Jwt> logger,
         IOptions<AppSettings> appSettings,
-        AuthenticationRepository authentication)
+        ApplicationDbContext context)
     {
         _logger = logger;
         _appSettings = appSettings.Value;
-        _authentication = authentication;
+        _context = context;
     }
 
     public string GenerateJwtToken(User user)
@@ -57,7 +56,7 @@ public class Jwt : IJwt
         {
             return new RefreshToken()
             {
-                Token = _authentication.GetUniqueToken(),
+                Token = GetUniqueToken(),
                 Expires = DateTime.UtcNow.AddDays(7),
                 CreatedByIp = ip,
             };
@@ -69,7 +68,7 @@ public class Jwt : IJwt
         }
     }
 
-    public ObjectId ValidateJwtToken(string token)
+    public Guid ValidateJwtToken(string token)
     {
         try
         {
@@ -87,10 +86,11 @@ public class Jwt : IJwt
                 ValidateLifetime = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuerSigningKey = true,
+                ClockSkew = TimeSpan.Zero,
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            return ObjectId.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+            return Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
         }
         catch (Exception ex)
         {
@@ -98,4 +98,20 @@ public class Jwt : IJwt
             throw new Exception(ex.Message, ex);
         }
     }
+
+    public string GetUniqueToken()
+    {
+        try
+        {
+            var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+            var isUniqueToken = !_context.Users.Any(x => x.RefreshTokens.Any(y => y.Token == token));
+            return isUniqueToken ? token : GetUniqueToken();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
 }

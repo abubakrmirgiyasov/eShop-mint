@@ -21,7 +21,6 @@ public class UserManager
                 Email = model.Email!,
                 Password = new Hasher().GetHash(model.Password!, salt),
                 Salt = salt,
-                CreatedDate = DateTime.Now,
                 DateBirth = DateTime.Parse(model.DateOfBirth!),
                 Phone = model.Phone,
                 Gender = model.Gender!,

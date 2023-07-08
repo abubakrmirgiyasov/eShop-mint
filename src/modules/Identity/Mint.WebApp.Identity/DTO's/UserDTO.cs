@@ -15,7 +15,9 @@ public class UserFullBindingModel
     public string? Email { get; set; }
     
     public string? Password { get; set; }
-    
+
+    public string? NewPassword { get; set; }
+
     public long? Phone { get; set; }
     
     public string? Description { get; set; }
@@ -37,6 +39,8 @@ public class UserFullBindingModel
     public string? UserAgent { get; set; }
     
     public string? AcceptLanguage { get; set; }
+
+    public byte[]? Salt { get; set; }
 }
 
 public record UserFullViewModel(

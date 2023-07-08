@@ -1,10 +1,6 @@
-﻿using Mint.Infrastructure.MongoDb.Attributes;
-using Mint.Infrastructure.MongoDb.Models;
+﻿namespace Mint.WebApp.Ordering.Models;
 
-namespace Mint.WebApp.Ordering.Models;
-
-[BsonCollection("orders")]
-public class Order : Document
+public class Order
 {
     public int OrderNumber { get; set; }
 

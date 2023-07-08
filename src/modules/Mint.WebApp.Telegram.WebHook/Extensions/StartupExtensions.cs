@@ -1,7 +1,5 @@
 ﻿using Mint.Domain.Common;
 using Mint.Infrastructure.MessageBrokers;
-using Mint.Infrastructure.MongoDb.Interfaces;
-using Mint.Infrastructure.MongoDb.Services;
 using Mint.Infrastructure.Services.Extensions;
 using Mint.WebApp.Telegram.WebHook.Common;
 using Mint.WebApp.Telegram.WebHook.Interfaces;
@@ -57,10 +55,6 @@ public static class StartupExtensions
             builder.RegisterCommand(new SourceLanguageSetterCommand(languageManager, serializeOptions, ReplyKeyboardColumns));
             //
         });
-
-        var settings = builder.Configuration.GetSection("MongoDbSettings");
-        builder.Services.Configure<MongoDbSettings>(settings);
-        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         var brokers = builder.Configuration.GetSection("MessageBroker");
         var brokersSettings = brokers.Get<MessageBrokerOptions>();

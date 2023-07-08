@@ -1,5 +1,4 @@
-﻿using Mint.Infrastructure.MongoDb.Interfaces;
-using Mint.WebApp.Telegram.WebHook.Interfaces;
+﻿using Mint.WebApp.Telegram.WebHook.Interfaces;
 using Mint.WebApp.Telegram.WebHook.Models;
 using System.Text.Json;
 using Telegram.Bot;
@@ -14,7 +13,7 @@ public class TranslatorUpdateHandlerService : UpdateHandlerServiceBase
     private readonly CommandManager _command;
     private readonly JsonSerializerOptions _jsonSerializer;
     private readonly ILogger<TranslatorUpdateHandlerService> _logger;
-    private readonly IRepository<Models.User> _repository;
+    //private readonly IRepository<Models.User> _repository;
 
     public TranslatorUpdateHandlerService(
         ITranslator translator, 
@@ -22,8 +21,8 @@ public class TranslatorUpdateHandlerService : UpdateHandlerServiceBase
         ITelegramBotClient botClient,
         CommandManager command,
         JsonSerializerOptions jsonSerializer,
-        ILogger<TranslatorUpdateHandlerService> logger,
-        IRepository<Models.User> repository)
+        ILogger<TranslatorUpdateHandlerService> logger
+        /*IRepository<Models.User> repository*/)
         : base(botClient)
     {
         _translator = translator;
@@ -36,7 +35,7 @@ public class TranslatorUpdateHandlerService : UpdateHandlerServiceBase
         UnknownUpdateTypeReceived += OnUnknownUpdateTypeReceived;
         CallbackQueryReceived += OnCallbackQueryReceived;
         _logger = logger;
-        _repository = repository;
+        //_repository = repository;
     }
 
     private async Task OnMessageReceived(Message message, CancellationToken cancellationToken)
@@ -45,11 +44,11 @@ public class TranslatorUpdateHandlerService : UpdateHandlerServiceBase
 
         _logger.LogDebug("Message: {Message} from: {UserName} Id: {ChatId}", message.Text, chatId, message.Chat.Username);
 
-        _repository.InsertOne(new Models.User()
-        {
-            ChatId = chatId,
-            Message = message.Text,
-        });
+        //_repository.InsertOne(new Models.User()
+        //{
+        //    ChatId = chatId,
+        //    Message = message.Text,
+        //});
 
         if (message.Text!.StartsWith('/'))
         {

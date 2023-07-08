@@ -1,14 +1,10 @@
-﻿using Mint.Infrastructure.MongoDb.Attributes;
-using MongoDB.Bson;
+﻿namespace Mint.WebApp.Identity.Models;
 
-namespace Mint.WebApp.Identity.Models;
-
-[BsonCollection("user_roles")]
 public class UserRole
 {
-    public ObjectId UserId { get; set; }
+    public Guid UserId { get; set; }
 
-    public ObjectId RoleId { get; set; }
+    public Guid RoleId { get; set; }
 
     public User User { get; set; } = null!;
 

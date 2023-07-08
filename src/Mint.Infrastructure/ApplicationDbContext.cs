@@ -343,7 +343,6 @@ public class ApplicationDbContext : DbContext
                 DateBirth = new DateTime(2001, 12, 5),
                 IsActive = true,
                 IsConfirmedEmail = true,
-                CreatedDate = DateTime.Now,
             },
             new User()
             {
@@ -361,7 +360,6 @@ public class ApplicationDbContext : DbContext
                 Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                 IsActive = true,
                 IsConfirmedEmail = true,
-                CreatedDate = DateTime.Now,
             },
         };
 
@@ -391,7 +389,6 @@ public class ApplicationDbContext : DbContext
                 Id = Guid.NewGuid(),
                 Name = "Mint",
                 Url = "mint",
-                CreatedDate = DateTimeOffset.Now,
                 Country = "test",
                 City = "test",
                 Street = "test",

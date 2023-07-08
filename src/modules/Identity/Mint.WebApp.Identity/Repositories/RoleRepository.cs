@@ -1,23 +1,21 @@
-﻿using Microsoft.Extensions.Options;
-using Mint.Domain.Common;
-using Mint.Infrastructure.MongoDb.Services;
+﻿using Microsoft.EntityFrameworkCore;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.FormingModels;
 using Mint.WebApp.Identity.Models;
-using MongoDB.Bson;
+using Mint.WebApp.Identity.Repositories.Interfaces;
+using Mint.WebApp.Identity.Services;
 
 namespace Mint.WebApp.Identity.Repositories;
 
-public class RoleRepository : Repository<Role>
+public class RoleRepository : IRoleRepository
 {
     private readonly ILogger<RoleRepository> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public RoleRepository(
-        IOptions<MongoDbSettings> settings,
-        ILogger<RoleRepository> logger) 
-        : base(settings)
+    public RoleRepository(ILogger<RoleRepository> logger, ApplicationDbContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     /// <summary>
@@ -25,12 +23,12 @@ public class RoleRepository : Repository<Role>
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public Task<IEnumerable<RoleDTO>> GetRolesAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<RoleDTO>> GetRolesAsync()
     {
         try
         {
-            var roles = FilterBy(x => x.Name != ".");
-            return Task.Run(() => RoleDTOConverter.FormingMultiViewModel(roles), cancellationToken);
+            var roles = await _context.Roles.ToListAsync();
+            return RoleDTOConverter.FormingMultiViewModel(roles);
         }
         catch (Exception ex)
         {
@@ -45,17 +43,20 @@ public class RoleRepository : Repository<Role>
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<RoleDTO> GetRoleByIdAsync(string id)
+    public async Task<RoleDTO> GetRoleByIdAsync(Guid id)
     {
         try
         {
-            var role = await FindByIdAsync(id);
+            var roles = await _context.Roles.ToListAsync();
+            var role = roles.FirstOrDefault(x => x.Id == id)
+                ?? throw new ArgumentNullException(nameof(Role), "Role wasn't found");
+
             return RoleDTOConverter.FormingSingleViewModel(role);
         }
         catch (ArgumentNullException ex)
         {
             _logger.LogCritical("Message: {Message}, Inner: {ex}", ex.Message, ex);
-            throw new Exception(ex.Message, ex);
+            throw new ArgumentNullException(ex.Message, ex);
         }
         catch (Exception ex)
         {
@@ -74,10 +75,14 @@ public class RoleRepository : Repository<Role>
     {
         try
         {
-            var role = await FindOneAsync(x => x.UniqueKey == model.UniqueKey)
-                ?? throw new Exception("Role already exists");
+            var roles = await _context.Roles.ToListAsync();
+            var role = roles.FirstOrDefault(x => x.UniqueKey == model.UniqueKey);
 
-            await InsertOneAsync(RoleDTOConverter.FormingSingleBindingModel(model));
+            if (role != null)
+                throw new Exception("Role already exists");
+            
+            await _context.Roles.AddAsync(RoleDTOConverter.FormingSingleBindingModel(model));
+            await _context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
@@ -97,12 +102,14 @@ public class RoleRepository : Repository<Role>
     {
         try
         {
-            var role = await FindOneAsync(x => x.UniqueKey == model.UniqueKey)
-                ?? throw new ArgumentNullException(nameof(model), "Role doesn't exists");
-            
+            var roles = await _context.Roles.ToListAsync();
+            var role = roles.FirstOrDefault(x => x.UniqueKey == model.UniqueKey)
+                ?? throw new ArgumentNullException(nameof(Role), "Role doesn't exists");
 
+            _context.Roles.Update(RoleDTOConverter.FormingSingleBindingModel(model));
+            await _context.SaveChangesAsync();
         }
-        catch (ArgumentNullException ex) 
+        catch (ArgumentNullException ex)
         {
             throw new ArgumentNullException(ex.Message, ex);
         }
@@ -119,14 +126,16 @@ public class RoleRepository : Repository<Role>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="Exception"></exception>
-    public async Task DeleteRoleAsync(string id)
+    public async Task DeleteRoleAsync(Guid id)
     {
         try
         {
-            var role = await FindOneAsync(x => x.Id.ToString() == id)
+            var roles = await _context.Roles.ToListAsync();
+            var role = roles.FirstOrDefault(x => x.Id == id)
                 ?? throw new ArgumentNullException(nameof(Role), "Role doesn't exists");
 
-
+            _context.Roles.Remove(role);
+            await _context.SaveChangesAsync();
         }
         catch (ArgumentNullException ex)
         {

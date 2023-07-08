@@ -1,5 +1,4 @@
 ﻿using Mint.WebApp.Identity.Models;
-using MongoDB.Bson;
 
 namespace Mint.WebApp.Identity.Services.Interfaces;
 
@@ -20,7 +19,7 @@ public interface IJwt
     /// </summary>
     /// <param name="token"></param>
     /// <returns>if valid userId else null</returns>
-    ObjectId ValidateJwtToken(string token);
+    Guid ValidateJwtToken(string token);
 
     /// <summary>
     /// Generates Refresh Token
