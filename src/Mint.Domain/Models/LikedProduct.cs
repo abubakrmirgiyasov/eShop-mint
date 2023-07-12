@@ -4,11 +4,11 @@ namespace Mint.Domain.Models;
 
 public class LikedProduct : Entity<Guid>
 {
-    public Guid UserId { get; set; }
+    //public Guid UserId { get; set; }
 
-    public User User { get; set; } = null!;
+    //public User User { get; set; } = null!;
 
-    public Guid? ProductId { get; set; }
+    //public Guid? ProductId { get; set; }
 
-    public Product? Product { get; set; }
+    //public Product? Product { get; set; }
 }

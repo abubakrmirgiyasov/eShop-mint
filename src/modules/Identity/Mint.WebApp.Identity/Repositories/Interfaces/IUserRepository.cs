@@ -12,7 +12,7 @@ public interface IUserRepository
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<UserFullViewModel>> GetUsersAsync(CancellationToken? cancellationToken = default);
+    Task<IEnumerable<UserFullViewModel>> GetUsersAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method gets single user by id
@@ -20,7 +20,7 @@ public interface IUserRepository
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> GetUserByIdAsync(Guid id, CancellationToken? cancellationToken = default);
+    Task<UserFullViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method gets single user by email
@@ -28,7 +28,7 @@ public interface IUserRepository
     /// <param name="email"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> GetUserByEmailAsync(string email, CancellationToken? cancellationToken = default);
+    Task<UserFullViewModel> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method gets single user by phone number
@@ -36,7 +36,7 @@ public interface IUserRepository
     /// <param name="phone"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> GetUserByPhoneAsync(long phone, CancellationToken? cancellationToken = default);
+    Task<UserFullViewModel> GetUserByPhoneAsync(long phone, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method creates new user by email
@@ -44,7 +44,7 @@ public interface IUserRepository
     /// <param name="model"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> CreateUserWithEmailAsync(UserFullBindingModel model, CancellationToken? cancellationToken = default);
+    Task<UserFullViewModel> CreateUserWithEmailAsync(UserFullBindingModel model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method creates new user by phone number
@@ -52,7 +52,7 @@ public interface IUserRepository
     /// <param name="model"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> CreateUserWithPhoneAsync(UserFullBindingModel model, CancellationToken? cancellationToken = default);
+    Task<UserFullViewModel> CreateUserWithPhoneAsync(UserFullBindingModel model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method updates user
@@ -60,7 +60,7 @@ public interface IUserRepository
     /// <param name="model"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> UpdateUserAsync(UserFullBindingModel model, CancellationToken? cancellationToken = default);
+    Task<UserFullViewModel> UpdateUserAsync(UserFullBindingModel model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method deletes user
@@ -68,5 +68,5 @@ public interface IUserRepository
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeleteUserAsync(Guid id, CancellationToken? cancellationToken = default);
+    Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default);
 }

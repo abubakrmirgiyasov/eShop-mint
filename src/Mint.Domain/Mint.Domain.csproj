@@ -7,8 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BindingModels\**" />
+    <Compile Remove="FormingModels\**" />
+    <Compile Remove="ViewModels\**" />
+    <EmbeddedResource Remove="BindingModels\**" />
+    <EmbeddedResource Remove="FormingModels\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="BindingModels\**" />
+    <None Remove="FormingModels\**" />
+    <None Remove="ViewModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

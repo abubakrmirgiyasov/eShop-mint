@@ -22,45 +22,7 @@ namespace Mint.WebApp.Identity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.Photo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FileExtension")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("FileType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Photos");
-                });
-
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.RefreshToken", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,7 +73,7 @@ namespace Mint.WebApp.Identity.Migrations
                     b.ToTable("RefreshToken");
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.Role", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,9 +108,32 @@ namespace Mint.WebApp.Identity.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
+                            Name = "Админ",
+                            TranslateEn = "ADMIN",
+                            UniqueKey = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
+                            Name = "Продавец",
+                            TranslateEn = "SELLER",
+                            UniqueKey = "SELLER"
+                        },
+                        new
+                        {
+                            Id = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
+                            Name = "Покупатель",
+                            TranslateEn = "BUYER",
+                            UniqueKey = "BUYER"
+                        });
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.User", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,9 +224,52 @@ namespace Mint.WebApp.Identity.Migrations
                     b.HasIndex("PhotoId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199"),
+                            DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
+                            Email = "abubakrmirgiyasov@gmail.com",
+                            FirstName = "Миргиясов",
+                            Gender = "M",
+                            Ip = "127.0.0.1",
+                            IsActive = true,
+                            IsConfirmedEmail = true,
+                            IsConfirmedPhone = false,
+                            IsDeleted = false,
+                            IsSeller = false,
+                            LastName = "Мукимжонович",
+                            NumOfAttempts = 0,
+                            Password = "CQXEXwhiM8+xLOrwC1nMfI0XdfSpUQkfZnDB3deos5E=",
+                            Phone = 89502768428L,
+                            Salt = new byte[] { 224, 24, 177, 243, 105, 94, 3, 80, 52, 24, 91, 125, 225, 221, 244, 174 },
+                            SecondName = "Абубакр"
+                        },
+                        new
+                        {
+                            Id = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c"),
+                            DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
+                            Email = "admin@mint.com",
+                            FirstName = "Test",
+                            Gender = "F",
+                            Ip = "127.0.0.2",
+                            IsActive = true,
+                            IsConfirmedEmail = true,
+                            IsConfirmedPhone = false,
+                            IsDeleted = false,
+                            IsSeller = false,
+                            NumOfAttempts = 0,
+                            Password = "RwQLTdHUJjblnKxM5inoDraxNz84H1M1yMEMgyt/G/Y=",
+                            Phone = 83452763423L,
+                            Salt = new byte[] { 224, 24, 177, 243, 105, 94, 3, 80, 52, 24, 91, 125, 225, 221, 244, 174 },
+                            SecondName = "User"
+                        });
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.UserRole", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.UserRole", b =>
                 {
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
@@ -254,11 +282,85 @@ namespace Mint.WebApp.Identity.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
+                            UserId = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
+                            UserId = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
+                            UserId = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
+                            UserId = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
+                            UserId = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
+                            UserId = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c")
+                        });
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.RefreshToken", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Photo", b =>
                 {
-                    b.HasOne("Mint.WebApp.Identity.Models.User", "User")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileExtension")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Identity.RefreshToken", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Identity.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -267,9 +369,9 @@ namespace Mint.WebApp.Identity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.User", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.User", b =>
                 {
-                    b.HasOne("Mint.WebApp.Identity.Models.Photo", "Photo")
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
                         .WithMany("Users")
                         .HasForeignKey("PhotoId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -277,15 +379,15 @@ namespace Mint.WebApp.Identity.Migrations
                     b.Navigation("Photo");
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.UserRole", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.UserRole", b =>
                 {
-                    b.HasOne("Mint.WebApp.Identity.Models.Role", "Role")
+                    b.HasOne("Mint.Domain.Models.Identity.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mint.WebApp.Identity.Models.User", "User")
+                    b.HasOne("Mint.Domain.Models.Identity.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,21 +398,21 @@ namespace Mint.WebApp.Identity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.Photo", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.Role", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("Mint.WebApp.Identity.Models.User", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Identity.User", b =>
                 {
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Photo", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

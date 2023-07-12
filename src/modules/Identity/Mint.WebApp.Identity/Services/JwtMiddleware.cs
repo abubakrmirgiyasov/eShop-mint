@@ -22,7 +22,8 @@ public class JwtMiddleware
             .Last();
 
         var userId = jwt.ValidateJwtToken(token!);
-        context.Items["User"] = await user.GetUserByIdAsync(userId);
+        if (userId != null)
+            context.Items["User"] = await user.GetUserByIdAsync(userId.Value);
         await _next(context);
     }
 }

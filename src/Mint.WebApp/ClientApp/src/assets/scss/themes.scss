@@ -1,18 +1,11 @@
-@import "../scss/icons.scss";
-@import "../scss/config/default/bootstrap.scss";
-@import "../scss/config/default/app.scss";
-@import "../scss/config/default/custom.scss";
+@import "icons";
+@import "config/default/bootstrap";
+@import "config/default/app";
+@import "config/default/custom";
 @import"./shepherd.css";
 @import "./mermaid.min.css";
 
-//RTL 
-// @import "../scss/rtl/components-rtl";
-// @import "../scss/rtl/layouts-rtl";
-// @import "../scss/rtl/plugins-rtl";
-// @import "../scss/rtl/pages-rtl";
-
-
-//Rigthsidebar offcanvas
+// Rigthsidebar offcanvas
 .offcanvas-header-dark {
   .btn-close {
     filter: invert(1) grayscale(100%) brightness(200%);

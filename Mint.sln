@@ -45,9 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.MAUI.App", "src\module
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{7A823355-1953-4B19-A64F-F7A53AF449A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Email", "src\modules\Identity\Mint.WebApp.Email\Mint.WebApp.Email.csproj", "{7F551865-7DAB-45FD-82A8-693B8DB35EA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Email", "src\modules\Identity\Mint.WebApp.Email\Mint.WebApp.Email.csproj", "{7F551865-7DAB-45FD-82A8-693B8DB35EA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Identity", "src\modules\Identity\Mint.WebApp.Identity\Mint.WebApp.Identity.csproj", "{8FD30732-AB43-4A88-AE02-15E8EBF0E48E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Identity", "src\modules\Identity\Mint.WebApp.Identity\Mint.WebApp.Identity.csproj", "{8FD30732-AB43-4A88-AE02-15E8EBF0E48E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EA285515-F3E1-4ACA-B6B4-9109F1C73DEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +151,7 @@ Global
 		{7A823355-1953-4B19-A64F-F7A53AF449A7} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{7F551865-7DAB-45FD-82A8-693B8DB35EA8} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
 		{8FD30732-AB43-4A88-AE02-15E8EBF0E48E} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
+		{EA285515-F3E1-4ACA-B6B4-9109F1C73DEE} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}

@@ -34,14 +34,14 @@ public interface IAuthenticationRepository
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task NewPassword(UserFullBindingModel model);
+    Task UpdatePasswordAsync(UserFullBindingModel model);
 
     /// <summary>
     /// This method calls when user forgot his password
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task ForgotPassword(UserFullBindingModel model);
+    Task ForgotPasswordAsync(UserFullBindingModel model);
 
     /// <summary>
     /// This method calls when user is logout

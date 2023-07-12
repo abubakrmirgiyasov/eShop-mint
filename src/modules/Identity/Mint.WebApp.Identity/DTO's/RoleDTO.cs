@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson;
-
-namespace Mint.WebApp.Identity.DTO_s;
+﻿namespace Mint.WebApp.Identity.DTO_s;
 
 public record RoleDTO(
     Guid? Id = null,

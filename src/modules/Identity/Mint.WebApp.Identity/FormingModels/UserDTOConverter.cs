@@ -1,5 +1,6 @@
-﻿using Mint.WebApp.Identity.DTO_s;
-using Mint.WebApp.Identity.Models;
+﻿using Mint.Domain.Helpers;
+using Mint.Domain.Models.Identity;
+using Mint.WebApp.Identity.DTO_s;
 
 namespace Mint.WebApp.Identity.FormingModels;
 
@@ -8,12 +9,91 @@ namespace Mint.WebApp.Identity.FormingModels;
 /// </summary>
 public class UserDTOConverter
 {
+    /// <summary>
+    /// Converting list of models to view models
+    /// </summary>
+    /// <param name="models"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static IEnumerable<UserFullViewModel> FormingMultiViewModels(List<User> models)
+    {
+        try
+        {
+            var users = new List<UserFullViewModel>();
+
+            foreach (var model in models)
+            {
+                var user = new UserFullViewModel()
+                {
+                    Id = model.Id,
+                    FirstName = model.FirstName,
+                    SecondName = model.LastName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Phone = model.Phone,
+                    DateBirth = model.DateBirth,
+                    Gender = model.Gender,
+                    Description = model.Description,
+                    IsConfirmedEmail = model.IsConfirmedEmail,
+                    IsConfirmedPhone = model.IsConfirmedPhone,
+                    Photo = PhotoHelper.GetImage64(model.Photo?.FilePath),
+                    Roles = new List<RoleSampleDTO>(),
+                };
+
+                foreach (var role in model.UserRoles)
+                {
+                    user.Roles.Add(new RoleSampleDTO()
+                    {
+                        Label = role.Role.Name,
+                        Value = role.Role.Id,
+                    });
+                }
+
+                users.Add(user);
+            }
+
+            return users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    /// <summary>
+    /// Converting single model to view model
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     public static UserFullViewModel FormingSingleViewModel(User model)
     {
-        return new UserFullViewModel()
+        var user = new UserFullViewModel()
         {
-
+            Id = model.Id,
+            FirstName = model.FirstName,
+            SecondName = model.LastName,
+            LastName = model.LastName,
+            Email = model.Email,
+            Phone = model.Phone,
+            DateBirth = model.DateBirth,
+            Gender = model.Gender,
+            Description = model.Description,
+            IsConfirmedEmail = model.IsConfirmedEmail,
+            IsConfirmedPhone = model.IsConfirmedPhone,
+            Photo = PhotoHelper.GetImage64(model.Photo?.FilePath),
+            Roles = new List<RoleSampleDTO>(),
         };
+
+        foreach (var role in model.UserRoles)
+        {
+            user.Roles.Add(new RoleSampleDTO()
+            {
+                Label = role.Role.Name,
+                Value = role.Role.Id,
+            });
+        }
+
+        return user;
     }
 
     /// <summary>

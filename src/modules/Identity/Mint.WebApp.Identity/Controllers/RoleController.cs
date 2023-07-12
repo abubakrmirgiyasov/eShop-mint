@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mint.Domain.Attributes;
+using Mint.Domain.Common;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.Repositories;
 
@@ -6,6 +8,7 @@ namespace Mint.WebApp.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
+[Authorize(Roles = Constants.ADMIN)]
 public class RoleController : ControllerBase
 {
     private readonly RoleRepository _role;
@@ -20,7 +23,7 @@ public class RoleController : ControllerBase
     {
         try
         {
-            var roles = await _role.GetRolesAsync();
+            var roles = await _role.GetRolesAsync(cancellationToken);
             return Ok(roles);
         }
         catch (Exception ex)
@@ -30,11 +33,11 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetRoleById(Guid id)
+    public async Task<IActionResult> GetRoleById(Guid id, CancellationToken cancellationToken)
     {
         try
         {
-            var role = await _role.GetRoleByIdAsync(id);
+            var role = await _role.GetRoleByIdAsync(id, cancellationToken);
             return Ok(role);
         }
         catch (Exception ex)
@@ -44,11 +47,11 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRole([FromBody] RoleDTO model)
+    public async Task<IActionResult> CreateRole([FromBody] RoleDTO model, CancellationToken cancellationToken)
     {
         try
         {
-            await _role.CreateRoleAsync(model);
+            await _role.CreateRoleAsync(model, cancellationToken);
             return Ok(new { message = "Role was created successfully" });
         }
         catch (Exception ex)
@@ -58,11 +61,11 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateRole([FromBody] RoleDTO model)
+    public async Task<IActionResult> UpdateRole([FromBody] RoleDTO model, CancellationToken cancellationToken)
     {
         try
         {
-            await _role.UpdateRoleAsync(model);
+            await _role.UpdateRoleAsync(model, cancellationToken);
             return Ok(new { message = "Updated successfully" });
         }
         catch (Exception ex)
@@ -72,11 +75,11 @@ public class RoleController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRole(Guid id)
+    public async Task<IActionResult> DeleteRole(Guid id, CancellationToken cancellationToken)
     {
         try
         {
-            await _role.DeleteRoleAsync(id);
+            await _role.DeleteRoleAsync(id, cancellationToken);
             return Ok(new { message = "Deleted successfully" });
         }
         catch (Exception ex)

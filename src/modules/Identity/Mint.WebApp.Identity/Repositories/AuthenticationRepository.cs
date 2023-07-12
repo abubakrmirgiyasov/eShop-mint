@@ -2,9 +2,10 @@
 using Microsoft.Extensions.Options;
 using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
+using Mint.Domain.Helpers;
+using Mint.Domain.Models.Identity;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.FormingModels;
-using Mint.WebApp.Identity.Models;
 using Mint.WebApp.Identity.Repositories.Interfaces;
 using Mint.WebApp.Identity.Services;
 using Mint.WebApp.Identity.Services.Interfaces;
@@ -53,6 +54,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         try
         {
             var users = await _context.Users
+                .Include(x => x.Photo)
                 .Include(x => x.RefreshTokens)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
@@ -95,7 +97,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Email = user.Email,
                 RefreshToken = refreshToken.Token,
                 AccessToken = jwt,
-                Image = "",
+                Image = PhotoHelper.GetImage64(user.Photo?.FilePath),
                 Roles = RoleDTOConverter.FormingSampleMultiViewModel(user.UserRoles).ToList(),
             };
         }
@@ -126,15 +128,13 @@ public class AuthenticationRepository : IAuthenticationRepository
     {
         try
         {
-            const string Buyer = "buyer_key";
-
             var salt = new Hasher().GetSalt();
             var password = new Hasher().GetHash(model.Password!, salt);
 
             model.Password = password;
             model.Salt = salt;
 
-            var role = _context.Roles.FirstOrDefault(x => x.UniqueKey == Buyer)
+            var role = _context.Roles.FirstOrDefault(x => x.UniqueKey == nameof(Constants.BUYER))
                 ?? throw new Exception("Что-то пошло не так");
 
             var user = UserDTOConverter.FormingSingleBindingModel(model);
@@ -212,7 +212,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Email = user.Email,
                 RefreshToken = newRefreshToken.Token,
                 AccessToken = jwt,
-                Image = "",
+                Image = PhotoHelper.GetImage64(user.Photo?.FilePath),
                 Roles = RoleDTOConverter.FormingSampleMultiViewModel(user.UserRoles).ToList(),
             };
         }
@@ -239,7 +239,7 @@ public class AuthenticationRepository : IAuthenticationRepository
     /// <param name="model"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task NewPassword(UserFullBindingModel model)
+    public Task UpdatePasswordAsync(UserFullBindingModel model)
     {
         throw new NotImplementedException();
     }
@@ -250,7 +250,7 @@ public class AuthenticationRepository : IAuthenticationRepository
     /// <param name="model"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task ForgotPassword(UserFullBindingModel model)
+    public Task ForgotPasswordAsync(UserFullBindingModel model)
     {
         throw new NotImplementedException();
     }
@@ -340,7 +340,10 @@ public class AuthenticationRepository : IAuthenticationRepository
     private User GetUserByRefreshToken(string token)
     {
         var user = _context.Users
+            .Include(x => x.Photo)
             .Include(x => x.RefreshTokens)
+            .Include(x => x.UserRoles)
+            .ThenInclude(x => x.Role)
             .ToList();
         return user.FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token))
             ?? throw new ArgumentNullException(nameof(User), "Invalid token");

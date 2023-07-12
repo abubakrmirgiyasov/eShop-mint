@@ -1,10 +1,8 @@
-﻿using MongoDB.Bson;
-
-namespace Mint.WebApp.Identity.DTO_s;
+﻿namespace Mint.WebApp.Identity.DTO_s;
 
 public class UserFullBindingModel
 {
-    public ObjectId? Id { get; set; }
+    public Guid? Id { get; set; }
 
     public string? FirstName { get; set; }
     
@@ -44,7 +42,7 @@ public class UserFullBindingModel
 }
 
 public record UserFullViewModel(
-    ObjectId? Id = null,
+    Guid? Id = null,
     string? FirstName = null,
     string? SecondName = null,
     string? LastName = null,
@@ -61,4 +59,5 @@ public record UserFullViewModel(
     bool? IsConfirmedPhone = null,
     string? UserAgent = null,
     string? AcceptLanguage = null,
-    List<RoleDTO>? Roles = null);
+    string? Photo = null,
+    List<RoleSampleDTO>? Roles = null);

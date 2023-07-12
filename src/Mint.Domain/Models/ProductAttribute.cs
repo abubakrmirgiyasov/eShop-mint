@@ -2,11 +2,11 @@
 
 public class ProductAttribute
 {
-    public Guid? ProductId { get; set; }
+    //public Guid? ProductId { get; set; }
 
-    public Product? Product { get; set; }
+    //public Product? Product { get; set; }
 
-    public Guid? AttributeId { get; set; }
+    //public Guid? AttributeId { get; set; }
 
-    public Attribute? Attribute { get; set; }
+    //public Attribute? Attribute { get; set; }
 }

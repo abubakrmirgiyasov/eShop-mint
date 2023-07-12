@@ -1,21 +1,11 @@
-/*
-* Remix Icon v2.5.0
-* https://remixicon.com
-* https://github.com/Remix-Design/RemixIcon
-*
-* Copyright RemixIcon.com
-* Released under the Apache License Version 2.0
-*
-* Date: 2020-05-23
-*/
 @font-face {
   font-family: "remixicon";
-  src: url('../../../fonts/remixicon.eot?t=1590207869815'); /* IE9*/
-  src: url('../../../fonts/remixicon.eot?t=1590207869815#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url("../../../fonts/remixicon.woff2?t=1590207869815") format("woff2"),
-  url("../../../fonts/remixicon.woff?t=1590207869815") format("woff"),
-  url('../../../fonts/remixicon.ttf?t=1590207869815') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../../../fonts/remixicon.svg?t=1590207869815#remixicon') format('svg'); /* iOS 4.1- */
+  src: url('../../fonts/remixicon.eot?t=1590207869815'); /* IE9*/
+  src: url('../../fonts/remixicon.eot?t=1590207869815#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("../../fonts/remixicon.woff2?t=1590207869815") format("woff2"),
+  url("../../fonts/remixicon.woff?t=1590207869815") format("woff"),
+  url('../../fonts/remixicon.ttf?t=1590207869815') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../../fonts/remixicon.svg?t=1590207869815#remixicon') format('svg'); /* iOS 4.1- */
   font-display: swap;
 }
 

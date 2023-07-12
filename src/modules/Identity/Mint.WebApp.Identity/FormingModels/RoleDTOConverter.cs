@@ -1,5 +1,5 @@
-﻿using Mint.WebApp.Identity.DTO_s;
-using Mint.WebApp.Identity.Models;
+﻿using Mint.Domain.Models.Identity;
+using Mint.WebApp.Identity.DTO_s;
 
 namespace Mint.WebApp.Identity.FormingModels;
 

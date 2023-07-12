@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Mint.Domain.Common;
-using Mint.WebApp.Identity.Models;
+using Mint.Domain.Models.Identity;
 using Mint.WebApp.Identity.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -68,12 +68,12 @@ public class Jwt : IJwt
         }
     }
 
-    public Guid ValidateJwtToken(string token)
+    public Guid? ValidateJwtToken(string token)
     {
         try
         {
             if (token == null)
-                throw new ArgumentNullException(nameof(RefreshToken), "token is null");
+                return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);

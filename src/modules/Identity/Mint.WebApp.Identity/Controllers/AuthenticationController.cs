@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mint.Domain.Attributes;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.Extensions;
-using Mint.WebApp.Identity.Repositories;
+using Mint.WebApp.Identity.Repositories.Interfaces;
 
 namespace Mint.WebApp.Identity.Controllers;
 
@@ -9,9 +10,9 @@ namespace Mint.WebApp.Identity.Controllers;
 [Route("api/[controller]/[action]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly AuthenticationRepository _authentication;
+    private readonly IAuthenticationRepository _authentication;
 
-    public AuthenticationController(AuthenticationRepository authentication)
+    public AuthenticationController(IAuthenticationRepository authentication)
     {
         _authentication = authentication;
     }
@@ -64,6 +65,35 @@ public class AuthenticationController : ControllerBase
         catch (Exception ex)
         {
             return Unauthorized(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> UpdatePassword([FromBody] UserFullBindingModel model)
+    {
+        try
+        {
+            await _authentication.UpdatePasswordAsync(model);
+            return Ok(new { message = "Обновлено успешно"});
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgetPassword([FromBody] UserFullBindingModel model)
+    {
+        try
+        {
+            await _authentication.ForgotPasswordAsync(model);
+            return Ok(new { message = "Обновлено успешно" });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 
