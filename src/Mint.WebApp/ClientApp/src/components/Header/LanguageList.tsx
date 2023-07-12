@@ -1,7 +1,7 @@
 import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
-import i18n from "../../services/i18n/i18n";
+// import i18n from "../../services/i18n/i18n";
 import {switchLanguage} from "../../store/language/language";
 import { get } from "lodash";
 import {languages} from "../../constants/commonList";
@@ -22,12 +22,12 @@ const LanguageList: FC<ReactNode> = () => {
 
     useEffect(() => {
         setSelectedLanguage(language.name);
-    }, [language]);
+    }, []);
 
     const onChangeLanguage = (value: string) => {
-        i18n.changeLanguage(value).then(r => console.log(r)).catch((e) => console.log(e));
-        dispatch(switchLanguage(value));
-        setSelectedLanguage(value);
+        // i18n.changeLanguage(value).then(r => console.log(r)).catch((e) => console.log(e));
+         dispatch(switchLanguage(value));
+         setSelectedLanguage(value);
     }
 
     const toggleLanguageDropDown = () => {
@@ -56,7 +56,8 @@ const LanguageList: FC<ReactNode> = () => {
                     {Object.keys(languages).map((key) => (
                       <DropdownItem
                         key={key}
-                        onClick={(key) => onChangeLanguage(key)}
+                        className={`notify-item ${selectedLanguage === key ? "active" : "none"}`}
+                        onClick={() => onChangeLanguage(key)}
                       >
                           <img
                             src={get(languages, `${key}.flag`)}
