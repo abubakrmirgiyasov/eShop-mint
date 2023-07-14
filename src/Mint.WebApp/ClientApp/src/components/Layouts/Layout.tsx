@@ -16,8 +16,6 @@ const Layout = ({ children }: ReactNode) => {
     auth: state.Auth,
   }));
 
-  console.log(auth)
-
   useEffect(() => {
     if (auth.isLoggedIn) console.log("here we get all liked prod");
 

@@ -7,14 +7,19 @@ import {
   REGISTER_SUCCESS,
 } from "./actionType";
 
+interface IUserAuth {
+  isLoggedIn: boolean;
+  user?: IUser | null;
+}
+
 const user: IUser = JSON.parse(localStorage.getItem("auth_user"));
 
-const initState = user
+const initState: IUserAuth = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 
 export default function (state = initState, action) {
-  const { type, payload } = action;
+  const { type, payload }: { type: string; payload: IUserAuth } = action;
 
   switch (type) {
     case REGISTER_SUCCESS:

@@ -4,51 +4,59 @@ import { IAuth } from "../../services/types/IAuth";
 import { useSelector } from "react-redux";
 import adaptiveMenu from "../../helpers/adaptiveMenu";
 import {
+  Button,
   Dropdown,
   DropdownMenu,
   DropdownToggle,
   Form,
   Input,
-  Button,
 } from "reactstrap";
+import { LanguageList } from "./LanguageList";
+import CartList from "./CartList";
+import FavoriteList from "./FavoriteList";
+import Request from "../../helpers/requestWrapper/request";
+import { IProduct } from "../../services/types/IProduct";
+import CompareList from "./CompareList";
+
 // media
 import Logo from "../../assets/images/logos/logo-light.png";
 import LogoSm from "../../assets/images/logos/Logo.png";
-import {LanguageList} from "./LanguageList";
+import SearchOptions from "./SearchOptions";
 
 interface IHeader {
+  request: Request;
   headerClass: string;
   layout: string;
   onChangeLayoutMode: (value: string) => void;
 }
 
-const Header: FC<IHeader> = ({ headerClass, layout, onChangeLayoutMode }) => {
+const Header: FC<IHeader> = ({
+  request,
+  headerClass,
+  layout,
+  onChangeLayoutMode,
+}) => {
   const [value, setValue] = useState<string>("");
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const { auth }: { auth: IAuth } = useSelector((state) => ({
-    auth: state.Auth,
-  }));
+  const {
+    auth,
+    favorites,
+    message,
+  }: { auth: IAuth; favorites: IProduct[]; message: string } = useSelector(
+    (state) => ({
+      auth: state.Auth,
+      favorites: state.Favorites.likes,
+      message: state.Message,
+    })
+  );
 
   const toggleMenu = () => {
     adaptiveMenu();
   };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate("/search/query=" + value);
-  };
-
-  const onChangeData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
-  // const onRemoveValue = () => {
-  //   setValue("");
-  // }
 
   return (
     <React.Fragment>
@@ -89,28 +97,8 @@ const Header: FC<IHeader> = ({ headerClass, layout, onChangeLayoutMode }) => {
                   <span></span>
                 </span>
               </Button>
-              <Form
-                className={"app-search d-none d-md-block"}
-                onSubmit={handleSearch}
-              >
-                <div className={"position-relative"}>
-                  <Input
-                    type={"text"}
-                    placeholder={"Посик..."}
-                    defaultValue={value}
-                    onChange={onChangeData}
-                    id={"searchId"}
-                  />
-                  <span className={"ri-search-2-line search-widget-icon"}></span>
-                  <span
-                    className={
-                      `ri-close-circle-fill search-widget-icon search-widget-icon-close ${value ? "d-block" : "d-none"}`
-                    }
-                    id={"search-close-options"}
-                    // onClick={onRemoveValue}
-                  ></span>
-                </div>
-              </Form>
+
+              <SearchOptions />
             </div>
             <div className={"d-flex align-items-center"}>
               <Dropdown
@@ -124,7 +112,7 @@ const Header: FC<IHeader> = ({ headerClass, layout, onChangeLayoutMode }) => {
                     "btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                   }
                 >
-                  <i className={"bx bx-search fs-22"}></i>
+                  <span className={"ri-search-2-line fs-22"}></span>
                 </DropdownToggle>
                 <DropdownMenu
                   className={"dropdown-menu-lg dropdown-menu-end p-0"}
@@ -134,12 +122,11 @@ const Header: FC<IHeader> = ({ headerClass, layout, onChangeLayoutMode }) => {
                       <div className={"input-group"}>
                         <Input
                           type={"text"}
-                          className={"form-control"}
                           placeholder={"Поиск..."}
                           defaultValue={""}
                         />
                         <Button className={"btn btn-primary"} type={"submit"}>
-                          <i className={"mdi mdi-magnify"}></i>
+                          <span className={"ri-search-2-line"}></span>
                         </Button>
                       </div>
                     </div>
@@ -149,6 +136,15 @@ const Header: FC<IHeader> = ({ headerClass, layout, onChangeLayoutMode }) => {
 
               <LanguageList />
 
+              <CartList />
+
+              <FavoriteList
+                isLoggedIn={auth.isLoggedIn && !!auth.user}
+                favorites={favorites}
+                request={request}
+              />
+
+              <CompareList />
             </div>
           </div>
         </div>
