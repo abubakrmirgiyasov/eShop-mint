@@ -9,5 +9,5 @@ public record RoleDTO(
     DateTime? UpdateDate = null);
 
 public record RoleSampleDTO(
-    Guid? Value = null,
+    string? Value = null,
     string? Label = null);

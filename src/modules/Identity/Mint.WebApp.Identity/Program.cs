@@ -9,11 +9,13 @@ const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(
-    options => options.AddPolicy(MyAllowSpecificOrigins, 
-    builder => builder.WithOrigins("http://localhost:5173")
+builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy =>
+{
+    policy.WithOrigins("http://127.0.0.1:5173")
+        .AllowAnyMethod()
         .AllowAnyHeader()
-        .AllowAnyMethod()));
+        .AllowAnyOrigin();
+}));
 
 var appSettings = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettings);

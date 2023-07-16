@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useProfile } from "../hooks/useProfile";
 import { signOut } from "../store/authentication/authentication";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface IPublicRoute {
   children: ReactNode;
@@ -10,32 +10,25 @@ interface IPublicRoute {
 
 interface IPrivateRoute {
   children: ReactNode;
-  locations?: string;
 }
 
 const PublicRoutesLayout: FC<IPublicRoute> = ({ children }) => {
   return <>{children}</>;
 };
 
-const PrivateRoutesLayout: FC<IPrivateRoute> = ({ children, locations }) => {
+const PrivateRoutesLayout: FC<IPrivateRoute> = ({ children }) => {
   const { user, isLoading, token } = useProfile();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user && !token && isLoading) dispatch(signOut());
   }, [token, user, isLoading, token, dispatch]);
 
-  // if (!user && !token && isLoading) {
-  //   return (
-  //       <Navigate
-  //         to{{
-  //           pathname: "/",
-  //           state: {from: locations}
-  //         }}
-  //       />
-  //   );
-  // }
+  if (!user && !token && isLoading) {
+    navigate("/signin");
+  }
 
   return <>{children}</>;
 };

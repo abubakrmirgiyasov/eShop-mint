@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -9,20 +9,20 @@ import {
 } from "reactstrap";
 import SimpleBar from "simplebar-react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getCartProducts } from "../../store/cart/cart";
 import { IProduct } from "../../services/types/IProduct";
 import ShoppingCartLineIcon from "remixicon-react/ShoppingCartLineIcon";
 
-const CartList: FC<ReactNode> = () => {
+interface ICart {
+  products: IProduct[];
+}
+
+const CartList: FC<ICart> = ({ products }) => {
   const [isCartDropdown, setIsCartDropdown] = useState<boolean>(false);
   const [sum, setSum] = useState<number>(0);
 
   const dispatch = useDispatch();
-
-  const { products }: { products: IProduct[] } = useSelector((state) => ({
-    products: state.Cart.cart,
-  }));
 
   useEffect(() => {
     let res: number = 0;
@@ -83,8 +83,7 @@ const CartList: FC<ReactNode> = () => {
               <Col className={"col-auto"}>
                 <span className={"badge badge-soft-success fs-13"}>
                   <span className={"cartitem-badge"}>
-                    Товаров в корзине:{" "}
-                    {products.length === 0 ? 0 : products.length}
+                    Товаров в корзине: {products.length}
                   </span>
                 </span>
               </Col>

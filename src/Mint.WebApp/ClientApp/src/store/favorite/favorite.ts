@@ -1,10 +1,10 @@
 import { ADD_LIKE, GET_LIKES_PRODUCTS, REMOVE_LIKE } from "./actionType";
 import { IProduct } from "../../services/types/IProduct";
 
-export const getLikes = (products: IProduct[]) => (dispatch) => {
+export const getLikes = (toggle: boolean) => (dispatch) => {
   dispatch({
     type: GET_LIKES_PRODUCTS,
-    payload: products,
+    payload: toggle,
   });
 };
 

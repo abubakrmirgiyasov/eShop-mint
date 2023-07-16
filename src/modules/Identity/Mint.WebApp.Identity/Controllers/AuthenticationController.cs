@@ -97,7 +97,7 @@ public class AuthenticationController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpDelete]
     public async Task<IActionResult> SignOut(RevokeTokenRequest model)
     {
         try

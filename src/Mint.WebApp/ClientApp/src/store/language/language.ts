@@ -1,12 +1,11 @@
-import {SET_LANGUAGE} from "./actionType";
+import { SET_LANGUAGE } from "./actionType";
 
 export const switchLanguage = (value: string) => (dispatch) => {
-    const lang = JSON.stringify({name: value});
+  const lang = JSON.stringify({ name: value });
+  localStorage.setItem("lang", lang);
 
-    localStorage.setItem("lang", lang);
-
-    dispatch({
-        type: SET_LANGUAGE,
-        payload: value,
-    });
-}
+  dispatch({
+    type: SET_LANGUAGE,
+    payload: value,
+  });
+};

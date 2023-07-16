@@ -1,11 +1,19 @@
-import {SET_THEME} from "./actionType";
+import { SET_THEME } from "./actionType";
+
+function changeHTMLAttribute(attribute: string, value: string) {
+  if (document.documentElement) {
+    document.documentElement.setAttribute(attribute, value);
+  }
+  return true;
+}
 
 export const switchTheme = (value: string) => (dispatch) => {
-    const theme: string = JSON.stringify({ name: value });
-    localStorage.setItem("theme", theme);
+  changeHTMLAttribute("data-layout-mode", value);
+  const theme = JSON.stringify({ name: value });
+  localStorage.setItem("theme", theme);
 
-    dispatch({
-        type: SET_THEME,
-        payload: value,
-    });
-}
+  dispatch({
+    type: SET_THEME,
+    payload: value,
+  });
+};

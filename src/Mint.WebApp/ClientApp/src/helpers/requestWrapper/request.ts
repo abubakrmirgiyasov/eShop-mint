@@ -42,6 +42,7 @@ export default class Request implements IRequest {
       const response = await this._client.get<TResponse>(path);
       return response.data;
     } catch (error) {
+      console.log(error);
       handleServiceError(error);
     }
     return {} as TResponse;
@@ -59,6 +60,7 @@ export default class Request implements IRequest {
 
       return response.data;
     } catch (error) {
+      console.log(error);
       handleServiceError(error);
     }
     return {} as TResponse;
@@ -72,6 +74,7 @@ export default class Request implements IRequest {
       const response = await this._client.put<TResponse>(path, payload);
       return response.data;
     } catch (error) {
+      console.log(error);
       handleServiceError(error);
     }
     return {} as TResponse;
@@ -82,6 +85,7 @@ export default class Request implements IRequest {
       const response = await this._client.delete<TResponse>(path);
       return response.data;
     } catch (error) {
+      console.log(error);
       handleServiceError(error);
     }
     return {} as TResponse;

@@ -10,23 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { switchLanguage } from "../../store/language/language";
 import { get } from "lodash";
 import { languages } from "../../constants/commonList";
+import { ILanguage } from "../../services/types/ICommon";
 
-type Languages = {
-  name: string;
-};
-
-const LanguageList: FC<ReactNode> = () => {
+const LanguageList: FC<ILanguage> = ({ name }) => {
   const [isLanguageDropDown, setIsLanguageDropDown] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
   const dispatch = useDispatch();
 
-  const { language }: { language: Languages } = useSelector((state) => ({
-    language: state.Language,
-  }));
-
   useEffect(() => {
-    setSelectedLanguage(language.name);
+    setSelectedLanguage(name);
   }, []);
 
   const onChangeLanguage = (value: string) => {

@@ -1,9 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { IProduct } from "../../services/types/IProduct";
-import { IUser } from "../../services/types/IUser";
 import { useDispatch } from "react-redux";
 import { removeLike } from "../../services/favorites/favorite";
-import Request from "../../helpers/requestWrapper/request";
 import { Success } from "../Notifications/Success";
 import Error from "../../pages/Errors/Error";
 import {
@@ -16,14 +14,15 @@ import {
 } from "reactstrap";
 import SimpleBar from "simplebar-react";
 import { Link } from "react-router-dom";
+import { getLikes } from "../../store/favorite/favorite";
+import { fetch } from "../../helpers/fetch";
 
 interface IFavorite {
   isLoggedIn: boolean;
   favorites: IProduct[];
-  request: Request;
 }
 
-const FavoriteList: FC<IFavorite> = ({ isLoggedIn, favorites, request }) => {
+const FavoriteList: FC<IFavorite> = ({ isLoggedIn, favorites }) => {
   const [isLikeDropdown, setIsLikeDropdown] = useState<boolean>(false);
   const [isRemoving, setIsRemoving] = useState<boolean>(false);
   const [sum, setSum] = useState<number>(0);
@@ -44,13 +43,14 @@ const FavoriteList: FC<IFavorite> = ({ isLoggedIn, favorites, request }) => {
 
   const toggleLikeDropdown = () => {
     setIsLikeDropdown(!isLikeDropdown);
+    dispatch(getLikes(!isLikeDropdown));
   };
 
   const handleRemoveClick = (product: IProduct) => {
     if (isLoggedIn) {
       setIsRemoving(true);
 
-      dispatch(removeLike(request, product))
+      dispatch(removeLike(fetch(), product))
         .then(() => {
           setIsRemoving(false);
           setSuccess("Удалено, успешно");
@@ -105,8 +105,7 @@ const FavoriteList: FC<IFavorite> = ({ isLoggedIn, favorites, request }) => {
               <Col className={"col-auto"}>
                 <span className={"badge badge-soft-danger fs-13"}>
                   <span className={"cartitem-badge"}>
-                    Товаров в списке:{" "}
-                    {favorites.length === 0 ? 0 : favorites.length}
+                    Товаров в списке: {favorites.length}
                   </span>
                 </span>
               </Col>
@@ -116,7 +115,7 @@ const FavoriteList: FC<IFavorite> = ({ isLoggedIn, favorites, request }) => {
             <div className={"p-2"}>
               <div
                 className={`text-center empty-cart ${
-                  favorites.length === 0 ? "" : "d-none"
+                  favorites.length === 0 ? "d-block" : "d-none"
                 }`}
                 id={"empty-cart"}
               >

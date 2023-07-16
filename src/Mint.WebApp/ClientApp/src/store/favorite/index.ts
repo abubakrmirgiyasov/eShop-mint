@@ -20,7 +20,7 @@ export default function (state = initState, action) {
     case GET_LIKES_PRODUCTS:
       return {
         ...state,
-        like: payload,
+        isLikeOpen: payload,
       };
     case ADD_LIKE:
       const isItemExist = state.likes.some(

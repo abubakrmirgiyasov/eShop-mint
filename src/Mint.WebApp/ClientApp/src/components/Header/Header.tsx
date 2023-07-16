@@ -12,33 +12,28 @@ import {
   Input,
 } from "reactstrap";
 import { LanguageList } from "./LanguageList";
+import { IProduct } from "../../services/types/IProduct";
+import { PrivateComponent } from "../../helpers/privateComponent";
+import { ILanguage, ITheme } from "../../services/types/ICommon";
+import { Roles } from "../../constants/roles";
+import CompareList from "./CompareList";
 import CartList from "./CartList";
 import FavoriteList from "./FavoriteList";
-import Request from "../../helpers/requestWrapper/request";
-import { IProduct } from "../../services/types/IProduct";
-import CompareList from "./CompareList";
-
+import SearchOptions from "./SearchOptions";
+import ThemeToggle from "./ThemeToggle";
+import NotificationList from "./NotificationList";
+import SignIn from "./SignIn";
+import UserMenu from "./UserMenu";
 // media
 import Logo from "../../assets/images/logos/logo-light.png";
 import LogoSm from "../../assets/images/logos/Logo.png";
-import SearchOptions from "./SearchOptions";
 
 interface IHeader {
-  request: Request;
   headerClass: string;
-  layout: string;
-  onChangeLayoutMode: (value: string) => void;
 }
 
-const Header: FC<IHeader> = ({
-  request,
-  headerClass,
-  layout,
-  onChangeLayoutMode,
-}) => {
-  const [value, setValue] = useState<string>("");
+const Header: FC<IHeader> = ({ headerClass }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -46,13 +41,27 @@ const Header: FC<IHeader> = ({
     auth,
     favorites,
     message,
-  }: { auth: IAuth; favorites: IProduct[]; message: string } = useSelector(
-    (state) => ({
-      auth: state.Auth,
-      favorites: state.Favorites.likes,
-      message: state.Message,
-    })
-  );
+    compares,
+    cart,
+    theme,
+    language,
+  }: {
+    auth: IAuth;
+    favorites: IProduct[];
+    cart: IProduct[];
+    compares: IProduct[];
+    message: string;
+    theme: ITheme;
+    language: ILanguage;
+  } = useSelector((state) => ({
+    auth: state.Auth,
+    favorites: state.Favorites.likes,
+    message: state.Message,
+    compares: state.Compare.products,
+    cart: state.Cart.cart,
+    theme: state.Theme,
+    language: state.Language,
+  }));
 
   const toggleMenu = () => {
     adaptiveMenu();
@@ -134,17 +143,51 @@ const Header: FC<IHeader> = ({
                 </DropdownMenu>
               </Dropdown>
 
-              <LanguageList />
+              <LanguageList name={language ? language.name : "ru"} />
 
-              <CartList />
+              <CartList products={cart} />
 
               <FavoriteList
                 isLoggedIn={auth.isLoggedIn && !!auth.user}
                 favorites={favorites}
-                request={request}
               />
 
-              <CompareList />
+              <CompareList products={compares} />
+
+              <NotificationList />
+
+              <ThemeToggle name={theme ? theme.name : "light"} />
+
+              {auth.isLoggedIn && auth.user ? (
+                <>
+                  <UserMenu user={auth.user} />
+                  {
+                    <PrivateComponent>
+                      <div
+                        className={"ms-sm-3 header-item topbar-user"}
+                        roles={[Roles.Admin, Roles.Seller]}
+                      >
+                        <Link
+                          className={"btn bg-light fs-5 rounded btn-icon"}
+                          to={"/admin/admin-dashboard"}
+                          style={{ padding: "2rem 3rem" }}
+                        >
+                          <span
+                            className={
+                              "d-flex align-items-center user-name-text"
+                            }
+                          >
+                            <i className={"ri-shield-user-line"}></i>
+                            <span className={"text-start ms-xl-2"}>Админ</span>
+                          </span>
+                        </Link>
+                      </div>
+                    </PrivateComponent>
+                  }
+                </>
+              ) : (
+                <SignIn />
+              )}
             </div>
           </div>
         </div>

@@ -45,7 +45,7 @@ public class UserDTOConverter
                     user.Roles.Add(new RoleSampleDTO()
                     {
                         Label = role.Role.Name,
-                        Value = role.Role.Id,
+                        Value = role.Role.UniqueKey,
                     });
                 }
 
@@ -89,7 +89,7 @@ public class UserDTOConverter
             user.Roles.Add(new RoleSampleDTO()
             {
                 Label = role.Role.Name,
-                Value = role.Role.Id,
+                Value = role.Role.UniqueKey,
             });
         }
 

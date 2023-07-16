@@ -2,6 +2,7 @@ import {
   login,
   register,
   logout,
+  updateUser as update,
   ISignUp,
   ISignIn,
 } from "../../services/authentication/authService";
@@ -12,8 +13,10 @@ import {
   LOGOUT,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
+  UPDATE_USR,
 } from "./actionType";
 import { SET_MESSAGE } from "../message/actionType";
+import { IUser } from "../../services/types/IUser";
 
 export const signUp = (request: Request, values: ISignUp) => (dispatch) => {
   return register(request, values).then(
@@ -83,10 +86,55 @@ export const signIn = (request: Request, values: ISignIn) => (dispatch) => {
   );
 };
 
-export const signOut = () => (dispatch) => {
-  logout();
+export const signOut = (request: Request) => (dispatch) => {
+  return logout(request).then(
+    () => {
+      dispatch({
+        type: LOGOUT,
+      });
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-  dispatch({
-    type: LOGOUT,
-  });
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const updateUser = (request: Request, values: IUser) => (dispatch) => {
+  return update(request, values).then(
+    (response) => {
+      dispatch({
+        type: UPDATE_USR,
+        payload: { user: response },
+      });
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
 };

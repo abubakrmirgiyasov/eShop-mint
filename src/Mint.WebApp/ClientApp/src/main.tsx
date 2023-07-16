@@ -10,16 +10,12 @@ import authHeader from "./services/authentication/authHeader";
 
 // const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 
-const settings = new ApiConfiguration();
-settings.accessToken = authHeader();
-const request = new Request(settings);
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <Provider store={configureStore}>
-        <React.StrictMode>
-            <BrowserRouter>
-                <App request={request} />
-            </BrowserRouter>
-        </React.StrictMode>
-    </Provider>
+  <Provider store={configureStore}>
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>
+  </Provider>
 );

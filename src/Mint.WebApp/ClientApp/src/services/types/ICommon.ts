@@ -1,7 +1,7 @@
 export interface ILanguage {
-    name: string;
+  name: string;
 }
 
 export interface ITheme {
-    name: string;
+  name: string;
 }

@@ -5,10 +5,10 @@ import Request from "./helpers/requestWrapper/request";
 import "./assets/scss/themes.scss";
 import "remixicon/fonts/remixicon.css";
 
-function App({ request }: Request) {
+function App() {
   return (
     <React.Fragment>
-      <MainRoute request={request} />
+      <MainRoute />
     </React.Fragment>
   );
 }

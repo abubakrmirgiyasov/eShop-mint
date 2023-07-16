@@ -4,7 +4,17 @@ using Ocelot.Configuration.File;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
+const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy =>
+{
+    policy.WithOrigins("http://127.0.0.1:5173")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin();
+}));
 
 var config = builder.Configuration.GetSection("Ocelot");
 var appSettings = config.Get<AppSettings>();
@@ -53,6 +63,6 @@ var app = builder.Build();
 app.UseWebSockets();
 app.UseOcelot().Wait();
 
-app.MapGet("/", () => "Hello World!");
+app.UseCors(MyAllowSpecificOrigins);
 
 app.Run();

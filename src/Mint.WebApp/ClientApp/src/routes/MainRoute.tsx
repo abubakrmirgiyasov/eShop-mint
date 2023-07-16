@@ -1,23 +1,35 @@
 import { Routes, Route } from "react-router-dom";
-import { publicRoutes } from "./RoutesData";
-import { PublicRoutesLayout } from "./ProtectedRoutes";
-import Request from "../helpers/requestWrapper/request";
+import { privateRoutes, publicRoutes } from "./RoutesData";
+import { PrivateRoutesLayout, PublicRoutesLayout } from "./ProtectedRoutes";
 import React from "react";
 import Layout from "../components/Layouts/Layout";
 
-const MainRoute = ({ request }: Request) => {
+const MainRoute = () => {
   return (
     <React.Fragment>
       <Routes>
         <Route>
-          {publicRoutes.map((route, index) => (
+          {publicRoutes.map((route, key) => (
             <Route
-              key={index}
+              key={key}
               path={route.path}
               element={
                 <PublicRoutesLayout>
                   <Layout>{route.component}</Layout>
                 </PublicRoutesLayout>
+              }
+            />
+          ))}
+        </Route>
+        <Route>
+          {privateRoutes.map((route, key) => (
+            <Route
+              key={key}
+              path={route.path}
+              element={
+                <PrivateRoutesLayout>
+                  <Layout>{route.component}</Layout>
+                </PrivateRoutesLayout>
               }
             />
           ))}

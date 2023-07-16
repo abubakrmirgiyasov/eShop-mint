@@ -54,7 +54,7 @@ public class RoleDTOConverter
 			{
 				roles.Add(new RoleSampleDTO(
 					Label: role.Role.Name,
-					Value: role.RoleId));
+					Value: role.Role.UniqueKey));
 			}
 			return roles;
 		}
