@@ -1,26 +1,37 @@
-﻿using Mint.Domain.Models;
-using Mint.WebApp.Email.Interfaces;
+﻿using Mint.WebApp.Email.Interfaces;
+using Mint.WebApp.Email.Models;
 
 namespace Mint.WebApp.Email.Repositories;
 
 public class EmailRepository : IEmailRepository
 {
-    public Task SendTestEmail(User user)
+    const string _TestEmail = "Hello {{Login}}, This is test email subject from book store web app";
+
+    private readonly IEmailService _emailService;
+
+    public EmailRepository(IEmailService emailService)
+    {
+        _emailService = emailService;
+    }
+
+    public async Task SendTestEmail(EmailOptions email)
+    {
+        email.Subject = _emailService.UpdatePlaceholders(_TestEmail, email.Placeholders);
+        email.Body = _emailService.UpdatePlaceholders(_emailService.GetEmailBody("TestEmail"), email.Placeholders);
+        await _emailService.SendEmail(email);
+    }
+
+    public Task SendEmailConfirmation(EmailOptions email)
     {
         throw new NotImplementedException();
     }
 
-    public Task SendEmailConfirmation(User user)
+    public Task SendEmailForgotPassword(EmailOptions email)
     {
         throw new NotImplementedException();
     }
 
-    public Task SendEmailForgotPassword(User user)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task SendEmailSpam(User user)
+    public Task SendEmailSpam(EmailOptions email)
     {
         throw new NotImplementedException();
     }

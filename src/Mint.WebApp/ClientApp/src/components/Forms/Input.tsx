@@ -1,47 +1,87 @@
-import React, { FC } from "react";
+import React, { FC, useState, FocusEvent, ChangeEvent } from "react";
 import { FormFeedback, Input, Label } from "reactstrap";
 
-interface IMyInput {
+type Input = {
+  id: string;
   type: string;
   name: string;
-  id: string;
-  className?: string;
-  value?: string;
-  error?: string;
-  isError?: boolean;
-  placeholder?: string;
+  required: boolean;
+  hasLabel: boolean;
   label?: string;
-  required?: boolean;
-  onChange?: () => void;
-  onBlur?: () => void;
-}
+  className?: string;
+  placeholder?: string;
+  value?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  isError?: boolean;
+  error?: string;
+  style?: React.CSSProperties;
+  min?: number;
+  max?: number;
+  onChange?: (string) => void;
+  onBlur?: (string) => void;
+};
 
-const MyInput: FC<IMyInput> = ({
-  type,
-  name,
-  id,
-  className,
-  value,
-  placeholder,
-  label,
-  ...props
-}) => {
-  console.log(props.isError, props.error);
+const MyInput: FC<Input> = (props) => {
+  const {
+    id,
+    checked,
+    type,
+    name,
+    className,
+    value,
+    placeholder,
+    label,
+    style,
+    disabled,
+    required,
+    error,
+    isError,
+    hasLabel,
+    min,
+    max,
+    onChange,
+    onBlur,
+  } = props;
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e.currentTarget.value);
+    }
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (onBlur) {
+      onBlur(e.currentTarget.value);
+    }
+  };
+
   return (
     <React.Fragment>
-      <Label htmlFor={id}>{label}</Label>
+      {hasLabel && <Label htmlFor={id}>{label}</Label>}
       <Input
         type={type}
         name={name}
         className={className}
         id={id}
-        defaultValue={value}
         placeholder={placeholder}
-        onChange={props.onChange}
-        onBlur={props.onBlur}
+        defaultValue={value}
+        defaultChecked={checked}
+        required={required}
+        style={style}
+        disabled={disabled}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        min={min}
+        max={max}
       />
-      {props.isError && (
-        <FormFeedback type={"invalid"}>{props.error}</FormFeedback>
+      {isError && (
+        <FormFeedback
+          type={"invalid"}
+          className={isError ? "d-block" : "d-none"}
+        >
+          {error}
+        </FormFeedback>
       )}
     </React.Fragment>
   );

@@ -1,12 +1,14 @@
-﻿using Mint.Domain.Models;
+﻿using Mint.WebApp.Email.Models;
 
 namespace Mint.WebApp.Email.Interfaces;
 
 public interface IEmailService
 {
-    Task SendEmail(User user);
+    Task SendEmail(EmailOptions email);
 
-    string GetEmailBody(string text);
+    string GetEmailBody(string templateName);
 
-    string UpdatePlaceholders(string text, List<KeyValuePair<string, string>> keyValuePairs);
+    string UpdatePlaceholders(string text, List<KeyValuePair<string, string>> placeholders);
+
+    string GenerateEmailTemplate(string templatePath, string templateName);
 }

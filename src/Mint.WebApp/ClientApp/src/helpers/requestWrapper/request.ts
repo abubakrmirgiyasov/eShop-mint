@@ -60,10 +60,8 @@ export default class Request implements IRequest {
 
       return response.data;
     } catch (error) {
-      console.log(error);
-      handleServiceError(error);
+      throw error;
     }
-    return {} as TResponse;
   }
 
   async put<TRequest, TResponse>(

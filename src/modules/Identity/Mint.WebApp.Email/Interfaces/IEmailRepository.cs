@@ -1,14 +1,14 @@
-﻿using Mint.Domain.Models;
+﻿using Mint.WebApp.Email.Models;
 
 namespace Mint.WebApp.Email.Interfaces;
 
 public interface IEmailRepository
 {
-    Task SendTestEmail(User user);
+    Task SendTestEmail(EmailOptions email);
 
-    Task SendEmailConfirmation(User user);
+    Task SendEmailConfirmation(EmailOptions email);
 
-    Task SendEmailForgotPassword(User user);
+    Task SendEmailForgotPassword(EmailOptions email);
 
-    Task SendEmailSpam(User user);
+    Task SendEmailSpam(EmailOptions email);
 }

@@ -22,7 +22,9 @@ const register = (request: Request, values: ISignUp) => {
   return request
     .post("/authentication/signup", values)
     .then((response) => response)
-    .catch((error) => error);
+    .catch((error) => {
+      throw error;
+    });
 };
 
 const login = (request: Request, values: ISignIn) => {
@@ -33,7 +35,9 @@ const login = (request: Request, values: ISignIn) => {
         localStorage.setItem("auth_user", JSON.stringify(response));
       return response;
     })
-    .catch((error) => error);
+    .catch((error) => {
+      throw error;
+    });
 };
 
 const logout = (request: Request) => {
@@ -42,7 +46,9 @@ const logout = (request: Request) => {
     .then((response: { message: string }) => {
       if (response.message) localStorage.removeItem("auth_user");
     })
-    .catch((error) => error);
+    .catch((error) => {
+      throw error;
+    });
 };
 
 const updateUser = (request: Request, values: IUser) => {
@@ -52,7 +58,9 @@ const updateUser = (request: Request, values: IUser) => {
       localStorage.setItem("auth_user", JSON.stringify(response));
       return response;
     })
-    .catch((error) => error);
+    .catch((error) => {
+      throw error;
+    });
 };
 
 export { register, login, logout, updateUser, ISignUp, ISignIn };

@@ -6,6 +6,7 @@ import Header from "../Header/Header";
 
 // media
 import "react-toastify/dist/ReactToastify.css";
+import { Error } from "../Notifications/Error";
 
 interface ILayout {
   children: ReactNode;
@@ -14,9 +15,12 @@ interface ILayout {
 const Layout: FC<ILayout> = ({ children }) => {
   const [headerClass, setHeaderClass] = useState<string>("");
 
-  const { auth }: { auth: IAuth } = useSelector((state) => ({
-    auth: state.Auth,
-  }));
+  const { auth, error }: { auth: IAuth; error: string } = useSelector(
+    (state) => ({
+      auth: state.Auth,
+      error: state.Message.message,
+    })
+  );
 
   useEffect(() => {
     if (auth.isLoggedIn) console.log("here we get all liked prod");
@@ -32,6 +36,7 @@ const Layout: FC<ILayout> = ({ children }) => {
   return (
     <React.Fragment>
       <div id={"layout-wrapper"}>
+        {<Error message={error} />}
         <Header headerClass={headerClass} />
         <div className={"main-content"}>{children}</div>
         <ToastContainer

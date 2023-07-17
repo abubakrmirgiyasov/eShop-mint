@@ -1,20 +1,16 @@
-import React, { FC, useState } from "react";
+import React, { FC, FormEvent, useState } from "react";
 import { Button, Col, Form, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import { signIn } from "../../store/authentication/authentication";
 import { ISignIn } from "../../services/authentication/authService";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import Request from "../../helpers/requestWrapper/request";
-import Error from "../../pages/Errors/Error";
-import * as Yup from "yup";
 import { fetch } from "../../helpers/fetch";
-
-// import MyInput from "../../components/Forms/Input";
+import Error from "../../pages/Errors/Error";
 
 // media
 import LogoLight from "../../assets/images/logos/Logo256.png";
+import MyInput from "../../components/Forms/Input";
+import { values } from "lodash";
 
 interface IAuth {
   isOpen: boolean;
@@ -28,30 +24,32 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const schema = Yup.object({
-    email: Yup.string()
-      .required("Заполните обязательное поле")
-      .email("Неверный адрес электронной почты"),
-    password: Yup.string().required("Заполните обязательное поле"),
-  });
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ISignIn>({
-    resolver: yupResolver(schema),
-  });
+  const regex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
-  const onSubmit = (values: ISignIn) => {
-    console.log("values");
-    dispatch(signIn(fetch(), values))
-      .then(() => {
-        navigate("/");
-        setIsLoading(false);
-        // window.location.reload();
-      })
-      .catch(() => setIsLoading(false));
+  const onSubmit = (e: FormEvent<Form>) => {
+    e.preventDefault();
+
+    if (regex.test(email) && password) {
+      setIsLoading(true);
+      const values = {
+        email,
+        password,
+      };
+      dispatch(signIn(fetch(), values))
+        .then(() => {
+          navigate("/");
+          setIsLoading(false);
+          // window.location.reload();
+        })
+        .catch(() => setIsLoading(false));
+    } else if (!regex.test(email)) {
+      console.log("--------------------------");
+    }
+
+    return false;
   };
 
   return (
@@ -65,43 +63,41 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
               alt={"logo"}
               width={100}
               height={100}
-              className={"logo-dark"}
+              className={"logo-dark mb-3"}
               onClick={toggle}
             />
           </div>
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={onSubmit}>
             <Row>
               <Col lg={12} className={"mb-3"}>
-                <input
+                <MyInput
+                  id={"email"}
                   type={"email"}
-                  // name={"email"}
-                  // id={"email"}
-                  // // label={"Email"}
-                  // placeholder={"Введите адрес электроной почты"}
-                  // required={true}
-                  // isError={!!errors.email}
-                  // error={errors.email?.message}
-                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                  {...register("email")}
+                  name={"email"}
+                  required={true}
+                  hasLabel={true}
+                  label={"Адрес электроной почты"}
+                  onChange={setEmail}
+                  onBlur={setEmail}
+                  isError={!email}
+                  error={"Неверный адрес электронной почты"}
+                  placeholder={"Введите адрес электроной почты"}
                 />
-                <div className="invalid-feedback">{errors.email?.message}</div>
               </Col>
               <Col lg={12}>
-                <input
+                <MyInput
+                  id={"password"}
                   type={"password"}
-                  // name={"password"}
-                  // id={"password"}
-                  // label={"Пароль"}
-                  // placeholder={"Введите Пароль"}
-                  // required={true}
-                  // isError={!!errors.password}
-                  // error={errors.password?.message}
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
-                  {...register("password")}
+                  name={"password"}
+                  required={true}
+                  hasLabel={true}
+                  label={"Пароль"}
+                  onChange={setPassword}
+                  onBlur={setPassword}
+                  isError={!password}
+                  error={"Заполните обязательное поле"}
+                  placeholder={"Введите пароль"}
                 />
-                <div className="invalid-feedback">{errors.email?.message}</div>
               </Col>
               <Col className={"col-auto mb-3"}>
                 <div className={"float-end"}>

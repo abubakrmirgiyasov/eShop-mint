@@ -17,9 +17,9 @@ export const Roles = {
 
 function checkForRoleExist(need: IValue[], has: IValue[]) {
   const [long, short]: [long: IValue[], short: IValue[]] =
-    need.length > has.length
+    need.length > has?.length
       ? [need.map((v) => v.value), has.map((v) => v.value)]
-      : [has.map((v) => v.value), need.map((v) => v.value)];
+      : [has?.map((v) => v.value), need.map((v) => v.value)];
   short.sort();
 
   const shortLength = short.length;
@@ -40,7 +40,7 @@ function checkForRoleExist(need: IValue[], has: IValue[]) {
 
   const res = [];
 
-  for (let i = 0, length = long.length; i < length; i++) {
+  for (let i = 0, length = long?.length; i < length; i++) {
     if (binSearch(long[i])) {
       res.push(long[i]);
     }

@@ -28,6 +28,7 @@ const Profile: FC<ReactNode> = () => {
   );
 
   useEffect(() => {
+    console.log(auth);
     if (!auth.isLoggedIn) {
       navigate("/signin");
     }
@@ -93,16 +94,16 @@ const Profile: FC<ReactNode> = () => {
                   }
                 >
                   <img
-                    src={auth.user.image}
+                    src={auth.user?.image}
                     className={"rounded-circle"}
                     width={100}
                     height={100}
-                    alt={`${auth.user.firstName} ${auth.user.secondName}`}
+                    alt={`${auth.user?.firstName} ${auth.user?.secondName}`}
                   />
                 </div>
                 <div className={"text-center"}>
-                  <h3>{`${auth.user.firstName} ${auth.user.secondName}`}</h3>
-                  <h5 className={"text-muted fs-14"}>{auth.user.firstName}</h5>
+                  <h3>{`${auth.user?.firstName} ${auth.user?.secondName}`}</h3>
+                  <h5 className={"text-muted fs-14"}>{auth.user?.firstName}</h5>
                 </div>
               </CardBody>
             </Card>
@@ -120,7 +121,7 @@ const Profile: FC<ReactNode> = () => {
                 to={"/profile/info"}
                 onClick={() => tabChangeToggle(1)}
                 className={
-                  "list-group-item-action fs-16 cursor-pointer" +
+                  "list-group-item-action fs-16 cursor-pointer " +
                   `${activeTab === 1 ? "active" : ""}`
                 }
               >
@@ -131,7 +132,7 @@ const Profile: FC<ReactNode> = () => {
                 to={"/profile/addresses"}
                 onClick={() => tabChangeToggle(2)}
                 className={
-                  "list-group-item-action fs-16 cursor-pointer" +
+                  "list-group-item-action fs-16 cursor-pointer " +
                   `${activeTab === 2 ? "active" : ""}`
                 }
               >
@@ -142,7 +143,7 @@ const Profile: FC<ReactNode> = () => {
                 to={"/profile/orders"}
                 onClick={() => tabChangeToggle(3)}
                 className={
-                  "list-group-item-action fs-16 cursor-pointer" +
+                  "list-group-item-action fs-16 cursor-pointer " +
                   `${activeTab === 3 ? "active" : ""}`
                 }
               >
@@ -153,7 +154,7 @@ const Profile: FC<ReactNode> = () => {
                 to={"/profile/change-password"}
                 onClick={() => tabChangeToggle(4)}
                 className={
-                  "list-group-item-action fs-16 cursor-pointer" +
+                  "list-group-item-action fs-16 cursor-pointer " +
                   `${activeTab === 4 ? "active" : ""}`
                 }
               >

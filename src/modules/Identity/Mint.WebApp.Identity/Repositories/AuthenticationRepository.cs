@@ -9,6 +9,7 @@ using Mint.WebApp.Identity.FormingModels;
 using Mint.WebApp.Identity.Repositories.Interfaces;
 using Mint.WebApp.Identity.Services;
 using Mint.WebApp.Identity.Services.Interfaces;
+using System.Linq;
 
 namespace Mint.WebApp.Identity.Repositories;
 
@@ -94,10 +95,17 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Id = user.Id,
                 FirstName = user.FirstName,
                 SecondName = user.SecondName,
+                LastName = user.LastName,
+                Phone = user.Phone,
                 Email = user.Email,
                 RefreshToken = refreshToken.Token,
                 AccessToken = jwt,
                 Image = PhotoHelper.GetImage64(user.Photo?.FilePath),
+                DateBirth = user.DateBirth,
+                Gender = user.Gender,
+                IsConfirmedEmail = user.IsConfirmedEmail,
+                IsConfirmedPhone = user.IsConfirmedPhone,
+                IsSeller = user.UserRoles.Exists(x => x.Role.UniqueKey == "SELLER"),
                 Roles = RoleDTOConverter.FormingSampleMultiViewModel(user.UserRoles).ToList(),
             };
         }
@@ -209,10 +217,17 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Id = user.Id,
                 FirstName = user.FirstName,
                 SecondName = user.SecondName,
+                LastName = user.LastName,
+                Phone = user.Phone,
                 Email = user.Email,
                 RefreshToken = newRefreshToken.Token,
                 AccessToken = jwt,
                 Image = PhotoHelper.GetImage64(user.Photo?.FilePath),
+                DateBirth = user.DateBirth,
+                Gender = user.Gender,
+                IsConfirmedEmail = user.IsConfirmedEmail,
+                IsConfirmedPhone = user.IsConfirmedPhone,
+                IsSeller = user.UserRoles.Exists(x => x.Role.UniqueKey == "SELLER"),
                 Roles = RoleDTOConverter.FormingSampleMultiViewModel(user.UserRoles).ToList(),
             };
         }

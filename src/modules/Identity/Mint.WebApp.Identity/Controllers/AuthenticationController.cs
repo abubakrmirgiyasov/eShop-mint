@@ -30,7 +30,7 @@ public class AuthenticationController : ControllerBase
         }
         catch (Exception ex)
         {
-            return Unauthorized(new { message = ex.Message });
+            return BadRequest(new { message = ex.Message });
         }
     }
 
