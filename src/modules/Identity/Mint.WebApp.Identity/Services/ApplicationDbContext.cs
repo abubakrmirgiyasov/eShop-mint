@@ -78,7 +78,7 @@ public class ApplicationDbContext : DbContext
 
 		builder.Entity<User>()
 			.HasOne(x => x.Photo)
-			.WithMany(x => x.Users)
+			.WithMany(x => (List<User>?)x.TEntities)
 			.HasForeignKey(x => x.PhotoId)
 			.OnDelete(DeleteBehavior.SetNull);
 

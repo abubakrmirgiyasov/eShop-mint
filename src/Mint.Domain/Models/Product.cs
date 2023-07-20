@@ -1,7 +1,7 @@
 ﻿using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mint.Domain.Models;
+namespace Mint.Domain.Modelsss;
 
 public class Product : Entity<Guid>
 {

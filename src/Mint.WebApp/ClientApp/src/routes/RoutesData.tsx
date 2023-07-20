@@ -5,6 +5,7 @@ import Home from "../pages/Home/Home";
 import Profile from "../pages/Profile/Profile";
 import SignOut from "../pages/Authentication/SignOut";
 import SignInBase from "../pages/Authentication/SignInBase";
+import AdminDashboard from "../Admin/Pages/AdminDashboard";
 
 type Routes = {
   path: string;
@@ -24,4 +25,8 @@ const privateRoutes: Routes[] = [
   { path: "/logout", component: <SignOut /> },
 ];
 
-export { publicRoutes, privateRoutes };
+const adminRoutes: Routes[] = [
+  { path: "/admin/admin-dashboard", component: <AdminDashboard /> },
+];
+
+export { publicRoutes, privateRoutes, adminRoutes };

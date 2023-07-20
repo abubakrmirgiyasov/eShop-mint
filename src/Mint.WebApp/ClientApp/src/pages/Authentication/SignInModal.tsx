@@ -1,24 +1,20 @@
 import React, { FC, FormEvent, useState } from "react";
 import { Button, Col, Form, Modal, ModalBody, Row, Spinner } from "reactstrap";
 import { signIn } from "../../store/authentication/authentication";
-import { ISignIn } from "../../services/authentication/authService";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { fetch } from "../../helpers/fetch";
-import Error from "../../pages/Errors/Error";
 
 // media
 import LogoLight from "../../assets/images/logos/Logo256.png";
 import MyInput from "../../components/Forms/Input";
-import { values } from "lodash";
 
 interface IAuth {
   isOpen: boolean;
-  error: string;
   toggle: () => void;
 }
 
-const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
+const SignInModal: FC<IAuth> = ({ isOpen, toggle }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -26,6 +22,7 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const regex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
@@ -46,7 +43,9 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
         })
         .catch(() => setIsLoading(false));
     } else if (!regex.test(email)) {
-      console.log("--------------------------");
+      setError("Неверный адрес электронной почты");
+    } else if (!password) {
+      setError("Заполните обязательное поле");
     }
 
     return false;
@@ -54,7 +53,6 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
 
   return (
     <React.Fragment>
-      {error ? <Error message={error} /> : null}
       <Modal isOpen={isOpen} toggle={toggle} centered={true}>
         <ModalBody>
           <div className="d-flex justify-content-center align-items-center w-100 h-50 mb-2">
@@ -80,7 +78,7 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
                   onChange={setEmail}
                   onBlur={setEmail}
                   isError={!email}
-                  error={"Неверный адрес электронной почты"}
+                  error={error}
                   placeholder={"Введите адрес электроной почты"}
                 />
               </Col>
@@ -95,7 +93,7 @@ const SignInModal: FC<IAuth> = ({ isOpen, error, toggle }) => {
                   onChange={setPassword}
                   onBlur={setPassword}
                   isError={!password}
-                  error={"Заполните обязательное поле"}
+                  error={error}
                   placeholder={"Введите пароль"}
                 />
               </Col>

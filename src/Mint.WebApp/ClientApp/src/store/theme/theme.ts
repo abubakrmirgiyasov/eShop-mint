@@ -1,4 +1,4 @@
-import { SET_THEME } from "./actionType";
+import { SET_LAYOUT, SET_THEME } from "./actionType";
 
 function changeHTMLAttribute(attribute: string, value: string) {
   if (document.documentElement) {
@@ -14,6 +14,15 @@ export const switchTheme = (value: string) => (dispatch) => {
 
   dispatch({
     type: SET_THEME,
+    payload: value,
+  });
+};
+
+export const switchLayout = (value: string) => (dispatch) => {
+  changeHTMLAttribute("data-layout", value);
+
+  dispatch({
+    type: SET_LAYOUT,
     payload: value,
   });
 };

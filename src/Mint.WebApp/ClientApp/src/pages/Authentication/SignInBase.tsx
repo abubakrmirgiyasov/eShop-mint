@@ -20,7 +20,7 @@ const SignInBase: FC<ReactNode> = () => {
 
   return (
     <div className={"page-content"}>
-      <SignInModal isOpen={true} error={""} toggle={toggle} />
+      <SignInModal isOpen={true} toggle={toggle} />
     </div>
   );
 };
