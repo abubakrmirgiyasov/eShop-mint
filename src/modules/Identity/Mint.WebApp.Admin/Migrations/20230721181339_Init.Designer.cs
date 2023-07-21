@@ -12,7 +12,7 @@ using Mint.WebApp.Admin.Services;
 namespace Mint.WebApp.Admin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230721100914_Init")]
+    [Migration("20230721181339_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -67,6 +67,187 @@ namespace Mint.WebApp.Admin.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BadgeStyle")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("BadgeText")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("DefaultLink")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ico")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<Guid?>("ManufactureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DefaultLink")
+                        .IsUnique()
+                        .HasFilter("[DefaultLink] IS NOT NULL");
+
+                    b.HasIndex("ManufactureId");
+
+                    b.HasIndex("PhotoId")
+                        .IsUnique()
+                        .HasFilter("[PhotoId] IS NOT NULL");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.CategoryTag", b =>
+                {
+                    b.Property<Guid?>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TagId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryTags");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.Manufacture", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FullAddress")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<long>("Phone")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("Website")
+                        .IsUnique()
+                        .HasFilter("[Website] IS NOT NULL");
+
+                    b.ToTable("Manufactures");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.SubCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DefaultLink")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategories");
+                });
+
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.Characteristic", b =>
                 {
                     b.Property<Guid>("Id")
@@ -93,7 +274,7 @@ namespace Mint.WebApp.Admin.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Characteristic");
+                    b.ToTable("Characteristics");
                 });
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.CommonCharacteristic", b =>
@@ -149,7 +330,7 @@ namespace Mint.WebApp.Admin.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CommonCharacteristic");
+                    b.ToTable("CommonCharacteristics");
                 });
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.Product", b =>
@@ -162,7 +343,7 @@ namespace Mint.WebApp.Admin.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("CharacteristicId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CountryOfOrigin")
@@ -193,6 +374,9 @@ namespace Mint.WebApp.Admin.Migrations
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("ManufactureId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("OldPrice")
                         .HasMaxLength(7)
@@ -237,16 +421,33 @@ namespace Mint.WebApp.Admin.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacteristicId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("Gtin")
                         .IsUnique()
                         .HasFilter("[Gtin] IS NOT NULL");
 
+                    b.HasIndex("ManufactureId");
+
                     b.HasIndex("Sku")
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.ProductCharacteristic", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CharacteristicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "CharacteristicId");
+
+                    b.HasIndex("CharacteristicId");
+
+                    b.ToTable("ProductCharacteristics");
                 });
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.ProductPhoto", b =>
@@ -259,8 +460,7 @@ namespace Mint.WebApp.Admin.Migrations
 
                     b.HasKey("ProductId", "PhotoId");
 
-                    b.HasIndex("PhotoId")
-                        .IsUnique();
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("ProductPhotos");
                 });
@@ -308,6 +508,61 @@ namespace Mint.WebApp.Admin.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.Category", b =>
+                {
+                    b.HasOne("Mint.WebApp.Admin.Models.Categories.Manufacture", "Manufacture")
+                        .WithMany("Categories")
+                        .HasForeignKey("ManufactureId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithOne("TEntities")
+                        .HasForeignKey("Mint.WebApp.Admin.Models.Categories.Category", "PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Manufacture");
+
+                    b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.CategoryTag", b =>
+                {
+                    b.HasOne("Mint.WebApp.Admin.Models.Categories.Category", "Category")
+                        .WithMany("CategoryTags")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.WebApp.Admin.Models.Tag", "Tag")
+                        .WithMany("CategoryTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.Manufacture", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
+                    b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.SubCategory", b =>
+                {
+                    b.HasOne("Mint.WebApp.Admin.Models.Categories.Category", "Category")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.CommonCharacteristic", b =>
                 {
                     b.HasOne("Mint.WebApp.Admin.Models.Products.Product", "Product")
@@ -319,26 +574,52 @@ namespace Mint.WebApp.Admin.Migrations
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.Product", b =>
                 {
-                    b.HasOne("Mint.WebApp.Admin.Models.Products.Characteristic", "Characteristic")
+                    b.HasOne("Mint.WebApp.Admin.Models.Categories.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CharacteristicId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("Mint.WebApp.Admin.Models.Categories.Manufacture", "Manufacture")
+                        .WithMany("Products")
+                        .HasForeignKey("ManufactureId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Manufacture");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.ProductCharacteristic", b =>
+                {
+                    b.HasOne("Mint.WebApp.Admin.Models.Products.Characteristic", "Characteristic")
+                        .WithMany("ProductCharacteristics")
+                        .HasForeignKey("CharacteristicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.WebApp.Admin.Models.Products.Product", "Product")
+                        .WithMany("ProductCharacteristics")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Characteristic");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.ProductPhoto", b =>
                 {
                     b.HasOne("Mint.Domain.Models.Photo", "Photo")
-                        .WithOne("TEntities")
-                        .HasForeignKey("Mint.WebApp.Admin.Models.Products.ProductPhoto", "PhotoId")
+                        .WithMany()
+                        .HasForeignKey("PhotoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Mint.WebApp.Admin.Models.Products.Product", "Product")
                         .WithMany("ProductPhotos")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Photo");
@@ -370,14 +651,32 @@ namespace Mint.WebApp.Admin.Migrations
                     b.Navigation("TEntities");
                 });
 
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.Category", b =>
+                {
+                    b.Navigation("CategoryTags");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("Mint.WebApp.Admin.Models.Categories.Manufacture", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.Characteristic", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductCharacteristics");
                 });
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Products.Product", b =>
                 {
                     b.Navigation("CommonCharacteristics");
+
+                    b.Navigation("ProductCharacteristics");
 
                     b.Navigation("ProductPhotos");
 
@@ -386,6 +685,8 @@ namespace Mint.WebApp.Admin.Migrations
 
             modelBuilder.Entity("Mint.WebApp.Admin.Models.Tag", b =>
                 {
+                    b.Navigation("CategoryTags");
+
                     b.Navigation("ProductTags");
                 });
 #pragma warning restore 612, 618

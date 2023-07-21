@@ -17,13 +17,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Photo> Photos { get; set; }
 
     public DbSet<object> RefreshTokens { get; set; }
-
-    public DbSet<Manufacture> Manufactures { get; set; }
-
-    public DbSet<Category> Categories { get; set; }
-
-    public DbSet<SubCategory> SubCategories { get; set; }
-
     public DbSet<object> Products { get; set; }
 
     public DbSet<Store> Stores { get; set; }
@@ -51,8 +44,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<object> Attributes { get; set; }
 
     public DbSet<object> Characteristics { get; set; }
-
-    public DbSet<CategoryAttribute> CategoryAttributes { get; set; }
 
     public DbSet<StoreCategory> StoreCategories { get; set; }
 

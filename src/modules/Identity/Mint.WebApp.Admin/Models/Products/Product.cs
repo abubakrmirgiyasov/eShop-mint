@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.Models.Base;
+using Mint.WebApp.Admin.Models.Categories;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ public class Product : Entity<Guid>
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ProductNumber { get; set; }
 
-    [Required(ErrorMessage = "Заполните обязательное поле.")]
+    [Required(ErrorMessage = "Заполните обязательное поле")]
     [StringLength(255, ErrorMessage = "Перевешено макс. длина строки (255).")]
     public string ShortName { get; set; } = null!;
 
@@ -57,13 +58,19 @@ public class Product : Entity<Guid>
 
     public int DeliveryMaxDay { get; set; }
 
-    public Guid? CharacteristicId { get; set; }
+    public Guid? ManufactureId { get; set; }
 
-    public Characteristic? Characteristic { get; set; }
+    public Manufacture? Manufacture { get; set; }
+
+    public Guid? CategoryId { get; set; }
+
+    public Category? Category { get; set; }
 
     public List<ProductPhoto>? ProductPhotos { get; set; }
 
     public List<ProductTag>? ProductTags { get; set; }
 
     public List<CommonCharacteristic>? CommonCharacteristics { get; set; }
+
+    public List<ProductCharacteristic>? ProductCharacteristics { get; set; }
 }

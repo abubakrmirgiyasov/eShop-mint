@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.Models.Base;
+using Mint.WebApp.Admin.Models.Categories;
 using Mint.WebApp.Admin.Models.Products;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,4 +17,6 @@ public class Tag : Entity<Guid>
     public string? Translate { get; set; }
 
     public List<ProductTag>? ProductTags { get; set; }
+
+    public List<CategoryTag>? CategoryTags { get; set; }
 }

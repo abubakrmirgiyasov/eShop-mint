@@ -1,5 +1,4 @@
 ﻿using Mint.Domain.Models.Base;
-using Mint.Domain.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 

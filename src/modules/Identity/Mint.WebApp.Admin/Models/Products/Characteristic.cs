@@ -15,5 +15,5 @@ public class Characteristic : Entity<Guid>
     [MinLength(4, ErrorMessage = "Мин. длина строки (4).")]
     public string Name { get; set; } = null!;
 
-    public List<Product>? Products { get; set; }
+    public List<ProductCharacteristic>? ProductCharacteristics { get; set; }
 }
