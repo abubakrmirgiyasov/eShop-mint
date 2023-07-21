@@ -1,13 +1,13 @@
-﻿using Mint.Domain.BindingModels;
-using Mint.Domain.ViewModels;
+﻿//using Mint.Domain.BindingModels;
+//using Mint.Domain.ViewModels;
 
-namespace Mint.Infrastructure.Repositories.Interfaces;
+//namespace Mint.Infrastructure.Repositories.Interfaces;
 
-public interface IStoreRepository
-{
-    Task<List<StoreFullViewModel>> GetStoresAsync();
+//public interface IStoreRepository
+//{
+//    Task<List<StoreFullViewModel>> GetStoresAsync();
 
-    Task<StoreFullViewModel> GetMyStoreAsync(Guid id);
+//    Task<StoreFullViewModel> GetMyStoreAsync(Guid id);
     
-    Task<StoreFullViewModel> CreateStoreAsync(StoreFullBindingModel model);
-}
+//    Task<StoreFullViewModel> CreateStoreAsync(StoreFullBindingModel model);
+//}

@@ -1,28 +1,24 @@
-﻿using Mint.Domain.BindingModels;
-using Mint.Domain.Models;
-using Mint.Domain.ViewModels;
-
-namespace Mint.Infrastructure.Repositories.Interfaces;
+﻿namespace Mint.Infrastructure.Repositories.Interfaces;
 
 public interface IUserRepository
 {
-    Task<List<UserFullBindingModel>> GetUsers();
+    //Task<List<UserFullBindingModel>> GetUsers();
 
-    User GetUserById(Guid id);
+    //User GetUserById(Guid id);
 
-    User GetUserByToken(string token);
+    //User GetUserByToken(string token);
 
-    Task AddNewUserAsync(UserFullBindingModel model);
+    //Task AddNewUserAsync(UserFullBindingModel model);
 
-    Task<UserFullViewModel> UpdateUserInfoAsync(UserFullBindingModel model);
+    //Task<UserFullViewModel> UpdateUserInfoAsync(UserFullBindingModel model);
 
-    Task UpdateUserPaswordAsync(UserUpdatePasswordBindingModel model);
+    //Task UpdateUserPaswordAsync(UserUpdatePasswordBindingModel model);
 
-    Task<AddressViewModel> AddUserAddressAsync(AddressBindingModel model);
+    //Task<AddressViewModel> AddUserAddressAsync(AddressBindingModel model);
 
-    Task<List<AddressViewModel>> GetUserAddressesByIdAsync(Guid userId);
+    //Task<List<AddressViewModel>> GetUserAddressesByIdAsync(Guid userId);
 
-    Task DeleteUserAddressAsync(Guid id);
+    //Task DeleteUserAddressAsync(Guid id);
 
-    Task UpdateUserAddressAsync(AddressBindingModel model);
+    //Task UpdateUserAddressAsync(AddressBindingModel model);
 }

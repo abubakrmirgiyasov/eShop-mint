@@ -1,17 +1,17 @@
-﻿using Mint.Domain.BindingModels;
-using Mint.Domain.ViewModels;
+﻿//using Mint.Domain.BindingModels;
+//using Mint.Domain.ViewModels;
 
-namespace Mint.Infrastructure.Repositories.Interfaces;
+//namespace Mint.Infrastructure.Repositories.Interfaces;
 
-public interface IReviewRepository
-{
-    Task<List<ReviewViewModel>> GetReviewsAsync();
+//public interface IReviewRepository
+//{
+//    Task<List<ReviewViewModel>> GetReviewsAsync();
 
-    Task<List<ReviewViewModel>> GetProductReviewsByIdAsync(Guid id);
+//    Task<List<ReviewViewModel>> GetProductReviewsByIdAsync(Guid id);
 
-    Task<ReviewViewModel> NewReviewAsync(ReviewBindingModel model);
+//    Task<ReviewViewModel> NewReviewAsync(ReviewBindingModel model);
 
-    Task<ReviewViewModel> UpdateReviewAsync(ReviewBindingModel model);
+//    Task<ReviewViewModel> UpdateReviewAsync(ReviewBindingModel model);
 
-    Task DeleteReviewAsync(Guid id);
-}
+//    Task DeleteReviewAsync(Guid id);
+//}

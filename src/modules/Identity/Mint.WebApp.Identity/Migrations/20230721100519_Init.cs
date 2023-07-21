@@ -152,8 +152,8 @@ namespace Mint.WebApp.Identity.Migrations
                 columns: new[] { "Id", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199"), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "CQXEXwhiM8+xLOrwC1nMfI0XdfSpUQkfZnDB3deos5E=", 89502768428L, null, new byte[] { 224, 24, 177, 243, 105, 94, 3, 80, 52, 24, 91, 125, 225, 221, 244, 174 }, "Абубакр", null },
-                    { new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c"), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, false, false, false, null, 0, "RwQLTdHUJjblnKxM5inoDraxNz84H1M1yMEMgyt/G/Y=", 83452763423L, null, new byte[] { 224, 24, 177, 243, 105, 94, 3, 80, 52, 24, 91, 125, 225, 221, 244, 174 }, "User", null }
+                    { new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0"), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "d/+hCapBk5TZkLm5bIU/GmLMtsoq98EC0yQcPlkKxUE=", 89502768428L, null, new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 }, "Абубакр", null },
+                    { new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3"), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, false, false, false, null, 0, "F6xHbxa2JKbFzvjoZTHwh6tjt3zvRMIEjEb+JYYDxo0=", 83452763423L, null, new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 }, "User", null }
                 });
 
             migrationBuilder.InsertData(
@@ -161,12 +161,12 @@ namespace Mint.WebApp.Identity.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199") },
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0") },
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -200,7 +200,9 @@ namespace Mint.WebApp.Identity.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_PhotoId",
                 table: "Users",
-                column: "PhotoId");
+                column: "PhotoId",
+                unique: true,
+                filter: "[PhotoId] IS NOT NULL");
         }
 
         /// <inheritdoc />

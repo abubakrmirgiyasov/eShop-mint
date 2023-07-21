@@ -221,14 +221,16 @@ namespace Mint.WebApp.Identity.Migrations
                     b.HasIndex("Phone")
                         .IsUnique();
 
-                    b.HasIndex("PhotoId");
+                    b.HasIndex("PhotoId")
+                        .IsUnique()
+                        .HasFilter("[PhotoId] IS NOT NULL");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199"),
+                            Id = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0"),
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             Email = "abubakrmirgiyasov@gmail.com",
@@ -242,14 +244,14 @@ namespace Mint.WebApp.Identity.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "CQXEXwhiM8+xLOrwC1nMfI0XdfSpUQkfZnDB3deos5E=",
+                            Password = "d/+hCapBk5TZkLm5bIU/GmLMtsoq98EC0yQcPlkKxUE=",
                             Phone = 89502768428L,
-                            Salt = new byte[] { 224, 24, 177, 243, 105, 94, 3, 80, 52, 24, 91, 125, 225, 221, 244, 174 },
+                            Salt = new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
-                            Id = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c"),
+                            Id = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3"),
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             Email = "admin@mint.com",
@@ -262,9 +264,9 @@ namespace Mint.WebApp.Identity.Migrations
                             IsDeleted = false,
                             IsSeller = false,
                             NumOfAttempts = 0,
-                            Password = "RwQLTdHUJjblnKxM5inoDraxNz84H1M1yMEMgyt/G/Y=",
+                            Password = "F6xHbxa2JKbFzvjoZTHwh6tjt3zvRMIEjEb+JYYDxo0=",
                             Phone = 83452763423L,
-                            Salt = new byte[] { 224, 24, 177, 243, 105, 94, 3, 80, 52, 24, 91, 125, 225, 221, 244, 174 },
+                            Salt = new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 },
                             SecondName = "User"
                         });
                 });
@@ -287,32 +289,32 @@ namespace Mint.WebApp.Identity.Migrations
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199")
+                            UserId = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199")
+                            UserId = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("5990656c-e8e8-4de2-b2e8-5e911825b199")
+                            UserId = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0")
                         },
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c")
+                            UserId = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c")
+                            UserId = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("ad77a1e5-4a80-4fc7-a71e-9ffbfaa7190c")
+                            UserId = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3")
                         });
                 });
 
@@ -372,8 +374,8 @@ namespace Mint.WebApp.Identity.Migrations
             modelBuilder.Entity("Mint.Domain.Models.Identity.User", b =>
                 {
                     b.HasOne("Mint.Domain.Models.Photo", "Photo")
-                        .WithMany("Users")
-                        .HasForeignKey("PhotoId")
+                        .WithOne("TEntities")
+                        .HasForeignKey("Mint.Domain.Models.Identity.User", "PhotoId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Photo");
@@ -412,7 +414,7 @@ namespace Mint.WebApp.Identity.Migrations
 
             modelBuilder.Entity("Mint.Domain.Models.Photo", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("TEntities");
                 });
 #pragma warning restore 612, 618
         }

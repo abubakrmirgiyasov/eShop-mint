@@ -60,6 +60,13 @@ public class ApplicationDbContext : DbContext
             });
 
         builder.Entity<ProductPhoto>()
+            .HasKey(x => new
+            {
+                x.ProductId,
+                x.PhotoId,
+            });
+
+        builder.Entity<ProductPhoto>()
             .HasOne(x => x.Product)
             .WithMany(x => x.ProductPhotos)
             .HasForeignKey(x => x.ProductId)

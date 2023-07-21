@@ -63,20 +63,20 @@ builder.Services.Configure<FormOptions>(option =>
 
 builder.Services.AddStorageModule(brokers!);
 
-builder.Services.AddScoped<IJwt, Jwt>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IStoreRepository, StoreRepository>();
-builder.Services.AddScoped<ICommonRepository, CommonRepository>();
-builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<ISellerRepository, SellerRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
-builder.Services.AddScoped<IManufactureRepository, ManufactureRepository>();
-builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
-builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+//builder.Services.AddScoped<IJwt, Jwt>();
+//builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+//builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+//builder.Services.AddScoped<ICommonRepository, CommonRepository>();
+//builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+//builder.Services.AddScoped<ISellerRepository, SellerRepository>();
+//builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+//builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+//builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+//builder.Services.AddScoped<IManufactureRepository, ManufactureRepository>();
+//builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+//builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
 var app = builder.Build();
 
@@ -107,7 +107,7 @@ app.UsePathBase(new PathString("/api"));
 app.UseRouting();
 
 app.UseMiddleware<ExceptionMiddleWare>();
-app.UseMiddleware<JwtMiddleware>();
+//app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

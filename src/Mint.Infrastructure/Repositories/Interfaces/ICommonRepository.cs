@@ -1,17 +1,17 @@
-﻿using Mint.Domain.BindingModels;
-using Mint.Domain.ViewModels;
+﻿//using Mint.Domain.BindingModels;
+//using Mint.Domain.ViewModels;
 
-namespace Mint.Infrastructure.Repositories.Interfaces;
+//namespace Mint.Infrastructure.Repositories.Interfaces;
 
-public interface ICommonRepository
-{
-    Task<List<MenuParentViewModel>> GetMenuAsync();
+//public interface ICommonRepository
+//{
+//    Task<List<MenuParentViewModel>> GetMenuAsync();
 
-    Task<List<ProductFullViewModel>> SearchAsync(string query);
+//    Task<List<ProductFullViewModel>> SearchAsync(string query);
 
-    Task<List<LikeViewModel>> GetMyLikesAsync(Guid id);
+//    Task<List<LikeViewModel>> GetMyLikesAsync(Guid id);
 
-    Task<LikeViewModel> NewLikeAsync(LikeBindingModel model);
+//    Task<LikeViewModel> NewLikeAsync(LikeBindingModel model);
 
-    Task RemoveLike(LikeBindingModel model);
-}
+//    Task RemoveLike(LikeBindingModel model);
+//}
