@@ -9,10 +9,11 @@ interface IUser {
   image: string;
   refreshToken: string;
   gender: string;
-  dateBirth?: string;
+  dateBirth: string;
   isEmailConfirmed: boolean;
   isPhoneConfirmed: boolean;
   isSeller: boolean;
+  description?: string;
   roles: IRole[];
 }
 

@@ -1,24 +1,20 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Mint.Domain.Models;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 
 namespace Mint.Infrastructure.MessageBrokers;
 
-public class MessageBrokerBackgroundService : BackgroundService
+public class MessageBrokerBackgroundService<T> : BackgroundService
 {
-    private readonly ILogger<MessageBrokerBackgroundService> _logger;
-    private readonly IMessageReceiver<Order> _receiver;
-    private readonly IMessageSender<Order> _sender;
+    private readonly ILogger<MessageBrokerBackgroundService<T>> _logger;
+    private readonly IMessageReceiver<T> _receiver;
 
     public MessageBrokerBackgroundService(
-        ILogger<MessageBrokerBackgroundService> logger, 
-        IMessageReceiver<Order> receiver, 
-        IMessageSender<Order> sender)
+        ILogger<MessageBrokerBackgroundService<T>> logger, 
+        IMessageReceiver<T> receiver)
     {
         _logger = logger;
         _receiver = receiver;
-        _sender = sender;
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -32,8 +28,6 @@ public class MessageBrokerBackgroundService : BackgroundService
             _logger.LogInformation("Message: {Message}", message);
 
             await Task.Delay(1000);
-            
-            await _sender.SendAsync(data);
         }, stoppingToken);
 
         return Task.CompletedTask;

@@ -4,6 +4,7 @@ using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
 using Mint.Domain.Helpers;
 using Mint.Domain.Models.Identity;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.FormingModels;
 using Mint.WebApp.Identity.Repositories.Interfaces;
@@ -22,6 +23,7 @@ public class AuthenticationRepository : IAuthenticationRepository
     private readonly AppSettings _appSettings;
     private readonly ApplicationDbContext _context;
     private readonly IJwt _jwt;
+    private readonly IMessageSender<User> _sender;
 
     /// <summary>
     /// Constructor
@@ -34,12 +36,14 @@ public class AuthenticationRepository : IAuthenticationRepository
         IOptions<AppSettings> appSettings,
         ILogger<AuthenticationRepository> logger,
         ApplicationDbContext context,
-        IJwt jwt)
+        IJwt jwt,
+        IMessageSender<User> sender)
     {
         _logger = logger;
         _appSettings = appSettings.Value;
         _context = context;
         _jwt = jwt;
+        _sender = sender;
     }
 
     /// <summary>
@@ -106,6 +110,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 IsConfirmedEmail = user.IsConfirmedEmail,
                 IsConfirmedPhone = user.IsConfirmedPhone,
                 IsSeller = user.UserRoles.Exists(x => x.Role.UniqueKey == "SELLER"),
+                Description = user.Description,
                 Roles = RoleDTOConverter.FormingSampleMultiViewModel(user.UserRoles).ToList(),
             };
         }
@@ -136,6 +141,23 @@ public class AuthenticationRepository : IAuthenticationRepository
     {
         try
         {
+            if (!string.IsNullOrEmpty(model.Email))
+            {
+                var isExistUser = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+
+                if (isExistUser != null)
+                    throw new Exception("Пользователь с таким адресом электронной почты существует");
+
+                await _sender.SendAsync(new User() { Email = model.Email }, null, Constants.ConfirmationKey);
+            }
+            else if (long.TryParse(model.Phone?.ToString(), out long p))
+            {
+                var isExistUser = _context.Users.FirstOrDefault(x => x.Phone == p);
+
+                if (isExistUser != null)
+                    throw new Exception("Пользователь с таким номером телефона существует");
+            }
+
             var salt = new Hasher().GetSalt();
             var password = new Hasher().GetHash(model.Password!, salt);
 
@@ -228,6 +250,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 IsConfirmedEmail = user.IsConfirmedEmail,
                 IsConfirmedPhone = user.IsConfirmedPhone,
                 IsSeller = user.UserRoles.Exists(x => x.Role.UniqueKey == "SELLER"),
+                Description = user.Description,
                 Roles = RoleDTOConverter.FormingSampleMultiViewModel(user.UserRoles).ToList(),
             };
         }

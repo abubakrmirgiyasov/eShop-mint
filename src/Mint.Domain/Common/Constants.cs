@@ -9,4 +9,7 @@ public class Constants
     public const string SELLER = "Продавец";
 
     public const string IMAGE_PATH = "statics/images";
+
+    public static string IdentityKey = "MintIdentityQueue";
+    public static string ConfirmationKey = "MintIdentityConfirmationQueue";
 }

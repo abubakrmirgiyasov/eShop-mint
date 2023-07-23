@@ -1,13 +1,24 @@
-import React, { FC, FormEvent, useState } from "react";
-import { Button, Col, Form, Modal, ModalBody, Row, Spinner } from "reactstrap";
+import React, { FC, useState } from "react";
+import {
+  Button,
+  Col,
+  FormFeedback,
+  Modal,
+  ModalBody,
+  Row,
+  Spinner,
+} from "reactstrap";
 import { signIn } from "../../store/authentication/authentication";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { fetch } from "../../helpers/fetch";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { ISignIn } from "../../services/authentication/authService";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // media
 import LogoLight from "../../assets/images/logos/Logo256.png";
-import MyInput from "../../components/Forms/Input";
 
 interface IAuth {
   isOpen: boolean;
@@ -20,34 +31,31 @@ const SignInModal: FC<IAuth> = ({ isOpen, toggle }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const validation = Yup.object().shape({
+    email: Yup.string()
+      .required("Заполните обязательное поле")
+      .email("Электронная почта недействительна"),
+    password: Yup.string().required("Заполните обязательное поле"),
+  });
 
-  const regex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISignIn>({
+    resolver: yupResolver(validation),
+  });
 
-  const onSubmit = (e: FormEvent<Form>) => {
-    e.preventDefault();
+  const onSubmit = (values: ISignIn) => {
+    setIsLoading(true);
 
-    if (regex.test(email) && password) {
-      setIsLoading(true);
-      const values = {
-        email,
-        password,
-      };
-      dispatch(signIn(fetch(), values))
-        .then(() => {
-          navigate("/");
-          setIsLoading(false);
-          // window.location.reload();
-        })
-        .catch(() => setIsLoading(false));
-    } else if (!regex.test(email)) {
-      setError("Неверный адрес электронной почты");
-    } else if (!password) {
-      setError("Заполните обязательное поле");
-    }
-
+    dispatch(signIn(fetch(), values))
+      .then(() => {
+        navigate("/");
+        setIsLoading(false);
+        // window.location.reload();
+      })
+      .catch(() => setIsLoading(false));
     return false;
   };
 
@@ -65,37 +73,35 @@ const SignInModal: FC<IAuth> = ({ isOpen, toggle }) => {
               onClick={toggle}
             />
           </div>
-          <Form onSubmit={onSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Row>
               <Col lg={12} className={"mb-3"}>
-                <MyInput
+                <label htmlFor={"email"}>Адрес электронной почты</label>
+                <input
                   id={"email"}
                   type={"email"}
-                  name={"email"}
-                  required={true}
-                  hasLabel={true}
-                  label={"Адрес электроной почты"}
-                  onChange={setEmail}
-                  onBlur={setEmail}
-                  isError={!email}
-                  error={error}
+                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
                   placeholder={"Введите адрес электроной почты"}
+                  {...register("email")}
                 />
+                <FormFeedback type={"invalid"}>
+                  {errors.email?.message}
+                </FormFeedback>
               </Col>
               <Col lg={12}>
-                <MyInput
+                <label htmlFor={"password"}>Пароль</label>
+                <input
                   id={"password"}
                   type={"password"}
-                  name={"password"}
-                  required={true}
-                  hasLabel={true}
-                  label={"Пароль"}
-                  onChange={setPassword}
-                  onBlur={setPassword}
-                  isError={!password}
-                  error={error}
+                  className={`form-control ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
                   placeholder={"Введите пароль"}
+                  {...register("password")}
                 />
+                <FormFeedback type={"invalid"}>
+                  {errors.password?.message}
+                </FormFeedback>
               </Col>
               <Col className={"col-auto mb-3"}>
                 <div className={"float-end"}>
@@ -135,7 +141,7 @@ const SignInModal: FC<IAuth> = ({ isOpen, toggle }) => {
                 Регистрация
               </Link>
             </div>
-          </Form>
+          </form>
         </ModalBody>
       </Modal>
     </React.Fragment>

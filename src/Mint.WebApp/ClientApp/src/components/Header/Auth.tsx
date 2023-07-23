@@ -2,10 +2,12 @@ import React, { FC, ReactNode, useState } from "react";
 import { Button, Dropdown, DropdownMenu, DropdownToggle } from "reactstrap";
 import { Link } from "react-router-dom";
 import SignInModal from "../../pages/Authentication/SignInModal";
+import SignUpModal from "../../pages/Authentication/SignUpModal";
 
-const SignIn: FC<ReactNode> = () => {
+const Auth: FC<ReactNode> = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState<boolean>(false);
 
   const toggleUserOpen = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
@@ -13,6 +15,11 @@ const SignIn: FC<ReactNode> = () => {
 
   const onSignInClick = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
+    setIsUserMenuOpen(false);
+  };
+
+  const onSignUpClick = () => {
+    setIsSignUpModalOpen(!isSignUpModalOpen);
     setIsUserMenuOpen(false);
   };
 
@@ -43,12 +50,16 @@ const SignIn: FC<ReactNode> = () => {
             ></i>
             <span className={"align-middle"}>Войти</span>
           </Button>
-          <Link className={"dropdown-item"} to={"/"}>
+          <Button
+            className={"dropdown-item"}
+            onClick={onSignUpClick}
+            color={"light"}
+          >
             <i
               className={"ri-user-add-line text-muted fs-16 align-middle me-1"}
             ></i>
             <span className={"align-middle"}>Регистрация</span>
-          </Link>
+          </Button>
           <div className={"dropdown-divider"}></div>
           <Link className={"dropdown-item"} to={"/"}>
             <i
@@ -61,13 +72,11 @@ const SignIn: FC<ReactNode> = () => {
         </DropdownMenu>
       </Dropdown>
 
-      <SignInModal
-        error={""}
-        isOpen={isLoginModalOpen}
-        toggle={onSignInClick}
-      />
+      <SignInModal isOpen={isLoginModalOpen} toggle={onSignInClick} />
+
+      <SignUpModal isOpen={isSignUpModalOpen} toggle={onSignUpClick} />
     </React.Fragment>
   );
 };
 
-export default SignIn;
+export default Auth;

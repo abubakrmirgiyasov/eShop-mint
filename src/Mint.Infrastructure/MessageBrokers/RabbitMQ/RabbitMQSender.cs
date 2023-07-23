@@ -25,7 +25,7 @@ public class RabbitMQSender<T> : IMessageSender<T>
         //_exchangeName = options.ExchangeName;
     }
 
-    public async Task SendAsync(T message, MetaData? metaData = null, CancellationToken cancellationToken = default)
+    public async Task SendAsync(T message, MetaData? metaData = null, string? routingKey = null, CancellationToken cancellationToken = default)
     {
         await Task.Run(() => 
         {
@@ -33,7 +33,7 @@ public class RabbitMQSender<T> : IMessageSender<T>
             using var channel = connection.CreateModel();
 
             channel.QueueDeclare(
-                queue: "Test", // _routingKey, // routingKey
+                queue: routingKey ?? _routingKey,
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
@@ -50,7 +50,7 @@ public class RabbitMQSender<T> : IMessageSender<T>
 
             channel.BasicPublish(
                 exchange: "", // _exchangeName
-                routingKey: "Test", // _routingKey, // routingKey
+                routingKey: routingKey ?? _routingKey,
                 basicProperties: properties,
                 body: body);
         }, cancellationToken);

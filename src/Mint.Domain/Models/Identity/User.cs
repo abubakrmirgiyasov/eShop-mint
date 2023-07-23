@@ -65,4 +65,9 @@ public class User : Entity<Guid>
 
     [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; } = null!;
+
+    public override string ToString()
+    {
+        return $"{Id} {FirstName} {SecondName} {Email} {Phone} {Ip}";
+    }
 }

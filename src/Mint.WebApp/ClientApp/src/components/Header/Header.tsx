@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IAuth } from "../../services/types/IAuth";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ import FavoriteList from "./FavoriteList";
 import SearchOptions from "./SearchOptions";
 import ThemeToggle from "./ThemeToggle";
 import NotificationList from "./NotificationList";
-import SignIn from "./SignIn";
+import Auth from "./Auth";
 import UserMenu from "./UserMenu";
 // media
 import Logo from "../../assets/images/logos/logo-light.png";
@@ -35,12 +35,9 @@ interface IHeader {
 const Header: FC<IHeader> = ({ headerClass }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
-  const navigate = useNavigate();
-
   const {
     auth,
     favorites,
-    message,
     compares,
     cart,
     theme,
@@ -50,13 +47,11 @@ const Header: FC<IHeader> = ({ headerClass }) => {
     favorites: IProduct[];
     cart: IProduct[];
     compares: IProduct[];
-    message: string;
     theme: ITheme;
     language: ILanguage;
   } = useSelector((state) => ({
     auth: state.Auth,
     favorites: state.Favorites.likes,
-    message: state.Message,
     compares: state.Compare.products,
     cart: state.Cart.cart,
     theme: state.Theme,
@@ -66,6 +61,8 @@ const Header: FC<IHeader> = ({ headerClass }) => {
   const toggleMenu = () => {
     adaptiveMenu();
   };
+
+  const toggleSearchDropdown = () => setIsSearch(!isSearch);
 
   return (
     <React.Fragment>
@@ -112,7 +109,7 @@ const Header: FC<IHeader> = ({ headerClass }) => {
             <div className={"d-flex align-items-center"}>
               <Dropdown
                 isOpen={isSearch}
-                toggle={() => setIsSearch(!isSearch)}
+                toggle={toggleSearchDropdown}
                 className={"d-md-none topbar-head-dropdown header-item"}
               >
                 <DropdownToggle
@@ -186,7 +183,7 @@ const Header: FC<IHeader> = ({ headerClass }) => {
                   }
                 </>
               ) : (
-                <SignIn />
+                <Auth />
               )}
             </div>
           </div>

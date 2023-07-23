@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   Col,
+  Container,
   ListGroup,
   ListGroupItem,
   Row,
@@ -13,6 +14,7 @@ import {
 } from "reactstrap";
 import CustomerInfo from "./CustomerInfo";
 import { Error } from "../../components/Notifications/Error";
+import { ILanguage } from "../../services/types/ICommon";
 
 const Profile: FC<ReactNode> = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -20,9 +22,14 @@ const Profile: FC<ReactNode> = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { auth, error }: { auth: IAuth; error: string } = useSelector(
+  const {
+    auth,
+    language,
+    error,
+  }: { auth: IAuth; language: ILanguage; error: string } = useSelector(
     (state) => ({
       auth: state.Auth,
+      language: state.Language,
       error: state.Message.message,
     })
   );
@@ -41,19 +48,19 @@ const Profile: FC<ReactNode> = () => {
         setActiveTab(2);
         break;
       case "orders":
-        setActiveTab(1);
+        setActiveTab(3);
         break;
       case "change-password":
-        setActiveTab(2);
+        setActiveTab(4);
         break;
       case "create-store":
-        setActiveTab(1);
+        setActiveTab(5);
         break;
       default:
         setActiveTab(1);
         break;
     }
-  }, [navigate, params]);
+  }, [navigate, params, auth]);
 
   const tabChangeToggle = (tab) => {
     switch (tab) {
@@ -83,104 +90,110 @@ const Profile: FC<ReactNode> = () => {
   return (
     <div className={"page-content"}>
       {error ? <Error message={error} /> : null}
-      <div className={"container"}>
-        <Row>
-          <Col md={4}>
-            <Card className={"mb-3"}>
-              <CardBody>
-                <div
+      {auth.isLoggedIn && (
+        <Container fluid={true}>
+          <Row>
+            <Col md={3} className={"mb-3"}>
+              <Card className={"mb-3"}>
+                <CardBody>
+                  <div
+                    className={
+                      "d-flex justify-content-center align-items-center mb-3"
+                    }
+                  >
+                    <img
+                      src={auth.user?.image}
+                      className={"rounded-circle"}
+                      width={100}
+                      height={100}
+                      alt={`${auth.user?.firstName} ${auth.user?.secondName}`}
+                    />
+                  </div>
+                  <div className={"text-center"}>
+                    <h3>{`${auth.user?.firstName} ${auth.user?.secondName}`}</h3>
+                    <h5 className={"text-muted fs-14"}>{auth.user?.email}</h5>
+                    <h5 className={"text-muted fs-11"}>
+                      {auth.user?.description}
+                    </h5>
+                  </div>
+                </CardBody>
+              </Card>
+              <ListGroup className={"list-group-fill-success"}>
+                <ListGroupItem
+                  tag={"a"}
+                  to={"#"}
+                  className={"list-group-item-action fs-18 bg-light"}
+                  style={{ cursor: "default" }}
+                >
+                  Мой аккаунт
+                </ListGroupItem>
+                <ListGroupItem
+                  tag={"a"}
+                  to={"/profile/info"}
+                  onClick={() => tabChangeToggle(1)}
                   className={
-                    "d-flex justify-content-center align-items-center mb-3"
+                    "list-group-item-action fs-16 cursor-pointer " +
+                    `${activeTab === 1 ? "active" : ""}`
                   }
                 >
-                  <img
-                    src={auth.user?.image}
-                    className={"rounded-circle"}
-                    width={100}
-                    height={100}
-                    alt={`${auth.user?.firstName} ${auth.user?.secondName}`}
-                  />
-                </div>
-                <div className={"text-center"}>
-                  <h3>{`${auth.user?.firstName} ${auth.user?.secondName}`}</h3>
-                  <h5 className={"text-muted fs-14"}>{auth.user?.firstName}</h5>
-                </div>
-              </CardBody>
-            </Card>
-            <ListGroup className={"list-group-fill-success"}>
-              <ListGroupItem
-                tag={"a"}
-                to={"#"}
-                className={"list-group-item-action fs-18 bg-light"}
-                style={{ cursor: "default" }}
-              >
-                Мой аккаунт
-              </ListGroupItem>
-              <ListGroupItem
-                tag={"a"}
-                to={"/profile/info"}
-                onClick={() => tabChangeToggle(1)}
-                className={
-                  "list-group-item-action fs-16 cursor-pointer " +
-                  `${activeTab === 1 ? "active" : ""}`
-                }
-              >
-                <i className={"ri-user-line fs-16"}></i> Личная информация
-              </ListGroupItem>
-              <ListGroupItem
-                tag={"a"}
-                to={"/profile/addresses"}
-                onClick={() => tabChangeToggle(2)}
-                className={
-                  "list-group-item-action fs-16 cursor-pointer " +
-                  `${activeTab === 2 ? "active" : ""}`
-                }
-              >
-                <i className="ri-contacts-book-line fs-16"></i> Адреса
-              </ListGroupItem>
-              <ListGroupItem
-                tag={"a"}
-                to={"/profile/orders"}
-                onClick={() => tabChangeToggle(3)}
-                className={
-                  "list-group-item-action fs-16 cursor-pointer " +
-                  `${activeTab === 3 ? "active" : ""}`
-                }
-              >
-                <i className={"ri-file-list-3-line fs-16"}></i> Заказы
-              </ListGroupItem>
-              <ListGroupItem
-                tag={"a"}
-                to={"/profile/change-password"}
-                onClick={() => tabChangeToggle(4)}
-                className={
-                  "list-group-item-action fs-16 cursor-pointer " +
-                  `${activeTab === 4 ? "active" : ""}`
-                }
-              >
-                <i className={"ri-fingerprint-line fs-16"}></i> Изменить пароль
-              </ListGroupItem>
-              <ListGroupItem
-                tag={"a"}
-                to={"/profile/create-store"}
-                onClick={() => tabChangeToggle(5)}
-                className={
-                  "list-group-item-action fs-16 cursor-pointer" +
-                  `${activeTab === 5 ? "active" : ""}`
-                }
-              >
-                <i className={"ri-shopping-bag-3-line fs-16"}></i> Создать
-                магазин
-              </ListGroupItem>
-            </ListGroup>
-          </Col>
-          <Col md={8}>
-            <TabContent activeTab={activeTab}>
-              <CustomerInfo user={auth.user} activeTab={activeTab} />
-            </TabContent>
-          </Col>
-        </Row>
-      </div>
+                  <i className={"ri-user-line fs-16"}></i> Личная информация
+                </ListGroupItem>
+                <ListGroupItem
+                  tag={"a"}
+                  to={"/profile/addresses"}
+                  onClick={() => tabChangeToggle(2)}
+                  className={
+                    "list-group-item-action fs-16 cursor-pointer " +
+                    `${activeTab === 2 ? "active" : ""}`
+                  }
+                >
+                  <i className="ri-contacts-book-line fs-16"></i> Адреса
+                </ListGroupItem>
+                <ListGroupItem
+                  tag={"a"}
+                  to={"/profile/orders"}
+                  onClick={() => tabChangeToggle(3)}
+                  className={
+                    "list-group-item-action fs-16 cursor-pointer " +
+                    `${activeTab === 3 ? "active" : ""}`
+                  }
+                >
+                  <i className={"ri-file-list-3-line fs-16"}></i> Заказы
+                </ListGroupItem>
+                <ListGroupItem
+                  tag={"a"}
+                  to={"/profile/change-password"}
+                  onClick={() => tabChangeToggle(4)}
+                  className={
+                    "list-group-item-action fs-16 cursor-pointer " +
+                    `${activeTab === 4 ? "active" : ""}`
+                  }
+                >
+                  <i className={"ri-fingerprint-line fs-16"}></i> Изменить
+                  пароль
+                </ListGroupItem>
+                <ListGroupItem
+                  tag={"a"}
+                  to={"/profile/create-store"}
+                  onClick={() => tabChangeToggle(5)}
+                  className={
+                    "list-group-item-action fs-16 cursor-pointer " +
+                    `${activeTab === 5 ? "active" : ""}`
+                  }
+                >
+                  <i className={"ri-shopping-bag-3-line fs-16"}></i> Создать
+                  магазин
+                </ListGroupItem>
+              </ListGroup>
+            </Col>
+            <Col md={9} className={"mb-3"}>
+              <TabContent activeTab={activeTab}>
+                <CustomerInfo user={auth.user} language={language} />
+              </TabContent>
+            </Col>
+          </Row>
+        </Container>
+      )}
     </div>
   );
 };
