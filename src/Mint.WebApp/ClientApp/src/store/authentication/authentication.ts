@@ -3,6 +3,7 @@ import {
   register,
   logout,
   updateUser as update,
+  refreshToken as refresh,
   ISignUp,
   ISignIn,
 } from "../../services/authentication/authService";
@@ -11,6 +12,7 @@ import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT,
+  REFRESH_TOKEN,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
   UPDATE_USR,
@@ -118,6 +120,33 @@ export const updateUser = (request: Request, values: IUser) => (dispatch) => {
     (response) => {
       dispatch({
         type: UPDATE_USR,
+        payload: { user: response },
+      });
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const refreshToken = (request: Request, values: IUser) => (dispatch) => {
+  return refresh(request, values).then(
+    (response) => {
+      dispatch({
+        type: REFRESH_TOKEN,
         payload: { user: response },
       });
       return Promise.resolve();

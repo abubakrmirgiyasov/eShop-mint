@@ -15,6 +15,7 @@ import {
 import CustomerInfo from "./CustomerInfo";
 import { Error } from "../../components/Notifications/Error";
 import { ILanguage } from "../../services/types/ICommon";
+import Addresses from "./Addresses";
 
 const Profile: FC<ReactNode> = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -189,6 +190,7 @@ const Profile: FC<ReactNode> = () => {
             <Col md={9} className={"mb-3"}>
               <TabContent activeTab={activeTab}>
                 <CustomerInfo user={auth.user} language={language} />
+                <Addresses user={auth.user} activeTab={activeTab} />
               </TabContent>
             </Col>
           </Row>

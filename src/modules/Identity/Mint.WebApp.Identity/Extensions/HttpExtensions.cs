@@ -29,4 +29,14 @@ public static class HttpExtensions
     {
         return request.Headers["Accept-Language"];
     }
+
+    public static void SetConfirmationCode(this HttpResponse response, int code)
+    {
+        var cookieOptions = new CookieOptions()
+        {
+            HttpOnly = true,
+            Expires = DateTime.UtcNow.AddHours(1),
+        };
+        response.Cookies.Append("--custom-access-code", code.ToString(), cookieOptions);
+    }
 }

@@ -20,11 +20,11 @@ public class User : Entity<Guid>
     [Required(ErrorMessage = "Заполните поле Почта")]
     [DataType(DataType.EmailAddress)]
     [MaxLength(255, ErrorMessage = "Превышено макс. длина строки (255).")]
-    public string Email { get; set; } = null!;
+    public string? Email { get; set; }
 
     [Required(ErrorMessage = "Заполните поле Телефон")]
     [DataType(DataType.PhoneNumber)]
-    public long Phone { get; set; }
+    public long? Phone { get; set; }
 
     [Required(ErrorMessage = "Заполните поле Пароль")]
     [MaxLength(255, ErrorMessage = "Превышено макс. длина строки (255).")]
@@ -51,6 +51,8 @@ public class User : Entity<Guid>
 
     public int NumOfAttempts { get; set; } = 0;
 
+    public int ConfirmationCode { get; set; } = 0;
+
     public bool IsConfirmedEmail { get; set; } = false;
 
     public bool IsConfirmedPhone { get; set; } = false;
@@ -65,6 +67,8 @@ public class User : Entity<Guid>
 
     [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; } = null!;
+
+    public List<UserAddress>? UserAddresses { get; set; }
 
     public override string ToString()
     {

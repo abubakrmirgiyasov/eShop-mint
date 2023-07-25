@@ -12,7 +12,7 @@ using Mint.WebApp.Identity.Services;
 namespace Mint.WebApp.Identity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230721100519_Init")]
+    [Migration("20230724114409_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -142,6 +142,9 @@ namespace Mint.WebApp.Identity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ConfirmationCode")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateBirth")
                         .HasColumnType("datetime2");
 
@@ -193,7 +196,8 @@ namespace Mint.WebApp.Identity.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<long>("Phone")
+                    b.Property<long?>("Phone")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<Guid?>("PhotoId")
@@ -233,7 +237,8 @@ namespace Mint.WebApp.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0"),
+                            Id = new Guid("0952b37d-fa8a-442e-ba83-98e333745edd"),
+                            ConfirmationCode = 0,
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             Email = "abubakrmirgiyasov@gmail.com",
@@ -247,14 +252,15 @@ namespace Mint.WebApp.Identity.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "d/+hCapBk5TZkLm5bIU/GmLMtsoq98EC0yQcPlkKxUE=",
+                            Password = "53cfX0TrWxsQRCGc3pFtMbMCKvRT1RGj5EeDzl312bQ=",
                             Phone = 89502768428L,
-                            Salt = new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 },
+                            Salt = new byte[] { 173, 115, 44, 30, 165, 121, 25, 118, 250, 102, 28, 72, 193, 211, 123, 22 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
-                            Id = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3"),
+                            Id = new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd"),
+                            ConfirmationCode = 0,
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             Email = "admin@mint.com",
@@ -267,9 +273,9 @@ namespace Mint.WebApp.Identity.Migrations
                             IsDeleted = false,
                             IsSeller = false,
                             NumOfAttempts = 0,
-                            Password = "F6xHbxa2JKbFzvjoZTHwh6tjt3zvRMIEjEb+JYYDxo0=",
+                            Password = "siEA3mJheUKN2hNhfmd8YcrByNWQgnCJ4n062FIZqP8=",
                             Phone = 83452763423L,
-                            Salt = new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 },
+                            Salt = new byte[] { 173, 115, 44, 30, 165, 121, 25, 118, 250, 102, 28, 72, 193, 211, 123, 22 },
                             SecondName = "User"
                         });
                 });
@@ -292,32 +298,32 @@ namespace Mint.WebApp.Identity.Migrations
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0")
+                            UserId = new Guid("0952b37d-fa8a-442e-ba83-98e333745edd")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0")
+                            UserId = new Guid("0952b37d-fa8a-442e-ba83-98e333745edd")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0")
+                            UserId = new Guid("0952b37d-fa8a-442e-ba83-98e333745edd")
                         },
                         new
                         {
                             RoleId = new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"),
-                            UserId = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3")
+                            UserId = new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd")
                         },
                         new
                         {
                             RoleId = new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"),
-                            UserId = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3")
+                            UserId = new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd")
                         },
                         new
                         {
                             RoleId = new Guid("4d442669-abe7-4726-af0f-5734879a113c"),
-                            UserId = new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3")
+                            UserId = new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd")
                         });
                 });
 

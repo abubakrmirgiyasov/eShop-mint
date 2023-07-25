@@ -3,6 +3,7 @@ using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Email.Interfaces;
 using Mint.WebApp.Email.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Mint.WebApp.Email.Services;
 
@@ -10,45 +11,55 @@ public class MessageBrokerBackgroundService : BackgroundService
 {
     private readonly ILogger<MessageBrokerBackgroundService> _logger;
     private readonly IMessageReceiver<User> _receiver;
-    private readonly IEmailRepository _email;
     private readonly IMessageSender<User> _sender;
+    private readonly IServiceProvider _scope;
+
+    private IEmailRepository _email = default!;
 
     public MessageBrokerBackgroundService(
-        ILogger<MessageBrokerBackgroundService> logger, 
-        IMessageReceiver<User> receiver, 
-        IMessageSender<User> sender, 
-        IEmailRepository email)
+        ILogger<MessageBrokerBackgroundService> logger,
+        IMessageReceiver<User> receiver,
+        IMessageSender<User> sender,
+        IServiceProvider scope)
     {
         _logger = logger;
         _receiver = receiver;
-        _email = email;
         _sender = sender;
+        _scope = scope;
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         stoppingToken.ThrowIfCancellationRequested();
 
-        _receiver?.ReceiveAsync(async (data, metaData) =>
+        using var scope = _scope.CreateScope();
+        _email = scope.ServiceProvider.GetRequiredService<IEmailRepository>();
+
+         User? u = null;
+
+        var task = _receiver?.ReceiveAsync(async (data, metaData) =>
         {
             _logger.LogInformation("Message: {Message}", data.ToString());
 
+            await Task.Delay(100);
+
+            u = data;
+
+        }, stoppingToken);
+
+        if (task != null && task.IsCompleted)
+        {
             var email = new EmailOptions()
             {
-                ToEmails = new List<string>() { data.Email },
+                ToEmails = new List<string>() { u?.Email!, u?.ConfirmationCode.ToString()! },
                 Placeholders = new List<KeyValuePair<string, string>>()
                 {
-                    new KeyValuePair<string, string>("{{Login}}", data.Email),
+                    new KeyValuePair<string, string>("{{Login}} testset", u?.Email!),
                 },
             };
 
-            var isSent = _email.SendTestEmail(email);
-
-            if (isSent.IsCompleted)
-                await _sender.SendAsync(data, metaData, Constants.IdentityKey);
-
-            await Task.Delay(1);
-        }, stoppingToken);
+            _email.SendTestEmailAsync(email);
+        }
 
         return Task.CompletedTask;
     }

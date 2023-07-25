@@ -32,7 +32,7 @@ public class EmailController : ControllerBase
                 },
             };
 
-            await _email.SendTestEmail(email);
+            await _email.SendTestEmailAsync(email);
             return Ok(new { message = "mail was sended" });
         }
         catch (Exception ex)

@@ -37,7 +37,12 @@ public class ApplicationDbContext : DbContext
 	/// </summary>
 	public DbSet<UserRole> UserRoles { get; set; }
 
-	protected override void OnModelCreating(ModelBuilder builder)
+    /// <summary>
+    /// User Addresses Table
+    /// </summary>
+    public DbSet<UserAddress> UserAddresses { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
 	{
 		builder.Entity<User>()
 			.HasIndex(x => x.Email)
@@ -81,6 +86,12 @@ public class ApplicationDbContext : DbContext
 			.WithMany(x => (List<User>?)x.TEntities)
 			.HasForeignKey(x => x.PhotoId)
 			.OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<UserAddress>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.UserAddresses)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         var salt = new Hasher().GetSalt();
 

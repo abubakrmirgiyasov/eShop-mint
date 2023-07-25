@@ -10,7 +10,6 @@ using Mint.WebApp.Identity.FormingModels;
 using Mint.WebApp.Identity.Repositories.Interfaces;
 using Mint.WebApp.Identity.Services;
 using Mint.WebApp.Identity.Services.Interfaces;
-using System.Linq;
 
 namespace Mint.WebApp.Identity.Repositories;
 
@@ -65,7 +64,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 .ThenInclude(x => x.Role)
                 .ToListAsync();
 
-            var user = users.FirstOrDefault(x => x.Email.ToLower() == model.Email!.ToLower())
+            var user = users.FirstOrDefault(x => x.Email?.ToLower() == model.Email?.ToLower())
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
             if (!user.IsActive)
@@ -147,12 +146,10 @@ public class AuthenticationRepository : IAuthenticationRepository
 
                 if (isExistUser != null)
                     throw new Exception("Пользователь с таким адресом электронной почты существует");
-
-                await _sender.SendAsync(new User() { Email = model.Email }, null, Constants.ConfirmationKey);
             }
-            else if (long.TryParse(model.Phone?.ToString(), out long p))
+            else if (long.TryParse(model.Phone?.ToString(), out long phone))
             {
-                var isExistUser = _context.Users.FirstOrDefault(x => x.Phone == p);
+                var isExistUser = _context.Users.FirstOrDefault(x => x.Phone == phone);
 
                 if (isExistUser != null)
                     throw new Exception("Пользователь с таким номером телефона существует");
@@ -180,7 +177,10 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            return UserDTOConverter.FormingSingleViewModel(new User());
+
+            await _sender.SendAsync(user, null, Constants.ConfirmationKey);
+
+            return UserDTOConverter.FormingSingleViewModel(user);
         }
         catch (Exception ex)
         {

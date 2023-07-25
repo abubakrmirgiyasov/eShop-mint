@@ -41,7 +41,7 @@ interface IUserInfo {
 
 const CustomerInfo: FC<ICustomerInfo> = ({ user, language }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(true);
   const [photo, setPhoto] = useState<File[]>([]);
   const [phone, setPhone] = useState<string>(user?.phone || "");
 

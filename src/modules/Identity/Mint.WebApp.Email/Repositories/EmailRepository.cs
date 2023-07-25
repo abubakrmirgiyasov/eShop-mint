@@ -14,7 +14,7 @@ public class EmailRepository : IEmailRepository
         _emailService = emailService;
     }
 
-    public async Task SendTestEmail(EmailOptions email)
+    public async Task SendTestEmailAsync(EmailOptions email)
     {
         email.Subject = _emailService.UpdatePlaceholders(_TestEmail, email.Placeholders);
         email.Body = _emailService.UpdatePlaceholders(_emailService.GetEmailBody("TestEmail"), email.Placeholders);

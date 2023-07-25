@@ -28,7 +28,7 @@ public class AuthenticationResponse
 
     public string? Image { get; set; }
 
-    public long Phone { get; set; }
+    public long? Phone { get; set; }
 
     public string? Description { get; set; }
 

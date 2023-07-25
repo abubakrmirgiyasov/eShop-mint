@@ -66,6 +66,7 @@ namespace Mint.WebApp.Identity.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsSeller = table.Column<bool>(type: "bit", nullable: false),
                     NumOfAttempts = table.Column<int>(type: "int", nullable: false),
+                    ConfirmationCode = table.Column<int>(type: "int", nullable: false),
                     IsConfirmedEmail = table.Column<bool>(type: "bit", nullable: false),
                     IsConfirmedPhone = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -149,11 +150,11 @@ namespace Mint.WebApp.Identity.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
+                columns: new[] { "Id", "ConfirmationCode", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0"), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "d/+hCapBk5TZkLm5bIU/GmLMtsoq98EC0yQcPlkKxUE=", 89502768428L, null, new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 }, "Абубакр", null },
-                    { new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3"), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, false, false, false, null, 0, "F6xHbxa2JKbFzvjoZTHwh6tjt3zvRMIEjEb+JYYDxo0=", 83452763423L, null, new byte[] { 251, 77, 25, 184, 83, 84, 133, 159, 80, 152, 69, 2, 106, 241, 183, 194 }, "User", null }
+                    { new Guid("0952b37d-fa8a-442e-ba83-98e333745edd"), 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "53cfX0TrWxsQRCGc3pFtMbMCKvRT1RGj5EeDzl312bQ=", 89502768428L, null, new byte[] { 173, 115, 44, 30, 165, 121, 25, 118, 250, 102, 28, 72, 193, 211, 123, 22 }, "Абубакр", null },
+                    { new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd"), 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, false, false, false, null, 0, "siEA3mJheUKN2hNhfmd8YcrByNWQgnCJ4n062FIZqP8=", 83452763423L, null, new byte[] { 173, 115, 44, 30, 165, 121, 25, 118, 250, 102, 28, 72, 193, 211, 123, 22 }, "User", null }
                 });
 
             migrationBuilder.InsertData(
@@ -161,12 +162,12 @@ namespace Mint.WebApp.Identity.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0") },
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("8cc2fec9-08e7-4ff3-8757-5e8d782019c0") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("d80766de-15a6-477f-8216-6fbbaac46ca3") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("0952b37d-fa8a-442e-ba83-98e333745edd") },
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("0952b37d-fa8a-442e-ba83-98e333745edd") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("0952b37d-fa8a-442e-ba83-98e333745edd") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("3034ae6c-ec23-496f-baab-7cf528d4edfd") }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Common;
 using Mint.Domain.Models.Identity;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.FormingModels;
 using Mint.WebApp.Identity.Repositories.Interfaces;
@@ -14,16 +16,18 @@ public class UserRepository : IUserRepository
 {
     private readonly ILogger<UserRepository> _logger;
     private readonly ApplicationDbContext _context;
+    private readonly IMessageSender<User> _sender;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="logger"></param>
     /// <param name="context"></param>
-    public UserRepository(ILogger<UserRepository> logger, ApplicationDbContext context)
+    public UserRepository(ILogger<UserRepository> logger, ApplicationDbContext context, IMessageSender<User> sender)
     {
         _context = context;
         _logger = logger;
+        _sender = sender;
     }
 
     /// <summary>
@@ -50,6 +54,37 @@ public class UserRepository : IUserRepository
         }
     }
     
+    /// <summary>
+    /// Gets all addresses single user by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="Exception"></exception>
+    public async Task<IEnumerable<UserAddressFullViewModel>> GetUserAddressesAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var users = await _context.Users
+                .Include(x => x.UserAddresses)
+                .ToListAsync(cancellationToken);
+
+            var user = users.FirstOrDefault(x => x.Id == id)
+                ?? throw new ArgumentNullException(nameof(User), "Пользователь не существует");
+
+            return UserAddressDTOConverter.FormingMultiViewModels(user.UserAddresses);
+        }
+        catch (ArgumentNullException ex)
+        {
+            throw new ArgumentNullException(ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     /// <summary>
     /// This method gets single user by id
     /// </summary>
@@ -149,6 +184,39 @@ public class UserRepository : IUserRepository
         }
     }
 
+    /// <summary>
+    /// This method sends to user email confirmation code
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<int> SendEmailConfirmationCodeAsync(string email)
+    {
+        try
+        {
+            var random = new Random();
+            int code = random.Next(100000, 999999);
+
+            var isUserExists = _context.Users.FirstOrDefault(x => x.Email == email);
+
+            if (isUserExists != null)
+                throw new Exception("Пользователь с таким адресом электронной почты существует");
+
+            var user = new User()
+            {
+                Email = email,
+                ConfirmationCode = code,
+            };
+
+            await _sender.SendAsync(user, null, Constants.ConfirmationKey);
+            return code;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public Task<UserFullViewModel> CreateUserWithEmailAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
@@ -159,10 +227,40 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
+    public async Task<UserAddressFullViewModel> CreateUserAddressAsync(UserAddressFullBindingModel model, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var users = await _context.Users.ToListAsync(cancellationToken);
+
+            var user = users.FirstOrDefault(x => x.Email?.ToLower() == model.Email?.ToLower())
+                ?? throw new ArgumentNullException(nameof(User), "Пользователь не существует");
+
+            var address = UserAddressDTOConverter.FormingSingleFullBindingModel(model);
+            address.UserId = user.Id;
+
+            await _context.UserAddresses.AddAsync(address, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return UserAddressDTOConverter.FormingSingleFullViewModel(address);
+        }
+        catch (ArgumentNullException ex)
+        {
+            throw new ArgumentNullException(ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     public async Task<UserFullViewModel> UpdateUserAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
         {
+
+
+            await _context.SaveChangesAsync();
             return new UserFullViewModel();
         }
         catch (Exception ex)

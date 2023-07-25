@@ -1,7 +1,7 @@
 import Request from "../../helpers/requestWrapper/request";
 import { IUser } from "../types/IUser";
 
-interface ISignUp {
+export interface ISignUp {
   firstName: string;
   secondName: string;
   lastName?: string;
@@ -13,21 +13,23 @@ interface ISignUp {
   photo?: FormData;
 }
 
-interface ISignIn {
+export interface ISignIn {
   email: string;
   password: string;
 }
 
-const register = (request: Request, values: ISignUp) => {
+export const register = (request: Request, values: ISignUp) => {
   return request
     .post("/authentication/signup", values)
-    .then((response) => response)
+    .then((response) => {
+      return response;
+    })
     .catch((error) => {
       throw error;
     });
 };
 
-const login = (request: Request, values: ISignIn) => {
+export const login = (request: Request, values: ISignIn) => {
   return request
     .post("/authentication/signin", values)
     .then((response: IUser) => {
@@ -40,7 +42,7 @@ const login = (request: Request, values: ISignIn) => {
     });
 };
 
-const logout = (request: Request) => {
+export const logout = (request: Request) => {
   return request
     .delete("/authentication/signout")
     .then((response: { message: string }) => {
@@ -51,7 +53,7 @@ const logout = (request: Request) => {
     });
 };
 
-const updateUser = (request: Request, values: IUser) => {
+export const updateUser = (request: Request, values: IUser) => {
   return request
     .put("/user/updateuser", values)
     .then((response: IUser) => {
@@ -63,4 +65,14 @@ const updateUser = (request: Request, values: IUser) => {
     });
 };
 
-export { register, login, logout, updateUser, ISignUp, ISignIn };
+export const refreshToken = (request: Request, values: IUser) => {
+  return request
+    .post("/authentication/refreshtoken", values)
+    .then((response: IUser) => {
+      localStorage.setItem("auth_user", JSON.stringify(response));
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};

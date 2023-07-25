@@ -5,7 +5,17 @@ using Mint.WebApp.Email.Interfaces;
 using Mint.WebApp.Email.Repositories;
 using Mint.WebApp.Email.Services;
 
+const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy =>
+{
+    policy.WithOrigins("http://127.0.0.1:5173")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin();
+}));
 
 var appSettings = builder.Configuration.GetSection("MailConfig");
 builder.Services.Configure<MailConfig>(appSettings);
@@ -35,5 +45,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+app.UseCors(MyAllowSpecificOrigins);
 
 app.Run();

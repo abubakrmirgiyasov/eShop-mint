@@ -20,6 +20,9 @@ import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { fetch } from "../../helpers/fetch";
+import { Link } from "react-router-dom";
+import SignInModal from "./SignInModal";
 
 interface ISignUp {
   isOpen: boolean;
@@ -35,6 +38,8 @@ const SignUpModal: FC<ISignUp> = ({ isOpen, toggle }) => {
   const [activeTab, setActiveTab] = useState<number>(1);
   const [phone, setPhone] = useState<string>("");
   const [isPhoneError, setIsPhoneError] = useState<boolean>(false);
+
+  const [codeWindow, setCodeWindow] = useState<boolean>(false);
 
   const customStyle = {
     borderColor: "#f06548",
@@ -54,6 +59,10 @@ const SignUpModal: FC<ISignUp> = ({ isOpen, toggle }) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const toggleSignInModal = () => {
+    setCodeWindow(true);
+  };
+
   const handlePhoneChange = (e: string) => {
     setPhone(e);
   };
@@ -63,8 +72,20 @@ const SignUpModal: FC<ISignUp> = ({ isOpen, toggle }) => {
 
     setIsPhoneError(!phone);
   };
-  console.log(phone);
-  const onEmailSubmit = (e: FormEvent<HTMLFormElement>) => {};
+
+  const onEmailSubmit = (e: ISignUpWithEmail) => {
+    console.log(e);
+    setIsLoading(true);
+
+    fetch()
+      .post("/user/sendemailconfirmationcode", e)
+      .then((response) => {
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+      });
+  };
 
   const validateEmail = Yup.object().shape({
     email: Yup.string().required("Заполните обязательное поле"),
@@ -153,18 +174,23 @@ const SignUpModal: FC<ISignUp> = ({ isOpen, toggle }) => {
                     <label className={"form-label"} htmlFor={"email"}>
                       Адрес электроной почты
                     </label>
-                    <input
-                      type={"email"}
-                      className={`form-control ${
-                        errors.email ? "is-invalid" : ""
-                      }`}
-                      id={"email"}
-                      placeholder={"Введите адрес электроной почты"}
-                      {...register("email")}
-                    />
-                    <FormFeedback type={"invalid"}>
-                      {errors.email?.message}
-                    </FormFeedback>
+                    <div className={"form-icon right"}>
+                      <input
+                        type={"email"}
+                        className={`form-control form-control-icon ${
+                          errors.email ? "is-invalid" : ""
+                        }`}
+                        id={"email"}
+                        placeholder={"Введите адрес электроной почты"}
+                        {...register("email")}
+                      />
+                      {!errors.email && (
+                        <i className={"ri-mail-unread-line"}></i>
+                      )}
+                      <FormFeedback type={"invalid"}>
+                        {errors.email?.message}
+                      </FormFeedback>
+                    </div>
                   </Col>
                 </Row>
                 <div
@@ -188,8 +214,19 @@ const SignUpModal: FC<ISignUp> = ({ isOpen, toggle }) => {
               </form>
             </TabPane>
           </TabContent>
+          <div className={"d-flex justify-content-center align-items-center"}>
+            <Link
+              color={"primary"}
+              to={"#"}
+              className={"text-decoration-underline"}
+              onClick={() => {}}
+            >
+              Войти
+            </Link>
+          </div>
         </ModalBody>
       </Modal>
+      <SignInModal isOpen={codeWindow} toggle={toggleSignInModal} />
     </React.Fragment>
   );
 };

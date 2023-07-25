@@ -22,4 +22,18 @@ interface IRole {
   label: string;
 }
 
-export { IUser, IRole };
+interface IUserAddress {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: number;
+  createdDate: string;
+  fullAddress: string;
+  country: string;
+  city: string;
+  street: string;
+  zipCode: number;
+  description: number;
+}
+
+export { IUser, IRole, IUserAddress };

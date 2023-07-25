@@ -4,7 +4,7 @@ namespace Mint.WebApp.Email.Interfaces;
 
 public interface IEmailRepository
 {
-    Task SendTestEmail(EmailOptions email);
+    Task SendTestEmailAsync(EmailOptions email);
 
     Task SendEmailConfirmation(EmailOptions email);
 
