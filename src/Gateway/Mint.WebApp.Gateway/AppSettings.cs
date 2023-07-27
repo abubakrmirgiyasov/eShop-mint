@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace Mint.WebApp.Common;
+namespace Mint.WebApp;
 
 public class AppSettings
 {

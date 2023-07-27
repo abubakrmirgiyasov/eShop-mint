@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.Features;
-using Mint.Gateway.Extensions;
-using Mint.WebApp.Common;
+using Mint.WebApp;
+using Mint.WebApp.Extensions;
 using Mint.WebApp.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -21,6 +21,8 @@ builder.Services.Configure<FormOptions>(x =>
     x.ValueCountLimit = int.MaxValue;
 });
 
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -39,6 +41,7 @@ app.UseRouting();
 
 app.UseWebSockets();
 app.UseOcelot().Wait();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -1,7 +1,6 @@
-﻿using Mint.WebApp.Common;
-using Ocelot.Configuration.File;
+﻿using Ocelot.Configuration.File;
 
-namespace Mint.Gateway.Extensions;
+namespace Mint.WebApp.Extensions;
 
 public static class ServiceCollectionBuilderExtension
 {

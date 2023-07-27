@@ -43,41 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Notification", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Admin", "src\modules\Identity\Mint.WebApp.Admin\Mint.WebApp.Admin.csproj", "{6B500F38-AE70-463D-A099-044985427FCC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientApp", "ClientApp", "{411B631F-9D70-4236-848A-B29725EDA339}"
-	ProjectSection(SolutionItems) = preProject
-		src\ClientApp\.env = src\ClientApp\.env
-		src\ClientApp\.env.development = src\ClientApp\.env.development
-		src\ClientApp\.gitignore = src\ClientApp\.gitignore
-		src\ClientApp\aspnetcore-https.js = src\ClientApp\aspnetcore-https.js
-		src\ClientApp\aspnetcore-react.js = src\ClientApp\aspnetcore-react.js
-		src\ClientApp\package-lock.json = src\ClientApp\package-lock.json
-		src\ClientApp\package.json = src\ClientApp\package.json
-		src\ClientApp\README.md = src\ClientApp\README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{F2A3CA21-4BC9-46C8-B8FD-02E3B002E9A2}"
-	ProjectSection(SolutionItems) = preProject
-		src\ClientApp\public\favicon.ico = src\ClientApp\public\favicon.ico
-		src\ClientApp\public\index.html = src\ClientApp\public\index.html
-		src\ClientApp\public\manifest.json = src\ClientApp\public\manifest.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F68330D-6686-4ABE-848B-44FA1B1FB256}"
-	ProjectSection(SolutionItems) = preProject
-		src\ClientApp\src\App.js = src\ClientApp\src\App.js
-		src\ClientApp\src\App.test.js = src\ClientApp\src\App.test.js
-		src\ClientApp\src\AppRoutes.js = src\ClientApp\src\AppRoutes.js
-		src\ClientApp\src\custom.css = src\ClientApp\src\custom.css
-		src\ClientApp\src\index.js = src\ClientApp\src\index.js
-		src\ClientApp\src\reportWebVitals.js = src\ClientApp\src\reportWebVitals.js
-		src\ClientApp\src\service-worker.js = src\ClientApp\src\service-worker.js
-		src\ClientApp\src\serviceWorkerRegistration.js = src\ClientApp\src\serviceWorkerRegistration.js
-		src\ClientApp\src\setupProxy.js = src\ClientApp\src\setupProxy.js
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{08CE716F-4D08-447C-96EE-A4018AFA7035}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Gateway", "src\Gateway\Mint.WebApp.Gateway\Mint.WebApp.Gateway.csproj", "{62C56390-1704-4026-B058-B4FF2A644E1B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Gateway", "src\Gateway\Mint.WebApp\Mint.WebApp.Gateway.csproj", "{A9838ED1-E018-42F1-9980-7A633FB9511B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,10 +109,10 @@ Global
 		{6B500F38-AE70-463D-A099-044985427FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B500F38-AE70-463D-A099-044985427FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B500F38-AE70-463D-A099-044985427FCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62C56390-1704-4026-B058-B4FF2A644E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62C56390-1704-4026-B058-B4FF2A644E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62C56390-1704-4026-B058-B4FF2A644E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62C56390-1704-4026-B058-B4FF2A644E1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9838ED1-E018-42F1-9980-7A633FB9511B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9838ED1-E018-42F1-9980-7A633FB9511B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9838ED1-E018-42F1-9980-7A633FB9511B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9838ED1-E018-42F1-9980-7A633FB9511B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,11 +135,8 @@ Global
 		{AACDD6BF-E715-4FAA-B134-CEA50F20344F} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{406A5CF3-0E70-4304-9F2E-11833B976DE2} = {AACDD6BF-E715-4FAA-B134-CEA50F20344F}
 		{6B500F38-AE70-463D-A099-044985427FCC} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
-		{411B631F-9D70-4236-848A-B29725EDA339} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
-		{F2A3CA21-4BC9-46C8-B8FD-02E3B002E9A2} = {411B631F-9D70-4236-848A-B29725EDA339}
-		{2F68330D-6686-4ABE-848B-44FA1B1FB256} = {411B631F-9D70-4236-848A-B29725EDA339}
 		{08CE716F-4D08-447C-96EE-A4018AFA7035} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
-		{62C56390-1704-4026-B058-B4FF2A644E1B} = {08CE716F-4D08-447C-96EE-A4018AFA7035}
+		{A9838ED1-E018-42F1-9980-7A633FB9511B} = {08CE716F-4D08-447C-96EE-A4018AFA7035}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}
