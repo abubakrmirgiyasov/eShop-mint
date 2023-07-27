@@ -17,6 +17,16 @@ public class AuthenticationController : ControllerBase
         _authentication = authentication;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetMe()
+    {
+        return Ok(new {
+            id="test",
+            fist="testsfds",
+            asd="asddlf;"
+        });
+    }
+
     [HttpPost]
     public async Task<IActionResult> SignIn([FromBody] UserFullBindingModel model)
     {

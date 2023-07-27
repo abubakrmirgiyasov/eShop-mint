@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mint.Domain.Attributes;
+using Mint.Domain.Common;
 using Mint.WebApp.Identity.DTO_s;
 using Mint.WebApp.Identity.Extensions;
 using Mint.WebApp.Identity.Repositories.Interfaces;
@@ -8,6 +10,7 @@ namespace Mint.WebApp.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
+[Authorize(Roles = $"{Constants.ADMIN},{Constants.SELLER},{Constants.BUYER}")]
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _user;

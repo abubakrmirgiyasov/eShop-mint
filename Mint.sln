@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp", "src\Mint.WebApp\Mint.WebApp.csproj", "{D04F1FF5-36C0-445D-A546-BC68E93E84CB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{326E6240-5F0D-451D-BEC7-81D042DF5321}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.Infrastructure", "src\Mint.Infrastructure\Mint.Infrastructure.csproj", "{18314AC0-9962-422B-9488-C6328DA9D3B3}"
@@ -27,11 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Delivering", "s
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6AD5C31F-C007-4B36-8D94-A69500E8662C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{C208C3BB-D549-4454-9B8A-15D495F3B613}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Ordering", "src\modules\Mint.WebApp.Ordering\Mint.WebApp.Ordering.csproj", "{71ABDFCD-4BA0-473D-BD84-92B560B7CF87}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.Gateway", "Gateaway\Mint.Gateway\Mint.Gateway.csproj", "{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Telegram.WebHook", "src\modules\Mint.WebApp.Telegram.WebHook\Mint.WebApp.Telegram.WebHook.csproj", "{27BC056C-8C8E-40BF-9C45-947EA2D9DEC0}"
 EndProject
@@ -47,7 +41,43 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notificatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Notification", "src\modules\Notification\Mint.WebApp.Notification\Mint.WebApp.Notification.csproj", "{406A5CF3-0E70-4304-9F2E-11833B976DE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Admin", "src\modules\Identity\Mint.WebApp.Admin\Mint.WebApp.Admin.csproj", "{6B500F38-AE70-463D-A099-044985427FCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Admin", "src\modules\Identity\Mint.WebApp.Admin\Mint.WebApp.Admin.csproj", "{6B500F38-AE70-463D-A099-044985427FCC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientApp", "ClientApp", "{411B631F-9D70-4236-848A-B29725EDA339}"
+	ProjectSection(SolutionItems) = preProject
+		src\ClientApp\.env = src\ClientApp\.env
+		src\ClientApp\.env.development = src\ClientApp\.env.development
+		src\ClientApp\.gitignore = src\ClientApp\.gitignore
+		src\ClientApp\aspnetcore-https.js = src\ClientApp\aspnetcore-https.js
+		src\ClientApp\aspnetcore-react.js = src\ClientApp\aspnetcore-react.js
+		src\ClientApp\package-lock.json = src\ClientApp\package-lock.json
+		src\ClientApp\package.json = src\ClientApp\package.json
+		src\ClientApp\README.md = src\ClientApp\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{F2A3CA21-4BC9-46C8-B8FD-02E3B002E9A2}"
+	ProjectSection(SolutionItems) = preProject
+		src\ClientApp\public\favicon.ico = src\ClientApp\public\favicon.ico
+		src\ClientApp\public\index.html = src\ClientApp\public\index.html
+		src\ClientApp\public\manifest.json = src\ClientApp\public\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F68330D-6686-4ABE-848B-44FA1B1FB256}"
+	ProjectSection(SolutionItems) = preProject
+		src\ClientApp\src\App.js = src\ClientApp\src\App.js
+		src\ClientApp\src\App.test.js = src\ClientApp\src\App.test.js
+		src\ClientApp\src\AppRoutes.js = src\ClientApp\src\AppRoutes.js
+		src\ClientApp\src\custom.css = src\ClientApp\src\custom.css
+		src\ClientApp\src\index.js = src\ClientApp\src\index.js
+		src\ClientApp\src\reportWebVitals.js = src\ClientApp\src\reportWebVitals.js
+		src\ClientApp\src\service-worker.js = src\ClientApp\src\service-worker.js
+		src\ClientApp\src\serviceWorkerRegistration.js = src\ClientApp\src\serviceWorkerRegistration.js
+		src\ClientApp\src\setupProxy.js = src\ClientApp\src\setupProxy.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{08CE716F-4D08-447C-96EE-A4018AFA7035}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Gateway", "src\Gateway\Mint.WebApp.Gateway\Mint.WebApp.Gateway.csproj", "{62C56390-1704-4026-B058-B4FF2A644E1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +85,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D04F1FF5-36C0-445D-A546-BC68E93E84CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D04F1FF5-36C0-445D-A546-BC68E93E84CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D04F1FF5-36C0-445D-A546-BC68E93E84CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D04F1FF5-36C0-445D-A546-BC68E93E84CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18314AC0-9962-422B-9488-C6328DA9D3B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18314AC0-9962-422B-9488-C6328DA9D3B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18314AC0-9962-422B-9488-C6328DA9D3B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,10 +121,6 @@ Global
 		{71ABDFCD-4BA0-473D-BD84-92B560B7CF87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71ABDFCD-4BA0-473D-BD84-92B560B7CF87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71ABDFCD-4BA0-473D-BD84-92B560B7CF87}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27BC056C-8C8E-40BF-9C45-947EA2D9DEC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27BC056C-8C8E-40BF-9C45-947EA2D9DEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27BC056C-8C8E-40BF-9C45-947EA2D9DEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -119,12 +141,15 @@ Global
 		{6B500F38-AE70-463D-A099-044985427FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B500F38-AE70-463D-A099-044985427FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B500F38-AE70-463D-A099-044985427FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C56390-1704-4026-B058-B4FF2A644E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C56390-1704-4026-B058-B4FF2A644E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C56390-1704-4026-B058-B4FF2A644E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C56390-1704-4026-B058-B4FF2A644E1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D04F1FF5-36C0-445D-A546-BC68E93E84CB} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
 		{18314AC0-9962-422B-9488-C6328DA9D3B3} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
 		{EF0BBA79-FDD8-4922-8F50-6B24C469F0CA} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
 		{0199D1FA-61BF-4621-B224-F9CE93086EDF} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
@@ -134,7 +159,6 @@ Global
 		{07C80DEF-A58C-4D8E-8E73-F379964E458A} = {EBC3A9B7-E9B3-4526-A282-E072FEA7B8F1}
 		{4683AB7E-4866-4B20-B381-663F0FE1D66D} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{71ABDFCD-4BA0-473D-BD84-92B560B7CF87} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
-		{A0A6EE5A-F745-4F58-94E6-31B03E7A531D} = {C208C3BB-D549-4454-9B8A-15D495F3B613}
 		{27BC056C-8C8E-40BF-9C45-947EA2D9DEC0} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{7A823355-1953-4B19-A64F-F7A53AF449A7} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{7F551865-7DAB-45FD-82A8-693B8DB35EA8} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
@@ -143,6 +167,11 @@ Global
 		{AACDD6BF-E715-4FAA-B134-CEA50F20344F} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{406A5CF3-0E70-4304-9F2E-11833B976DE2} = {AACDD6BF-E715-4FAA-B134-CEA50F20344F}
 		{6B500F38-AE70-463D-A099-044985427FCC} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
+		{411B631F-9D70-4236-848A-B29725EDA339} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
+		{F2A3CA21-4BC9-46C8-B8FD-02E3B002E9A2} = {411B631F-9D70-4236-848A-B29725EDA339}
+		{2F68330D-6686-4ABE-848B-44FA1B1FB256} = {411B631F-9D70-4236-848A-B29725EDA339}
+		{08CE716F-4D08-447C-96EE-A4018AFA7035} = {326E6240-5F0D-451D-BEC7-81D042DF5321}
+		{62C56390-1704-4026-B058-B4FF2A644E1B} = {08CE716F-4D08-447C-96EE-A4018AFA7035}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}
