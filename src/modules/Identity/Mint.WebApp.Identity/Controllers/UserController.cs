@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Attributes;
 using Mint.Domain.Common;
-using Mint.WebApp.Identity.DTO_s;
+using Mint.Identity.Lib.DTO_s;
+using Mint.Identity.Lib.Repositories.Interfaces;
 using Mint.WebApp.Identity.Extensions;
-using Mint.WebApp.Identity.Repositories.Interfaces;
 
 namespace Mint.WebApp.Identity.Controllers;
 

@@ -2,7 +2,7 @@
 
 namespace Mint.Domain.Common;
 
-public class AppSettings
+public class IdentitySettings
 {
     public string SecretKey { get; set; }
 

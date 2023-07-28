@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Common;
 using Mint.Domain.Models.Identity;
+using Mint.Identity.Lib.Repositories;
+using Mint.Identity.Lib.Repositories.Interfaces;
+using Mint.Identity.Lib.Services;
+using Mint.Identity.Lib.Services.Interfaces;
 using Mint.Infrastructure.MessageBrokers;
-using Mint.WebApp.Identity.Repositories;
-using Mint.WebApp.Identity.Repositories.Interfaces;
-using Mint.WebApp.Identity.Services;
-using Mint.WebApp.Identity.Services.Interfaces;
 
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -23,9 +23,6 @@ var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
 builder.Services.AddMessageBusSender<User>(brokerOptions);
 
-var appSettings = builder.Configuration.GetSection("AppSettings");
-builder.Services.Configure<AppSettings>(appSettings);
-
 var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
@@ -33,7 +30,6 @@ builder.Services.AddScoped<IJwt, Jwt>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 
 //builder.Services.AddHostedService<MessageBrokerBackgroundService<User>>();
 
@@ -54,8 +50,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.UseMiddleware<ExceptionMiddleware>();
-app.UseMiddleware<JwtMiddleware>();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.Run();

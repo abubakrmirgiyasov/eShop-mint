@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Attributes;
-using Mint.WebApp.Identity.DTO_s;
+using Mint.Identity.Lib.DTO_s;
+using Mint.Identity.Lib.Repositories.Interfaces;
 using Mint.WebApp.Identity.Extensions;
-using Mint.WebApp.Identity.Repositories.Interfaces;
 
 namespace Mint.WebApp.Identity.Controllers;
 
@@ -18,12 +18,24 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetMe()
+    [Authorize]
+    public IActionResult GetMe()
     {
         return Ok(new {
             id="test",
             fist="testsfds",
             asd="asddlf;"
+        });
+    }
+
+    [HttpGet]
+    public IActionResult GetYout()
+    {
+        return Ok(new
+        {
+            id = "GetYout",
+            fist = "GetYout",
+            asd = "GetYout;"
         });
     }
 

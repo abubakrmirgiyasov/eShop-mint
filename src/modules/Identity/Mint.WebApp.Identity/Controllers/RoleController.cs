@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Attributes;
 using Mint.Domain.Common;
-using Mint.WebApp.Identity.DTO_s;
-using Mint.WebApp.Identity.Repositories;
+using Mint.Identity.Lib.DTO_s;
+using Mint.Identity.Lib.Repositories.Interfaces;
 
 namespace Mint.WebApp.Identity.Controllers;
 
@@ -11,9 +11,9 @@ namespace Mint.WebApp.Identity.Controllers;
 [Authorize(Roles = Constants.ADMIN)]
 public class RoleController : ControllerBase
 {
-    private readonly RoleRepository _role;
+    private readonly IRoleRepository _role;
 
-    public RoleController(RoleRepository role)
+    public RoleController(IRoleRepository role)
     {
         _role = role;
     }

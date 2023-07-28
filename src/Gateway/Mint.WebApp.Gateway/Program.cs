@@ -1,52 +1,79 @@
-using Microsoft.AspNetCore.Http.Features;
 using Mint.WebApp;
-using Mint.WebApp.Extensions;
 using Mint.WebApp.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Mint.Identity.Lib.Services;
+using Mint.Identity.Lib.Services.Interfaces;
+using Mint.Identity.Lib.Repositories.Interfaces;
+using Mint.Identity.Lib.Repositories;
+using Ocelot.Configuration.File;
+using Mint.Infrastructure.MessageBrokers;
+using Mint.Domain.Models.Identity;
+using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var identitySettings = builder.Configuration.GetSection("IdentitySettings");
+builder.Services.Configure<IdentitySettings>(identitySettings);
+
 var config = builder.Configuration.GetSection("Ocelot");
 var appSettings = config.Get<AppSettings>();
+builder.Services.AddOcelot().AddDelegatingHandler<DebuggingHandler>(true);
 
-builder.Services.AddOcelot()
-    .AddDelegatingHandler<DebuggingHandler>(true);
+var brokerSettings = builder.Configuration.GetSection("MessageBroker");
+var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
+builder.Services.AddMessageBusSender<User>(brokerOptions);
 
-builder.Services.PostFileConfigure(appSettings!, builder);
+var connection = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
-builder.Services.Configure<FormOptions>(x =>
+builder.Services.AddScoped<IJwt, Jwt>();
+builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.PostConfigure<FileConfiguration>(configuration =>
 {
-    x.BufferBody = true;
-    x.ValueCountLimit = int.MaxValue;
-});
+    foreach (var route in appSettings!.Routes.Select(x => x.Value))
+    {
+        var uri = new Uri(route.Downstream);
 
-builder.Services.AddControllersWithViews();
+        foreach (var pathTemplate in route.UpstreamPathTemplates)
+        {
+            configuration.Routes.Add(new FileRoute()
+            {
+                UpstreamPathTemplate = pathTemplate,
+                DownstreamPathTemplate = pathTemplate,
+                DownstreamScheme = uri.Scheme,
+                DownstreamHostAndPorts = new List<FileHostAndPort>()
+                {
+                    new FileHostAndPort()
+                    {
+                        Host = uri.Host,
+                        Port = uri.Port
+                    },
+                }
+            });
+        }
+    }
+
+    foreach (var route in configuration.Routes)
+    {
+        if (string.IsNullOrWhiteSpace(route.UpstreamPathTemplate))
+            route.DownstreamScheme = builder.Configuration["Ocelot:DefaultDownstreamScheme"];
+
+        if (string.IsNullOrWhiteSpace(route.DownstreamPathTemplate))
+            route.DownstreamPathTemplate = route.UpstreamPathTemplate;
+    }
+});
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHsts();
-}
-else
-{
-    app.UseDeveloperExceptionPage();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UsePathBase(new PathString("/api"));
-app.UseRouting();
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseWebSockets();
 app.UseOcelot().Wait();
-
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
-
-app.MapFallbackToFile("index.html");
 
 app.Run();
