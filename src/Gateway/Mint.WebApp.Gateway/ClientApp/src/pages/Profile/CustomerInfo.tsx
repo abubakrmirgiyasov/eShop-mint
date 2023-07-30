@@ -7,7 +7,6 @@ import {
   Col,
   FormFeedback,
   Row,
-  Spinner,
   TabPane,
 } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -263,14 +262,14 @@ const CustomerInfo: FC<ICustomerInfo> = ({ user, language }) => {
                     }`}
                     placeholder={"Введите адрес электронной почты"}
                     defaultValue={user?.email || ""}
-                    disabled={isEdit && !user?.isEmailConfirmed}
+                    disabled={isEdit && !user?.isConfirmedEmail}
                     {...register("email")}
                   />
                   <FormFeedback type={"invalid"}>
                     {errors.email?.message}
                   </FormFeedback>
                 </Col>
-                {!user?.isEmailConfirmed && (
+                {!user?.isConfirmedEmail && (
                   <>
                     <Col lg={4}>Подтвердите почту</Col>
                     <Col lg={8}>
@@ -303,7 +302,7 @@ const CustomerInfo: FC<ICustomerInfo> = ({ user, language }) => {
                     {errors.phone?.message}
                   </FormFeedback>
                 </Col>
-                {!user?.isPhoneConfirmed && (
+                {!user?.isConfirmedPhone && (
                   <>
                     <Col lg={4}>Подтвердите телефон</Col>
                     <Col lg={8}>

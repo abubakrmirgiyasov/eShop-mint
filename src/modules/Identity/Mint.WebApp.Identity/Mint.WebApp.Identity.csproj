@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Mint.Domain\Mint.Domain.csproj" />
-    <ProjectReference Include="..\..\..\Mint.Identity.Lib\Mint.Identity.Lib.csproj" />
+    <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

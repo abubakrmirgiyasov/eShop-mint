@@ -28,7 +28,6 @@
     <Folder Include="DTO%27s\" />
     <Folder Include="FormingModels\" />
     <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

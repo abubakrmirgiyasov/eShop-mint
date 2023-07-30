@@ -15,7 +15,7 @@ import { IProduct } from "../types/IProduct";
 export const getMyLikes = (request: Request, id: string) => (dispatch) => {
   return getRequest(request, id).then(
     (response: IProduct[]) => {
-      dispatch(getStore(response));
+      dispatch(getStore(!!response));
       return Promise.resolve();
     },
     (error) => {

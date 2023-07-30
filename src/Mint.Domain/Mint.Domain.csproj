@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="BindingModels\**" />
-    <Compile Remove="FormingModels\**" />
+    <Compile Remove="FormingModelsssss\**" />
     <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="BindingModels\**" />
-    <EmbeddedResource Remove="FormingModels\**" />
+    <EmbeddedResource Remove="FormingModelsssss\**" />
     <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="BindingModels\**" />
-    <None Remove="FormingModels\**" />
+    <None Remove="FormingModelsssss\**" />
     <None Remove="ViewModels\**" />
   </ItemGroup>
 
@@ -23,6 +23,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Store\" />
   </ItemGroup>
 
 </Project>

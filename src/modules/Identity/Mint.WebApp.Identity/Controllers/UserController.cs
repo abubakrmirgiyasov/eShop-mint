@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Attributes;
 using Mint.Domain.Common;
-using Mint.Identity.Lib.DTO_s;
-using Mint.Identity.Lib.Repositories.Interfaces;
+using Mint.Domain.DTO_s.Identity;
+using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.WebApp.Identity.Extensions;
 
 namespace Mint.WebApp.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-[Authorize(Roles = $"{Constants.ADMIN},{Constants.SELLER},{Constants.BUYER}")]
+[Authorize(Roles = "ADMIN,SELLER,BUYER")]
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _user;
@@ -64,6 +64,34 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
+    public async Task<IActionResult> UpdateUserAddress([FromBody] UserAddressFullBindingModel model)
+    {
+        try
+        {
+            var address = await _user.UpdateUserAddressAsync(model);
+            return Ok(address);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUserAddress(Guid id)
+    {
+        try
+        {
+            await _user.DeleteUserAddressAsync(id);
+            return Ok(new { message = "Удалено успешно" });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut]
     public async Task<IActionResult> UpdateUser([FromBody] UserFullBindingModel model)
     {
 		try
@@ -75,5 +103,19 @@ public class UserController : ControllerBase
 		{
 			return BadRequest(new { message = ex.Message });
 		}
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserPassword([FromBody] UserFullBindingModel model)
+    {
+        try
+        {
+            await _user.UpdateUserPasswordAsync(model);
+            return Ok(new { message = "Обновлено успешно" });
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 }

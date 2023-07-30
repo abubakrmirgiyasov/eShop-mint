@@ -20,21 +20,22 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
         if (!isAllowedAnonymus)
         {
-            var user = (User?)context.HttpContext.Items["User"];
+            var roles = context.HttpContext.Request.Headers["X-Role"].ToString();
 
-            if (user != null)
+            if (!string.IsNullOrEmpty(roles))
             {
                 if (!string.IsNullOrEmpty(Roles))
                 {
                     bool isValid = false;
 
-                    string[] roles = Roles.Split(',');
+                    string[] splitRoles = Roles.Split(',');
+                    string[] splitHeaderRoles = roles.Split(',');
 
-                    for (int i = 0; i < roles.Length; i++)
+                    for (int i = 0; i < splitRoles.Length; i++)
                     {
-                        for (int j = 0; j < user.UserRoles?.Count; j++)
+                        for (int j = 0; j < splitHeaderRoles.Length; j++)
                         {
-                            if (roles[i] == user.UserRoles[j].Role.Name)
+                            if (splitRoles[i].Trim() == splitHeaderRoles[j].Trim())
                             {
                                 isValid = true;
                                 break;

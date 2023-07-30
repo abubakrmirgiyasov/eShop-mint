@@ -1,15 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Common;
 using Mint.Domain.Models.Identity;
-using Mint.Identity.Lib.Repositories;
-using Mint.Identity.Lib.Repositories.Interfaces;
-using Mint.Identity.Lib.Services;
-using Mint.Identity.Lib.Services.Interfaces;
+using Mint.Infrastructure;
 using Mint.Infrastructure.MessageBrokers;
+using Mint.Infrastructure.Repositories.Identity;
+using Mint.Infrastructure.Repositories.Identity.Interfaces;
+using Mint.Infrastructure.Services;
+using Mint.Infrastructure.Services.Interfaces;
 
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+var identitySettings = builder.Configuration.GetSection("IdentitySettings");
+builder.Services.Configure<IdentitySettings>(identitySettings);
 
 builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy =>
 {

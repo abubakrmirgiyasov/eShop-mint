@@ -13,6 +13,9 @@ import {
 import CustomDivider from "../../components/Common/CustomDivider";
 import { fetch } from "../../helpers/fetch";
 import { Error } from "../../components/Notifications/Error";
+import AddressesAction from "./AddressesAction";
+import { dateConverter } from "../../helpers/dateConverter";
+import DeleteAddress from "./DeleteAddress";
 
 interface IAddresses {
   user: IUser;
@@ -32,17 +35,15 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
     if (activeTab === 2) {
       setIsLoading(true);
       fetch()
-        .get("/authentication/getme") // "/user/getuseraddresses/" + user.id
+        .get("/user/getuseraddresses/" + user.id)
         .then((response: IUserAddress[]) => {
           setAddresses(response);
           setIsLoading(false);
-          console.log("response");
         })
         .catch((error) => {
           setError(error);
           setAddresses([]);
           setIsLoading(false);
-          console.log("errotr");
         });
     }
   }, [activeTab, user]);
@@ -65,6 +66,7 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
     (address: IUserAddress) => {
       setAddress(address);
       setIsEdit(true);
+      console.log(address);
       addressActionWindowToggle();
     },
     [addressActionWindowToggle]
@@ -86,6 +88,20 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
     },
     [deleteAddressWindowToggle]
   );
+
+  const handleAddressAdd = (address: IUserAddress) => {
+    setAddresses([...addresses, address]);
+  };
+
+  const handleAddressUpdate = (address: IUserAddress) => {
+    let currentAddress = addresses.filter((x) => x.id !== address.id);
+    setAddresses([...currentAddress, address]);
+  };
+
+  const handleAddressDelete = (id: string) => {
+    const currentAddresses = addresses.filter((x) => x.id !== id);
+    setAddresses(currentAddresses);
+  };
 
   return (
     <React.Fragment>
@@ -140,17 +156,19 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
                       </Col>
                     )}
                     {addresses.map((address, key) => (
-                      <Col key={key} sm={8} className={"w-50"}>
+                      <Col key={key} lg={4}>
                         <Card>
                           <CardBody className={"bg-light"}>
                             <h3>{address.fullName}</h3>
                             <h5 className={"text-muted fs-6"}>
                               Email: {address.email}
-                              <br />
+                            </h5>
+                            <h5 className={"text-muted fs-6"}>
                               Телефон: {address.phone}
                             </h5>
                             <h5 className={"text-muted fs-6"}>
-                              ФИО: {address.fullName}
+                              Дата создания:{" "}
+                              {dateConverter(address.createdDate)}
                             </h5>
                             <h5 className={"text-muted fs-6"}>
                               Адрес: {address.fullAddress}
@@ -164,6 +182,9 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
                               <span className={"fw-semibold"}>
                                 {address.country}
                               </span>
+                            </h5>
+                            <h5 className={"text-muted fs-6"}>
+                              Описание: {address.description}
                             </h5>
                           </CardBody>
                           <CardFooter
@@ -195,6 +216,21 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
           </Card>
         )}
       </TabPane>
+      <AddressesAction
+        user={user}
+        address={address}
+        isEdit={isEdit}
+        isOpen={isActionModal}
+        toggle={addressActionWindowToggle}
+        handleNewAddress={handleAddressAdd}
+        handleUpdateAddress={handleAddressUpdate}
+      />
+      <DeleteAddress
+        id={address?.id || ""}
+        isOpen={isDeleteModal}
+        toggle={deleteAddressWindowToggle}
+        handleDeletedAddress={handleAddressDelete}
+      />
     </React.Fragment>
   );
 };

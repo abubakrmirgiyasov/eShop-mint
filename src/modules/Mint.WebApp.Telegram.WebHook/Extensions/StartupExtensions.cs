@@ -1,6 +1,5 @@
 ﻿using Mint.Domain.Common;
 using Mint.Infrastructure.MessageBrokers;
-using Mint.Infrastructure.Services.Extensions;
 using Mint.WebApp.Telegram.WebHook.Common;
 using Mint.WebApp.Telegram.WebHook.Interfaces;
 using Mint.WebApp.Telegram.WebHook.Models;
@@ -58,7 +57,6 @@ public static class StartupExtensions
 
         var brokers = builder.Configuration.GetSection("MessageBroker");
         var brokersSettings = brokers.Get<MessageBrokerOptions>();
-        builder.Services.AddStorageModule(brokersSettings!);
         builder.Services.AddMessageBusReceiver<User>();
 
         builder.Services
@@ -68,7 +66,7 @@ public static class StartupExtensions
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddHostedService<WebHookService>();
-        //builder.Services.AddHostedService
+
         return builder;
     }
 

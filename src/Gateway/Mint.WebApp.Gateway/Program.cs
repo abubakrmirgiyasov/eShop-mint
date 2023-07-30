@@ -2,15 +2,16 @@ using Mint.WebApp;
 using Mint.WebApp.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Mint.Identity.Lib.Services;
-using Mint.Identity.Lib.Services.Interfaces;
-using Mint.Identity.Lib.Repositories.Interfaces;
-using Mint.Identity.Lib.Repositories;
 using Ocelot.Configuration.File;
+using Mint.Domain.Common;
 using Mint.Infrastructure.MessageBrokers;
 using Mint.Domain.Models.Identity;
+using Mint.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Mint.Domain.Common;
+using Mint.Infrastructure.Services;
+using Mint.Infrastructure.Services.Interfaces;
+using Mint.Infrastructure.Repositories.Identity.Interfaces;
+using Mint.Infrastructure.Repositories.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

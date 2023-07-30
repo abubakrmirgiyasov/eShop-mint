@@ -1,8 +1,8 @@
 using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.MessageBrokers;
+using Mint.Infrastructure.Repositories.Email;
+using Mint.Infrastructure.Services.Email.Interfaces;
 using Mint.WebApp.Email.Common;
-using Mint.WebApp.Email.Interfaces;
-using Mint.WebApp.Email.Repositories;
 using Mint.WebApp.Email.Services;
 
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";

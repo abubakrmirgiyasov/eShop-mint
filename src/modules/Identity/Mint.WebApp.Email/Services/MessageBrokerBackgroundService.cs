@@ -1,9 +1,8 @@
 ﻿using Mint.Domain.Common;
 using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.WebApp.Email.Interfaces;
-using Mint.WebApp.Email.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Mint.Domain.Models.Email;
+using Mint.Infrastructure.Repositories.Email;
 
 namespace Mint.WebApp.Email.Services;
 

@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { Modal, ModalBody, Spinner } from "reactstrap";
 import { Error } from "../../components/Notifications/Error";
+import { fetch } from "../../helpers/fetch";
 
 interface IDeleteAddress {
   id: string;
@@ -17,12 +18,28 @@ const DeleteAddress: FC<IDeleteAddress> = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
 
-  const onDeleteClick = () => {};
+  const onDeleteClick = () => {
+    setIsLoading(true);
+
+    fetch()
+      .delete("/user/deleteuseraddress/" + id)
+      .then((response: { message: string }) => {
+        setSuccess(response.message);
+        setIsLoading(false);
+        handleDeletedAddress(id);
+        toggle();
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
+  };
 
   return (
     <React.Fragment>
-      {error && <Error message={error} />}
+      {success && <Error message={success} />}
       <Modal isOpen={isOpen} toggle={toggle} centered={true}>
         <ModalBody className={"py-3 px-5"}>
           <div className={"mt-2 text-center"}>
@@ -49,18 +66,18 @@ const DeleteAddress: FC<IDeleteAddress> = ({
               Закрыть
             </button>
             <button
-              type="button"
-              className="btn w-sm btn-danger "
-              id="delete-record"
+              type={"button"}
+              className={"btn w-sm btn-danger"}
+              id={"delete-record"}
               onClick={onDeleteClick}
               disabled={isLoading}
             >
               {isLoading ? (
-                <Spinner size={"sm"} className="me-2">
+                <Spinner size={"sm"} className={"me-2"}>
                   Loading...
                 </Spinner>
               ) : (
-                <i className="ri-delete-bin-6-line"></i>
+                <i className={"ri-delete-bin-6-line me-2"}></i>
               )}
               Удалить
             </button>

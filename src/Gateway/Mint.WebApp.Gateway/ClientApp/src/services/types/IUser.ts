@@ -1,3 +1,5 @@
+import { ICountry } from "../../constants/commonList";
+
 interface IUser {
   id: string;
   firstName: string;
@@ -10,8 +12,8 @@ interface IUser {
   refreshToken: string;
   gender: string;
   dateBirth: string;
-  isEmailConfirmed: boolean;
-  isPhoneConfirmed: boolean;
+  isConfirmedEmail: boolean;
+  isConfirmedPhone: boolean;
   isSeller: boolean;
   description?: string;
   roles: IRole[];
@@ -29,7 +31,7 @@ interface IUserAddress {
   phone: number;
   createdDate: string;
   fullAddress: string;
-  country: string;
+  country: ICountry;
   city: string;
   street: string;
   zipCode: number;

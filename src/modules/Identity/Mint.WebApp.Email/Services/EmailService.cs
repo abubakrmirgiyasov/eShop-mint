@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Mint.WebApp.Email.Common;
-using Mint.WebApp.Email.Interfaces;
-using Mint.WebApp.Email.Models;
+using Mint.Domain.Models.Email;
 using System.Net;
 using System.Net.Mail;
+using Mint.Infrastructure.Services.Email.Interfaces;
 
 namespace Mint.WebApp.Email.Services;
 
