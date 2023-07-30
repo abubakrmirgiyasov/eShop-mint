@@ -4,6 +4,7 @@ using Mint.Domain.Models;
 using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models.Admin;
 using Mint.Domain.Common;
+using Mint.Domain.Models.Stores;
 
 namespace Mint.Infrastructure;
 
@@ -99,6 +100,21 @@ public class ApplicationDbContext : DbContext
     /// </summary>
     public DbSet<ProductCharacteristic> ProductCharacteristics { get; set; }
 
+    /// <summary>
+    /// Stores Table
+    /// </summary>
+    public DbSet<Store> Stores { get; set; }
+
+    /// <summary>
+    /// Store Addresses Table
+    /// </summary>
+    public DbSet<StoreAddress> StoreAddresses { get; set; }
+
+    /// <summary>
+    /// Store Tags Table
+    /// </summary>
+    public DbSet<StoreTag> StoreTags { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>()
@@ -137,6 +153,18 @@ public class ApplicationDbContext : DbContext
             .HasIndex(x => x.DefaultLink)
             .IsUnique(true);
 
+        builder.Entity<Store>()
+            .HasIndex(x => x.Url)
+            .IsUnique(true);
+
+        builder.Entity<Store>()
+            .HasIndex(x => x.Email)
+            .IsUnique(true);
+
+        builder.Entity<Store>()
+            .HasIndex(x => x.Phone)
+            .IsUnique(true);
+
         builder.Entity<ProductTag>()
             .HasKey(x => new
             {
@@ -170,6 +198,20 @@ public class ApplicationDbContext : DbContext
             {
                 x.RoleId,
                 x.UserId,
+            });
+
+        builder.Entity<StoreCategory>()
+            .HasKey(x => new
+            {
+                x.StoreId,
+                x.CategoryId,
+            });
+
+        builder.Entity<StoreTag>()
+            .HasKey(x => new
+            {
+                x.StoreId,
+                x.TagId,
             });
 
         builder.Entity<UserRole>()
@@ -284,6 +326,42 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.Product)
             .WithMany(x => x.ProductCharacteristics)
             .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Store>()
+            .HasOne(x => x.Photo)
+            .WithMany(x => x.Stores)
+            .HasForeignKey(x => x.PhotoId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<StoreAddress>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.StoreAddresses)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<StoreCategory>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.StoreCategories)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<StoreCategory>()
+            .HasOne(x => x.Category)
+            .WithMany(x => x.StoreCategories)
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<StoreTag>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.StoreTags)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<StoreTag>()
+            .HasOne(x => x.Tag)
+            .WithMany(x => x.StoreTags)
+            .HasForeignKey(x => x.TagId)
             .OnDelete(DeleteBehavior.Cascade);
 
         var salt = new Hasher().GetSalt();

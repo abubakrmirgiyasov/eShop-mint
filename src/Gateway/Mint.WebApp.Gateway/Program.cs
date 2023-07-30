@@ -26,6 +26,9 @@ var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
 builder.Services.AddMessageBusSender<User>(brokerOptions);
 
+var redisSettings = builder.Configuration.GetSection("RedisSettings");
+builder.Services.Configure<RedisSettings>(redisSettings);
+
 var connection = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 

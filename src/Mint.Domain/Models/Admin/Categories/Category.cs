@@ -1,5 +1,6 @@
 ﻿using Mint.Domain.Models;
 using Mint.Domain.Models.Base;
+using Mint.Domain.Models.Stores;
 using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models.Admin.Categories;
@@ -36,7 +37,7 @@ public class Category : Entity<Guid>
 
     public List<CategoryTag>? CategoryTags { get; set; }
 
-    //public List<StoreCategory>? StoreCategories { get; set; }
-
     public List<Product>? Products { get; set; }
+
+    public List<StoreCategory>? StoreCategories { get; set; }
 }

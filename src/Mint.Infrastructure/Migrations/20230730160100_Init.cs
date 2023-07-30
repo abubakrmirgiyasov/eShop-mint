@@ -106,6 +106,34 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stores",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    WorkHours = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Phone = table.Column<long>(type: "bigint", nullable: false),
+                    Rating = table.Column<double>(type: "float", nullable: false),
+                    IsPhysical = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stores_Photos_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Photos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -173,6 +201,55 @@ namespace Mint.Infrastructure.Migrations
                         column: x => x.PhotoId,
                         principalTable: "Photos",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoreAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ZipCode = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
+                    UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StoreAddresses_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoreTags",
+                columns: table => new
+                {
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreTags", x => new { x.StoreId, x.TagId });
+                    table.ForeignKey(
+                        name: "FK_StoreTags_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StoreTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -326,6 +403,28 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StoreCategory",
+                columns: table => new
+                {
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreCategory", x => new { x.StoreId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_StoreCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StoreCategory_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubCategories",
                 columns: table => new
                 {
@@ -463,8 +562,8 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "ConfirmationCode", "DateBirth", "Description", "Email", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "Phone", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("1392f724-5e98-4cd1-a1bf-742b5a4b7344"), 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, false, false, false, null, 0, "ZA3/jnynFUCPKUZ0pAaK0ZxkAuYDAOKDLtQH4Eb1Swc=", 83452763423L, null, new byte[] { 143, 33, 255, 111, 244, 214, 166, 170, 166, 205, 167, 31, 192, 78, 68, 63 }, "User", null },
-                    { new Guid("cc3b67fa-fb1d-44f0-94a0-356c32024da7"), 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "bzX3fXidIdE6Eg9C3LFaZ0dxNJ0r0VqSHX8LprC8PFY=", 89502768428L, null, new byte[] { 143, 33, 255, 111, 244, 214, 166, 170, 166, 205, 167, 31, 192, 78, 68, 63 }, "Абубакр", null }
+                    { new Guid("61683d1c-96d6-4c8f-b320-70aff2531cce"), 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "abubakrmirgiyasov@gmail.com", "Миргиясов", "M", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "xo+77cZVLwQZe0FGI1N09kWz6Kws3nsBWoC3ZroMUxI=", 89502768428L, null, new byte[] { 4, 183, 254, 185, 241, 216, 184, 64, 193, 89, 160, 83, 210, 208, 124, 64 }, "Абубакр", null },
+                    { new Guid("851575a0-d280-4ae6-8c16-3f46ff2e424d"), 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "admin@mint.com", "Test", "F", "127.0.0.2", true, true, false, false, false, null, 0, "CpCkf1J6+TpD/WchaJX0S3kNvY+H/7Reetixpz9pM1o=", 83452763423L, null, new byte[] { 4, 183, 254, 185, 241, 216, 184, 64, 193, 89, 160, 83, 210, 208, 124, 64 }, "User", null }
                 });
 
             migrationBuilder.InsertData(
@@ -472,12 +571,12 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("1392f724-5e98-4cd1-a1bf-742b5a4b7344") },
-                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("cc3b67fa-fb1d-44f0-94a0-356c32024da7") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("1392f724-5e98-4cd1-a1bf-742b5a4b7344") },
-                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("cc3b67fa-fb1d-44f0-94a0-356c32024da7") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("1392f724-5e98-4cd1-a1bf-742b5a4b7344") },
-                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("cc3b67fa-fb1d-44f0-94a0-356c32024da7") }
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("61683d1c-96d6-4c8f-b320-70aff2531cce") },
+                    { new Guid("4d442669-abe7-4726-af0f-5734879a113c"), new Guid("851575a0-d280-4ae6-8c16-3f46ff2e424d") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("61683d1c-96d6-4c8f-b320-70aff2531cce") },
+                    { new Guid("77a6e9b4-64b8-46f0-998d-f01dd0b5b2b4"), new Guid("851575a0-d280-4ae6-8c16-3f46ff2e424d") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("61683d1c-96d6-4c8f-b320-70aff2531cce") },
+                    { new Guid("8d8d8618-c897-48d4-bedc-83ba3db4b7e1"), new Guid("851575a0-d280-4ae6-8c16-3f46ff2e424d") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -581,6 +680,44 @@ namespace Mint.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_StoreAddresses_StoreId",
+                table: "StoreAddresses",
+                column: "StoreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreCategory_CategoryId",
+                table: "StoreCategory",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stores_Email",
+                table: "Stores",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stores_Phone",
+                table: "Stores",
+                column: "Phone",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stores_PhotoId",
+                table: "Stores",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stores_Url",
+                table: "Stores",
+                column: "Url",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StoreTags_TagId",
+                table: "StoreTags",
+                column: "TagId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SubCategories_CategoryId",
                 table: "SubCategories",
                 column: "CategoryId");
@@ -635,6 +772,15 @@ namespace Mint.Infrastructure.Migrations
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
+                name: "StoreAddresses");
+
+            migrationBuilder.DropTable(
+                name: "StoreCategory");
+
+            migrationBuilder.DropTable(
+                name: "StoreTags");
+
+            migrationBuilder.DropTable(
                 name: "SubCategories");
 
             migrationBuilder.DropTable(
@@ -648,6 +794,9 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Stores");
 
             migrationBuilder.DropTable(
                 name: "Tags");
