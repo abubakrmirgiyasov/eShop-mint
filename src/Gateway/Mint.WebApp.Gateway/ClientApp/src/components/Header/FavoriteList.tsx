@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import SimpleBar from "simplebar-react";
 import { Link } from "react-router-dom";
-import { getLikes } from "../../store/favorite/favorite";
+import { getLikes } from "../../services/favorites/favorite";
 import { fetch } from "../../helpers/fetch";
 
 interface IFavorite {

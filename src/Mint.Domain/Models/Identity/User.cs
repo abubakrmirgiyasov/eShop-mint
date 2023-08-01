@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.Models.Base;
+using Mint.Domain.Models.Stores;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -69,6 +70,8 @@ public class User : Entity<Guid>
     public List<RefreshToken> RefreshTokens { get; set; } = null!;
 
     public List<UserAddress>? UserAddresses { get; set; }
+
+    public List<StoreReview> StoreReviews { get; set; } = null!;
 
     public override string ToString()
     {

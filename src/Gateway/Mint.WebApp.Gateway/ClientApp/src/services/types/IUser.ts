@@ -43,4 +43,6 @@ interface IUserOrder {
   orderNumber: string;
 }
 
-export { IUser, IRole, IUserAddress, IUserOrder };
+interface IUserStore {}
+
+export { IUser, IRole, IUserAddress, IUserOrder, IUserStore };

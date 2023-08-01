@@ -41,4 +41,6 @@ public class Store : Entity<Guid>
     public List<StoreCategory>? StoreCategories { get; set; }
 
     public List<StoreTag>? StoreTags { get; set; }
+
+    public List<StoreReview> StoreReviews { get; set; } = null!;
 }

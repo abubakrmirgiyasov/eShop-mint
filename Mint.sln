@@ -47,11 +47,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{08CE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Gateway", "src\Gateway\Mint.WebApp.Gateway\Mint.WebApp.Gateway.csproj", "{66EE6A01-5137-4E46-8647-803C9605CED7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Identity.Test", "src\modules\Identity\tests\Mint.WebApp.Identity.Test\Mint.WebApp.Identity.Test.csproj", "{D758CFC5-F47A-4E9E-B850-7EF766D0F1D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Identity.Test", "src\modules\Identity\tests\Mint.WebApp.Identity.Test\Mint.WebApp.Identity.Test.csproj", "{D758CFC5-F47A-4E9E-B850-7EF766D0F1D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Admin.Test", "src\modules\Identity\tests\Mint.WebApp.Admin.Test\Mint.WebApp.Admin.Test.csproj", "{BC5A1E5C-C96C-4D6F-A4D9-4B7E8E3055EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Admin.Test", "src\modules\Identity\tests\Mint.WebApp.Admin.Test\Mint.WebApp.Admin.Test.csproj", "{BC5A1E5C-C96C-4D6F-A4D9-4B7E8E3055EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Gateway.Test", "src\Gateway\Mint.WebApp.Gateway.Test\Mint.WebApp.Gateway.Test.csproj", "{50EDA805-7245-48C5-B972-6216D23F29A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Gateway.Test", "src\Gateway\Mint.WebApp.Gateway.Test\Mint.WebApp.Gateway.Test.csproj", "{50EDA805-7245-48C5-B972-6216D23F29A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Goods", "Goods", "{3896F982-F5AD-4A69-BE14-7A95C7F834A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Store", "src\modules\Goods\Mint.WebApp.Store\Mint.WebApp.Store.csproj", "{4613EB7A-7943-43C6-9F13-1C5671B77745}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +135,10 @@ Global
 		{50EDA805-7245-48C5-B972-6216D23F29A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50EDA805-7245-48C5-B972-6216D23F29A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50EDA805-7245-48C5-B972-6216D23F29A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4613EB7A-7943-43C6-9F13-1C5671B77745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4613EB7A-7943-43C6-9F13-1C5671B77745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4613EB7A-7943-43C6-9F13-1C5671B77745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4613EB7A-7943-43C6-9F13-1C5671B77745}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,6 +166,8 @@ Global
 		{D758CFC5-F47A-4E9E-B850-7EF766D0F1D6} = {EA285515-F3E1-4ACA-B6B4-9109F1C73DEE}
 		{BC5A1E5C-C96C-4D6F-A4D9-4B7E8E3055EA} = {EA285515-F3E1-4ACA-B6B4-9109F1C73DEE}
 		{50EDA805-7245-48C5-B972-6216D23F29A5} = {08CE716F-4D08-447C-96EE-A4018AFA7035}
+		{3896F982-F5AD-4A69-BE14-7A95C7F834A9} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
+		{4613EB7A-7943-43C6-9F13-1C5671B77745} = {3896F982-F5AD-4A69-BE14-7A95C7F834A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}

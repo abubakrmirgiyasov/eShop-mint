@@ -115,6 +115,11 @@ public class ApplicationDbContext : DbContext
     /// </summary>
     public DbSet<StoreTag> StoreTags { get; set; }
 
+    /// <summary>
+    /// Store Reviews Table
+    /// </summary>
+    public DbSet<StoreReview> StoreReviews { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>()
@@ -362,6 +367,18 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.Tag)
             .WithMany(x => x.StoreTags)
             .HasForeignKey(x => x.TagId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<StoreReview>()
+            .HasOne(x => x.Store)
+            .WithMany(x => x.StoreReviews)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<StoreReview>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.StoreReviews)
+            .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
         var salt = new Hasher().GetSalt();
