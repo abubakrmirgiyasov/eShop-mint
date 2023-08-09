@@ -5,7 +5,11 @@ import Home from "../pages/Home/Home";
 import Profile from "../pages/Profile/Profile";
 import SignOut from "../pages/Authentication/SignOut";
 import SignInBase from "../pages/Authentication/SignInBase";
-import AdminDashboard from "../Admin/Pages/AdminDashboard";
+import AdminDashboard from "../Admin/pages/AdminDashboard";
+import Manufactures from "../Admin/pages/Manufacture/Manufactures";
+import ManufactureAction from "../Admin/pages/Manufacture/ManufactureAction";
+import Categories from "../Admin/pages/Category/Categories";
+import CategoryAction from "../Admin/pages/Category/CategoryAction";
 
 type Routes = {
   path: string;
@@ -27,6 +31,12 @@ const privateRoutes: Routes[] = [
 
 const adminRoutes: Routes[] = [
   { path: "/admin/admin-dashboard", component: <AdminDashboard /> },
+  { path: "/admin/manufactures", component: <Manufactures /> },
+  { path: "/admin/manufactures/add", component: <ManufactureAction /> },
+  { path: "/admin/manufactures/edit/:id", component: <ManufactureAction /> },
+  { path: "/admin/categories", component: <Categories /> },
+  { path: "/admin/categories/add", component: <CategoryAction /> },
+  { path: "/admin/categories/edit/:id", component: <CategoryAction /> },
 ];
 
 export { publicRoutes, privateRoutes, adminRoutes };

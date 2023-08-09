@@ -1,8 +1,8 @@
-﻿using Mint.Domain.Models;
+﻿using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mint.Domain.Models.Admin.Categories;
+namespace Mint.Domain.Models.Admin.Manufactures;
 
 public class Manufacture : Entity<Guid>
 {
@@ -38,7 +38,7 @@ public class Manufacture : Entity<Guid>
 
     public Photo? Photo { get; set; }
 
-    public List<Category>? Categories { get; set; }
+    public List<ManufactureCategory>? ManufactureCategories { get; set; }
 
     public List<Product>? Products { get; set; }
 }

@@ -5,6 +5,7 @@ using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models.Admin;
 using Mint.Domain.Common;
 using Mint.Domain.Models.Stores;
+using Mint.Domain.Models.Admin.Manufactures;
 
 namespace Mint.Infrastructure;
 
@@ -81,11 +82,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<CategoryTag> CategoryTags { get; set; }
 
     /// <summary>
-    /// Manufactures Table
-    /// </summary>
-    public DbSet<Manufacture> Manufactures { get; set; }
-
-    /// <summary>
     /// Common Characteristics Table
     /// </summary>
     public DbSet<CommonCharacteristic> CommonCharacteristics { get; set; }
@@ -119,6 +115,16 @@ public class ApplicationDbContext : DbContext
     /// Store Reviews Table
     /// </summary>
     public DbSet<StoreReview> StoreReviews { get; set; }
+
+    /// <summary>
+    /// Manufactures Table
+    /// </summary>
+    public DbSet<Manufacture> Manufactures { get; set; }
+
+    /// <summary>
+    /// ManufactureCategories Table
+    /// </summary>
+    public DbSet<ManufactureCategory> ManufactureCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -219,6 +225,13 @@ public class ApplicationDbContext : DbContext
                 x.TagId,
             });
 
+        builder.Entity<ManufactureCategory>()
+            .HasKey(x => new 
+            {
+                x.CategoryId,
+                x.ManufactureId,
+            });
+
         builder.Entity<UserRole>()
             .HasOne(x => x.Role)
             .WithMany(x => x.UserRoles)
@@ -291,10 +304,16 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(x => x.PhotoId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Category>()
+        builder.Entity<ManufactureCategory>()
             .HasOne(x => x.Manufacture)
-            .WithMany(x => x.Categories)
+            .WithMany(x => x.ManufactureCategories)
             .HasForeignKey(x => x.ManufactureId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ManufactureCategory>()
+            .HasOne(x => x.Category)
+            .WithMany(x => x.ManufactureCategories)
+            .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Category>()

@@ -1,4 +1,5 @@
-﻿using Mint.Domain.Models.Base;
+﻿using Mint.Domain.Models.Admin.Manufactures;
+using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

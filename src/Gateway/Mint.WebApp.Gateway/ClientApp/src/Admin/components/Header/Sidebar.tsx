@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdminSidebarData, { ISidebar } from "../SidebarData";
 import { Collapse, Container } from "reactstrap";
@@ -8,12 +8,12 @@ import SimpleBar from "simplebar-react";
 import LogoSm from "../../../assets/images/logos/Logo.png";
 import LogoLg from "../../../assets/images/logos/logo-light.png";
 
-const AdminSidebar = () => {
+const AdminSidebar: FC<ReactNode> = () => {
   const location = useLocation();
   const menu: ISidebar[] = AdminSidebarData();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // window.scrollTo({ top: 0, behavior: "smooth" });
 
     initMenu();
   });

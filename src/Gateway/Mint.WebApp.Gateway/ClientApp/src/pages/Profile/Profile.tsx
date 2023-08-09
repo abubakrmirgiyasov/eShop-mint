@@ -18,6 +18,7 @@ import { ILanguage } from "../../services/types/ICommon";
 import Addresses from "./Addresses";
 import Orders from "./Orders";
 import ChangePassword from "./ChangePassword";
+import Store from "./Store";
 
 const Profile: FC<ReactNode> = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -56,7 +57,7 @@ const Profile: FC<ReactNode> = () => {
       case "change-password":
         setActiveTab(4);
         break;
-      case "create-store":
+      case "my-store":
         setActiveTab(5);
         break;
       default:
@@ -80,7 +81,7 @@ const Profile: FC<ReactNode> = () => {
         navigate("/profile/change-password");
         break;
       case 5:
-        navigate("/profile/create-store");
+        navigate("/profile/my-store");
         break;
       default:
         navigate("/profile/info");
@@ -195,6 +196,7 @@ const Profile: FC<ReactNode> = () => {
                 <Addresses user={auth.user} activeTab={activeTab} />
                 <Orders user={auth.user} activeTab={activeTab} />
                 <ChangePassword user={auth.user} />
+                <Store userId={auth.user.id} activeTab={activeTab} />
               </TabContent>
             </Col>
           </Row>

@@ -15,12 +15,14 @@
     "@hookform/resolvers": "^3.1.1",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
+    "chroma-js": "^2.4.2",
     "i": "^0.3.7",
     "lodash": "^4.17.21",
     "lord-icon-element": "^4.1.1",
     "lottie-web": "^5.12.2",
     "npm": "^9.8.1",
     "react": "^18.2.0",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.2",
@@ -37,6 +39,7 @@
     "remixicon-react": "^1.0.0",
     "sass": "^1.64.1",
     "simplebar-react": "^3.2.4",
+    "styled-components": "^6.0.7",
     "yup": "^1.2.0"
   },
   "devDependencies": {

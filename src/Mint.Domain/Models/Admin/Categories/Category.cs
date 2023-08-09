@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.Models;
+using Mint.Domain.Models.Admin.Manufactures;
 using Mint.Domain.Models.Base;
 using Mint.Domain.Models.Stores;
 using System.ComponentModel.DataAnnotations;
@@ -29,10 +30,6 @@ public class Category : Entity<Guid>
 
     public Photo? Photo { get; set; }
 
-    public Guid? ManufactureId { get; set; }
-
-    public Manufacture? Manufacture { get; set; }
-
     public List<SubCategory>? SubCategories { get; set; }
 
     public List<CategoryTag>? CategoryTags { get; set; }
@@ -40,4 +37,6 @@ public class Category : Entity<Guid>
     public List<Product>? Products { get; set; }
 
     public List<StoreCategory>? StoreCategories { get; set; }
+
+    public List<ManufactureCategory>? ManufactureCategories { get; set; }
 }

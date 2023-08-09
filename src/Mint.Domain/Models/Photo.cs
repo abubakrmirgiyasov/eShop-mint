@@ -3,6 +3,7 @@ using Mint.Domain.Models.Base;
 using Mint.Domain.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 using Mint.Domain.Models.Stores;
+using Mint.Domain.Models.Admin.Manufactures;
 
 namespace Mint.Domain.Models;
 
