@@ -2,7 +2,7 @@
 
 public class ManufactureCategoryBindingModel
 {
-    public Guid? CategoryId { get; set; }
-
-    public Guid? ManufactureId { get; set; }
+    public Guid? Value { get; set; }
 }
+
+public record ManufactureCategoryFullViewModel();

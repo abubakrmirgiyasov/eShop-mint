@@ -2,9 +2,9 @@
 
 public class CategoryTagBindingModel
 {
-    public Guid? CategoryId { get; set; }
-
-    public Guid? TagId { get; set; }
+    public Guid? Value { get; set; }
 }
+
+public record CategoryTagFullViewModel();
 
 public record CategoryViewModel();

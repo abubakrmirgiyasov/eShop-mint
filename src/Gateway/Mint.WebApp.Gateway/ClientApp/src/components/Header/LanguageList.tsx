@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import i18n from "../../services/i18n/i18n";
 import { switchLanguage } from "../../store/language/language";
 import { get } from "lodash";
-import { languages } from "../../constants/commonList";
+import { Languages } from "../../constants/commonList";
 import { ILanguage } from "../../services/types/ICommon";
 
 const LanguageList: FC<ILanguage> = ({ name }) => {
@@ -46,14 +46,14 @@ const LanguageList: FC<ILanguage> = ({ name }) => {
           }
         >
           <img
-            src={get(languages, `${selectedLanguage}.flag`)}
+            src={get(Languages, `${selectedLanguage}.flag`)}
             alt={"language"}
             height={20}
             className={"rounded"}
           />
         </DropdownToggle>
         <DropdownMenu className={"notify-item language py-2"}>
-          {Object.keys(languages).map((key) => (
+          {Object.keys(Languages).map((key) => (
             <DropdownItem
               key={key}
               className={`notify-item ${
@@ -62,13 +62,13 @@ const LanguageList: FC<ILanguage> = ({ name }) => {
               onClick={() => onChangeLanguage(key)}
             >
               <img
-                src={get(languages, `${key}.flag`)}
+                src={get(Languages, `${key}.flag`)}
                 alt={key}
                 className={"me-2 rounded"}
                 height={18}
               />
               <span className={"align-middle"}>
-                {get(languages, `${key}.label`)}
+                {get(Languages, `${key}.label`)}
               </span>
             </DropdownItem>
           ))}
@@ -78,4 +78,4 @@ const LanguageList: FC<ILanguage> = ({ name }) => {
   );
 };
 
-export { LanguageList };
+export {LanguageList};

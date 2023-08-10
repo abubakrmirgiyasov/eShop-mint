@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Mint.Domain.DTO_s.Admin.Manufactures;
+using Mint.WebApp.Admin.DTO_s.Manufactures;
 
 namespace Mint.WebApp.Admin.DTO_s.Categories;
 
@@ -30,6 +30,19 @@ public class CategoryFullBindingModel
     public List<ManufactureCategoryBindingModel>? ManufactureCategories { get; set; }
 }
 
-public record CategorySampleViewModel();
+public record CategorySampleViewModel(
+    Guid? Value = null,
+    string? Label = null);
 
-public record CategoryFullViewModel();
+public record CategoryFullViewModel(
+    Guid? Id = null,
+    string? Name = null,
+    string? Ico = null,
+    string? BadgeStyle = null,
+    string? BadgeText = null,
+    string? DefaultLink = null,
+    int? DisplayOrder = null,
+    string? Folder = null,
+    List<SubCategoryFullViewModel>? SubCategories = null,
+    List<CategoryTagFullViewModel>? CategoryTags = null,
+    List<ManufactureCategoryFullViewModel>? ManufactureCategories = null);

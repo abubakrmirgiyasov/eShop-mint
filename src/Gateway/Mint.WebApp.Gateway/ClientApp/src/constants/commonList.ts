@@ -42,7 +42,7 @@ interface ILanguageList {
   };
 }
 
-const languages: ILanguageList = {
+const Languages: ILanguageList = {
   tj: {
     label: "Тоҷикӣ",
     flag: tjFlag,
@@ -57,4 +57,27 @@ const languages: ILanguageList = {
   },
 };
 
-export { languages, Countries, ICountry, BadgeStyles, IBadgeStyle };
+interface IIco {
+  value: string;
+  label: string;
+  svg: string;
+}
+
+const Icons: IIco[] = [
+  { value: "ri-table-line", label: "ri-table-line", svg: "ri-table-line" },
+  {
+    value: "ri-arrow-down-s-fill",
+    label: "ri-arrow-down-s-fill",
+    svg: "ri-arrow-down-s-fill",
+  },
+];
+
+export {
+  Languages,
+  Countries,
+  ICountry,
+  BadgeStyles,
+  IBadgeStyle,
+  Icons,
+  IIco,
+};

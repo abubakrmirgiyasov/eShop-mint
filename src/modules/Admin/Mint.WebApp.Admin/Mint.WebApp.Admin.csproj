@@ -24,14 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="DTO%27s\" />
-    <Folder Include="FormingModels\" />
-    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="FormingModels\Manufactures\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Mint.Domain\Mint.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

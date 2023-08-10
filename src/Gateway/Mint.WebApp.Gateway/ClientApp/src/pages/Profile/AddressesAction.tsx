@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { fetch } from "../../helpers/fetch";
+import CustomErrorStyle from "../../components/Common/CustomErrorStyle";
 
 interface IAddressAction {
   user: IUser;
@@ -41,13 +42,6 @@ const AddressesAction: FC<IAddressAction> = (props) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-
-  const customError = {
-    width: "100%",
-    marginTop: "0.25rem",
-    fontSize: "0.875em",
-    color: "#f06548",
-  };
 
   const validation = Yup.object().shape({
     country: Yup.object().required("Выберете страну"),
@@ -145,7 +139,7 @@ const AddressesAction: FC<IAddressAction> = (props) => {
                     />
                   )}
                 />
-                <div style={customError}>{errors.country?.message}</div>
+                <CustomErrorStyle message={errors.country?.message} />
               </Col>
               <Col lg={6} className={"form-group mb-3"}>
                 <label className={"form-label"} htmlFor={"city"}>
