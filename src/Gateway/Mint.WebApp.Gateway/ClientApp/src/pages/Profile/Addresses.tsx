@@ -66,7 +66,6 @@ const Addresses: FC<IAddresses> = ({ activeTab, user }) => {
     (address: IUserAddress) => {
       setAddress(address);
       setIsEdit(true);
-      console.log(address);
       addressActionWindowToggle();
     },
     [addressActionWindowToggle]

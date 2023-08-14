@@ -10,6 +10,7 @@ import Manufactures from "../Admin/pages/Manufacture/Manufactures";
 import ManufactureAction from "../Admin/pages/Manufacture/ManufactureAction";
 import Categories from "../Admin/pages/Category/Categories";
 import CategoryAction from "../Admin/pages/Category/CategoryAction";
+import Tags from "../Admin/pages/Tag/Tags";
 
 type Routes = {
   path: string;
@@ -37,6 +38,7 @@ const adminRoutes: Routes[] = [
   { path: "/admin/categories", component: <Categories /> },
   { path: "/admin/categories/add", component: <CategoryAction /> },
   { path: "/admin/categories/edit/:id", component: <CategoryAction /> },
+  { path: "/admin/news/tags", component: <Tags /> },
 ];
 
 export { publicRoutes, privateRoutes, adminRoutes };

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Infrastructure;
 using Mint.WebApp.Admin.DTO_s.Categories;
+using Mint.WebApp.Admin.Services;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -9,11 +10,10 @@ namespace Mint.WebApp.Admin.Controllers;
 [Route("api/[controller]/[action]")]
 public class CategoryController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly CategoryService _service;
 
-    public CategoryController(ApplicationDbContext context)
+    public CategoryController()
     {
-        _context = context;
     }
 
     [HttpGet]

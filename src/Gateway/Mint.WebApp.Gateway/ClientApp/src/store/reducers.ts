@@ -6,6 +6,7 @@ import Theme from "./theme";
 import Cart from "./cart";
 import Favorites from "./favorite";
 import Compare from "./compare";
+import Tags from "./tag";
 
 export default combineReducers({
   Auth,
@@ -15,4 +16,5 @@ export default combineReducers({
   Cart,
   Favorites,
   Compare,
+  Tags,
 });

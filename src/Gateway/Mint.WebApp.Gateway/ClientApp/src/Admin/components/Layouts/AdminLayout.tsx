@@ -65,7 +65,7 @@ const AdminLayout = ({ children }: ReactNode) => {
           color={"success"}
           id={"back-to-top"}
         >
-          <i className="ri-arrow-up-line"></i>
+          <i className={"ri-arrow-up-line"}></i>
         </Button>
       </div>
       <ToastContainer

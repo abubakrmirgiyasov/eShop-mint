@@ -20,14 +20,18 @@ import SingleImage from "../../../components/Dropzone/SingleImage";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ICategory } from "../../../services/admin/ICategory";
+import { ICategoryFull } from "../../../services/admin/ICategory";
 import CustomErrorStyle from "../../../components/Common/CustomErrorStyle";
+import { fetch } from "../../../helpers/fetch";
 
 const CategoryAction: FC<ReactNode> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [photo, setPhoto] = useState<File[]>([]);
 
   const params = useParams();
+
+  const handlePhotoChange = (img: File[]) => setPhoto(img);
 
   const dot = (color = "transparent") => ({
     alignItems: "center",
@@ -110,11 +114,40 @@ const CategoryAction: FC<ReactNode> = () => {
     reset,
     control,
     formState: { errors },
-  } = useForm<ICategory>({
+  } = useForm<ICategoryFull>({
     resolver: yupResolver(validation),
   });
 
-  const onSubmit = (values: ICategory) => {};
+  const onSubmit = (values: ICategoryFull) => {
+    // setIsLoading(true);
+
+    const data: ICategoryFull = {
+      badgeStyle: values.badgeStyle,
+      badgeText: values.badgeText,
+      categoryTags: values.categoryTags,
+      childs: values.childs,
+      defaultLink: values.defaultLink,
+      displayOrder: values.displayOrder,
+      folder: "category",
+      ico: values.ico,
+      id: values.id,
+      manufactureCategories: values.manufactureCategories,
+      name: values.name,
+      photo: photo,
+    };
+
+    console.log(data);
+
+    // fetch()
+    //   .post("/category/newcategory", data)
+    //   .then((response) => {
+    //     setIsLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     setIsLoading(false);
+    //     setError(error);
+    //   });
+  };
 
   return (
     <div className={"page-content"}>
@@ -190,7 +223,9 @@ const CategoryAction: FC<ReactNode> = () => {
                         <input
                           type={"text"}
                           id={"name"}
-                          className={"form-control"}
+                          className={`form-control ${
+                            errors.name ? "is-invalid" : ""
+                          }`}
                           placeholder={"Введите название"}
                           {...register("name")}
                         />
@@ -223,7 +258,9 @@ const CategoryAction: FC<ReactNode> = () => {
                         <input
                           type={"text"}
                           name={"defaultLink"}
-                          className={"form-control"}
+                          className={`form-control ${
+                            errors.defaultLink ? "is-invalid" : ""
+                          }`}
                           placeholder={"Ссылка по умолчанию (example/child)"}
                           defaultValue={""}
                           {...register("defaultLink")}
@@ -471,7 +508,7 @@ const CategoryAction: FC<ReactNode> = () => {
                         <SingleImage
                           currentImage={""}
                           name={""}
-                          onChange={() => {}}
+                          onChange={handlePhotoChange}
                         />
                       </Col>
                     </Row>

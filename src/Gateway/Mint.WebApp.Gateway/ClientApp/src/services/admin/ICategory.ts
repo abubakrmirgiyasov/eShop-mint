@@ -1,6 +1,6 @@
 import { IManufacture } from "./IManufacture";
 
-export interface ICategory {
+export interface ICategoryFull {
   id: string;
   name: string;
   defaultLink: string;
@@ -13,6 +13,11 @@ export interface ICategory {
   childs?: string[];
   categoryTags: ICategoryTag[];
   manufactureCategories: IManufacture[];
+}
+
+export interface ICategory {
+  value?: string;
+  label?: string;
 }
 
 export interface ICategoryTag {

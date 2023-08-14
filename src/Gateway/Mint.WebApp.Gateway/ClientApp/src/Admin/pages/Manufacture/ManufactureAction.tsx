@@ -5,6 +5,7 @@ import {
   CardHeader,
   Col,
   Container,
+  FormFeedback,
   Row,
   Spinner,
 } from "reactstrap";
@@ -18,6 +19,11 @@ import SingleImage from "../../../components/Dropzone/SingleImage";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Countries } from "../../../constants/commonList";
+import * as Yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { IManufactureFull } from "../../../services/admin/IManufacture";
+import CustomErrorStyle from "../../../components/Common/CustomErrorStyle";
 
 interface IManufactureAction {}
 
@@ -25,10 +31,52 @@ const ManufactureAction: FC<ReactNode> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
+  const [phone, setPhone] = useState<string>("");
+  const [photo, setPhoto] = useState<File[]>([]);
+
   const [manufacturesIsLoading, setManufacturesIsLoading] =
     useState<boolean>(false);
 
   const params = useParams();
+
+  const handlePhotoChange = (img: File[]) => setPhoto(img);
+  const handlePhoneChange = (phone: string) => setPhone(phone);
+
+  const validation = Yup.object().shape({
+    country: Yup.object().required("Выберите страну"),
+    name: Yup.string()
+      .required("Заполните обязательное поле")
+      .min(3, "Минимальная длина строки 3 символа")
+      .max(100, "Максимальная длина строки 100 символов"),
+    email: Yup.string()
+      .required("Заполните обязательное поле")
+      .email("Электронная почта недействительна"),
+    phone: Yup.string().required("Заполните обязательное поле"),
+    fullAddress: Yup.string().required("Заполните обязательное поле"),
+    description: Yup.string(),
+    website: Yup.string().required("Заполните обязательное поле"),
+    displayOrder: Yup.number()
+      .required("Заполните обязательное поле")
+      .min(1, "Число должно быть в диапазоне от 1 до 99.")
+      .max(99, "Число должно быть в диапазоне от 1 до 99"),
+    manufactureCategories: Yup.object(),
+    manufactureTags: Yup.object().required("Выберите аттрибуты"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<IManufactureFull>({
+    resolver: yupResolver(validation),
+  });
+
+  const onSubmit = (values: IManufactureFull) => {
+    setIsLoading(true);
+
+    values.photo = photo;
+  };
 
   return (
     <div className={"page-content"}>
@@ -65,7 +113,7 @@ const ManufactureAction: FC<ReactNode> = () => {
               </div>
             ) : (
               <Row>
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <Col className={"mb-3"} lg={12}>
                     <Row className={"align-items-center"}>
                       <Col xl={2}>
@@ -83,13 +131,17 @@ const ManufactureAction: FC<ReactNode> = () => {
                       </Col>
                       <Col xl={10}>
                         <input
-                          className={"form-control"}
                           type={"number"}
+                          className={`form-control ${
+                            errors.displayOrder ? "is-invalid" : ""
+                          }`}
                           id={"displayNumber"}
                           placeholder={"Введите число"}
-                          min={0}
-                          max={999}
+                          {...register("displayOrder")}
                         />
+                        <FormFeedback type={"invalid"}>
+                          {errors.displayOrder?.message}
+                        </FormFeedback>
                       </Col>
                     </Row>
                   </Col>
@@ -110,11 +162,17 @@ const ManufactureAction: FC<ReactNode> = () => {
                       </Col>
                       <Col xl={10}>
                         <input
-                          className={"form-control"}
-                          type={"text"}
                           id={"name"}
+                          type={"text"}
+                          className={`form-control ${
+                            errors.name ? "is-invalid" : ""
+                          }`}
                           placeholder={"Введите название"}
+                          {...register("name")}
                         />
+                        <FormFeedback type={"invalid"}>
+                          {errors.name?.message}
+                        </FormFeedback>
                       </Col>
                     </Row>
                   </Col>
@@ -134,11 +192,87 @@ const ManufactureAction: FC<ReactNode> = () => {
                         </label>
                       </Col>
                       <Col xl={10}>
-                        <ReactSelect
-                          id={"country"}
-                          placeholder={"Выберите страну"}
-                          options={Countries}
-                          isSearchable={true}
+                        <Controller
+                          render={({ ...field }) => (
+                            <ReactSelect
+                              {...field}
+                              id={"country"}
+                              placeholder={"Выберите страну"}
+                              options={Countries}
+                              isSearchable={true}
+                            />
+                          )}
+                          name={"country"}
+                          control={control}
+                        />
+                        <CustomErrorStyle message={errors.country?.message} />
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col className={"mb-3"} lg={12}>
+                    <Row className={"align-items-center"}>
+                      <Col xl={2}>
+                        <label
+                          className={"form-label fw-bold mb-0"}
+                          id={"categories"}
+                        >
+                          Категории{" "}
+                          <Popover
+                            placement={"right"}
+                            text={`Выберите категории, связанные с этим производителем.`}
+                            id={"categories"}
+                          />
+                        </label>
+                      </Col>
+                      <Col xl={10}>
+                        <Controller
+                          render={({ ...field }) => (
+                            <ReactSelect
+                              {...field}
+                              id={"categories"}
+                              placeholder={"Выберите категории"}
+                              options={[]}
+                              isSearchable={true}
+                              isMulti
+                            />
+                          )}
+                          name={"manufactureCategories"}
+                          control={control}
+                        />
+                        <CustomErrorStyle
+                          message={errors.manufactureCategories?.message}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col className={"mb-3"} lg={12}>
+                    <Row className={"align-items-center"}>
+                      <Col xl={2}>
+                        <label
+                          className={"form-label fw-bold mb-0"}
+                          id={"tags"}
+                        >
+                          Аттрибуты{" "}
+                          <Popover
+                            placement={"right"}
+                            text={`Выберите несколько меток или характеристик для облегчения поиска.`}
+                            id={"tags"}
+                          />
+                        </label>
+                      </Col>
+                      <Col xl={10}>
+                        <Controller
+                          render={({ ...field }) => (
+                            <ReactSelect
+                              {...field}
+                              isMulti
+                              options={[]}
+                              isSearchable={true}
+                              placeholder={"Выберите тегы для производителя"}
+                            />
+                          )}
+                          name={"manufactureTags"}
+                          control={control}
                         />
                       </Col>
                     </Row>
@@ -162,11 +296,17 @@ const ManufactureAction: FC<ReactNode> = () => {
                       </Col>
                       <Col xl={10}>
                         <input
-                          className={"form-control"}
-                          type={"text"}
+                          className={`form-control ${
+                            errors.email ? "is-invalid" : ""
+                          }`}
+                          type={"email"}
                           id={"email"}
                           placeholder={"Введите адрес электроной почты"}
+                          {...register("email")}
                         />
+                        <FormFeedback type={"invalid"}>
+                          {errors.email?.message}
+                        </FormFeedback>
                       </Col>
                     </Row>
                   </Col>
@@ -186,12 +326,21 @@ const ManufactureAction: FC<ReactNode> = () => {
                         </label>
                       </Col>
                       <Col xl={10}>
-                        <PhoneInput
-                          inputClass={"w-100"}
-                          type={"number"}
-                          id={"displayNumber"}
-                          country={"ru"}
+                        <Controller
+                          render={({ ...field }) => (
+                            <PhoneInput
+                              {...field}
+                              inputClass={"w-100"}
+                              type={"number"}
+                              id={"displayNumber"}
+                              country={"ru"}
+                              // onChange={handlePhoneChange}
+                            />
+                          )}
+                          name={"phone"}
+                          control={control}
                         />
+                        <CustomErrorStyle message={errors.phone?.message} />
                       </Col>
                     </Row>
                   </Col>
@@ -212,36 +361,17 @@ const ManufactureAction: FC<ReactNode> = () => {
                       </Col>
                       <Col xl={10}>
                         <input
-                          className={"form-control"}
+                          className={`form-control ${
+                            errors.website ? "is-invalid" : ""
+                          }`}
                           type={"text"}
                           id={"website"}
                           placeholder={"Введите ссылку на ресурс"}
+                          {...register("website")}
                         />
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col className={"mb-3"} lg={12}>
-                    <Row className={"align-items-center"}>
-                      <Col xl={2}>
-                        <label
-                          className={"form-label fw-bold mb-0"}
-                          id={"tags"}
-                        >
-                          Аттрибуты{" "}
-                          <Popover
-                            placement={"right"}
-                            text={`Выберите несколько меток или характеристик для облегчения поиска.`}
-                            id={"tags"}
-                          />
-                        </label>
-                      </Col>
-                      <Col xl={10}>
-                        <ReactSelect
-                          isMulti
-                          options={[]}
-                          isSearchable={true}
-                          placeholder={"Выберите тегы для производителя"}
-                        />
+                        <FormFeedback type={"invalid"}>
+                          {errors.website?.message}
+                        </FormFeedback>
                       </Col>
                     </Row>
                   </Col>
@@ -262,11 +392,17 @@ const ManufactureAction: FC<ReactNode> = () => {
                       </Col>
                       <Col xl={10}>
                         <input
-                          className={"form-control"}
+                          className={`form-control ${
+                            errors.fullAddress ? "is-invalid" : ""
+                          }`}
                           type={"text"}
                           id={"fullAddress"}
                           placeholder={"Введите полный адрес"}
+                          {...register("fullAddress")}
                         />
+                        <FormFeedback type={"invalid"}>
+                          {errors.fullAddress?.message}
+                        </FormFeedback>
                       </Col>
                     </Row>
                   </Col>
@@ -289,7 +425,7 @@ const ManufactureAction: FC<ReactNode> = () => {
                         <SingleImage
                           currentImage={""}
                           name={""}
-                          onChange={() => {}}
+                          onChange={handlePhotoChange}
                         />
                       </Col>
                     </Row>

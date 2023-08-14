@@ -6,6 +6,7 @@ using Mint.Domain.Models.Admin;
 using Mint.Domain.Common;
 using Mint.Domain.Models.Stores;
 using Mint.Domain.Models.Admin.Manufactures;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Mint.Infrastructure;
 
@@ -126,6 +127,11 @@ public class ApplicationDbContext : DbContext
     /// </summary>
     public DbSet<ManufactureCategory> ManufactureCategories { get; set; }
 
+    /// <summary>
+    /// Manufacture Tags Table
+    /// </summary>
+    public DbSet<ManufactureTag> ManufactureTags { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>()
@@ -229,6 +235,13 @@ public class ApplicationDbContext : DbContext
             .HasKey(x => new 
             {
                 x.CategoryId,
+                x.ManufactureId,
+            });
+
+        builder.Entity<ManufactureTag>()
+            .HasKey(x => new
+            {
+                x.TagId,
                 x.ManufactureId,
             });
 
@@ -398,6 +411,18 @@ public class ApplicationDbContext : DbContext
             .HasOne(x => x.User)
             .WithMany(x => x.StoreReviews)
             .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ManufactureTag>()
+            .HasOne(x => x.Manufacture)
+            .WithMany(x => x.ManufactureTags)
+            .HasForeignKey(x => x.ManufactureId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ManufactureTag>()
+            .HasOne(x => x.Tag)
+            .WithMany(x => x.ManufactureTags)
+            .HasForeignKey(x => x.TagId)
             .OnDelete(DeleteBehavior.Cascade);
 
         var salt = new Hasher().GetSalt();

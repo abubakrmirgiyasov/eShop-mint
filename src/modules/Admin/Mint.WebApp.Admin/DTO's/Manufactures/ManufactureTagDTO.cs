@@ -1,6 +1,6 @@
 ﻿namespace Mint.WebApp.Admin.DTO_s.Manufactures;
 
-public class ManufactureTagDTO
+public class ManufactureTagBindingModel
 {
-
+    public Guid? Value { get; set; }
 }

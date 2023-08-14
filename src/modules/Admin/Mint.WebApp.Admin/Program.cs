@@ -1,5 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Mint.Infrastructure;
 using Mint.Infrastructure.Repositories.Admin;
 using Mint.Infrastructure.Repositories.Admin.Interfaces;
+using Mint.WebApp.Admin.Repositories;
+using Mint.WebApp.Admin.Repositories.Interfaces;
 using Mint.WebApp.Admin.Services;
 
 const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -14,8 +18,12 @@ builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy
         .AllowAnyOrigin();
 }));
 
+var connection = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 builder.Services.AddControllers();
 

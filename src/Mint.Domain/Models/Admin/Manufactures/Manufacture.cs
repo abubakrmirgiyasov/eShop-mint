@@ -40,5 +40,7 @@ public class Manufacture : Entity<Guid>
 
     public List<ManufactureCategory>? ManufactureCategories { get; set; }
 
+    public List<ManufactureTag>? ManufactureTags { get; set; }
+
     public List<Product>? Products { get; set; }
 }

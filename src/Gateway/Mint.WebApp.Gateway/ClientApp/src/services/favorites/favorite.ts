@@ -53,6 +53,7 @@ export const removeLike =
           type: SET_MESSAGE,
           payload: error,
         });
+        return Promise.reject();
       }
     );
   };
