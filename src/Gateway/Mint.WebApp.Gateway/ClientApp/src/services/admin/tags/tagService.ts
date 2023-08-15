@@ -3,7 +3,7 @@ import { ITag } from "../ITag";
 
 export const getTags = (request: Request) => {
   return request
-    .get("/tag/gettags")
+    .get("/gate/tag/gettags")
     .then((response: ITag[]) => response)
     .catch((error) => error);
 };

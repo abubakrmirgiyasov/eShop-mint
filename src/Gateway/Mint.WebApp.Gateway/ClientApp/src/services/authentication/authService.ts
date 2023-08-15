@@ -20,7 +20,7 @@ export interface ISignIn {
 
 export const register = (request: Request, values: ISignUp) => {
   return request
-    .post("/authentication/signup", values)
+    .post("/pri/authentication/signup", values)
     .then((response) => {
       return response;
     })
@@ -31,7 +31,7 @@ export const register = (request: Request, values: ISignUp) => {
 
 export const login = (request: Request, values: ISignIn) => {
   return request
-    .post("/authentication/signin", values)
+    .post("/pri/authentication/signin", values)
     .then((response: IUser) => {
       if (response.accessToken)
         localStorage.setItem("auth_user", JSON.stringify(response));
@@ -44,7 +44,7 @@ export const login = (request: Request, values: ISignIn) => {
 
 export const logout = (request: Request) => {
   return request
-    .delete("/authentication/signout")
+    .delete("/pri/authentication/signout")
     .then((response: { message: string }) => {
       if (response.message) localStorage.removeItem("auth_user");
     })

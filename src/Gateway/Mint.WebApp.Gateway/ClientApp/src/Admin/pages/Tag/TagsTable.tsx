@@ -9,16 +9,23 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import { ITag } from "../../../services/admin/ITag";
 
 interface ITagsTable {
+  tags: ITag[];
   handleDelete: (id: string) => void;
 }
 
-const TagsTable: FC<ITagsTable> = ({ handleDelete }) => {
+const TagsTable: FC<ITagsTable> = ({ tags, handleDelete }) => {
   const [isOmits, setIsOmits] = useState<boolean[2]>([]);
 
   const columns = useMemo(
     () => [
+      {
+        name: "Uid",
+        selector: (row) => row.value,
+        sortable: true,
+      },
       {
         name: "Название",
         selector: (row) => row.label,
@@ -73,7 +80,7 @@ const TagsTable: FC<ITagsTable> = ({ handleDelete }) => {
   return (
     <DataTable
       columns={columns}
-      data={[]}
+      data={tags || []}
       highlightOnHover={true}
       defaultSortAsc={true}
       pagination={true}

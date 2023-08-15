@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTags } from "../../../services/admin/tags/tag";
 import { fetch } from "../../../helpers/fetch";
 import TagAction from "./TagAction";
+import { ITag } from "../../../services/admin/ITag";
 
 const Tags: FC<ReactNode> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,7 +38,7 @@ const Tags: FC<ReactNode> = () => {
     dispatch(getTags(fetch()));
   }, []);
 
-  const { tags }: {} = useSelector((state) => ({
+  const { tags }: { tags: ITag[] } = useSelector((state) => ({
     tags: state.Tags.tags,
   }));
 
@@ -116,7 +117,7 @@ const Tags: FC<ReactNode> = () => {
               </Collapse>
             </Col>
             <Col lg={12}>
-              <TagsTable handleDelete={handleDeleteClick} />
+              <TagsTable tags={tags} handleDelete={handleDeleteClick} />
             </Col>
           </Row>
         </CardBody>

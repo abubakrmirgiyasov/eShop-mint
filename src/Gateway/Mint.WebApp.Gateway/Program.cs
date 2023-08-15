@@ -1,26 +1,36 @@
-using Mint.WebApp;
+using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Common;
+using Mint.Domain.Models.Identity;
+using Mint.Infrastructure;
+using Mint.Infrastructure.MessageBrokers;
+using Mint.Infrastructure.Repositories.Identity;
+using Mint.Infrastructure.Repositories.Identity.Interfaces;
+using Mint.Infrastructure.Services;
+using Mint.Infrastructure.Services.Interfaces;
 using Mint.WebApp.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Configuration.File;
-using Mint.Domain.Common;
-using Mint.Infrastructure.MessageBrokers;
-using Mint.Domain.Models.Identity;
-using Mint.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Mint.Infrastructure.Services;
-using Mint.Infrastructure.Services.Interfaces;
-using Mint.Infrastructure.Repositories.Identity.Interfaces;
-using Mint.Infrastructure.Repositories.Identity;
+
+const string _Mint_Cors_Policy = "_Mint_Cors_Policy";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(_Mint_Cors_Policy, build =>
+    {
+        build
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var identitySettings = builder.Configuration.GetSection("IdentitySettings");
 builder.Services.Configure<IdentitySettings>(identitySettings);
 
-var config = builder.Configuration.GetSection("Ocelot");
-var appSettings = config.Get<AppSettings>();
-builder.Services.AddOcelot().AddDelegatingHandler<DebuggingHandler>(true);
+builder.Configuration.AddJsonFile("OcelotJson\\ocelotSettings.json", false, true);
+builder.Services.AddOcelot(builder.Configuration).AddDelegatingHandler<DebuggingHandler>(true);
 
 var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
@@ -37,45 +47,12 @@ builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>(
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.PostConfigure<FileConfiguration>(configuration =>
-{
-    foreach (var route in appSettings!.Routes.Select(x => x.Value))
-    {
-        var uri = new Uri(route.Downstream);
-
-        foreach (var pathTemplate in route.UpstreamPathTemplates)
-        {
-            configuration.Routes.Add(new FileRoute()
-            {
-                UpstreamPathTemplate = pathTemplate,
-                DownstreamPathTemplate = pathTemplate,
-                DownstreamScheme = uri.Scheme,
-                DownstreamHostAndPorts = new List<FileHostAndPort>()
-                {
-                    new FileHostAndPort()
-                    {
-                        Host = uri.Host,
-                        Port = uri.Port
-                    },
-                }
-            });
-        }
-    }
-
-    foreach (var route in configuration.Routes)
-    {
-        if (string.IsNullOrWhiteSpace(route.UpstreamPathTemplate))
-            route.DownstreamScheme = builder.Configuration["Ocelot:DefaultDownstreamScheme"];
-
-        if (string.IsNullOrWhiteSpace(route.DownstreamPathTemplate))
-            route.DownstreamPathTemplate = route.UpstreamPathTemplate;
-    }
-});
-
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
+
+app.UseCors(_Mint_Cors_Policy);
 
 app.UseWebSockets();
 app.UseOcelot().Wait();

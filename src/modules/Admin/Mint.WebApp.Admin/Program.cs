@@ -12,10 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy =>
 {
-    policy.WithOrigins("http://127.0.0.1:5173")
-        .AllowAnyMethod()
+    policy.WithOrigins("http://127.0.0.1:5173", "https://localhost:7064")
         .AllowAnyHeader()
-        .AllowAnyOrigin();
+        .AllowAnyMethod();
 }));
 
 var connection = builder.Configuration.GetConnectionString("Default");
