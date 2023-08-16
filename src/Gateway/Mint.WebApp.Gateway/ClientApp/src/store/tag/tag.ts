@@ -1,7 +1,7 @@
 import { DELETE_TAG, GET_TAGS, NEW_TAG, UPDATE_TAG } from "./actionType";
 import { ITag } from "../../services/admin/ITag";
 
-export const getTags = (tags: ITag[]) => (dispatch) => {
+export const getTags = (tags: ITag[] | void) => (dispatch) => {
   dispatch({
     type: GET_TAGS,
     payload: tags,

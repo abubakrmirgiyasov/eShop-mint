@@ -199,7 +199,7 @@ const AdminSidebarData: FC = (): ISidebar[] => {
         },
         {
           id: "tags",
-          label: "Аттрибуты",
+          label: "Атрибуты",
           link: "/admin/news/tags",
           parentId: "news",
         },

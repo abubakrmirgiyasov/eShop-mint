@@ -26,4 +26,24 @@ public class TagDTOConverter
 			throw new Exception(ex.Message, ex);
 		}
     }
+
+    public static TagFullViewModel FormingSingleViewModel(Tag model)
+    {
+		return new TagFullViewModel()
+		{
+			Label = model.Name,
+			Value = model.Id,
+			Translate = model.Translate,
+		};
+	}
+
+    public static Tag FormingSingleBindingModel(TagFullBindingModel model)
+    {
+		return new Tag()
+		{
+			Id = (Guid)model.Value!,
+			Name = model.Label!,
+			Translate = model.Translate,
+		};
+	}
 }

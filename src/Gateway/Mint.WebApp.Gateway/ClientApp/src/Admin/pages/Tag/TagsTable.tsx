@@ -13,10 +13,11 @@ import { ITag } from "../../../services/admin/ITag";
 
 interface ITagsTable {
   tags: ITag[];
+  handleChange: (tag: ITag) => void;
   handleDelete: (id: string) => void;
 }
 
-const TagsTable: FC<ITagsTable> = ({ tags, handleDelete }) => {
+const TagsTable: FC<ITagsTable> = ({ tags, handleChange, handleDelete }) => {
   const [isOmits, setIsOmits] = useState<boolean[2]>([]);
 
   const columns = useMemo(
@@ -49,11 +50,15 @@ const TagsTable: FC<ITagsTable> = ({ tags, handleDelete }) => {
             </DropdownToggle>
             <DropdownMenu className={"dropdown-menu-end"}>
               <PrivateComponent>
-                <DropdownItem className={"edit-item-btn"} roles={[Roles.Admin]}>
+                <DropdownItem
+                  className={"edit-item-btn"}
+                  roles={[Roles.Admin]}
+                  onClick={() => handleChange(row)}
+                >
                   <i
                     className={"ri-pencil-fill align-bottom me-2 text-muted"}
                   ></i>
-                  <Link to={`/admin/news/edit/${row.id}`}>Редактировать</Link>
+                  Редактировать
                 </DropdownItem>
                 <DropdownItem
                   className={"edit-item-btn"}

@@ -13,18 +13,19 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ITag } from "../../../services/admin/ITag";
-import { newTag } from "../../../services/admin/tags/tag";
+import { newTag, updateTag } from "../../../services/admin/tags/tag";
 import { fetch } from "../../../helpers/fetch";
 import { useDispatch } from "react-redux";
 import { useGuid } from "../../../hooks/useGuid";
 
 interface ITagAction {
+  tag: ITag;
   isEdit: boolean;
   isOpen: boolean;
   toggle: () => void;
 }
 
-const TagAction: FC<ITagAction> = ({ isEdit, isOpen, toggle }) => {
+const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -33,15 +34,33 @@ const TagAction: FC<ITagAction> = ({ isEdit, isOpen, toggle }) => {
   const onSubmit = (values: ITag) => {
     setIsLoading(true);
 
-    values.value = guid;
+    if (isEdit) {
+      values.value = tag.value;
 
-    dispatch(newTag(fetch(), values))
-      .then((response) => {
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsLoading(false);
-      });
+      dispatch(updateTag(fetch(), values))
+        .then(() => {
+          setIsLoading(false);
+          reset();
+          toggle();
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
+    } else {
+      values.value = guid;
+
+      dispatch(newTag(fetch(), values))
+        .then(() => {
+          setIsLoading(false);
+          console.log("togglllllllllllllllllllllllllllllllle");
+          reset();
+          toggle();
+        })
+        .catch(() => {
+          setIsLoading(false);
+          console.log("error");
+        });
+    }
   };
 
   const validation = Yup.object().shape({
@@ -86,7 +105,7 @@ const TagAction: FC<ITagAction> = ({ isEdit, isOpen, toggle }) => {
                   id={"name"}
                   className={`form-control ${errors.label ? "is-invalid" : ""}`}
                   placeholder={"Введите название"}
-                  defaultValue={""}
+                  defaultValue={tag?.label || ""}
                   {...register("label")}
                 />
                 <FormFeedback type={"invalid"}>
@@ -102,7 +121,7 @@ const TagAction: FC<ITagAction> = ({ isEdit, isOpen, toggle }) => {
                   id={"name"}
                   className={`form-control ${errors.label ? "is-invalid" : ""}`}
                   placeholder={"Введите перевод"}
-                  defaultValue={""}
+                  defaultValue={tag?.translate || ""}
                   {...register("translate")}
                 />
                 <FormFeedback type={"invalid"}>

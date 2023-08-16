@@ -19,46 +19,48 @@ export const getTags = (request: Request) => (dispatch) => {
   return getRequest(request).then(
     (response) => {
       dispatch(getStore(response));
-      return Promise.resolve();
+      return Promise.resolve(response);
     },
     (error) => {
       dispatch({
         type: SET_MESSAGE,
         payload: error,
       });
-      return Promise.reject();
+      return Promise.reject(error);
     }
   );
 };
 
 export const newTag = (request: Request, tag: ITag) => (dispatch) => {
   return newRequest(request, tag).then(
-    () => {
+    (response) => {
+      console.log("updateTag Success");
       dispatch(newStore(tag));
-      return Promise.resolve();
+      return Promise.resolve(response);
     },
     (error) => {
+      console.log("updateTag error");
       dispatch({
         type: SET_MESSAGE,
         payload: error,
       });
-      return Promise.reject();
+      return Promise.reject(error);
     }
   );
 };
 
 export const updateTag = (request: Request, tag: ITag) => (dispatch) => {
   return updateRequest(request, tag).then(
-    () => {
+    (response) => {
       dispatch(updateStore(tag));
-      return Promise.resolve();
+      return Promise.resolve(response);
     },
     (error) => {
       dispatch({
         type: SET_MESSAGE,
         payload: error,
       });
-      return Promise.reject();
+      return Promise.reject(error);
     }
   );
 };

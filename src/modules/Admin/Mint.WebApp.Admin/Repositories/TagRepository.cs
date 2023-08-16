@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Models.Admin;
 using Mint.Infrastructure;
 using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.FormingModels;
@@ -28,23 +29,79 @@ public class TagRepository : ITagRepository
         }
     }
 
-    public Task<TagFullViewModel> GetTagByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<TagFullViewModel> GetTagByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+                ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
+            return TagDTOConverter.FormingSingleViewModel(tag);
+        }
+        catch (ArgumentNullException ex)
+        {
+            throw new ArgumentNullException(ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public Task NewTagAsync(TagFullBindingModel model, CancellationToken cancellationToken = default)
+    public async Task NewTagAsync(TagFullBindingModel model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var tag = TagDTOConverter.FormingSingleBindingModel(model);
+
+            await _context.Tags.AddAsync(tag, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public Task UpdateTagAsync(TagFullBindingModel model, CancellationToken cancellationToken = default)
+    public async Task UpdateTagAsync(TagFullBindingModel model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == model.Value, cancellationToken)
+                ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
+
+            tag.Name = model.Label!;
+            tag.Translate = model.Translate;
+            tag.UpdateDateTime = DateTime.Now;
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (ArgumentNullException ex)
+        {
+            throw new ArgumentNullException(ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
-    public Task DeleteTagAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task DeleteTagAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+                ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
+
+            _context.Tags.Remove(tag);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (ArgumentNullException ex)
+        {
+            throw new ArgumentNullException(ex.Message, ex);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 }
