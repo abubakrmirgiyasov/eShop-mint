@@ -17,7 +17,6 @@ import {
   Spinner,
   UncontrolledDropdown,
 } from "reactstrap";
-import CustomDivider from "../../../components/Common/CustomDivider";
 import { Roles } from "../../../constants/roles";
 import { Link } from "react-router-dom";
 import { PrivateComponent } from "../../../helpers/privateComponent";
