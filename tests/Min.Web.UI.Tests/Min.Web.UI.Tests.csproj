@@ -26,7 +26,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mint.Domain\Mint.Domain.csproj" />
     <ProjectReference Include="..\..\src\Mint.Infrastructure\Mint.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\Mint.WebApp\Mint.WebApp.csproj" />
   </ItemGroup>
 
 </Project>

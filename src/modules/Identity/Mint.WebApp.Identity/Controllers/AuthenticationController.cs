@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mint.Domain.Attributes;
-using Mint.WebApp.Identity.DTO_s;
+using Mint.Domain.DTO_s.Identity;
+using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.WebApp.Identity.Extensions;
-using Mint.WebApp.Identity.Repositories.Interfaces;
 
 namespace Mint.WebApp.Identity.Controllers;
 
@@ -58,7 +57,7 @@ public class AuthenticationController : ControllerBase
         try
         {
             var refreshToken = Request.Cookies["refresh_token"];
-            var response = await _authentication.RefreshToken(refreshToken, Request.GetIp());
+            var response = await _authentication.RefreshTokenAsync(refreshToken, Request.GetIp());
             Response.SetTokenCookie(response.RefreshToken!);
             return Ok(response);
         }
@@ -67,22 +66,7 @@ public class AuthenticationController : ControllerBase
             return Unauthorized(new { message = ex.Message });
         }
     }
-
-    [HttpPut]
-    [Authorize]
-    public async Task<IActionResult> UpdatePassword([FromBody] UserFullBindingModel model)
-    {
-        try
-        {
-            await _authentication.UpdatePasswordAsync(model);
-            return Ok(new { message = "Обновлено успешно"});
-        }
-        catch (Exception ex)
-        {
-            return Unauthorized(new { message = ex.Message });
-        }
-    }
-
+    
     [HttpPost]
     public async Task<IActionResult> ForgetPassword([FromBody] UserFullBindingModel model)
     {

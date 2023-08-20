@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="BindingModels\**" />
-    <Compile Remove="FormingModels\**" />
+    <Compile Remove="FormingModelsssss\**" />
     <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="BindingModels\**" />
-    <EmbeddedResource Remove="FormingModels\**" />
+    <EmbeddedResource Remove="FormingModelsssss\**" />
     <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="BindingModels\**" />
-    <None Remove="FormingModels\**" />
+    <None Remove="FormingModelsssss\**" />
     <None Remove="ViewModels\**" />
   </ItemGroup>
 

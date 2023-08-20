@@ -1,6 +1,9 @@
-﻿using Mint.Domain.Models.Base;
+﻿using Mint.Domain.Models.Admin.Categories;
+using Mint.Domain.Models.Base;
+using Mint.Domain.Models.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using Mint.Domain.Models.Stores;
+using Mint.Domain.Models.Admin.Manufactures;
 
 namespace Mint.Domain.Models;
 
@@ -20,14 +23,13 @@ public class Photo : Entity<Guid>
 
     public long FileSize { get; set; }
 
-    [JsonIgnore]
-    public object? TEntities { get; set; }
+    public List<User>? Users { get; set; }
 
-    //public List<Manufacture>? Manufactures { get; set; }
+    public List<Manufacture>? Manufactures { get; set; }
 
-    //public List<Category>? Categories { get; set; }
+    public List<Category>? Categories { get; set; }
 
-    //public List<ProductPhoto>? ProductPhotos { get; set; }
+    public List<ProductPhoto>? ProductPhotos { get; set; }
 
-    //public List<ReviewPhoto>? ReviewPhotos { get; set; }
+    public List<Store>? Stores { get; set; }
 }

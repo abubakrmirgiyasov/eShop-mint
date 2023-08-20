@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.Email.Interfaces;
-using Mint.WebApp.Email.Models;
+using Mint.Domain.Models.Email;
+using Mint.Infrastructure.Repositories.Email;
 
 namespace Mint.WebApp.Email.Controllers;
 
