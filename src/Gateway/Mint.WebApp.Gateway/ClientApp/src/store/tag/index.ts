@@ -13,7 +13,6 @@ export default function (state = initState, action) {
         tags: payload,
       };
     case NEW_TAG:
-      console.log("skaljdlkasjdlsajldkjlas");
       return {
         ...state,
         tags: [...state, payload],

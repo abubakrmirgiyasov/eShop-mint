@@ -34,12 +34,10 @@ export const getTags = (request: Request) => (dispatch) => {
 export const newTag = (request: Request, tag: ITag) => (dispatch) => {
   return newRequest(request, tag).then(
     (response) => {
-      console.log("updateTag Success");
       dispatch(newStore(tag));
       return Promise.resolve(response);
     },
     (error) => {
-      console.log("updateTag error");
       dispatch({
         type: SET_MESSAGE,
         payload: error,

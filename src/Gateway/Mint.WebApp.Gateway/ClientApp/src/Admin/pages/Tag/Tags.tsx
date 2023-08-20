@@ -42,13 +42,14 @@ const Tags: FC<ReactNode> = () => {
   }));
 
   useEffect(() => {
+    console.log("ddddddddddddddddddddddd");
     setIsLoading(true);
     dispatch(getTags(fetch()))
       .then(() => {
         setIsLoading(false);
       })
       .catch(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   console.log(tags);
 
@@ -68,6 +69,17 @@ const Tags: FC<ReactNode> = () => {
     setSingleTag(tag);
     setIsEdit(true);
     actionModalToggle();
+  };
+
+  const handleTableControllerClick = (position: number) => {
+    switch (position) {
+      case 0:
+        console.log(0);
+        break;
+      case 1:
+        console.log(1);
+        break;
+    }
   };
 
   const actionModalToggle = useCallback(() => {
@@ -109,7 +121,9 @@ const Tags: FC<ReactNode> = () => {
                       </DropdownToggle>
                       <DropdownMenu className={"dropdown-menu-md p-2"}>
                         <DropdownItem header>Вкл/Выкл столбец</DropdownItem>
-                        <TagTableColumnController />
+                        <TagTableColumnController
+                          onClick={handleTableControllerClick}
+                        />
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </ButtonGroup>

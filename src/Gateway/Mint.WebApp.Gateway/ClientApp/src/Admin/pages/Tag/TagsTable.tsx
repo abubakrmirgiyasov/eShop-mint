@@ -63,7 +63,9 @@ const TagsTable: FC<ITagsTable> = ({ tags, handleChange, handleDelete }) => {
                 <DropdownItem
                   className={"edit-item-btn"}
                   roles={[Roles.Admin]}
-                  onClick={() => handleDelete(row.id)}
+                  onClick={() => {
+                    handleDelete(row.value);
+                  }}
                 >
                   <i
                     className={
