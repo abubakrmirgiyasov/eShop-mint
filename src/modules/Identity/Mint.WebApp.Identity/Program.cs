@@ -8,20 +8,10 @@ using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.Infrastructure.Services;
 using Mint.Infrastructure.Services.Interfaces;
 
-const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
 
 var identitySettings = builder.Configuration.GetSection("IdentitySettings");
 builder.Services.Configure<IdentitySettings>(identitySettings);
-
-builder.Services.AddCors((cors) => cors.AddPolicy(MyAllowSpecificOrigins, policy =>
-{
-    policy.WithOrigins("http://127.0.0.1:5173")
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowAnyOrigin();
-}));
 
 var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
@@ -53,7 +43,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-app.UseCors(MyAllowSpecificOrigins);
 
 app.Run();

@@ -10,4 +10,12 @@
     <PackageReference Include="CloudinaryDotNet" Version="1.22.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
