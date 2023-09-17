@@ -16,7 +16,7 @@
       ]
     },
     { // Identity
-      "UpstreamPathTemplate": "/gate/{version}/{everything}",
+      "UpstreamPathTemplate": "/identity/{version}/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",

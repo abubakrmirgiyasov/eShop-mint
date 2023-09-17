@@ -16,7 +16,7 @@ import { fetch } from "../helpers/fetch";
 const MainRoute = () => {
   const dispatch = useDispatch();
 
-  const { auth }: { auth: IAuth } = useSelector((state) => ({
+  const { auth }: { auth: IAuth | null } = useSelector((state) => ({
     auth: state.Auth,
   }));
 
