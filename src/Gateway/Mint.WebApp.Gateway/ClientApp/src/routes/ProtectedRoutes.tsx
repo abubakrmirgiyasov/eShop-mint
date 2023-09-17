@@ -25,7 +25,7 @@ const PrivateRoutesLayout: FC<IPrivateRoute> = ({ children }) => {
 
   useEffect(() => {
     if (!user && !token && isLoading) dispatch(signOut(fetch()));
-  }, [token, user, isLoading, token, dispatch]);
+  }, [token, user, isLoading, dispatch]);
 
   if (!user && !token && isLoading) {
     navigate("/signin");

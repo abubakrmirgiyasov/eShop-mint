@@ -16,7 +16,7 @@
       ]
     },
     { // Identity
-      "UpstreamPathTemplate": "/pri/{version}/{everything}",
+      "UpstreamPathTemplate": "/gate/{version}/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",

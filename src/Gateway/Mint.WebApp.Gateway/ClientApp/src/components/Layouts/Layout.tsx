@@ -34,7 +34,7 @@ const Layout: FC<ILayout> = ({ children }) => {
   }, [auth, dispatch]);
 
   const scrollNavigation = () => {
-    let scrollUp = document.documentElement.scrollTop;
+    const scrollUp = document.documentElement.scrollTop;
     setHeaderClass(scrollUp > 50 ? "top-shadow" : "");
   };
 

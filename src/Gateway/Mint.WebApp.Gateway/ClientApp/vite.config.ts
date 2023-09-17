@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/gate": {
+      "/*": {
         target: "https://localhost:7064",
         changeOrigin: true,
         secure: false,
