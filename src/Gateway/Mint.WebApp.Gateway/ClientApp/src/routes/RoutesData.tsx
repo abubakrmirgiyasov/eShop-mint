@@ -11,6 +11,7 @@ import ManufactureAction from "../Admin/pages/Manufacture/ManufactureAction";
 import Categories from "../Admin/pages/Category/Categories";
 import CategoryAction from "../Admin/pages/Category/CategoryAction";
 import Tags from "../Admin/pages/Tag/Tags";
+import SubCategoryAction from "../Admin/pages/SubCategory/SubCategoryAction";
 
 type Routes = {
   path: string;
@@ -39,6 +40,14 @@ const adminRoutes: Routes[] = [
   { path: "/admin/categories/add", component: <CategoryAction /> },
   { path: "/admin/categories/edit/:id", component: <CategoryAction /> },
   { path: "/admin/news/tags", component: <Tags /> },
+  {
+    path: "/admin/categories/add/subcategory",
+    component: <SubCategoryAction />,
+  },
+  {
+    path: "/admin/categories/edit/subcategory/:id",
+    component: <SubCategoryAction />,
+  },
 ];
 
 export { publicRoutes, privateRoutes, adminRoutes };

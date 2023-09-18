@@ -31,7 +31,7 @@ const Categories: FC<ReactNode> = () => {
       {error && <Error message={error} />}
       <Card>
         <CardHeader>
-          <h2 className={"mb-0"}>Производители</h2>
+          <h2 className={"mb-0"}>Категории</h2>
         </CardHeader>
         <CardBody>
           <Row>
@@ -60,11 +60,18 @@ const Categories: FC<ReactNode> = () => {
                 <PrivateComponent>
                   <Link
                     to={"/admin/categories/add"}
-                    className={"fs-14 btn btn-success"}
+                    className={"fs-14 btn btn-success me-2"}
                     roles={[Roles.Admin]}
                   >
                     <i className={"ri-add-line align-middle me-2"}></i>
                     Добавить новое ...
+                  </Link>
+                  <Link
+                    to={"/admin/categories/add/subcategory"}
+                    className={"fs-14 btn btn-danger"}
+                    roles={[Roles.Admin]}
+                  >
+                    Добавить под категории...
                   </Link>
                 </PrivateComponent>
               </div>

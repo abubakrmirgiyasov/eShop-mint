@@ -111,7 +111,6 @@ const CategoryAction: FC<ReactNode> = () => {
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm<ICategoryFull>({
@@ -161,7 +160,7 @@ const CategoryAction: FC<ReactNode> = () => {
         <Card>
           <CardHeader>
             <h3 className={"fs-20 fw-bold mb-0"}>
-              <Link to={"/admin/manufactures"} className={"btn btn-light me-2"}>
+              <Link to={"/admin/categories"} className={"btn btn-light me-2"}>
                 <i className={"ri-arrow-left-line"}></i>
               </Link>{" "}
               {params.id ? "Изменить категорию" : "Добавить новую категорию"}
@@ -172,7 +171,7 @@ const CategoryAction: FC<ReactNode> = () => {
               <div
                 className={"d-flex justify-content-center align-items-center"}
               >
-                <Spinner color={"success"} sm={"sm"}>
+                <Spinner color={"success"} size={"sm"}>
                   Loading...
                 </Spinner>
               </div>
