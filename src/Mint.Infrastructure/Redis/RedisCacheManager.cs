@@ -22,6 +22,10 @@ public class RedisCacheManager : IDistributedCacheManager
     public T Get<T>(string key)
     {
         var utf8 = Encoding.UTF8.GetString(Get(key));
+
+        if (utf8 is null)
+            return default!;
+
         return JsonConvert.DeserializeObject<T>(utf8);
     }
 

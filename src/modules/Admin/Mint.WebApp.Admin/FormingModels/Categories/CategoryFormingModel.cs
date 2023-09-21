@@ -14,4 +14,25 @@ public class CategoryFormingModel
         }
         return categories;
     }
+
+    public static IEnumerable<CategorySampleViewModel> FormingSampleViewModels(List<Category> models)
+    {
+        try
+        {
+            var categories = new List<CategorySampleViewModel>();
+            foreach (var model in models)
+            {
+                categories.Add(new CategorySampleViewModel()
+                {
+                    Value = model.Id,
+                    Label = model.Name,
+                });
+            }
+            return categories;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
 }

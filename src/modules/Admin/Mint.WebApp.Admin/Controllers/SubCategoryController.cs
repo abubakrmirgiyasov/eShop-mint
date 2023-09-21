@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Attributes;
 using Mint.Domain.Common;
+using Mint.Infrastructure.MessageBrokers.Models;
 using Mint.WebApp.Admin.DTO_s.Categories;
+using Mint.WebApp.Admin.Repositories.Interfaces;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -11,9 +13,25 @@ namespace Mint.WebApp.Admin.Controllers;
 [Route("api/[controller]/[action]")]
 public class SubCategoryController : ControllerBase
 {
-    public SubCategoryController()
+    private readonly ISubCategoryRepository _subCategory;
+
+    public SubCategoryController(ISubCategoryRepository subCategory)
     {
-        
+        _subCategory = subCategory;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetSampleSubCategories()
+    {
+        try
+        {
+            var subCategories = await _subCategory.GetSampleSubCategoriesAsync();
+            return Ok(subCategories);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     [HttpPost]
@@ -21,7 +39,8 @@ public class SubCategoryController : ControllerBase
     {
         try
         {
-            return Ok();
+            await _subCategory.CreateAsync(model);
+            return Ok(new { message = "success" });
         }
         catch (Exception ex)
         {

@@ -15,3 +15,8 @@ export enum Colors {
   warning,
   danger,
 }
+
+export interface ISampleType {
+  value: string;
+  label: string;
+}

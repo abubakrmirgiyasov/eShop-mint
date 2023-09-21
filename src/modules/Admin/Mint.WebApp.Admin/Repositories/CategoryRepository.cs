@@ -1,18 +1,36 @@
-﻿using Mint.Infrastructure.Repositories.Admin.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Mint.Infrastructure.Repositories.Admin.Interfaces;
 using Mint.WebApp.Admin.DTO_s.Categories;
+using Mint.WebApp.Admin.FormingModels.Categories;
 
 namespace Mint.Infrastructure.Repositories.Admin;
 
 public class CategoryRepository : ICategoryRepository
 {
+    private readonly ApplicationDbContext _context;
+
+    public CategoryRepository(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
     public Task<IEnumerable<CategoryFullViewModel>> GetCategoriesAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<CategorySampleViewModel>> GetSampleCategoriesAsync()
+    public async Task<IEnumerable<CategorySampleViewModel>> GetSampleCategoriesAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var categories = await _context.Categories.ToListAsync();
+            var extractedModels = CategoryFormingModel.FormingSampleViewModels(categories);
+            return extractedModels;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public Task<CategoryFullViewModel> GetCategoryByIdAsync(Guid id)

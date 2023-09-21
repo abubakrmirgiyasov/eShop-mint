@@ -12,8 +12,9 @@ public class CategoryController : ControllerBase
 {
     private readonly CategoryService _service;
 
-    public CategoryController()
+    public CategoryController(CategoryService service)
     {
+        _service = service;
     }
 
     [HttpGet]
@@ -34,7 +35,8 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            return Ok();
+            var categories = await _service.GetCategorySamplesAsync();
+            return Ok(categories);
         }
         catch (Exception ex)
         {

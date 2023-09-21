@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Error } from "../../../components/Notifications/Error";
 import {
   Card,
@@ -18,12 +18,33 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISubCategory } from "../../../services/types/ISubCategory";
 import { fetch } from "../../../helpers/fetch";
+import ReactSelect from "react-select";
+import { ISampleType } from "../../../services/types/ICommon";
 
 const SubCategoryAction: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [subCategories, setSubCategories] = useState<ISampleType[]>([]);
 
   const params = useParams();
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    fetch()
+      .get("/gate/category/getSampleCategories")
+      .then((response: ISampleType[]) => {
+        setSubCategories(response);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLoading(false);
+      });
+    if (params.id) {
+    } else {
+    }
+  }, [params]);
 
   const validation = Yup.object().shape({
     displayOrder: Yup.number()
@@ -114,6 +135,30 @@ const SubCategoryAction: FC = () => {
                         />
                         <FormFeedback type={"invalid"}>
                           {errors.displayOrder?.message}
+                        </FormFeedback>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col lg={12} className={"mb-3"}>
+                    <Row className={"align-items-center"}>
+                      <Col xl={2}>
+                        <label className={"form-label fw-bold mb-0"}>
+                          Родаитель{" "}
+                          <Popover
+                            placement={"right"}
+                            text={`Задает элементу родителя.`}
+                            id={"name"}
+                          />
+                        </label>
+                      </Col>
+                      <Col xl={10}>
+                        <ReactSelect
+                          isSearchable={true}
+                          placeholder={"Выберите родителя"}
+                          options={subCategories}
+                        />
+                        <FormFeedback type={"invalid"}>
+                          {errors.name?.message}
                         </FormFeedback>
                       </Col>
                     </Row>

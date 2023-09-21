@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Mint.Domain.Common;
 using StackExchange.Redis;
+using System.Security.Authentication;
 
 namespace Mint.Infrastructure.Redis;
 
@@ -19,7 +20,10 @@ public class RedisClient
         {
             ConfigurationOptions = new ConfigurationOptions()
             {
-                EndPoints = { { _redis.Host, _redis.Port } },
+                Ssl = true,
+                SslProtocols = SslProtocols.Tls12,
+                AbortOnConnectFail = false,
+                EndPoints = { { _redis.Host, _redis.Port } }
             }
         };
         var options = Options.Create(redisOptions);
