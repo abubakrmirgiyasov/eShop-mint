@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.56.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,9 +31,5 @@
     <ProjectReference Include="..\..\..\Mint.Domain\Mint.Domain.csproj" />
     <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="Protos\menu.proto" />
-	</ItemGroup>
 
 </Project>

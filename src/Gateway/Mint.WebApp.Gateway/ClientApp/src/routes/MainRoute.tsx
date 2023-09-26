@@ -21,7 +21,7 @@ const MainRoute = () => {
   }));
 
   useEffect(() => {
-    if (auth.isLoggedIn) {
+    if (auth?.isLoggedIn) {
       dispatch(getMyStore(fetch(), auth.user.id));
     }
   }, [auth]);

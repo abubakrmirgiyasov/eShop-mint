@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mint.Infrastructure;
 using Mint.WebApp.Admin.DTO_s.Categories;
@@ -58,7 +59,8 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> NewCategory([FromBody] CategoryFullBindingModel model)
+    [Authorize(Roles = "ADMIN")]
+    public async Task<IActionResult> NewCategory([FromForm] CategoryFullBindingModel model)
     {
         try
         {
@@ -71,6 +73,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> UpdateCategory([FromBody] CategoryFullBindingModel model)
     {
         try
@@ -84,6 +87,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         try

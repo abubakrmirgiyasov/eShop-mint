@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -24,20 +24,26 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IManufactureFull } from "../../../services/admin/IManufacture";
 import CustomErrorStyle from "../../../components/Common/CustomErrorStyle";
-
-interface IManufactureAction {}
+import { fetch } from "../../../helpers/fetch";
+import { useSelector } from "react-redux";
 
 const ManufactureAction: FC<ReactNode> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-
   const [phone, setPhone] = useState<string>("");
   const [photo, setPhoto] = useState<File[]>([]);
-
   const [manufacturesIsLoading, setManufacturesIsLoading] =
     useState<boolean>(false);
 
   const params = useParams();
+
+  const { tags } = useSelector((state) => ({
+    tags: state.Tags.tags,
+  }));
+
+  console.log(tags);
+
+  useEffect(() => {}, []);
 
   const handlePhotoChange = (img: File[]) => setPhoto(img);
   const handlePhoneChange = (phone: string) => setPhone(phone);
@@ -75,7 +81,20 @@ const ManufactureAction: FC<ReactNode> = () => {
   const onSubmit = (values: IManufactureFull) => {
     setIsLoading(true);
 
-    values.photo = photo;
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("country", values.country);
+    formData.append("email", values.email);
+    formData.append("phone", values.phone);
+    formData.append("fullAddress", values.fullAddress);
+    formData.append("website", values.website);
+    formData.append("displayOrder", values.displayOrder);
+    formData.append("manufactureTags", JSON.stringify(values.manufactureTags));
+    formData.append(
+      "manufactureCategories",
+      JSON.stringify(values.manufactureCategories)
+    );
   };
 
   return (
@@ -266,7 +285,7 @@ const ManufactureAction: FC<ReactNode> = () => {
                             <ReactSelect
                               {...field}
                               isMulti
-                              options={[]}
+                              options={tags}
                               isSearchable={true}
                               placeholder={"Выберите тегы для производителя"}
                             />

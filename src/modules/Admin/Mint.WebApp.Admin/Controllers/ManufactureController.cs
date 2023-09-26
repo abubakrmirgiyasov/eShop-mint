@@ -30,15 +30,22 @@ public class ManufactureController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "ADMIN")]
-    public async Task<IActionResult> NewManufacture([FromBody] ManufactureFullBindingModel model)
+    public async Task<IActionResult> NewManufacture([FromForm] ManufactureFullBindingModel model)
     {
-        return Ok();
-
+        try
+        {
+            return Ok();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPut]
     [Authorize(Roles = "ADMIN")]
-    public async Task<IActionResult> UpdateManufacture([FromBody] ManufactureFullBindingModel model)
+    public async Task<IActionResult> UpdateManufacture([FromForm] ManufactureFullBindingModel model)
     {
         return Ok();
 

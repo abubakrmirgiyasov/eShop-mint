@@ -16,7 +16,12 @@ public class RedisCacheManager : IDistributedCacheManager
 
     public byte[] Get(string key)
     {
-        return _redisClient.RedisCache.Get(key)!;
+        var isKeyExist = _redisClient.RedisCache.KeyExists(key);
+
+        if (isKeyExist)
+            return _redisClient.RedisCache.StringGet(key)!;
+
+        return null!;
     }
 
     public T Get<T>(string key)
@@ -32,25 +37,21 @@ public class RedisCacheManager : IDistributedCacheManager
     public void Set<T>(string key, T value)
     {
         var serialized = JsonConvert.SerializeObject(value);
-        _redisClient.RedisCache.SetString(key, serialized, new DistributedCacheEntryOptions()
-        {
-            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(60),
-            SlidingExpiration = TimeSpan.FromSeconds(30),
-        });
+        _redisClient.RedisCache.StringSet(key, serialized);
     }
 
-    public bool Any(string key)
+    public bool Exists(string key)
     {
-        return _redisClient.RedisCache.Get(key) != null;
+        return _redisClient.RedisCache.KeyExists(key);
     }
 
     public void Refresh(string key)
     {
-        _redisClient.RedisCache.Refresh(key);
+        //_redisClient.RedisCache.Up.Refresh(key);
     }
 
     public void Remove(string key)
     {
-        _redisClient.RedisCache.Remove(key);
+        _redisClient.RedisCache.KeyDelete(key);
     }
 }

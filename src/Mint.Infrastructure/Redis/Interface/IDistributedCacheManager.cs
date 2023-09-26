@@ -39,7 +39,7 @@ public interface IDistributedCacheManager
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    bool Any(string key);
+    bool Exists(string key);
 
     /// <summary>
     /// 

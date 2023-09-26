@@ -8,6 +8,7 @@ import { Error } from "../Notifications/Error";
 // media
 import "react-toastify/dist/ReactToastify.css";
 import { switchLayout } from "../../store/theme/theme";
+import Footer from "../Footer/Footer";
 
 interface ILayout {
   children: ReactNode;
@@ -43,7 +44,10 @@ const Layout: FC<ILayout> = ({ children }) => {
       <div id={"layout-wrapper"}>
         {error && <Error message={error} />}
         <Header headerClass={headerClass} />
-        <div className={"main-content"}>{children}</div>
+        <div className={"main-content"}>
+          {children}
+          <Footer />
+        </div>
         <ToastContainer
           position={"top-right"}
           autoClose={5000}

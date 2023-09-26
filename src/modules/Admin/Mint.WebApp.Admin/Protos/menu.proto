@@ -1,5 +1,0 @@
-﻿syntax = "proto3";
-
-option csharp_namespace = "Mint";
-
-package menu;
