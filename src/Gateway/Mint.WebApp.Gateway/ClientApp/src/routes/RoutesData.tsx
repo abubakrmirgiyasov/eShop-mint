@@ -12,6 +12,7 @@ import Categories from "../Admin/pages/Category/Categories";
 import CategoryAction from "../Admin/pages/Category/CategoryAction";
 import Tags from "../Admin/pages/Tag/Tags";
 import SubCategoryAction from "../Admin/pages/SubCategory/SubCategoryAction";
+import Search from "../pages/Search/Search";
 
 type Routes = {
   path: string;
@@ -24,6 +25,7 @@ const publicRoutes: Routes[] = [
   { path: "/", exact: true, component: <Navigate to={"home"} /> },
   { path: "/home", component: <Home /> },
   { path: "/signin", component: <SignInBase /> },
+  { path: "/search/:query", component: <Search /> },
 ];
 
 const privateRoutes: Routes[] = [
