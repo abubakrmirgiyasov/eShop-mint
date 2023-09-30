@@ -12,4 +12,6 @@ public class Constants
 
     public static string IdentityKey = "MintIdentityQueue";
     public static string ConfirmationKey = "MintIdentityConfirmationQueue";
+
+    public const string REDIS_SAMPLE_CATEGORIES = "REDIS_SAMPLE_CATEGORIES";
 }

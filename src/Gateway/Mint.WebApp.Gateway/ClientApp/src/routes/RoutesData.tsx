@@ -11,6 +11,8 @@ import ManufactureAction from "../Admin/pages/Manufacture/ManufactureAction";
 import Categories from "../Admin/pages/Category/Categories";
 import CategoryAction from "../Admin/pages/Category/CategoryAction";
 import Tags from "../Admin/pages/Tag/Tags";
+import SubCategoryAction from "../Admin/pages/SubCategory/SubCategoryAction";
+import Search from "../pages/Search/Search";
 
 type Routes = {
   path: string;
@@ -23,6 +25,7 @@ const publicRoutes: Routes[] = [
   { path: "/", exact: true, component: <Navigate to={"home"} /> },
   { path: "/home", component: <Home /> },
   { path: "/signin", component: <SignInBase /> },
+  { path: "/search/:query", component: <Search /> },
 ];
 
 const privateRoutes: Routes[] = [
@@ -39,6 +42,14 @@ const adminRoutes: Routes[] = [
   { path: "/admin/categories/add", component: <CategoryAction /> },
   { path: "/admin/categories/edit/:id", component: <CategoryAction /> },
   { path: "/admin/news/tags", component: <Tags /> },
+  {
+    path: "/admin/categories/add/subcategory",
+    component: <SubCategoryAction />,
+  },
+  {
+    path: "/admin/categories/edit/subcategory/:id",
+    component: <SubCategoryAction />,
+  },
 ];
 
 export { publicRoutes, privateRoutes, adminRoutes };

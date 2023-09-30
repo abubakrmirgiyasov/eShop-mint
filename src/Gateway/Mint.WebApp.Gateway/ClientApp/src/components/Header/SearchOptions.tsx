@@ -1,4 +1,11 @@
-import React, { FC, FormEvent, ReactNode, useEffect, useState } from "react";
+import React, {
+  FC,
+  FormEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Form, Input } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import SimpleBar from "simplebar-react";
@@ -9,7 +16,7 @@ import image3 from "../../assets/images/users/avatar-3.jpg";
 import image5 from "../../assets/images/users/avatar-5.jpg";
 
 const SearchOptions: FC<ReactNode> = () => {
-  const [value, setValue] = useState<string>("");
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -23,7 +30,7 @@ const SearchOptions: FC<ReactNode> = () => {
     searchInput.addEventListener("focus", function () {
       const inputLength = searchInput.value.length;
 
-      if (inputLength > 0) {
+      if (inputLength > 3) {
         dropdown.classList.add("show");
         searchOptions.classList.remove("d-none");
       } else {
@@ -32,10 +39,12 @@ const SearchOptions: FC<ReactNode> = () => {
       }
     });
 
+    console.log(searchRef.current?.value);
+
     searchInput.addEventListener("keyup", function () {
       const inputLength = searchInput.value.length;
 
-      if (inputLength > 0) {
+      if (inputLength > 3) {
         dropdown.classList.add("show");
         searchOptions.classList.remove("d-none");
       } else {
@@ -58,27 +67,21 @@ const SearchOptions: FC<ReactNode> = () => {
     });
   }, []);
 
-  const onChangeSearch = (value: string) => {
-    setValue(value);
-  };
-
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate("/search/query=" + value);
+    navigate("/search/query=" + searchRef?.current?.value);
   };
 
   return (
     <React.Fragment>
       <Form className={"app-search d-none d-md-block"} onSubmit={handleSearch}>
         <div className={"position-relative"}>
-          <Input
+          <input
+            className={"form-control"}
             type={"text"}
             id={"search-options"}
             placeholder={"Поиск..."}
-            value={value}
-            onChange={(e: FormEvent<HTMLInputElement>) =>
-              onChangeSearch(e.currentTarget.value)
-            }
+            ref={searchRef}
           />
           <span className={"ri-search-2-line search-widget-icon"}></span>
           <span
@@ -93,31 +96,24 @@ const SearchOptions: FC<ReactNode> = () => {
           id={"search-dropdown"}
         >
           <SimpleBar style={{ height: "320px" }}>
-            <div className={"dropdown-header"}>
-              <h6 className={"text-overflow text-muted mb-0 text-uppercase"}>
-                Recent Searches
+            <div className={"dropdown-header d-flex justify-content-between"}>
+              <h6 className={"text-overflow text-muted mb-0"}>
+                История поиска
+              </h6>
+              <h6 className={"text-overflow text-muted mb-0 cursor-pointer"}>
+                Очистить историю
               </h6>
             </div>
 
-            <div className={"dropdown-item bg-transparent text-wrap"}>
-              <Link
-                to={"/"}
-                className={"btn btn-soft-secondary btn-sm btn-rounded"}
-              >
-                how to setup <i className={"ri-search-2-line ms-1"}></i>
-              </Link>
-              <Link
-                to={"/"}
-                className={"btn btn-soft-secondary btn-sm btn-rounded"}
-              >
-                buttons <i className={"ri-search-2-line ms-1"}></i>
-              </Link>
-            </div>
+            <Link to={"/"} className={"dropdown-item notify-item"}>
+              <i className={"ri-history-line"}></i> Видеокарта
+            </Link>
+            <Link to={"/"} className={"dropdown-item notify-item"}>
+              <i className={"ri-history-line"}></i> buttons
+            </Link>
 
             <div className={"dropdown-header mt-2"}>
-              <h6 className={"text-overflow text-muted mb-1 text-uppercase"}>
-                Pages
-              </h6>
+              <h6 className={"text-overflow text-muted mb-1"}>Страницы</h6>
             </div>
 
             <Link to={"#"} className={"dropdown-item notify-item"}>
@@ -148,9 +144,7 @@ const SearchOptions: FC<ReactNode> = () => {
             </Link>
 
             <div className={"dropdown-header mt-2"}>
-              <h6 className={"text-overflow text-muted mb-2 text-uppercase"}>
-                Members
-              </h6>
+              <h6 className={"text-overflow text-muted mb-2"}>Продавцы</h6>
             </div>
 
             <div className={"notification-list"}>
@@ -207,7 +201,7 @@ const SearchOptions: FC<ReactNode> = () => {
               to={"/pages-search-results"}
               className={"btn btn-primary btn-sm"}
             >
-              View All Results <i className={"ri-arrow-right-line ms-1"}></i>
+              Показать результат <i className={"ri-arrow-right-line ms-1"}></i>
             </Link>
           </div>
         </div>

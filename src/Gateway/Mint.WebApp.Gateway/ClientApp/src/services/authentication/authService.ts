@@ -20,7 +20,7 @@ export interface ISignIn {
 
 export const register = (request: Request, values: ISignUp) => {
   return request
-    .post("/pri/authentication/signup", values)
+    .post("/identity/authentication/signUp", values)
     .then((response) => {
       return response;
     })
@@ -31,7 +31,7 @@ export const register = (request: Request, values: ISignUp) => {
 
 export const login = (request: Request, values: ISignIn) => {
   return request
-    .post("/pri/authentication/signin", values)
+    .post("/identity/authentication/signIn", values)
     .then((response: IUser) => {
       if (response.accessToken)
         localStorage.setItem("auth_user", JSON.stringify(response));
@@ -44,7 +44,7 @@ export const login = (request: Request, values: ISignIn) => {
 
 export const logout = (request: Request) => {
   return request
-    .delete("/pri/authentication/signout")
+    .delete("/identity/authentication/signOut")
     .then((response: { message: string }) => {
       if (response.message) localStorage.removeItem("auth_user");
     })
@@ -55,7 +55,7 @@ export const logout = (request: Request) => {
 
 export const updateUser = (request: Request, values: IUser) => {
   return request
-    .put("/user/updateuser", values)
+    .put("/identity/user/updateUser", values)
     .then((response: IUser) => {
       localStorage.setItem("auth_user", JSON.stringify(response));
       return response;
@@ -67,7 +67,7 @@ export const updateUser = (request: Request, values: IUser) => {
 
 export const refreshToken = (request: Request, values: IUser) => {
   return request
-    .post("/authentication/refreshtoken", values)
+    .post("/identity/authentication/refreshToken", values)
     .then((response: IUser) => {
       localStorage.setItem("auth_user", JSON.stringify(response));
       return response;

@@ -16,7 +16,6 @@ const BadgeStyles: IBadgeStyle[] = [
   { value: "info", label: "Info", color: "#299cdb" },
   { value: "warning", label: "Warning", color: "#f7b84b" },
   { value: "dark", label: "Dark", color: "#212529" },
-  { value: "light", label: "Light", color: "#f3f6f9" },
   { value: "green", label: "Green", color: "#36B37E", isFixed: true },
   { value: "forest", label: "Forest", color: "#00875A", isFixed: true },
   { value: "slate", label: "Slate", color: "#253858", isFixed: true },

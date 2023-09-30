@@ -5,12 +5,15 @@ import { handleServiceError } from "./serviceErrors";
 
 export interface IRequest {
   get<TResponse>(path: string): Promise<TResponse>;
+
   post<TRequest, TResponse>(
     path: string,
     object: TRequest,
     config?: AxiosRequestConfig
   ): Promise<TResponse>;
+
   put<TRequest, TResponse>(path: string, object: TRequest): Promise<TResponse>;
+
   delete<TResponse>(path: string): Promise<TResponse>;
 }
 
@@ -21,7 +24,6 @@ export default class Request implements IRequest {
     apiConfiguration: ApiConfiguration
   ): AxiosInstance {
     return Axios.create({
-      baseURL: BASE_API_URL,
       responseType: "json" as const,
       headers: {
         "Content-Type": "application/json",

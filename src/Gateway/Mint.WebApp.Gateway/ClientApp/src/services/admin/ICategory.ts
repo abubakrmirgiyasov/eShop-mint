@@ -5,12 +5,12 @@ export interface ICategoryFull {
   name: string;
   defaultLink: string;
   ico: string;
-  badgeStyle?: string;
-  badgeText?: string;
+  badgeStyle?: string | null;
+  badgeText?: string | null;
   displayOrder: number;
-  folder?: string;
-  photo?: File[];
-  childs?: string[];
+  folder?: string | null;
+  photo?: File[] | [];
+  childs?: string[] | [];
   categoryTags: ICategoryTag[];
   manufactureCategories: IManufacture[];
 }

@@ -62,9 +62,4 @@ public class MessageBrokerBackgroundService : BackgroundService
 
         return Task.CompletedTask;
     }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
 }

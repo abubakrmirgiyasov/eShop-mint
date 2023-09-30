@@ -11,20 +11,7 @@ using Mint.WebApp.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-const string _Mint_Cors_Policy = "_Mint_Cors_Policy";
-
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(_Mint_Cors_Policy, build =>
-    {
-        build
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
 
 var identitySettings = builder.Configuration.GetSection("IdentitySettings");
 builder.Services.Configure<IdentitySettings>(identitySettings);
@@ -51,8 +38,6 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<JwtMiddleware>();
-
-app.UseCors(_Mint_Cors_Policy);
 
 app.UseWebSockets();
 app.UseOcelot().Wait();

@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Error } from "../../../components/Notifications/Error";
 import {
   Card,
@@ -23,13 +23,28 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ICategoryFull } from "../../../services/admin/ICategory";
 import CustomErrorStyle from "../../../components/Common/CustomErrorStyle";
 import { fetch } from "../../../helpers/fetch";
+import { ISampleType } from "../../../services/types/ICommon";
 
 const CategoryAction: FC<ReactNode> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [photo, setPhoto] = useState<File[]>([]);
+  const [childrenCategory, setChildrenCategory] = useState<ISampleType[]>([]);
+  const [tags, setTags] = useState<ISampleType[]>([]);
 
   const params = useParams();
+
+  useEffect(() => {
+    Promise.all([
+      fetch().get("/gate/subCategory/getSampleSubCategories"),
+      fetch().get("/gate/tag/getTags"),
+    ]).then((r) => {
+      const [categories, tags] = r;
+
+      setChildrenCategory(categories);
+      setTags(tags);
+    });
+  }, []);
 
   const handlePhotoChange = (img: File[]) => setPhoto(img);
 
@@ -111,7 +126,6 @@ const CategoryAction: FC<ReactNode> = () => {
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm<ICategoryFull>({
@@ -121,32 +135,33 @@ const CategoryAction: FC<ReactNode> = () => {
   const onSubmit = (values: ICategoryFull) => {
     // setIsLoading(true);
 
-    const data: ICategoryFull = {
-      badgeStyle: values.badgeStyle,
-      badgeText: values.badgeText,
-      categoryTags: values.categoryTags,
-      childs: values.childs,
-      defaultLink: values.defaultLink,
-      displayOrder: values.displayOrder,
-      folder: "category",
-      ico: values.ico,
-      id: values.id,
-      manufactureCategories: values.manufactureCategories,
-      name: values.name,
-      photo: photo,
-    };
+    const formData = new FormData();
+    formData.append("ico", values.ico);
+    formData.append("name", values.badgeStyle);
+    formData.append("badgeText", values.badgeText);
+    formData.append("badgeStyle", values.badgeStyle);
+    formData.append("defaultLink", values.defaultLink);
+    formData.append("childs", JSON.stringify(values.childs));
+    formData.append("categoryTags", JSON.stringify(values.categoryTags));
+    formData.append(
+      "manufactureCategories",
+      JSON.stringify(values.manufactureCategories)
+    );
 
-    console.log(data);
+    if (photo) {
+      formData.append("folder", "category");
+      formData.append("photo", "photo");
+    }
 
-    // fetch()
-    //   .post("/category/newcategory", data)
-    //   .then((response) => {
-    //     setIsLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     setIsLoading(false);
-    //     setError(error);
-    //   });
+    fetch()
+      .post("/category/newcategory", formData)
+      .then((response) => {
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(error);
+      });
   };
 
   return (
@@ -161,7 +176,7 @@ const CategoryAction: FC<ReactNode> = () => {
         <Card>
           <CardHeader>
             <h3 className={"fs-20 fw-bold mb-0"}>
-              <Link to={"/admin/manufactures"} className={"btn btn-light me-2"}>
+              <Link to={"/admin/categories"} className={"btn btn-light me-2"}>
                 <i className={"ri-arrow-left-line"}></i>
               </Link>{" "}
               {params.id ? "Изменить категорию" : "Добавить новую категорию"}
@@ -172,7 +187,7 @@ const CategoryAction: FC<ReactNode> = () => {
               <div
                 className={"d-flex justify-content-center align-items-center"}
               >
-                <Spinner color={"success"} sm={"sm"}>
+                <Spinner color={"success"} size={"sm"}>
                   Loading...
                 </Spinner>
               </div>
@@ -294,7 +309,7 @@ const CategoryAction: FC<ReactNode> = () => {
                             <ReactSelect
                               {...field}
                               isMulti
-                              options={[]}
+                              options={childrenCategory}
                               isSearchable={true}
                               placeholder={"Выберете дочерние категории"}
                               className={"basic-select"}
@@ -361,7 +376,7 @@ const CategoryAction: FC<ReactNode> = () => {
                             <ReactSelect
                               {...field}
                               isMulti
-                              options={[]}
+                              options={tags}
                               isSearchable={true}
                               placeholder={"Выберите тегы для категории"}
                             />
