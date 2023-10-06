@@ -1,4 +1,4 @@
-import { ICategory } from "./ICategory";
+import { ICategory } from "../Categories/ICategory";
 
 export interface IManufacture {
   value?: string;

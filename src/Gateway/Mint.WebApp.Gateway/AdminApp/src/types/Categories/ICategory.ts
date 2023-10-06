@@ -1,4 +1,4 @@
-import { IManufacture } from "./IManufacture";
+import { IManufacture } from "../Manufactures/IManufacture";
 
 export interface ICategoryFull {
   id: string;

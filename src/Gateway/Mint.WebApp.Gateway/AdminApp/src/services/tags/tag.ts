@@ -13,7 +13,7 @@ import {
   deleteTag as deleteStore,
 } from "../../../store/tag/tag";
 import { SET_MESSAGE } from "../../../store/message/actionType";
-import { ITag } from "../ITag";
+import { ITag } from "../../types/Tags/ITag";
 
 export const getTags = (request: Request) => (dispatch) => {
   return getRequest(request).then(

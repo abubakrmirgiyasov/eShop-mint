@@ -1,5 +1,5 @@
 import Request from "../../../helpers/requestWrapper/request";
-import { ITag } from "../ITag";
+import { ITag } from "../../types/Tags/ITag";
 
 export const getTags = (request: Request) => {
   return request
