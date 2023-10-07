@@ -1,6 +1,6 @@
 ﻿using Mint.Domain.Models.Email;
 
-namespace Mint.Infrastructure.Services.Email.Interfaces;
+namespace Mint.Infrastructure.Services.Interfaces;
 
 public interface IEmailService
 {

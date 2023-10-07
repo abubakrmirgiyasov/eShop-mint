@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Models.Admin.Categories;
 using Mint.Infrastructure.Repositories.Admin.Interfaces;
 using Mint.WebApp.Admin.DTO_s.Categories;
 using Mint.WebApp.Admin.FormingModels.Categories;
@@ -33,9 +34,19 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public Task<CategoryFullViewModel> GetCategoryByIdAsync(Guid id)
+    public async Task<CategoryFullViewModel> GetCategoryByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id)
+                ?? throw new ArgumentNullException(nameof(Category), "Категория не найдена");
+
+            return new CategoryFullViewModel();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public Task NewCategoryAsync(CategoryFullBindingModel model)

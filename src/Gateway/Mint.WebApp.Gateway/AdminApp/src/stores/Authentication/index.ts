@@ -1,5 +1,5 @@
 import {ILocalUser} from "../../types/Authentication/ILocalUser";
-import {LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, REFRESH_TOKEN, UPDATE_USER} from "./actionType";
+import {LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, UPDATE_USER} from "./actionType";
 
 interface IUserAuth {
     isLoggedIn: boolean;
@@ -33,12 +33,6 @@ export default function (state = initState, action) {
                 ...state,
                 isLoggedIn: false,
                 user: null,
-            };
-        case REFRESH_TOKEN:
-            return {
-                ...state,
-                isLoggedIn: true,
-                user: payload,
             };
         case UPDATE_USER:
             return {

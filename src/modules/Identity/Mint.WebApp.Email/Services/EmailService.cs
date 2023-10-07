@@ -3,7 +3,7 @@ using Mint.WebApp.Email.Common;
 using Mint.Domain.Models.Email;
 using System.Net;
 using System.Net.Mail;
-using Mint.Infrastructure.Services.Email.Interfaces;
+using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.WebApp.Email.Services;
 

@@ -1,5 +1,5 @@
 ﻿using Mint.Domain.Models.Email;
-using Mint.Infrastructure.Services.Email.Interfaces;
+using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.Infrastructure.Repositories.Email;
 

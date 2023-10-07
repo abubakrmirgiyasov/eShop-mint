@@ -1,4 +1,4 @@
-import SignUp from "./pages/Authentication/SignUp";
+import SignUp from "./pages/Authentication/SignIn";
 
 // static files
 import "./assets/scss/themes.scss";

@@ -1,21 +1,32 @@
 import axios from "axios";
+import {useProfile} from "./useProfile";
 
 interface IUseAxiosOptions {
     headers?: Record<string, string>
 }
 
 export const useAxios = () => {
+    const user = useProfile();
+
     const instance = axios.create({
         baseURL: "",
         timeout: 1000 * 5,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `${true ? "Bearer" : "asd"}`,
+            "Authorization": `${user.token ? `Bearer ${user.token}` : ""}`,
         },
     });
 
     const get = (url: string) => {
-        return instance.get(url);
+        return instance.get(url)
+            .then((response) => {
+                return response;
+            }).catch((error) => {
+                if (error.message === "Unauthorized") {
+                    console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized")
+                }
+                throw error;
+            });
     };
 
     const post = <TData>(url: string, data: TData) => {
