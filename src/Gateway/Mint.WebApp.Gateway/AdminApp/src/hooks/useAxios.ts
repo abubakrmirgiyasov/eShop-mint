@@ -1,44 +1,82 @@
-import axios from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import {useProfile} from "./useProfile";
 
-interface IUseAxiosOptions {
-    headers?: Record<string, string>
+export interface IRequest {
+    get<TResponse>(path: string): Promise<TResponse | void>;
+
+    post<TRequest, TResponse>(
+        path: string,
+        data: TRequest,
+        config?: AxiosRequestConfig
+    ): Promise<TResponse | void>;
+
+    put<TRequest, TResponse>(
+        path: string,
+        data: TRequest,
+        config?: AxiosRequestConfig
+    ): Promise<TResponse | void>;
+
+    del<TResponse>(path: string): Promise<TResponse>;
 }
 
-export const useAxios = () => {
+export const useAxios = (): IRequest => {
     const user = useProfile();
 
     const instance = axios.create({
-        baseURL: "",
         timeout: 1000 * 5,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `${user.token ? `Bearer ${user.token}` : ""}`,
+            "X-Auth-Type": "Admin",
+            Authorization: `${user.token ? `Bearer ${user.token}` : ""}`,
         },
     });
 
-    const get = (url: string) => {
-        return instance.get(url)
-            .then((response) => {
+    const get = <TResponse>(path: string): Promise<TResponse | void> => {
+        return instance.get(path)
+            .then((response: TResponse) => {
                 return response;
             }).catch((error) => {
                 if (error.message === "Unauthorized") {
-                    console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized")
+                    console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                    throw error;
                 }
-                throw error;
             });
     };
 
-    const post = <TData>(url: string, data: TData) => {
-        return instance.post(url, data);
+    const post = <TRequest, TResponse>(path: string, data: TRequest): Promise<TResponse | void> => {
+        return instance.post(path, data)
+            .then((response: TResponse) => {
+                return response;
+            }).catch((error) => {
+                if (error.message === "Unauthorized") {
+                    console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                    throw error;
+                }
+            });
     };
 
-    const put = <TData>(url: string, data: TData) => {
-        return instance.put(url, data);
+    const put = <TRequest, TResponse>(path: string, data: TRequest): Promise<TResponse | void> => {
+        return instance.put(path, data)
+            .then((response: TResponse) => {
+                return response;
+            }).catch((error) => {
+                if (error.message === "Unauthorized") {
+                    console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                    throw error;
+                }
+            });
     };
 
-    const del = (url: string) => {
-        return instance.delete(url);
+    const del = <TResponse>(path: string): Promise<TResponse | void> => {
+        return instance.delete(path)
+            .then((response: TResponse) => {
+                return response;
+            }).catch((error) => {
+                if (error.message === "Unauthorized") {
+                    console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                    throw error;
+                }
+            });
     };
 
     return {get, post, put, del};

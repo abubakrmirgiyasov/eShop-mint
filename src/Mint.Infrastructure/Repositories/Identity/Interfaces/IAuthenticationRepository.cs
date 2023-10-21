@@ -7,6 +7,8 @@ namespace Mint.Infrastructure.Repositories.Identity.Interfaces;
 /// </summary>
 public interface IAuthenticationRepository
 {
+    Task<AuthenticationAdminResponse> SignAsAdmin(UserSignInBindingModel model);
+
     /// <summary>
     /// This method calls when user is signing
     /// </summary>

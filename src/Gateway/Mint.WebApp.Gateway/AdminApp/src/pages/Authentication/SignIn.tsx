@@ -1,19 +1,33 @@
 import React, {FC, useState} from "react";
-import {Card, CardBody, Col, Container, FormFeedback, Row, Spinner} from "reactstrap";
+import {
+    Card,
+    CardBody,
+    Col,
+    Container,
+    FormFeedback,
+    Row,
+    Spinner,
+} from "reactstrap";
 import Notification from "../../components/Notifications/Notification";
 import {Colors} from "../../constants/commonList";
 import * as Yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ISignIn} from "../../types/Authentication/ISignIn";
+import {Link} from "react-router-dom";
+import ParticlesAuth from "../../components/Layouts/ParticlesAuth";
+import {useDispatch} from "react-redux";
+import {signInStore} from "../../stores/Authentication/authStore";
+import {useAxios} from "../../hooks/useAxios";
 
 // static files
 import logo from "../../assets/images/logos/logo.png";
-import {Link} from "react-router-dom";
-import ParticlesAuth from "../../components/Layouts/ParticlesAuth";
 
 const SignInPage: FC = () => {
     document.title = "Добро пожаловать. Авторизуйтесь чтобы продолжить - Mint";
+
+    const dispatch = useDispatch();
+    const axios = useAxios();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
@@ -31,15 +45,32 @@ const SignInPage: FC = () => {
         handleSubmit,
         formState: {errors},
     } = useForm<ISignIn>({
-        resolver: yupResolver(validation)
+        resolver: yupResolver(validation),
     });
 
-    const onSubmit = (values: ISignIn) => {
+    const { user, message } = useState(state => ({
+        user: state?.Auth.user.data,
+        message: state?.Message.message
+    }));
 
+    const onSubmit = (values: ISignIn) => {
+        setIsLoading(true);
+
+        dispatch(signInStore(axios, values))
+            .then((r) => {
+                setIsLoading(false);
+            })
+            .catch((e) => {
+                console.log(e);
+                setIsLoading(false);
+            });
     };
 
-    const handlePasswordShowClick = () =>
-        setIsPasswordShown(!isPasswordShown);
+    const on = () => {
+        console.log(user, message);
+    }
+
+    const handlePasswordShowClick = () => setIsPasswordShown(!isPasswordShown);
 
     return (
         <ParticlesAuth>
@@ -90,7 +121,11 @@ const SignInPage: FC = () => {
                                                 <label className={"form-label"} htmlFor={"password"}>
                                                     Пароль
                                                 </label>
-                                                <div className={"position-relative auth-pass-inputgroup mb-0"}>
+                                                <div
+                                                    className={
+                                                        "position-relative auth-pass-inputgroup mb-0"
+                                                    }
+                                                >
                                                     <input
                                                         type={isPasswordShown ? "text" : "password"}
                                                         id={"password"}
@@ -105,29 +140,34 @@ const SignInPage: FC = () => {
                                                     </FormFeedback>
                                                     <button
                                                         type={"button"}
-                                                        className={"btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"}
+                                                        className={
+                                                            "btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"
+                                                        }
                                                         onClick={handlePasswordShowClick}
                                                     >
-                                                        {isPasswordShown
-                                                            ? <i className={"ri-eye-line align-middle"}></i>
-                                                            : <i className={"ri-eye-off-line align-middle"}></i>}
+                                                        {isPasswordShown ? (
+                                                            <i className={"ri-eye-line align-middle"}></i>
+                                                        ) : (
+                                                            <i className={"ri-eye-off-line align-middle"}></i>
+                                                        )}
                                                     </button>
                                                 </div>
                                             </div>
                                             <div className={"mt-0 mb-3 text-end"}>
                                                 <p className={"mb-0"}>
-                                                    <Link
-                                                        to={"/"}
-                                                    >
-                                                        Забыли пароль?
-                                                    </Link>
+                                                    <Link to={"/"}>Забыли пароль?</Link>
                                                 </p>
                                             </div>
-                                            <div className={"d-flex justify-content-center align-items-center"}>
+                                            <div
+                                                className={
+                                                    "d-flex justify-content-center align-items-center"
+                                                }
+                                            >
                                                 <button
                                                     type={"submit"}
                                                     disabled={isLoading}
-                                                    className={"btn btn-success"}>
+                                                    className={"btn btn-success"}
+                                                >
                                                     {isLoading ? (
                                                         <Spinner size={"sm"} className={"me-2"}>
                                                             Loading...
@@ -136,6 +176,14 @@ const SignInPage: FC = () => {
                                                         <i className={"ri-login-circle-line me-2"}></i>
                                                     )}
                                                     Войти
+                                                </button>
+
+                                                <button
+                                                    type={"button"}
+                                                    className={"btn btn-success"}
+                                                 onClick={on}
+                                                >
+                                                    Ви
                                                 </button>
                                             </div>
                                         </form>

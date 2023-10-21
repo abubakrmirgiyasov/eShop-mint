@@ -1,6 +1,6 @@
-import {Colors} from "../../constants/commonList";
+import { Colors } from "../../constants/commonList";
 
 export interface INotification {
-    message: string;
-    type: Colors | string | Colors.Success,
+  message: string;
+  type: Colors | string;
 }

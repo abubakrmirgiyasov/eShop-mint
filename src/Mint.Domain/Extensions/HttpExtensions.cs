@@ -1,4 +1,6 @@
-﻿namespace Mint.WebApp.Identity.Extensions;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Mint.Domain.Extensions;
 
 public static class HttpExtensions
 {

@@ -1,5 +1,5 @@
+import React from "react";
 import {ILocalUser} from "../types/Authentication/ILocalUser";
-import {useEffect, useState} from "react";
 
 const isLoggedInUser: () => ILocalUser | null = () => {
     const json = localStorage.getItem("c_user");
@@ -14,10 +14,10 @@ export const useProfile = () => {
     const userProfileSession = isLoggedInUser();
     const token = userProfileSession && userProfileSession.token;
 
-    const [isLoading, setIsLoading] = useState<boolean>(!!userProfileSession);
-    const [user, setUser] = useState<ILocalUser>(userProfileSession);
+    const [isLoading, setIsLoading] = React.useState<boolean>(!!userProfileSession);
+    const [user, setUser] = React.useState<ILocalUser | null>(userProfileSession);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const userProfileSession = isLoggedInUser();
         const token = userProfileSession && userProfileSession.token;
 

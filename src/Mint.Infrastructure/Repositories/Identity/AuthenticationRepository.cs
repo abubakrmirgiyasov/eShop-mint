@@ -45,6 +45,26 @@ public class AuthenticationRepository : IAuthenticationRepository
         _sender = sender;
     }
 
+    public async Task<AuthenticationAdminResponse> SignAsAdmin(UserSignInBindingModel model)
+    {
+        try
+        {
+            var user = await _context.Users
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == Constants.ADMIN) && x.Email == model.Email)
+                .FirstOrDefaultAsync()
+                ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+
+            if (!user.IsActive)
+                throw new Exception("Аккаунт не активен");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
     /// <summary>
     /// Login user
     /// </summary>
@@ -57,14 +77,12 @@ public class AuthenticationRepository : IAuthenticationRepository
     {
         try
         {
-            var users = await _context.Users
+            var user = await _context.Users
                 .Include(x => x.Photo)
                 .Include(x => x.RefreshTokens)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .ToListAsync();
-
-            var user = users.FirstOrDefault(x => x.Email?.ToLower() == model.Email?.ToLower())
+                .FirstOrDefaultAsync(x => x.Email == model.Email)
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
             if (!user.IsActive)
