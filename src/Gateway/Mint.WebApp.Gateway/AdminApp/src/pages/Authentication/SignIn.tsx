@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {
     Card,
     CardBody,
@@ -16,8 +16,8 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {ISignIn} from "../../types/Authentication/ISignIn";
 import {Link} from "react-router-dom";
 import ParticlesAuth from "../../components/Layouts/ParticlesAuth";
-import {useDispatch} from "react-redux";
-import {signInStore} from "../../stores/Authentication/authStore";
+import {useDispatch, useSelector} from "react-redux";
+import {signInStore} from "../../stores/Authentication/authActions";
 import {useAxios} from "../../hooks/useAxios";
 
 // static files
@@ -48,10 +48,9 @@ const SignInPage: FC = () => {
         resolver: yupResolver(validation),
     });
 
-    const { user, message } = useState(state => ({
-        user: state?.Auth.user.data,
-        message: state?.Message.message
-    }));
+    const st = useSelector((state) => console.log(state))
+
+    useEffect(() => {}, [])
 
     const onSubmit = (values: ISignIn) => {
         setIsLoading(true);
@@ -65,10 +64,6 @@ const SignInPage: FC = () => {
                 setIsLoading(false);
             });
     };
-
-    const on = () => {
-        console.log(user, message);
-    }
 
     const handlePasswordShowClick = () => setIsPasswordShown(!isPasswordShown);
 
@@ -95,8 +90,8 @@ const SignInPage: FC = () => {
                             <Card className={"mt-4"}>
                                 <CardBody className={"p-4"}>
                                     <div className={"text-center mt-2"}>
-                                        <h5 className={"text-primary"}>Добро Пожаловать!</h5>
-                                        <p className={"text-muted"}>Войдите чтобы продолжить.</p>
+                                        <h5 className={"text-primary fs-22 fw-medium"}>Добро Пожаловать!</h5>
+                                        <p>Войдите чтобы продолжить.</p>
                                     </div>
                                     <div className={"p-2 mt-4"}>
                                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -176,14 +171,6 @@ const SignInPage: FC = () => {
                                                         <i className={"ri-login-circle-line me-2"}></i>
                                                     )}
                                                     Войти
-                                                </button>
-
-                                                <button
-                                                    type={"button"}
-                                                    className={"btn btn-success"}
-                                                 onClick={on}
-                                                >
-                                                    Ви
                                                 </button>
                                             </div>
                                         </form>

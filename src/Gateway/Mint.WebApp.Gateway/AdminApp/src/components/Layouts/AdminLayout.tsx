@@ -1,27 +1,28 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { IAuth } from "../../../services/types/IAuth";
 import AdminHeader from "../Header/Header";
 import AdminSidebar from "../Header/Sidebar";
-import { switchLayout } from "../../../store/theme/theme";
 import { Button } from "reactstrap";
 import { ToastContainer } from "react-toastify";
+
+// import { useNavigate } from "react-router-dom";
+// import {ILocalUser} from "../../types/Authentication/ILocalUser";
+// import { switchLayout } from "../../../store/theme/theme";
 
 const AdminLayout = ({ children }: ReactNode) => {
   const [headerClass, setHeaderClass] = useState<string>("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const { auth }: { auth: IAuth } = useSelector((state) => ({
-    auth: state.Auth,
-  }));
+  // const { auth }: { auth: ILocalUser } = useSelector((state) => ({
+  //   auth: state.Auth,
+  // }));
 
   useEffect(() => {
-    dispatch(switchLayout("vertical"));
+    // dispatch(switchLayout("vertical"));
     // dispatch(myStore(fetch))
-  }, [dispatch, auth]);
+  }, [dispatch]); // , auth
 
   useEffect(() => {
     window.addEventListener("scroll", scrollNavigation, true);
@@ -55,9 +56,14 @@ const AdminLayout = ({ children }: ReactNode) => {
   return (
     <React.Fragment>
       <div id={"layout-wrapper"}>
-        <AdminHeader headerClass={headerClass} />
+        <AdminHeader
+            headerClass={headerClass}
+            auth={null}
+        />
         <AdminSidebar />
-        <div className={"main-content"}>{children}</div>
+        <div className={"main-content"}>
+          {children}
+        </div>
         <Button
           type={"button"}
           onClick={toTop}

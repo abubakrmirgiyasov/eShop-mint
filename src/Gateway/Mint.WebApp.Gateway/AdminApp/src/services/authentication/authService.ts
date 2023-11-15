@@ -8,7 +8,7 @@ import {
 import {IUser} from "../../types/Authentication/IUser";
 import {ILocalUser} from "../../types/Authentication/ILocalUser";
 
-export const signInRequest = (axios: IRequest, values: ISignIn) => {
+export const signInRequest = (axios: IRequest, values: ISignIn): Promise<ILocalUser | void> => {
     return axios
         .post(ADMIN_SIGN_IN, values)
         .then((response) => {

@@ -1,15 +1,14 @@
 import { ISignIn } from "../../types/Authentication/ISignIn";
 import { signInRequest } from "../../services/authentication/authService";
 import { LOGIN_FAIL, LOGIN_SUCCESS } from "./actionType";
-import { SET_MESSAGE } from "../Message/actionType";
-import {IRequest} from "../../hooks/useAxios";
+import { IRequest } from "../../hooks/useAxios";
 
 export const signInStore = (axios: IRequest, values: ISignIn) => (dispatch) => {
   return signInRequest(axios, values).then(
     (response) => {
       dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {data: response},
+          type: LOGIN_SUCCESS,
+          payload: response,
       });
       return Promise.resolve();
     },
@@ -23,11 +22,7 @@ export const signInStore = (axios: IRequest, values: ISignIn) => (dispatch) => {
 
       dispatch({
         type: LOGIN_FAIL,
-      });
-
-      dispatch({
-        type: SET_MESSAGE,
-        payload: message,
+          payload: { message },
       });
       return Promise.reject();
     }

@@ -1,32 +1,43 @@
 import {ILocalUser} from "../../types/Authentication/ILocalUser";
 import {LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, UPDATE_USER} from "./actionType";
+import {AuthenticationsActions} from "../../types/Authentication/IAuthenticationActions";
 
 interface IUserAuth {
     isLoggedIn: boolean;
+    isLoading: boolean;
+    successMessage?: string | null;
+    errorMessage?: string | null;
     user?: ILocalUser | null;
 }
 
 const currentUser: ILocalUser = JSON.parse(localStorage.getItem("c_user"));
 
 const initState: IUserAuth = currentUser
-    ? {isLoggedIn: true, user: currentUser}
-    : {isLoggedIn: false, user: null};
+    ? {
+        isLoggedIn: true,
+        isLoading: false,
+        user: currentUser,
+    }
+    : {
+        isLoggedIn: false,
+        isLoading: false,
+        user: null
+    };
 
-export default function (state = initState, action) {
-    const {type, payload}: { type: string, payload: ILocalUser } = action;
-
-    switch (type) {
+export default function (state = initState, action: AuthenticationsActions) {
+    switch (action.type) {
         case LOGIN_FAIL:
             return {
                 ...state,
                 isLoggedIn: false,
+                errorMessage: action.payload.message,
                 user: null
             };
         case LOGIN_SUCCESS:
             return {
                 ...state,
                 isLoggedIn: true,
-                user: payload,
+                user: action.payload,
             };
         case LOGOUT:
             return {
@@ -38,7 +49,7 @@ export default function (state = initState, action) {
             return {
                 ...state,
                 isLoggedIn: true,
-                user: payload,
+                user: action.payload,
             };
         default:
             return state;

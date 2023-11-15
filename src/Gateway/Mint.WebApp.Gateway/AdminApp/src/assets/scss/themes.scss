@@ -142,7 +142,7 @@ $value in $theme-colors {
   }
 }
 
-[data-layout-mode=dark] .text-mute {
+[data-layout-mode=dark] .text-muted {
   color: var(--#{$prefix}light);
 }
 

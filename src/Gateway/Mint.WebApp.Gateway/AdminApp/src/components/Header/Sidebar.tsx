@@ -5,8 +5,8 @@ import { Collapse, Container } from "reactstrap";
 import SimpleBar from "simplebar-react";
 
 // media
-import LogoSm from "../../../assets/images/logos/Logo.png";
-import LogoLg from "../../../assets/images/logos/logo-light.png";
+import LogoSm from "../../assets/images/logos/Logo.png";
+import LogoLg from "../../assets/images/logos/logo-light.png";
 
 const AdminSidebar: FC<ReactNode> = () => {
   const location = useLocation();

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Domain.Exceptions;
+using Mint.Domain.Extensions;
 using Mint.Domain.FormingModels.Identity;
 using Mint.Domain.Helpers;
 using Mint.Domain.Models.Identity;
@@ -45,6 +46,14 @@ public class AuthenticationRepository : IAuthenticationRepository
         _sender = sender;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="BlockedException"></exception>
+    /// <exception cref="Exception"></exception>
     public async Task<AuthenticationAdminResponse> SignAsAdmin(UserSignInBindingModel model)
     {
         try
@@ -58,9 +67,54 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             if (!user.IsActive)
                 throw new Exception("Аккаунт не активен");
+
+            if (user.NumOfAttempts >= 10)
+            {
+                user.IsActive = false;
+                await _context.SaveChangesAsync();
+                throw new BlockedException("Аккаунт заблокирован");
+            }
+
+            if (user.Password != new Hasher().GetHash(model.Password ?? "", user.Salt))
+            {
+                user.NumOfAttempts++;
+                await _context.SaveChangesAsync();
+                throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+            }
+
+            var token = _jwt.GenerateJwtToken(user);
+
+            var roles = new List<Roles>();
+
+            var temp = user.UserRoles
+                .Select(x => x.Role.Name.FirstCharToUpper())
+                .ToArray();
+
+            foreach (var role in temp)
+            {
+                roles.Add((Roles)Enum.Parse(typeof(Roles), role));
+            }
+
+            return new AuthenticationAdminResponse
+            {
+                Id = user.Id,
+                Token = token,
+                Roles = roles.ToArray(),
+            };
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            throw new UnauthorizedAccessException(ex.Message, ex);
+        }
+        catch (BlockedException ex)
+        {
+            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            throw new BlockedException(ex.Message);
         }
         catch (Exception ex)
         {
+            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }

@@ -1,4 +1,5 @@
-import SignUp from "./pages/Authentication/SignIn";
+import React, {FC} from "react";
+import Index from "./components/Index";
 
 // static files
 import "./assets/scss/themes.scss";
@@ -9,11 +10,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-function App() {
+const App: FC = () => {
   return (
-    <div>
-      <SignUp />
-    </div>
+    <React.Fragment>
+      <Index />
+    </React.Fragment>
   );
 }
 

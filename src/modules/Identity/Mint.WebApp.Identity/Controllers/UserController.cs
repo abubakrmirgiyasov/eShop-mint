@@ -4,7 +4,7 @@ using Mint.Domain.Attributes;
 using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
-using Mint.WebApp.Identity.Extensions;
+using Mint.Domain.Extensions;
 
 namespace Mint.WebApp.Identity.Controllers;
 

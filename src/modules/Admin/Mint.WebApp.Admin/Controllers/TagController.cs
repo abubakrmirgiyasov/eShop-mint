@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Mint.Domain.Attributes;
+using Mint.Infrastructure.Redis;
+using Mint.Infrastructure.Redis.Interface;
 using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.Repositories.Interfaces;
 using StackExchange.Redis;
@@ -14,10 +16,26 @@ namespace Mint.WebApp.Admin.Controllers;
 public class TagController : ControllerBase
 {
     private readonly ITagRepository _tag;
+    private readonly IDistributedCacheManager _redis;
 
-    public TagController(ITagRepository tag)
+    public TagController(ITagRepository tag, IDistributedCacheManager redis)
     {
         _tag = tag;
+        _redis = redis;
+    }
+
+    [HttpGet]
+    public IActionResult TestRedis()
+    {
+        var rr = _redis.Get<string>("test");
+        return Ok(rr);
+    }
+
+    [HttpPost]
+    public IActionResult TestRedis(string test)
+    {
+        _redis.Set("test", test);
+        return Ok();
     }
 
     [HttpGet]

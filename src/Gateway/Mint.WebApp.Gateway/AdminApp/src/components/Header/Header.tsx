@@ -1,19 +1,15 @@
 import React, { FC, useState } from "react";
-import { useSelector } from "react-redux";
-import { IAuth } from "../../../services/types/IAuth";
-import adaptiveMenu from "../../../helpers/adaptiveMenu";
+import adaptiveMenu from "../../helpers/adaptiveMenu";
 import { Button } from "reactstrap";
+import {ILocalUser} from "../../types/Authentication/ILocalUser";
 
 interface IHeader {
   headerClass: string;
+  auth?: ILocalUser | null;
 }
 
-const AdminHeader: FC<IHeader> = ({ headerClass }) => {
+const AdminHeader: FC<IHeader> = ({ headerClass, auth }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
-
-  const { auth }: { auth: IAuth } = useSelector((state) => ({
-    auth: state.Auth,
-  }));
 
   const toggleMenu = () => {
     adaptiveMenu();

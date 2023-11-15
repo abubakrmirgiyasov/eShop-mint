@@ -31,7 +31,7 @@ public class RedisCacheManager : IDistributedCacheManager
         if (utf8 is null)
             return default!;
 
-        return JsonConvert.DeserializeObject<T>(utf8);
+        return JsonConvert.DeserializeObject<T>(utf8)!;
     }
 
     public void Set<T>(string key, T value)
