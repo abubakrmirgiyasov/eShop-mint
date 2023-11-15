@@ -10,8 +10,23 @@ public class Constants
 
     public const string IMAGE_PATH = "statics/images";
 
-    public static string IdentityKey = "MintIdentityQueue";
-    public static string ConfirmationKey = "MintIdentityConfirmationQueue";
+    public const string IDENTITY_KEY = "MintIdentityQueue";
+    public const string CONFIRMATION_KEY = "MintIdentityConfirmationQueue";
 
     public const string REDIS_SAMPLE_CATEGORIES = "REDIS_SAMPLE_CATEGORIES";
+
+    public enum AuthType : int
+    {
+        None = 0,
+        Admin = 1,
+        Client = 2,
+    }
+}
+
+public enum Roles : int
+{
+    None = 0,
+    Admin = 1,
+    Client = 2,
+    Seller = 3,
 }

@@ -4,7 +4,7 @@
   },
   "Routes": [
     { // Admin
-      "UpstreamPathTemplate": "/gate/{version}/{everything}",
+      "UpstreamPathTemplate": "/main/{version}/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",

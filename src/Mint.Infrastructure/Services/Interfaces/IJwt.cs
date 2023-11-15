@@ -8,7 +8,7 @@ namespace Mint.Infrastructure.Services.Interfaces;
 public interface IJwt
 {
     /// <summary>
-    /// 
+    /// Generates jwt token
     /// </summary>
     /// <param name="user"></param>
     /// <returns>generated jwt token (string)</returns>

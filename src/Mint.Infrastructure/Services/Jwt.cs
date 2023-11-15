@@ -73,7 +73,7 @@ public class Jwt : IJwt
     {
         try
         {
-            if (token == null)
+            if (string.IsNullOrEmpty(token))
                 return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();

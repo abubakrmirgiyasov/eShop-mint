@@ -248,7 +248,7 @@ public class UserRepository : IUserRepository
                 ConfirmationCode = code,
             };
 
-            await _sender.SendAsync(user, null, Constants.ConfirmationKey);
+            await _sender.SendAsync(user, null, Constants.CONFIRMATION_KEY);
             return code;
         }
         catch (Exception ex)

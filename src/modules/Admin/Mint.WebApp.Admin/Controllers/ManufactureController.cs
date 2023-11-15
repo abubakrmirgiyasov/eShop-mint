@@ -35,7 +35,6 @@ public class ManufactureController : ControllerBase
         try
         {
             return Ok();
-            return Ok();
         }
         catch (Exception ex)
         {

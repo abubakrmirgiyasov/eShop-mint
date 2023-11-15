@@ -8,6 +8,16 @@ namespace Mint.Infrastructure.Repositories.Identity.Interfaces;
 public interface IAuthenticationRepository
 {
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="BlockedException"></exception>
+    /// <exception cref="Exception"></exception>
+    Task<AuthenticationAdminResponse> SignAsAdmin(UserSignInBindingModel model);
+
+    /// <summary>
     /// This method calls when user is signing
     /// </summary>
     /// <param name="model"></param>

@@ -1,4 +1,6 @@
-﻿namespace Mint.WebApp.Admin.DTO_s;
+﻿using Mint.Domain.Models.Admin;
+
+namespace Mint.WebApp.Admin.DTO_s;
 
 public class TagFullBindingModel
 {
@@ -13,3 +15,12 @@ public record TagFullViewModel(
     Guid? Value = null,
     string? Label = null,
     string? Translate = null);
+
+
+//public class AutoMappingTag
+//{
+//    public TagFullViewModel ToViewModel( Tag tag)
+//    {
+
+//    }
+//}
