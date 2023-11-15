@@ -61,7 +61,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             var user = await _context.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == Constants.ADMIN) && x.Email == model.Email)
+                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == nameof(Constants.ADMIN)) && x.Email == model.Email)
                 .FirstOrDefaultAsync()
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
@@ -84,7 +84,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             var token = _jwt.GenerateJwtToken(user);
 
-            var roles = new List<Roles>();
+            var roles = new List<string>();
 
             var temp = user.UserRoles
                 .Select(x => x.Role.Name.FirstCharToUpper())
@@ -92,7 +92,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             foreach (var role in temp)
             {
-                roles.Add((Roles)Enum.Parse(typeof(Roles), role));
+                roles.Add(role);
             }
 
             return new AuthenticationAdminResponse

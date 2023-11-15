@@ -12,5 +12,5 @@ public class AuthenticationAdminResponse
     public string Token { get; set; } = null!;
 
     [DisplayName("rr")]
-    public Roles[] Roles { get; set; } = null!;
+    public string[] Roles { get; set; } = null!;
 }

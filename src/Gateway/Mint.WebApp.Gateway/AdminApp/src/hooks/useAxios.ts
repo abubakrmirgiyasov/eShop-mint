@@ -23,7 +23,7 @@ export const useAxios = (): IRequest => {
     const user = useProfile();
 
     const instance = axios.create({
-        timeout: 1000 * 5,
+        timeout: 1000 * 10,
         headers: {
             "Content-Type": "application/json",
             "X-Auth-Type": "Admin",
@@ -38,8 +38,8 @@ export const useAxios = (): IRequest => {
             }).catch((error) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
-                    throw error;
                 }
+                throw error;
             });
     };
 
@@ -50,8 +50,8 @@ export const useAxios = (): IRequest => {
             }).catch((error) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
-                    throw error;
                 }
+                throw error;
             });
     };
 
@@ -62,8 +62,8 @@ export const useAxios = (): IRequest => {
             }).catch((error) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
-                    throw error;
                 }
+                throw error;
             });
     };
 
@@ -74,8 +74,8 @@ export const useAxios = (): IRequest => {
             }).catch((error) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
-                    throw error;
                 }
+                throw error;
             });
     };
 

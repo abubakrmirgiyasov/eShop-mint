@@ -1,5 +1,8 @@
 import React, {FC} from "react";
 import Index from "./components/Index";
+import { loadAnimation } from "lottie-web";
+import { defineElement } from "lord-icon-element";
+defineElement(loadAnimation);
 
 // static files
 import "./assets/scss/themes.scss";

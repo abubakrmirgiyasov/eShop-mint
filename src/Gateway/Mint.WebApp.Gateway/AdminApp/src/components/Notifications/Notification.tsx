@@ -8,7 +8,7 @@ import { Colors } from "../../constants/commonList";
 import logoSm from "../../assets/images/logos/logo.png";
 
 const Notification: FC<INotification> = ({ message, type }) => {
-  const [isNotification, setIsNotification] = useState<boolean>(false);
+  const [isNotification, setIsNotification] = useState<boolean>(!!message);
   const date = new Date();
 
   const toggleNotification = () => setIsNotification(!isNotification);
@@ -21,7 +21,7 @@ const Notification: FC<INotification> = ({ message, type }) => {
             <img
               src={logoSm}
               className={"rounded me-2"}
-              alt={"..."}
+              alt={"logo"}
               height={20}
             />
             <span className={"fw-semibold me-auto"}>Mint</span>

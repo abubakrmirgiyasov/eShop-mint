@@ -26,6 +26,18 @@
           "Port": 7258
         }
       ]
+    },
+    { // Email
+      "UpstreamPathTemplate": "/pass/{version}/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7084
+        }
+      ]
     }
   ]
 }

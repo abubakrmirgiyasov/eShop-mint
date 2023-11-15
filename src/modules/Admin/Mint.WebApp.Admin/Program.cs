@@ -20,6 +20,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
+var identitySettings = builder.Configuration.GetSection("IdentitySettings");
+builder.Services.Configure<IdentitySettings>(identitySettings);
+
 var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
 builder.Services.AddMessageBusSender<User>(brokerOptions);

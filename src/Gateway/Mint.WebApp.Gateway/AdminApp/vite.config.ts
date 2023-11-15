@@ -13,6 +13,14 @@ export default defineConfig({
         headers: {
           Connection: "Keep-Alive",
         }
+      },
+      "/pass": {
+        target: "https://localhost:7064",
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          Connection: "Keep-Alive",
+        }
       }
     }
   }

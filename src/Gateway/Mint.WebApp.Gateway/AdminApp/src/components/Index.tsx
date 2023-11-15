@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
 import { Routes, Route } from "react-router-dom";
-import {protectedRoutes, publicRoutes} from "../routes/AllRoutes";
+import { protectedRoutes, publicRoutes } from "../routes/AllRoutes";
 import useThemeDetector from "../hooks/useThemeDetector";
 import PublicRoutesLayout from "./Layouts/PublicRoutesLayout";
 import ProtectedRoutesLayout from "./Layouts/ProtectedRoutesLayout";
 import AdminLayout from "./Layouts/AdminLayout";
+import NotFound404 from "../pages/Errors/NotFound404";
 
 const Index: FC = () => {
     const themeDetector = useThemeDetector();
@@ -13,6 +14,10 @@ const Index: FC = () => {
         <React.Fragment>
             <Routes>
                 <Route>
+                    <Route
+                        path={"*"}
+                        element={<NotFound404 />}
+                    />
                     {publicRoutes.map((route, key) => (
                         <Route
                             key={key}
@@ -31,8 +36,8 @@ const Index: FC = () => {
                 <Route>
                     {protectedRoutes.map((route, key) => (
                         <Route
-                            path={route.path}
                             key={key}
+                            path={route.path}
                             exact={route.exact}
                             element={
                                 <ProtectedRoutesLayout>

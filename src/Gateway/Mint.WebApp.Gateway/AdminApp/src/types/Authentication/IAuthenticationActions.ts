@@ -5,9 +5,6 @@ import {IUser} from "./IUser";
 
 interface IAuthenticationLoginFetchSuccess extends ILocalUser { }
 interface IAuthenticationUpdateUserFetch extends IUser { }
-interface IAuthenticationLoginFetchFail {
- message: string;
-}
 
 export interface IAuthenticationLoginSuccess extends Action<typeof LOGIN_SUCCESS> {
  type: typeof LOGIN_SUCCESS;
@@ -16,7 +13,7 @@ export interface IAuthenticationLoginSuccess extends Action<typeof LOGIN_SUCCESS
 
 export interface IAuthenticationLoginFail extends Action<typeof LOGIN_FAIL> {
  type: typeof LOGIN_FAIL;
- payload: IAuthenticationLoginFetchFail;
+ payload: { };
 }
 
 export interface IAuthenticationLogout extends Action<typeof LOGOUT> {
