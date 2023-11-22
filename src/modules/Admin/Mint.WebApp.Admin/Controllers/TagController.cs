@@ -1,13 +1,7 @@
-﻿using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Attributes;
-using Mint.Infrastructure.Redis;
-using Mint.Infrastructure.Redis.Interface;
 using Mint.WebApp.Admin.DTO_s;
-using Mint.WebApp.Admin.Repositories.Interfaces;
-using StackExchange.Redis;
+using Mint.WebApp.Admin.Services;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -15,27 +9,11 @@ namespace Mint.WebApp.Admin.Controllers;
 [Route("api/[controller]/[action]")]
 public class TagController : ControllerBase
 {
-    private readonly ITagRepository _tag;
-    private readonly IDistributedCacheManager _redis;
+    private readonly TagService _tag;
 
-    public TagController(ITagRepository tag, IDistributedCacheManager redis)
+    public TagController(TagService tag)
     {
         _tag = tag;
-        _redis = redis;
-    }
-
-    [HttpGet]
-    public IActionResult TestRedis()
-    {
-        var rr = _redis.Get<string>("test");
-        return Ok(rr);
-    }
-
-    [HttpPost]
-    public IActionResult TestRedis(string test)
-    {
-        _redis.Set("test", test);
-        return Ok();
     }
 
     [HttpGet]
@@ -72,8 +50,8 @@ public class TagController : ControllerBase
     {
         try
         {
-            await _tag.NewTagAsync(model);
-            return Ok(new { message = "Added successfully" });
+            await _tag.AddNewTagAsync(model);
+            return Ok(new { message = "Created success." });
         }
         catch (Exception ex)
         {
@@ -88,7 +66,7 @@ public class TagController : ControllerBase
         try
         {
             await _tag.UpdateTagAsync(model);
-            return Ok(new { message = "Updated successfully" });
+            return Ok(new { message = "Updated success." });
         }
         catch (Exception ex)
         {
@@ -103,7 +81,7 @@ public class TagController : ControllerBase
         try
         {
             await _tag.DeleteTagAsync(id);
-            return Ok(new { message = "Deleted successfully" });
+            return Ok(new { message = "Deleted success." });
         }
         catch (Exception ex)
         {

@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react";
-import { Roles } from "../../constants/roles";
 
 export interface ISidebar {
   id: string;
@@ -92,7 +91,7 @@ const AdminSidebarData: FC = (): ISidebar[] => {
       id: "dashboard",
       label: "Дашборд",
       icon: "ri-dashboard-2-line",
-      link: "/admin/admin-dashboard",
+      link: "/admin/dashboard",
       state: !!isDashboard,
       click: function (e: React.MouseEvent<HTMLLinkElement>) {
         e.preventDefault();

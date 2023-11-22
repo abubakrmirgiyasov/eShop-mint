@@ -1,5 +1,8 @@
-import axios, {AxiosRequestConfig} from "axios";
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import {useProfile} from "./useProfile";
+import {useNavigate} from "react-router-dom";
+import {signOutStore} from "../stores/Authentication/authActions";
+import {useDispatch} from "react-redux";
 
 export interface IRequest {
     get<TResponse>(path: string): Promise<TResponse | void>;
@@ -21,6 +24,8 @@ export interface IRequest {
 
 export const useAxios = (): IRequest => {
     const user = useProfile();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const instance = axios.create({
         timeout: 1000 * 10,
@@ -31,12 +36,14 @@ export const useAxios = (): IRequest => {
         },
     });
 
-    const get = <TResponse>(path: string): Promise<TResponse | void> => {
+    const get = <TResponse>(path: string): Promise<AxiosResponse<TResponse> | void> => {
         return instance.get(path)
-            .then((response: TResponse) => {
-                return response;
-            }).catch((error) => {
-                if (error.message === "Unauthorized") {
+            .then((response: AxiosResponse) => {
+                return response.data;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response.status === 401 || error.message === "Unauthorized") {
+                    dispatch(signOutStore(navigate));
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
                 }
                 throw error;
@@ -47,7 +54,7 @@ export const useAxios = (): IRequest => {
         return instance.post(path, data)
             .then((response: TResponse) => {
                 return response;
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
                 }
@@ -59,7 +66,7 @@ export const useAxios = (): IRequest => {
         return instance.put(path, data)
             .then((response: TResponse) => {
                 return response;
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
                 }
@@ -71,7 +78,7 @@ export const useAxios = (): IRequest => {
         return instance.delete(path)
             .then((response: TResponse) => {
                 return response;
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
                 }

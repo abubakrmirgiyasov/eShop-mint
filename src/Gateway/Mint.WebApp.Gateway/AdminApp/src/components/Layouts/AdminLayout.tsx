@@ -4,6 +4,7 @@ import AdminHeader from "../Header/Header";
 import AdminSidebar from "../Header/Sidebar";
 import { Button } from "reactstrap";
 import { ToastContainer } from "react-toastify";
+import ErrorAlert from "../Notifications/ErrorAlert";
 
 // import { useNavigate } from "react-router-dom";
 // import {ILocalUser} from "../../types/Authentication/ILocalUser";
@@ -13,16 +14,15 @@ const AdminLayout = ({ children }: ReactNode) => {
   const [headerClass, setHeaderClass] = useState<string>("");
 
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
 
-  // const { auth }: { auth: ILocalUser } = useSelector((state) => ({
-  //   auth: state.Auth,
-  // }));
+  const { message } = useSelector((state) => ({
+    message: state.Message.message,
+  }));
 
   useEffect(() => {
     // dispatch(switchLayout("vertical"));
     // dispatch(myStore(fetch))
-  }, [dispatch]); // , auth
+  }, [message]); // , auth
 
   useEffect(() => {
     window.addEventListener("scroll", scrollNavigation, true);
@@ -62,6 +62,7 @@ const AdminLayout = ({ children }: ReactNode) => {
         />
         <AdminSidebar />
         <div className={"main-content"}>
+          <ErrorAlert message={message} />
           {children}
         </div>
         <Button

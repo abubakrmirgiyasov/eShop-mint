@@ -14,6 +14,7 @@ public class Constants
     public const string CONFIRMATION_KEY = "MintIdentityConfirmationQueue";
 
     public const string REDIS_SAMPLE_CATEGORIES = "REDIS_SAMPLE_CATEGORIES";
+    public const string REDIS_SAMPLE_TAGS = "REDIS_SAMPLE_TAGS";
 
     public enum AuthType : int
     {
@@ -27,6 +28,6 @@ public enum Roles : int
 {
     None = 0,
     Admin = 1,
-    Client = 2,
+    Buyer = 2,
     Seller = 3,
 }

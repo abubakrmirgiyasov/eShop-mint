@@ -11,6 +11,7 @@ using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.Infrastructure.Services.Interfaces;
+using System.Text;
 
 namespace Mint.Infrastructure.Repositories.Identity;
 
@@ -84,16 +85,14 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             var token = _jwt.GenerateJwtToken(user);
 
-            var roles = new List<string>();
+            var roles = new List<int>();
 
             var temp = user.UserRoles
-                .Select(x => x.Role.Name.FirstCharToUpper())
+                .Select(x => x.Role.UniqueKey.ToLower().FirstCharToUpper())
                 .ToArray();
 
             foreach (var role in temp)
-            {
-                roles.Add(role);
-            }
+                roles.Add((int)Enum.Parse<Roles>(role));
 
             return new AuthenticationAdminResponse
             {
@@ -104,12 +103,12 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
         catch (UnauthorizedAccessException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogCritical("UnauthorizedAccessException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new UnauthorizedAccessException(ex.Message, ex);
         }
         catch (BlockedException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogCritical("BlockedException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new BlockedException(ex.Message);
         }
         catch (Exception ex)

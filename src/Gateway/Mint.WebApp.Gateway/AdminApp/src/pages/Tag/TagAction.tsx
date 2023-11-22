@@ -12,14 +12,14 @@ import {
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ITag } from "../../../services/admin/ITag";
-import { newTag, updateTag } from "../../../services/admin/tags/tag";
-import { fetch } from "../../../helpers/fetch";
 import { useDispatch } from "react-redux";
-import { useGuid } from "../../../hooks/useGuid";
+import {ITag} from "../../types/Tags/ITag";
+import {useGuid} from "../../hooks/useGuid";
+import {createTagStore, updateTagStore} from "../../stores/Tag/tagActions";
+import {useAxios} from "../../hooks/useAxios";
 
 interface ITagAction {
-  tag: ITag;
+  tag: ITag | null;
   isEdit: boolean;
   isOpen: boolean;
   toggle: () => void;
@@ -30,14 +30,17 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
 
   const dispatch = useDispatch();
   const guid = useGuid();
+  const axios = useAxios();
 
   const onSubmit = (values: ITag) => {
     setIsLoading(true);
 
-    if (isEdit) {
-      values.value = tag.value;
+    console.log(isEdit ? "editing" : "adding")
 
-      dispatch(updateTag(fetch(), values))
+    if (isEdit) {
+      values.value = tag!.value;
+
+      dispatch(updateTagStore(axios, values))
         .then(() => {
           setIsLoading(false);
           reset();
@@ -49,7 +52,7 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
     } else {
       values.value = guid;
 
-      dispatch(newTag(fetch(), values))
+      dispatch(createTagStore(axios, values))
         .then(() => {
           setIsLoading(false);
           console.log("togglllllllllllllllllllllllllllllllle");
@@ -83,9 +86,16 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
     resolver: yupResolver(validation),
   });
 
+  const onToggle = () => {
+    reset();
+    toggle();
+  };
+
+  console.log(tag)
+
   return (
     <React.Fragment>
-      <Modal isOpen={isOpen} toggle={toggle} className={"border-0"}>
+      <Modal isOpen={isOpen} toggle={onToggle} className={"border-0"}>
         <ModalHeader
           className={"p-3 bg-soft-white border-bottom-dashed"}
           toggle={toggle}
@@ -105,7 +115,7 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
                   id={"name"}
                   className={`form-control ${errors.label ? "is-invalid" : ""}`}
                   placeholder={"Введите название"}
-                  defaultValue={tag?.label || ""}
+                  defaultValue={tag?.label}
                   {...register("label")}
                 />
                 <FormFeedback type={"invalid"}>
@@ -121,7 +131,7 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
                   id={"name"}
                   className={`form-control ${errors.label ? "is-invalid" : ""}`}
                   placeholder={"Введите перевод"}
-                  defaultValue={tag?.translate || ""}
+                  defaultValue={tag?.translate}
                   {...register("translate")}
                 />
                 <FormFeedback type={"invalid"}>
@@ -135,7 +145,7 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
                   className={"me-3"}
                   onClick={toggle}
                 >
-                  <i className={"ri-close-line"}></i> Отмена
+                  <i className={"ri-close-line me-2"}></i>Отмена
                 </Button>
                 <Button type={"submit"} color={"success"} disabled={isLoading}>
                   {isLoading ? (
@@ -143,9 +153,8 @@ const TagAction: FC<ITagAction> = ({ tag, isEdit, isOpen, toggle }) => {
                       Loading...
                     </Spinner>
                   ) : (
-                    <i className={"ri-check-double-fill"}></i>
-                  )}{" "}
-                  Сохранить
+                    <i className={"ri-check-double-fill me-2"}></i>
+                  )}Сохранить
                 </Button>
               </div>
             </Row>

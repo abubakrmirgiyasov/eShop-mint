@@ -13,7 +13,7 @@ export interface IAuthenticationLoginSuccess extends Action<typeof LOGIN_SUCCESS
 
 export interface IAuthenticationLoginFail extends Action<typeof LOGIN_FAIL> {
  type: typeof LOGIN_FAIL;
- payload: { };
+ payload: {};
 }
 
 export interface IAuthenticationLogout extends Action<typeof LOGOUT> {
@@ -27,8 +27,8 @@ export interface IAuthenticationUpdateUser extends Action<typeof UPDATE_USER> {
 }
 
 export type AuthenticationsActions =
-    IAuthenticationLoginSuccess
+    | IAuthenticationLoginSuccess
     | IAuthenticationLoginFail
     | IAuthenticationLogout
     | IAuthenticationUpdateUser
- ;
+    ;

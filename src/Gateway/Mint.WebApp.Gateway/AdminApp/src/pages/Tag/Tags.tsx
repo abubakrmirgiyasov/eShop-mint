@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, useEffect, useState } from "react";
+import React, {FC, ReactNode, useCallback, useEffect, useState} from "react";
 import {
   Button,
   ButtonGroup,
@@ -13,47 +13,49 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { PrivateComponent } from "../../../helpers/privateComponent";
-import TagTableColumnController from "./TagTableColumnController";
-import { Roles } from "../../../constants/roles";
-import TagsTable from "./TagsTable";
-import { useDispatch, useSelector } from "react-redux";
-import { getTags } from "../../../services/admin/tags/tag";
-import { fetch } from "../../../helpers/fetch";
-import TagAction from "./TagAction";
-import { ITag } from "../../../services/admin/ITag";
-import Loader from "../../../components/Common/Loader";
-import { Colors } from "../../../services/types/ICommon";
+import PrivateComponent from "../../services/CheckComponentRoles";
+import {useDispatch, useSelector} from "react-redux";
 import TagDelete from "./TagDelete";
+import {ITag} from "../../types/Tags/ITag";
+import Loader from "../../components/Common/Loader";
+import {Colors} from "../../constants/commonList";
+import {TagDataTable} from "../../components/Tables/TagDataTable";
+import TagTableColumnController from "../../components/TableColumnController/TagTableColumnController";
+import TagAction from "./TagAction";
+import {useAxios} from "../../hooks/useAxios";
+import {getTagsStore} from "../../stores/Tag/tagActions";
+import {Roles} from "../../constants/roles";
 
 const Tags: FC<ReactNode> = () => {
+  document.title = "Атрибуты - Mint";
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isActionModal, setIsActionModal] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [id, setId] = useState<string>("");
-  const [singleTag, setSingleTag] = useState<ITag>(null);
+  const [singleTag, setSingleTag] = useState<ITag | null>(null);
+  const [isShownTranslateColumn, setIsShownTranslateColumn] = useState<boolean>(true);
 
   const dispatch = useDispatch();
+  const axios = useAxios();
 
-  const { tags }: { tags: ITag[] } = useSelector((state) => ({
-    tags: state.Tags.tags,
+  const { tags } = useSelector((state) => ({
+   tags: state.Tags.data,
   }));
 
   useEffect(() => {
-    console.log("ddddddddddddddddddddddd");
     setIsLoading(true);
-    dispatch(getTags(fetch()))
-      .then(() => {
-        setIsLoading(false);
-      })
+    dispatch(getTagsStore(axios))
+      .then(() => setIsLoading(false))
       .catch(() => setIsLoading(false));
   }, [dispatch]);
 
-  console.log(tags);
-
   const handleFilterClick = () => setIsFilterOpen(!isFilterOpen);
+
+  const onDropDownButtonSettingsToggle = () => setIsSettingsOpen(!isSettingsOpen);
 
   const onAddNewClick = () => {
     setIsEdit(false);
@@ -71,28 +73,24 @@ const Tags: FC<ReactNode> = () => {
     actionModalToggle();
   };
 
-  const handleTableControllerClick = (position: number) => {
-    switch (position) {
-      case 0:
-        console.log(0);
-        break;
-      case 1:
-        console.log(1);
-        break;
-    }
+  const handleTableControllerClick = (omit: boolean) => {
+    setIsShownTranslateColumn(omit);
   };
 
   const actionModalToggle = useCallback(() => {
     if (isActionModal) {
       setIsActionModal(false);
+      setSingleTag(null);
     } else {
       setIsActionModal(true);
     }
   }, [isActionModal]);
 
+
   const deleteModalToggle = useCallback(() => {
     if (isDeleteModal) {
       setIsDeleteModal(false);
+      setId("");
     } else {
       setIsDeleteModal(true);
     }
@@ -106,34 +104,36 @@ const Tags: FC<ReactNode> = () => {
         </CardHeader>
         <CardBody>
           {isLoading ? (
-            <Loader color={Colors.success} isCenter={true} />
+              <Loader isCenter={true} color={Colors.success} />
           ) : (
-            <Row>
+            <Row className={"gap-3"}>
               <Col lg={12}>
                 <div className={"d-flex align-items-center"}>
                   <ButtonGroup className={"me-2"}>
                     <UncontrolledDropdown>
                       <DropdownToggle
                         tag={"button"}
-                        className={"btn btn-outline-success"}
+                        className={`btn btn-outline-success ${isSettingsOpen ? "active" : ""}`}
+                        onClick={onDropDownButtonSettingsToggle}
                       >
                         <i className={"ri-settings-4-line"}></i>
                       </DropdownToggle>
                       <DropdownMenu className={"dropdown-menu-md p-2"}>
                         <DropdownItem header>Вкл/Выкл столбец</DropdownItem>
                         <TagTableColumnController
-                          onClick={handleTableControllerClick}
+                            isShownTranslateColumn={isShownTranslateColumn}
+                            onSwitchColumn={handleTableControllerClick}
                         />
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </ButtonGroup>
                   <button
-                    className={"me-2 fs-14 btn btn-outline-success"}
+                    className={`me-2 fs-14 btn btn-outline-success ${isFilterOpen ? "active" : ""}`}
                     onClick={handleFilterClick}
                   >
                     <i className={"ri-filter-2-line"}></i>
                   </button>
-                  <PrivateComponent>
+                  {/*<PrivateComponent>*/}
                     <Button
                       onClick={onAddNewClick}
                       className={"fs-14 btn btn-success"}
@@ -142,13 +142,13 @@ const Tags: FC<ReactNode> = () => {
                       <i className={"ri-add-line align-middle me-2"}></i>
                       Добавить новое...
                     </Button>
-                  </PrivateComponent>
+                  {/*</PrivateComponent>*/}
                 </div>
                 <Collapse isOpen={isFilterOpen} horizontal={false}>
                   <div className={"d-flex mt-3"}>
                     <input
                       type={"text"}
-                      className={"w-50 me-2 form-control"}
+                      className={"w-25 me-2 form-control"}
                       placeholder={"Поиск по названию"}
                     />
                     <button className={"btn btn-outline-danger"}>
@@ -158,10 +158,11 @@ const Tags: FC<ReactNode> = () => {
                 </Collapse>
               </Col>
               <Col lg={12}>
-                <TagsTable
-                  tags={tags}
-                  handleDelete={handleDeleteClick}
-                  handleChange={handleChangeClick}
+                <TagDataTable
+                    data={tags}
+                    omit={isShownTranslateColumn}
+                    onChangeItem={handleChangeClick}
+                    onRemoveItem={handleDeleteClick}
                 />
               </Col>
             </Row>
@@ -174,7 +175,11 @@ const Tags: FC<ReactNode> = () => {
         toggle={actionModalToggle}
         tag={singleTag}
       />
-      <TagDelete id={id} isOpen={isDeleteModal} toggle={deleteModalToggle} />
+      <TagDelete
+          id={id}
+          isOpen={isDeleteModal}
+          toggle={deleteModalToggle}
+      />
     </div>
   );
 };

@@ -31,6 +31,7 @@ var redis = builder.Configuration.GetSection(nameof(RedisSettings));
 builder.Services.Configure<RedisSettings>(redis);
 
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<TagService>();
 builder.Services.AddScoped<RedisClient>();
 
 builder.Services.AddScoped<IJwt, Jwt>();

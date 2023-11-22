@@ -1,37 +1,38 @@
-import Request from "../../../helpers/requestWrapper/request";
-import { ITag } from "../../types/Tags/ITag";
+import {IRequest} from "../../hooks/useAxios";
+import {ITag} from "../../types/Tags/ITag";
+import {IMessage} from "../../types/Message/IMessage";
 
-export const getTags = (request: Request) => {
-  return request
-    .get("/gate/tag/gettags")
-    .then((response: ITag[]) => response)
+export const getTags = (axios: IRequest) => {
+  return axios
+    .get<ITag[]>("/main/tag/getTags")
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
 };
 
-export const newTag = (request: Request, tag: ITag) => {
-  return request
-    .post("/gate/tag/newtag", tag)
-    .then(() => tag)
+export const newTag = (axios: IRequest, tag: ITag) => {
+  return axios
+    .post<ITag, IMessage>("/main/tag/newTag", tag)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
 };
 
-export const updateTag = (request: Request, tag: ITag) => {
-  return request
-    .put("/gate/tag/updatetag", tag)
-    .then(() => tag)
+export const updateTag = (axios: IRequest, tag: ITag) => {
+  return axios
+    .put<ITag, IMessage>("/main/tag/updateTag", tag)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
 };
 
-export const deleteTag = (request: Request, id: string) => {
-  return request
-    .delete("/gate/tag/deletetag/" + id)
-    .then(() => id)
+export const deleteTag = (axios: IRequest, id: string) => {
+  return axios
+    .del<string, IMessage>("/main/tag/deleteTag/" + id)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
