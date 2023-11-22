@@ -93,6 +93,11 @@ public class Jwt : IJwt
             var jwtToken = (JwtSecurityToken)validatedToken;
             return Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
         }
+        catch (SecurityTokenExpiredException ex)
+        {
+            _logger.LogCritical("SecurityTokenExpiredException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            throw new SecurityTokenExpiredException(ex.Message, ex);
+        }
         catch (Exception ex)
         {
             _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);

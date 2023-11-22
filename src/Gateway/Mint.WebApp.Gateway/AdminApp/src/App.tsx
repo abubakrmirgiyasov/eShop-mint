@@ -1,5 +1,8 @@
 import React, {FC} from "react";
 import Index from "./components/Index";
+import { loadAnimation } from "lottie-web";
+import { defineElement } from "lord-icon-element";
+defineElement(loadAnimation);
 
 // static files
 import "./assets/scss/themes.scss";
@@ -9,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: FC = () => {
   return (

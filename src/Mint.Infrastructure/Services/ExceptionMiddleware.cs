@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using Mint.Domain.Exceptions;
 using System.Net;
 using System.Text.Json;
@@ -29,6 +30,7 @@ public class ExceptionMiddleware
             {
                 UserNotFoundException => (int)HttpStatusCode.NotFound,
                 BlockedException => (int)HttpStatusCode.Locked,
+                SecurityTokenExpiredException => (int)HttpStatusCode.Unauthorized,
                 _ => (int)HttpStatusCode.BadRequest,
             };
 

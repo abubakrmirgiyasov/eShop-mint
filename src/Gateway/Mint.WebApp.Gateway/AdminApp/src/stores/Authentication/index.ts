@@ -4,25 +4,14 @@ import {AuthenticationsActions} from "../../types/Authentication/IAuthentication
 
 interface IUserAuth {
     isLoggedIn: boolean;
-    isLoading: boolean;
-    successMessage?: string | null;
-    errorMessage?: string | null;
     user?: ILocalUser | null;
 }
 
 const currentUser: ILocalUser = JSON.parse(localStorage.getItem("c_user"));
 
 const initState: IUserAuth = currentUser
-    ? {
-        isLoggedIn: true,
-        isLoading: false,
-        user: currentUser,
-    }
-    : {
-        isLoggedIn: false,
-        isLoading: false,
-        user: null
-    };
+    ? { isLoggedIn: true, user: currentUser, }
+    : { isLoggedIn: false, user: null };
 
 export default function (state = initState, action: AuthenticationsActions) {
     switch (action.type) {
@@ -30,7 +19,6 @@ export default function (state = initState, action: AuthenticationsActions) {
             return {
                 ...state,
                 isLoggedIn: false,
-                errorMessage: action.payload.message,
                 user: null
             };
         case LOGIN_SUCCESS:

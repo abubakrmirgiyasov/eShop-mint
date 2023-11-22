@@ -1,16 +1,17 @@
 ﻿using Mint.Domain.Common;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace Mint.Domain.DTO_s.Identity;
 
 public class AuthenticationAdminResponse
 {
-    [DisplayName("_iid")]
+    [JsonPropertyName("_uid")]
     public Guid Id { get; set; }
 
-    [DisplayName("access_token")]
+    [JsonPropertyName("access_token")]
     public string Token { get; set; } = null!;
 
-    [DisplayName("rr")]
-    public Roles[] Roles { get; set; } = null!;
+    [JsonPropertyName("_rr")]
+    public int[] Roles { get; set; } = null!;
 }

@@ -1,8 +1,8 @@
 import {ISignIn} from "../../types/Authentication/ISignIn";
-import {IRequest, useAxios} from "../../hooks/useAxios";
+import {IRequest} from "../../hooks/useAxios";
 import {
     ADMIN_SIGN_IN,
-    ADMIN_SIGN_OUT,
+    // ADMIN_SIGN_OUT,
     ADMIN_USER_UPDATE,
 } from "../../constants/urls";
 import {IUser} from "../../types/Authentication/IUser";
@@ -21,22 +21,12 @@ export const signInRequest = (axios: IRequest, values: ISignIn): Promise<ILocalU
         });
 };
 
-export const logoutRequest = () => {
-    const axios = useAxios();
-
-    return axios
-        .del(ADMIN_SIGN_OUT)
-        .then((response) => {
-            return response;
-        })
-        .catch((error) => {
-            return error;
-        });
+export const logoutRequest = (navigate) => {
+    localStorage.removeItem("c_user");
+    navigate("/sign-in");
 };
 
-export const updateUser = (values: IUser) => {
-    const axios = useAxios();
-
+export const updateUser = (axios: IRequest, values: IUser) => {
     return axios
         .put(ADMIN_USER_UPDATE, values)
         .then((response) => {

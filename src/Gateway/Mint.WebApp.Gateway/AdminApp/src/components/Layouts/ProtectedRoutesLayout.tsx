@@ -5,14 +5,14 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoutesLayout = (props) => {
     const dispatch = useDispatch();
-    const { userProfile, isLoading, token } = useProfile();
+    const { user, isLoading, token } = useProfile();
 
     useEffect(() => {
-        if (!userProfile && isLoading && !token)
-            console.log("dispatch(logout)")
-    }, [userProfile, isLoading, token, dispatch]);
+        if (!user && isLoading && !token)
+            console.log("dispatch(logout)");
+    }, [user, isLoading, token, dispatch]);
 
-    if (!userProfile && isLoading && !token)
+    if (!user && isLoading && !token)
         return (
             <Navigate
                 to={{

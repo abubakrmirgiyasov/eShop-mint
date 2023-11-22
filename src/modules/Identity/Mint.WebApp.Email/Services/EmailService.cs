@@ -31,15 +31,15 @@ public class EmailService : IEmailService
         foreach (var toEmail in email.ToEmails)
             mail.To.Add(toEmail);
 
-        var credential = new NetworkCredential(_emailConfig.Login, _emailConfig.Password);
+        var credential = new NetworkCredential("eshopmint77@outlook.com", "Abubakr2001m");
 
         var smtp = new SmtpClient()
         {
             Host = _emailConfig.Host,
             Port = _emailConfig.Port,
             EnableSsl = _emailConfig.SSL,
-            //UseDefaultCredentials = _emailConfig.UseDefaultCredentials,
             Credentials = credential,
+            //UseDefaultCredentials = _emailConfig.UseDefaultCredentials,
         };
 
         await smtp.SendMailAsync(mail);

@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ISignIn} from "../../types/Authentication/ISignIn";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import ParticlesAuth from "../../components/Layouts/ParticlesAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {signInStore} from "../../stores/Authentication/authActions";
@@ -28,6 +28,7 @@ const SignInPage: FC = () => {
 
     const dispatch = useDispatch();
     const axios = useAxios();
+    const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
@@ -48,19 +49,25 @@ const SignInPage: FC = () => {
         resolver: yupResolver(validation),
     });
 
-    const st = useSelector((state) => console.log(state))
+    const { signIn } = useSelector((state) => ({
+        signIn: state.Auth,
+    }));
 
-    useEffect(() => {}, [])
+    useEffect(() => {
+        if (signIn.isLoggedIn) {
+            navigate("/");
+        }
+    }, [navigate]);
 
     const onSubmit = (values: ISignIn) => {
         setIsLoading(true);
 
         dispatch(signInStore(axios, values))
             .then((r) => {
+                navigate("/");
                 setIsLoading(false);
             })
             .catch((e) => {
-                console.log(e);
                 setIsLoading(false);
             });
     };
@@ -75,12 +82,12 @@ const SignInPage: FC = () => {
                         <Col lg={12}>
                             <div className={"text-center mt-sm-5 mb-4 text-white-50"}>
                                 <div>
-                                    <a href={"/"} className={"d-inline-block auth-logo"}>
-                                        <img src={logo} alt={"logo mint"} height={50}/>
-                                    </a>
+                                    <Link to={"/"} className={"d-inline-block auth-logo"}>
+                                        <img src={logo} alt={"logo mint"} height={120}/>
+                                    </Link>
                                 </div>
                                 <p className={"mt-3 fs-15 fw-medium"}>
-                                    Mint Admin & Dashboard Template
+                                    Mint - шаблон администратора и информационной панели
                                 </p>
                             </div>
                         </Col>
@@ -150,7 +157,7 @@ const SignInPage: FC = () => {
                                             </div>
                                             <div className={"mt-0 mb-3 text-end"}>
                                                 <p className={"mb-0"}>
-                                                    <Link to={"/"}>Забыли пароль?</Link>
+                                                    <Link to={"/forgot-password"}>Забыли пароль?</Link>
                                                 </p>
                                             </div>
                                             <div
@@ -180,7 +187,6 @@ const SignInPage: FC = () => {
                         </Col>
                     </Row>
                 </Container>
-                <Notification type={Colors.primary} message={""}/>
             </div>
         </ParticlesAuth>
     );

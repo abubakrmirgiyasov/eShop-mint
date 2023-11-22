@@ -23,21 +23,21 @@ public class CategoryService
     {
         try
         {
-            //var categories = _cacheManager.Get<IEnumerable<CategorySampleViewModel>>(Constants.REDIS_SAMPLE_CATEGORIES);
+            var categories = _cacheManager.Get<IEnumerable<CategorySampleViewModel>>(Constants.REDIS_SAMPLE_CATEGORIES);
 
-            //if (categories is null)
-            //{
-                var categories = await _categoryRepository.GetSampleCategoriesAsync();
-                //_cacheManager.Set(
-                //    key: Constants.REDIS_SAMPLE_CATEGORIES,
-                //    value: categories);
-                return categories;
-            //}
-            //return categories;
+            if (categories is null)
+            {
+                var categoriesRepository = await _categoryRepository.GetSampleCategoriesAsync();
+                _cacheManager.Set(
+                    key: Constants.REDIS_SAMPLE_CATEGORIES,
+                    value: categoriesRepository);
+                return categoriesRepository;
+            }
+            return categories;
         }
         catch (Exception ex)
         {
-            _logger.LogError("{Message},{Full}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }

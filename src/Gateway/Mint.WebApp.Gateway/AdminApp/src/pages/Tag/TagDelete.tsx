@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { Modal, ModalBody, Spinner } from "reactstrap";
 import { useDispatch } from "react-redux";
-import { deleteTag } from "../../../services/admin/tags/tag";
-import { fetch } from "../../../helpers/fetch";
+import {removeTagStore} from "../../stores/Tag/tagActions";
+import {useAxios} from "../../hooks/useAxios";
 
 interface ITagDelete {
   id: string;
@@ -14,18 +14,19 @@ const TagDelete: FC<ITagDelete> = ({ id, isOpen, toggle }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const axios = useAxios();
 
   const onDeleteClick = () => {
-    setIsLoading(true);
-
-    dispatch(deleteTag(fetch(), id))
-      .then(() => {
-        setIsLoading(false);
-        toggle();
-      })
-      .catch(() => {
-        setIsLoading(false);
-      });
+    // setIsLoading(true);
+    //
+    dispatch(removeTagStore(axios, id))
+      // .then(() => {
+      //   setIsLoading(false);
+      //   toggle();
+      // })
+      // .catch(() => {
+      //   setIsLoading(false);
+      // });
   };
 
   return (

@@ -21,14 +21,14 @@ public class EmailController : ControllerBase
         try
         {
             if (string.IsNullOrEmpty(user.Email.Trim()))
-                throw new Exception("Не правильный адрес электронной почти");
+                throw new Exception("Неверный адрес электронной почты");
 
             var email = new EmailOptions()
             {
                 ToEmails = new List<string>() { user.Email },
                 Placeholders = new List<KeyValuePair<string, string>>()
                 {
-                    new KeyValuePair<string, string>("{{Login}}", user.Email),
+                    new("{{Login}}", user.Email),
                 },
             };
 
