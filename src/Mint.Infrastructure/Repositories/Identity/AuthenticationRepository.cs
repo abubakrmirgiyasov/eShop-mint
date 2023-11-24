@@ -85,20 +85,10 @@ public class AuthenticationRepository : IAuthenticationRepository
 
             var token = _jwt.GenerateJwtToken(user);
 
-            var roles = new List<int>();
-
-            var temp = user.UserRoles
-                .Select(x => x.Role.UniqueKey.ToLower().FirstCharToUpper())
-                .ToArray();
-
-            foreach (var role in temp)
-                roles.Add((int)Enum.Parse<Roles>(role));
-
             return new AuthenticationAdminResponse
             {
                 Id = user.Id,
                 Token = token,
-                Roles = roles.ToArray(),
             };
         }
         catch (UnauthorizedAccessException ex)

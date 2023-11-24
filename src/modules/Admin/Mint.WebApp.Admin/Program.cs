@@ -14,6 +14,7 @@ using Mint.WebApp.Admin.Repositories.Interfaces;
 using Mint.WebApp.Admin.Services;
 using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.MessageBrokers;
+using Mint.WebApp.Admin.DTO_s;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,8 @@ builder.Services.Configure<RedisSettings>(redis);
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<TagService>();
 builder.Services.AddScoped<RedisClient>();
+
+builder.Services.AddAutoMapper(typeof(AutoMappingTag));
 
 builder.Services.AddScoped<IJwt, Jwt>();
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();

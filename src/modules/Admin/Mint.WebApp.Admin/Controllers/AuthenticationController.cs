@@ -9,14 +9,9 @@ namespace Mint.WebApp.Admin.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IAuthenticationRepository authentication) : ControllerBase
 {
-    private readonly IAuthenticationRepository _authentication;
-
-    public AuthenticationController(IAuthenticationRepository authentication)
-    {
-        _authentication = authentication;
-    }
+    private readonly IAuthenticationRepository _authentication = authentication;
 
     [HttpPost]
     public async Task<IActionResult> SignIn([FromBody] UserSignInBindingModel model)

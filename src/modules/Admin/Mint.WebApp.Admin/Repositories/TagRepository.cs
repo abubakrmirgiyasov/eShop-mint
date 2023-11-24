@@ -1,27 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Models.Admin;
 using Mint.Infrastructure;
 using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.FormingModels;
 using Mint.WebApp.Admin.Repositories.Interfaces;
+using System.Collections.Generic;
 
 namespace Mint.WebApp.Admin.Repositories;
 
-public class TagRepository : ITagRepository
+public class TagRepository(ApplicationDbContext context, IMapper mapper) : ITagRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public TagRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    private readonly ApplicationDbContext _context = context;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<TagFullViewModel>> GetTagsAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             var tags = await _context.Tags.ToListAsync(cancellationToken);
-            return TagDTOConverter.FormingMultiViewModels(tags);
+            return _mapper.Map<IEnumerable<TagFullViewModel>>(tags);
         }
         catch (Exception ex)
         {
@@ -35,7 +33,7 @@ public class TagRepository : ITagRepository
         {
             var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
                 ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
-            return TagDTOConverter.FormingSingleViewModel(tag);
+            return _mapper.Map<TagFullViewModel>(tag);
         }
         catch (ArgumentNullException ex)
         {
@@ -51,7 +49,7 @@ public class TagRepository : ITagRepository
     {
         try
         {
-            var tag = TagDTOConverter.FormingSingleBindingModel(model);
+            var tag = _mapper.Map<Tag>(model);
 
             await _context.Tags.AddAsync(tag, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
