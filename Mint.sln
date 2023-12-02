@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.StorageCloud", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.Web.Infrastructure.Tests", "tests\Mint.Web.Infrastructure.Tests\Mint.Web.Infrastructure.Tests.csproj", "{306E3BBB-14A8-45E6-BDC4-52822A0F7B32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Admin.Identity", "src\modules\Identity\Mint.WebApp.Admin.Identity\Mint.WebApp.Admin.Identity.csproj", "{6700AD78-48CC-4C06-AC7E-0780BA195F2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{306E3BBB-14A8-45E6-BDC4-52822A0F7B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{306E3BBB-14A8-45E6-BDC4-52822A0F7B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{306E3BBB-14A8-45E6-BDC4-52822A0F7B32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6700AD78-48CC-4C06-AC7E-0780BA195F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6700AD78-48CC-4C06-AC7E-0780BA195F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6700AD78-48CC-4C06-AC7E-0780BA195F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6700AD78-48CC-4C06-AC7E-0780BA195F2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +169,7 @@ Global
 		{B4987191-ABF8-472B-9432-C0222120D832} = {0199D1FA-61BF-4621-B224-F9CE93086EDF}
 		{04A3D8C5-44BA-4E01-9E33-7FA2BC5CCDBA} = {B4987191-ABF8-472B-9432-C0222120D832}
 		{306E3BBB-14A8-45E6-BDC4-52822A0F7B32} = {EBC3A9B7-E9B3-4526-A282-E072FEA7B8F1}
+		{6700AD78-48CC-4C06-AC7E-0780BA195F2D} = {7A823355-1953-4B19-A64F-F7A53AF449A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}
