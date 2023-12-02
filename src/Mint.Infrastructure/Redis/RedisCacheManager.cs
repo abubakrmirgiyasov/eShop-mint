@@ -1,26 +1,22 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using Mint.Domain.Extensions;
 using Mint.Infrastructure.Redis.Interface;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace Mint.Infrastructure.Redis;
 
-public class RedisCacheManager : IDistributedCacheManager
+public class RedisCacheManager(RedisClient redisClient) : IDistributedCacheManager
 {
-    private readonly RedisClient _redisClient;
-
-    public RedisCacheManager(RedisClient redisClient)
-    {
-        _redisClient = redisClient;
-    }
+    private readonly RedisClient _redisClient = redisClient;
 
     public byte[] Get(string key)
     {
-        var isKeyExist = _redisClient.RedisCache.KeyExists(key);
+        bool isKeyExist = _redisClient.RedisCache.KeyExists(key);
 
         if (isKeyExist)
             return _redisClient.RedisCache.StringGet(key)!;
-
+        
         return null!;
     }
 
@@ -44,6 +40,8 @@ public class RedisCacheManager : IDistributedCacheManager
 
     public bool Exists(string key)
     {
+        if (key.IsNullOrEmpty())
+            return false;
         return _redisClient.RedisCache.KeyExists(key);
     }
 

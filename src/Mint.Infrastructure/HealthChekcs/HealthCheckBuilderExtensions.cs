@@ -34,7 +34,11 @@ public static class HealthCheckBuilderExtensions
     {
         return builder.Add(new HealthCheckRegistration(
             name: name,
-            instance: new SqlServerHealthCheck(connectionString, healthQuery),
+            instance: new SqlServerHealthCheck(new SqlServerHealthCheckOptions()
+            {
+                ConnectionString = connectionString,
+                CommandText = healthQuery,
+            }),//connectionString, healthQuery),
             failureStatus: failureStatus,
             tags: tags,
             timeout: timeout));

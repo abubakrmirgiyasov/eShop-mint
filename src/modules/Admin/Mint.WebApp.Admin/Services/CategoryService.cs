@@ -6,18 +6,11 @@ using System.Collections.Generic;
 
 namespace Mint.WebApp.Admin.Services;
 
-public class CategoryService
+public class CategoryService(ICategoryRepository categoryRepository, IDistributedCacheManager cacheManager, ILogger<CategoryService> logger)
 {
-    private readonly IDistributedCacheManager _cacheManager;
-    private readonly ILogger<CategoryService> _logger;
-    private readonly ICategoryRepository _categoryRepository;
-
-    public CategoryService(ICategoryRepository categoryRepository, IDistributedCacheManager cacheManager, ILogger<CategoryService> logger)
-    {
-        _categoryRepository = categoryRepository;
-        _cacheManager = cacheManager;
-        _logger = logger;
-    }
+    private readonly IDistributedCacheManager _cacheManager = cacheManager;
+    private readonly ILogger<CategoryService> _logger = logger;
+    private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
     public async Task<IEnumerable<CategorySampleViewModel>> GetCategorySamplesAsync()
     {

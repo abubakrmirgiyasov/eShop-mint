@@ -5,14 +5,9 @@ using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.Infrastructure.Services;
 
-public class JwtMiddleware
+public class JwtMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public JwtMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
+    private readonly RequestDelegate _next = next;
 
     public async Task Invoke(HttpContext context, IUserRepository user, IJwt jwt)
     {

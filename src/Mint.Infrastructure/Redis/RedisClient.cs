@@ -6,14 +6,9 @@ using System.Security.Authentication;
 
 namespace Mint.Infrastructure.Redis;
 
-public class RedisClient
+public class RedisClient(IOptions<RedisSettings> redis)
 {
-    private readonly RedisSettings _redis;
-
-    public RedisClient(IOptions<RedisSettings> redis)
-    {
-        _redis = redis.Value;
-    }
+    private readonly RedisSettings _redis = redis.Value;
 
     public IDatabase RedisCache
     {

@@ -1,4 +1,4 @@
-﻿using HealthChecks.UI.Core.Data;
+﻿//using HealthChecks.UI.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,11 +11,11 @@ public static class HealthChecksUIBuilderExtensions
         Action<DbContextOptionsBuilder>? configureOptions = null,
         string databaseName = "HealthChecksUI")
     {
-        builder.Services.AddDbContext<HealthChecksDb>(options =>
-        {
-            configureOptions?.Invoke(options);
-            options.UseInMemoryDatabase(databaseName);
-        });
+        //builder.Services.AddDbContext<HealthChecksDb>(options =>
+        //{
+        //    configureOptions?.Invoke(options);
+        //    options.UseInMemoryDatabase(databaseName);
+        //});
         
         return builder;
     }

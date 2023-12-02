@@ -5,15 +5,10 @@ namespace Mint.Domain.Common;
 public class AppSettings
 {
     public OcelotRoutesOptions Routes { get; set; }
-}
 
-public class OcelotRoutesOptions : Dictionary<string, OcelotRouteOptions> { }
+    public IdentitySettings IdentitySettings { get; set; }
 
-public class OcelotRouteOptions
-{
-    public List<string> UpstreamPathTemplates { get; set; }
-
-    public string Downstream { get; set; }
+    public RedisSettings RedisSettings { get; set; }
 }
 
 public class IdentitySettings
@@ -29,3 +24,12 @@ public class RedisSettings
 
     public int Port { get; set; }
 }
+
+public class OcelotRouteOptions
+{
+    public List<string> UpstreamPathTemplates { get; set; }
+
+    public string Downstream { get; set; }
+}
+
+public class OcelotRoutesOptions : Dictionary<string, OcelotRouteOptions>;
