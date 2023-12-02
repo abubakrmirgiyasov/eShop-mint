@@ -10,8 +10,8 @@ using Mint.Infrastructure.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var identitySettings = builder.Configuration.GetSection("IdentitySettings");
-builder.Services.Configure<IdentitySettings>(identitySettings);
+var appSettings = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettings);
 
 var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();

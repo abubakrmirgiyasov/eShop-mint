@@ -18,7 +18,7 @@ using Mint.WebApp.Admin.DTO_s;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connection = builder.Configuration.GetConnectionString("Default");
+var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
 var appSettings = builder.Configuration.GetSection("AppSettings");
