@@ -1,14 +1,28 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {Link} from "react-router-dom";
-import {useAxios} from "../../hooks/useAxios";
+import CustomDataTable from "../../components/Tables/CustomDataTable";
 
 const Dashboard: FC = () => {
+
+    const columns = useMemo(() => [
+        {
+            name: "ID",
+        },
+        {
+            name: "Название",
+        },
+        {
+            name: "Перевод",
+        },
+    ], []);
 
     return (
         <div className={"page-content"}>
             Dashboard
-            <br />
+            <br/>
             <Link to={"/sign-in"}>go back</Link>
+
+            <CustomDataTable data={[]} name={columns} />
         </div>
     );
 };

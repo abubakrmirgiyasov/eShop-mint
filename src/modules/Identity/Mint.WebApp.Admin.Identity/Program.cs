@@ -1,12 +1,12 @@
-var builder = WebApplication.CreateBuilder(args);
+using Mint.WebApp.Extensions.Identities;
 
-// Add services to the container.
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var app = builder.Build();
+builder.Services.AddAuthenticationServices();
 
-// Configure the HTTP request pipeline.
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 

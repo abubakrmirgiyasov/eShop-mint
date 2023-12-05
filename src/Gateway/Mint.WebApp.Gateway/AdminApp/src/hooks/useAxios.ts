@@ -45,6 +45,9 @@ export const useAxios = (): IRequest => {
                 if (error.response.status === 401 || error.message === "Unauthorized") {
                     dispatch(signOutStore(navigate));
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                } else if (error.response.status === 500) {
+                    console.log("500 500 500 500 500 500 500 500 500");
+                    navigate("/internal-server-500");
                 }
                 throw error;
             });
@@ -57,6 +60,9 @@ export const useAxios = (): IRequest => {
             }).catch((error: AxiosError) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                } else if (error.response.status === 500) {
+                    console.log("500 500 500 500 500 500 500 500 500");
+                    navigate("/internal-server-500");
                 }
                 throw error;
             });
@@ -69,6 +75,9 @@ export const useAxios = (): IRequest => {
             }).catch((error: AxiosError) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                } else if (error.response.status === 500) {
+                    console.log("500 500 500 500 500 500 500 500 500");
+                    navigate("/internal-server-500");
                 }
                 throw error;
             });
@@ -81,6 +90,9 @@ export const useAxios = (): IRequest => {
             }).catch((error: AxiosError) => {
                 if (error.message === "Unauthorized") {
                     console.log("Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized Unauthorized");
+                } else if (error.response.status === 500) {
+                    console.log("500 500 500 500 500 500 500 500 500");
+                    navigate("/internal-server-500");
                 }
                 throw error;
             });

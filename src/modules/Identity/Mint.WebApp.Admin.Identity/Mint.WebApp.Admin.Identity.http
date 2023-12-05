@@ -1,6 +1,0 @@
-@Mint.WebApp.Admin.Identity_HostAddress = http://localhost:5217
-
-GET {{Mint.WebApp.Admin.Identity_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
