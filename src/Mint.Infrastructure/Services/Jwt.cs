@@ -28,7 +28,11 @@ public class Jwt(
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] 
+                { 
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    //new Claim(ClaimTypes.Emailm),
+                }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(
                     key: new SymmetricSecurityKey(key),
