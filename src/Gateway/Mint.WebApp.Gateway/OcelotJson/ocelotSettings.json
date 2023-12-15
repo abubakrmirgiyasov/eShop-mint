@@ -40,7 +40,7 @@
       ]
     },
     { // Admin Identity
-      "UpstreamPathTemplate": "/pass/{version}/{everything}",
+      "UpstreamPathTemplate": "/a/v1/{version}/{everything}",
       "UpstreamHttpMethod": [ "POST", "DELETE" ],
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",

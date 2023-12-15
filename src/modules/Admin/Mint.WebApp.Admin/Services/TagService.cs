@@ -3,16 +3,14 @@ using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Common;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.WebApp.Admin.DTO_s;
-using Mint.WebApp.Admin.Repositories;
 using Mint.WebApp.Admin.Repositories.Interfaces;
-using System.Collections.Generic;
 
 namespace Mint.WebApp.Admin.Services;
 
 public class TagService(
     IMapper mapper,
-    IDistributedCacheManager cacheManager, 
-    ITagRepository tagRepository, 
+    IDistributedCacheManager cacheManager,
+    ITagRepository tagRepository,
     ILogger<TagService> logger)
 {
     private readonly IMapper _mapper = mapper;

@@ -7,44 +7,25 @@ using Mint.Domain.Exceptions;
 using Mint.Domain.FormingModels.Identity;
 using Mint.Domain.Helpers;
 using Mint.Domain.Models.Identity;
-using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.Infrastructure.Repositories.Identity;
 
-/// <summary>
-/// Authentication Repository
-/// </summary>
-/// <remarks>
-/// Constructor
-/// </remarks>
-/// <param name="settings"></param>
-/// <param name="logger"></param>
-/// <param name="appSettings"></param>
-/// <param name="jwt"></param>
+/// <inheritdoc cref="IAuthenticationRepository"/>
 public class AuthenticationRepository(
     IOptions<AppSettings> appSettings,
     ILogger<AuthenticationRepository> logger,
     ApplicationDbContext context,
-    IJwt jwt,
-    IMessageSender<User> sender) : IAuthenticationRepository
+    IJwt jwt) : IAuthenticationRepository
 {
     private readonly ILogger<AuthenticationRepository> _logger = logger;
     private readonly AppSettings _appSettings = appSettings.Value;
     private readonly ApplicationDbContext _context = context;
     private readonly IJwt _jwt = jwt;
-    private readonly IMessageSender<User> _sender = sender;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    /// <exception cref="UnauthorizedAccessException"></exception>
-    /// <exception cref="BlockedException"></exception>
-    /// <exception cref="Exception"></exception>
-    public async Task<AuthenticationAdminResponse> SignAsAdmin(UserSignInBindingModel model)
+    /// <inheritdoc />
+    public async Task<AuthenticationAdminResponse> SignAsAdmin(SignInRequest model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -52,7 +33,7 @@ public class AuthenticationRepository(
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
                 .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == nameof(Constants.ADMIN)) && x.Email == model.Email)
-                .FirstOrDefaultAsync()
+                .FirstOrDefaultAsync(cancellationToken)
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
             if (!user.IsActive)
@@ -61,14 +42,14 @@ public class AuthenticationRepository(
             if (user.NumOfAttempts >= 10)
             {
                 user.IsActive = false;
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
                 throw new BlockedException("Аккаунт заблокирован");
             }
 
             if (user.Password != new Hasher().GetHash(model.Password ?? "", user.Salt))
             {
                 user.NumOfAttempts++;
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
                 throw new UnauthorizedAccessException("Не правильный Email/Пароль");
             }
 
@@ -82,30 +63,23 @@ public class AuthenticationRepository(
         }
         catch (UnauthorizedAccessException ex)
         {
-            _logger.LogCritical("UnauthorizedAccessException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("UnauthorizedAccessException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new UnauthorizedAccessException(ex.Message, ex);
         }
         catch (BlockedException ex)
         {
-            _logger.LogCritical("BlockedException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("BlockedException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new BlockedException(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }
 
-    /// <summary>
-    /// Login user
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    /// <exception cref="UnauthorizedAccessException"></exception>
-    /// <exception cref="BlockedException"></exception>
-    /// <exception cref="Exception"></exception>
-    public async Task<AuthenticationResponse> SignInAsync(UserFullBindingModel model)
+    /// <inheritdoc />
+    public async Task<AuthenticationResponse> SignInAsync(SignInRequest model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -114,7 +88,7 @@ public class AuthenticationRepository(
                 .Include(x => x.RefreshTokens)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .FirstOrDefaultAsync(x => x.Email == model.Email)
+                .FirstOrDefaultAsync(x => x.Email == model.Email, cancellationToken)
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
             if (!user.IsActive)
@@ -123,14 +97,14 @@ public class AuthenticationRepository(
             if (user.NumOfAttempts >= 10)
             {
                 user.IsActive = false;
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
                 throw new BlockedException("Аккаунт заблокирован");
             }
 
             if (user.Password != new Hasher().GetHash(model.Password ?? "", user.Salt))
             {
                 user.NumOfAttempts++;
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
                 throw new UnauthorizedAccessException("Не правильный Email/Пароль");
             }
 
@@ -141,9 +115,9 @@ public class AuthenticationRepository(
             RemoveOldRefreshToken(user);
 
             _context.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
-            return new AuthenticationResponse()
+            return new AuthenticationResponse
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -165,28 +139,23 @@ public class AuthenticationRepository(
         }
         catch (UnauthorizedAccessException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new UnauthorizedAccessException(ex.Message, ex);
         }
         catch (BlockedException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new BlockedException(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }
 
-    /// <summary>
-    /// Registration new User
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public async Task<UserFullViewModel> SignUpAsync(UserFullBindingModel model)
+    /// <inheritdoc />
+    public async Task<UserFullViewModel> SignUpAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -225,30 +194,20 @@ public class AuthenticationRepository(
                 },
             ];
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-
-            //await _sender.SendAsync(user, null, Constants.ConfirmationKey);
+            await _context.Users.AddAsync(user, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return UserDTOConverter.FormingSingleViewModel(user);
         }
         catch (Exception ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }
 
-    /// <summary>
-    /// Refresh token
-    /// </summary>
-    /// <param name="refreshToken"></param>
-    /// <param name="ip"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidDataException"></exception>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
-    public async Task<AuthenticationResponse> RefreshTokenAsync(string? refreshToken, string? ip)
+    /// <inheritdoc />
+    public async Task<AuthenticationResponse> RefreshTokenAsync(string? refreshToken, string? ip, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -257,7 +216,7 @@ public class AuthenticationRepository(
 
             var user = GetUserByRefreshToken(refreshToken);
             var token = user.RefreshTokens.FirstOrDefault(x => x.Token == refreshToken)
-                ?? throw new ArgumentNullException(nameof(RefreshToken), "Invalid token");
+                ?? throw new ArgumentNullException(nameof(refreshToken), "Invalid token");
 
             if (token.IsRevoked)
             {
@@ -268,7 +227,7 @@ public class AuthenticationRepository(
                     reason: $"Attempted reuse of revoked ancestor token: {refreshToken}");
 
                 _context.Update(user);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
             }
 
             if (!token.IsActive)
@@ -280,7 +239,7 @@ public class AuthenticationRepository(
             RemoveOldRefreshToken(user);
 
             _context.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             var jwt = _jwt.GenerateJwtToken(user);
 
@@ -306,41 +265,29 @@ public class AuthenticationRepository(
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new InvalidOperationException(ex.Message, ex);
         }
         catch (ArgumentNullException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new ArgumentNullException(ex.Message, ex);
         }
         catch (Exception ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public Task ForgotPasswordAsync(UserFullBindingModel model)
+    /// <inheritdoc />
+    public Task ForgotPasswordAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// Logout || revoke token
-    /// </summary>
-    /// <param name="refreshToken"></param>
-    /// <param name="ip"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
-    /// <exception cref="Exception"></exception>
-    public async Task RevokeToken(string? refreshToken, string? ip)
+    /// <inheritdoc />
+    public async Task RevokeToken(string? refreshToken, string? ip, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -358,21 +305,21 @@ public class AuthenticationRepository(
             RevokeRefreshToken(user.RefreshTokens.First(), ip!, "Revoked without replacement");
 
             _context.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new InvalidOperationException(ex.Message, ex);
         }
         catch (ArgumentNullException ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
         catch (Exception ex)
         {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
     }

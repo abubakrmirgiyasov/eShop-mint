@@ -1,23 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Domain.Extensions;
-using Mint.Infrastructure.Repositories.Identity.Interfaces;
+using Mint.WebApp.Admin.Identity.Commands.Authentications;
 
 namespace Mint.WebApp.Admin.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class AuthenticationController(IAuthenticationRepository authentication) : ControllerBase
+public class AuthenticationController(IMediator mediator) : ControllerBase
 {
-    private readonly IAuthenticationRepository _authentication = authentication;
-
     [HttpPost]
-    public async Task<IActionResult> SignIn([FromBody] UserSignInBindingModel model)
+    public async Task<IActionResult> SignIn(
+        [FromBody] SignInRequest model,
+        CancellationToken cancellationToken = default)
     {
         try
         {
             model.Ip = Request.GetIp();
-            var response = await _authentication.SignAsAdmin(model);
+            var response = await mediator.Send(new SignInCommand(model), cancellationToken);
             return Ok(response);
         }
         catch (Exception ex)

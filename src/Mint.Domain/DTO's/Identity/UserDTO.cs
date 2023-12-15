@@ -41,15 +41,6 @@ public class UserFullBindingModel
     public byte[]? Salt { get; set; }
 }
 
-public class UserSignInBindingModel
-{
-    public string? Ip { get; set; }
-
-    public string Email { get; set; } = null!;
-
-    public string Password { get; set; } = null!;
-}
-
 public record UserFullViewModel(
     Guid? Id = null,
     string? FirstName = null,

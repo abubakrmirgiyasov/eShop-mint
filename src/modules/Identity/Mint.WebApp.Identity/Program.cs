@@ -25,8 +25,6 @@ builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>(
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-//builder.Services.AddHostedService<MessageBrokerBackgroundService<User>>();
-
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

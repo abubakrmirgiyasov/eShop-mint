@@ -1,22 +1,17 @@
 ﻿using Microsoft.Extensions.Options;
-using Mint.WebApp.Email.Common;
 using Mint.Domain.Models.Email;
 using System.Net;
 using System.Net.Mail;
 using Mint.Infrastructure.Services.Interfaces;
+using Mint.Domain.Common;
 
 namespace Mint.WebApp.Email.Services;
 
-public class EmailService : IEmailService
+public class EmailService(IOptions<AppSettings> emailConfig) : IEmailService
 {
     const string _TemplatePath = "EmailTemplates\\{0}.html";
 
-    private readonly MailConfig _emailConfig;
-
-    public EmailService(IOptions<MailConfig> emailConfig)
-    {
-        _emailConfig = emailConfig.Value;
-    }
+    private readonly AppSettings _appSettings = emailConfig.Value;
 
     public async Task SendEmail(EmailOptions email)
     {
@@ -24,20 +19,20 @@ public class EmailService : IEmailService
         {
             Subject = email.Subject,
             Body = email.Body,
-            From = new MailAddress(_emailConfig.From, _emailConfig.Name),
-            IsBodyHtml = _emailConfig.IsBodyHtml
+            From = new MailAddress(_appSettings.MailConfig.From, _appSettings.MailConfig.Name),
+            IsBodyHtml = _appSettings.MailConfig.IsBodyHtml
         };
 
         foreach (var toEmail in email.ToEmails)
             mail.To.Add(toEmail);
 
-        var credential = new NetworkCredential("eshopmint77@outlook.com", "Abubakr2001m");
+        var credential = new NetworkCredential(_appSettings.MailConfig.From, _appSettings.MailConfig.Password);
 
         var smtp = new SmtpClient()
         {
-            Host = _emailConfig.Host,
-            Port = _emailConfig.Port,
-            EnableSsl = _emailConfig.SSL,
+            Host = _appSettings.MailConfig.Host,
+            Port = _appSettings.MailConfig.Port,
+            EnableSsl = _appSettings.MailConfig.SSL,
             Credentials = credential,
             //UseDefaultCredentials = _emailConfig.UseDefaultCredentials,
         };
