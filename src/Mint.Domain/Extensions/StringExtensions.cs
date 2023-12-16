@@ -23,4 +23,11 @@ public static class StringExtensions
     {
         return string.IsNullOrEmpty(str);
     }
+
+    public static string ConvertToPhoneNumber(this string value)
+    {
+
+
+        return value;
+    }
 }

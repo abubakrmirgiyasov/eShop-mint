@@ -4,9 +4,6 @@ namespace Mint.Domain.DTO_s.Identity;
 
 public class AuthenticationAdminResponse
 {
-    [JsonPropertyName("_uid")]
-    public Guid Id { get; set; }
-
-    [JsonPropertyName("token")]
+    [JsonPropertyName("access_token")]
     public string Token { get; set; } = null!;
 }
