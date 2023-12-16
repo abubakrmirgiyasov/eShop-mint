@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Mint.Domain.Exceptions;
 using System.Net;
@@ -6,16 +8,12 @@ using System.Text.Json;
 
 namespace Mint.Infrastructure.Services;
 
-public class ExceptionMiddleware
+public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate _next = next;
+    private readonly ILogger<ExceptionMiddleware> _logger = logger;
 
-    public ExceptionMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task Invoke(HttpContext context)
+    public async Task InvokeAsync(HttpContext context)
     {
         try
         {
@@ -23,19 +21,27 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            var response = context.Response;
-            response.ContentType = "application/json";
-
-            response.StatusCode = ex switch
-            {
-                UserNotFoundException => (int)HttpStatusCode.NotFound,
-                BlockedException => (int)HttpStatusCode.Locked,
-                SecurityTokenExpiredException => (int)HttpStatusCode.Unauthorized,
-                _ => (int)HttpStatusCode.BadRequest,
-            };
-
-            var res = JsonSerializer.Serialize(new { message = ex?.Message });
-            await response.WriteAsync(res);
+            await HandleExceptionAsync(context, ex);
         }
+    }
+
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+
+        context.Response.StatusCode = exception switch
+        {
+            ValidationException => (int)HttpStatusCode.BadRequest,
+            UserNotFoundException => (int)HttpStatusCode.NotFound,
+            BlockedException => (int)HttpStatusCode.Locked,
+            UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+            SecurityTokenExpiredException => (int)HttpStatusCode.Unauthorized,
+            _ => (int)HttpStatusCode.BadRequest,
+        };
+
+        var res = JsonSerializer.Serialize(new { message = exception?.Message });
+        await context.Response.WriteAsync(res);
+
+        _logger.LogCritical("{Type}: {Message}", exception?.GetType(), exception?.Message);
     }
 }

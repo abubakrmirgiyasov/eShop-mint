@@ -3,22 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Models.Admin;
 using Mint.Infrastructure;
 using Mint.WebApp.Admin.DTO_s;
-using Mint.WebApp.Admin.FormingModels;
 using Mint.WebApp.Admin.Repositories.Interfaces;
-using System.Collections.Generic;
 
 namespace Mint.WebApp.Admin.Repositories;
 
+/// <inheritdoc cref="ITagRepository"/>
 public class TagRepository(ApplicationDbContext context, IMapper mapper) : ITagRepository
 {
     private readonly ApplicationDbContext _context = context;
     private readonly IMapper _mapper = mapper;
 
+    /// <inheritdoc />
     public async Task<IEnumerable<TagFullViewModel>> GetTagsAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            var tags = await _context.Tags.ToListAsync(cancellationToken);
+            var tags = await _context.Tags
+                .ToListAsync(cancellationToken);
             return _mapper.Map<IEnumerable<TagFullViewModel>>(tags);
         }
         catch (Exception ex)
@@ -27,12 +28,30 @@ public class TagRepository(ApplicationDbContext context, IMapper mapper) : ITagR
         }
     }
 
+    /// <inheritdoc />
+    public async Task<IEnumerable<TagFullViewModel>> GetTagsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var tags = await _context.Tags
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+            return _mapper.Map<IEnumerable<TagFullViewModel>>(tags);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    /// <inheritdoc />
     public async Task<TagFullViewModel> GetTagByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
             var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-                ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
+                ?? throw new ArgumentNullException(nameof(id), "Атрибут не найден");
             return _mapper.Map<TagFullViewModel>(tag);
         }
         catch (ArgumentNullException ex)
@@ -45,6 +64,7 @@ public class TagRepository(ApplicationDbContext context, IMapper mapper) : ITagR
         }
     }
 
+    /// <inheritdoc />
     public async Task NewTagAsync(TagFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
@@ -60,12 +80,13 @@ public class TagRepository(ApplicationDbContext context, IMapper mapper) : ITagR
         }
     }
 
+    /// <inheritdoc />
     public async Task UpdateTagAsync(TagFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
         {
             var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == model.Value, cancellationToken)
-                ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
+                ?? throw new ArgumentNullException(nameof(model), "Атрибут не найден");
 
             tag.Name = model.Label!;
             tag.Translate = model.Translate;
@@ -83,12 +104,13 @@ public class TagRepository(ApplicationDbContext context, IMapper mapper) : ITagR
         }
     }
 
+    /// <inheritdoc />
     public async Task DeleteTagAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
             var tag = await _context.Tags.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-                ?? throw new ArgumentNullException(nameof(Tag), "Атрибут не найден");
+                ?? throw new ArgumentNullException(nameof(id), "Атрибут не найден");
 
             _context.Tags.Remove(tag);
             await _context.SaveChangesAsync(cancellationToken);

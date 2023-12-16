@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Mint.Domain.Common;
+using Mint.Domain.DTO_s.Common;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.WebApp.Admin.DTO_s;
-using Mint.WebApp.Admin.Repositories;
 using Mint.WebApp.Admin.Repositories.Interfaces;
 
 namespace Mint.WebApp.Admin.Services;
 
 public class TagService(
     IMapper mapper,
-    IDistributedCacheManager cacheManager, 
-    ITagRepository tagRepository, 
+    IDistributedCacheManager cacheManager,
+    ITagRepository tagRepository,
     ILogger<TagService> logger)
 {
     private readonly IMapper _mapper = mapper;
@@ -18,22 +18,42 @@ public class TagService(
     private readonly ITagRepository _tagRepository = tagRepository;
     private readonly ILogger<TagService> _logger = logger;
 
-    public async Task<IEnumerable<TagFullViewModel>> GetTagsAsync()
+    public async Task<WithPaginationResultViewModel<List<TagFullViewModel>>> GetTagsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
     {
         try
         {
             var tags = _cacheManager.Get<IEnumerable<TagFullViewModel>>(Constants.REDIS_SAMPLE_TAGS);
-            
+
             if (tags is null)
             {
-                var tagsRepository = await _tagRepository.GetTagsAsync();
+                var tagsRepository = await _tagRepository.GetTagsAsync(cancellationToken);
+
                 _cacheManager.Set(
                     key: Constants.REDIS_SAMPLE_TAGS,
                     value: tagsRepository);
-                return tagsRepository;
+
+                var res = tagsRepository
+                    .Skip(pageSize * pageIndex)
+                    .Take(pageSize)
+                    .ToList();
+
+                return new WithPaginationResultViewModel<List<TagFullViewModel>>
+                {
+                    Items = res,
+                    TotalCount = tagsRepository.Count()
+                };
             }
 
-            return tags;
+            var items = tags
+                    .Skip(pageSize * pageIndex)
+                    .Take(pageSize)
+                    .ToList();
+
+            return new WithPaginationResultViewModel<List<TagFullViewModel>>
+            {
+                Items = items,
+                TotalCount = tags.Count()
+            };
         }
         catch (Exception ex)
         {

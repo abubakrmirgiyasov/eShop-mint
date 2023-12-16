@@ -50,11 +50,11 @@ public class MessageBrokerBackgroundService : BackgroundService
         {
             var email = new EmailOptions()
             {
-                ToEmails = new List<string>() { u?.Email!, u?.ConfirmationCode.ToString()! },
-                Placeholders = new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("{{Login}} testset", u?.Email!),
-                },
+                //ToEmails = new List<string>() { u?.Email!, u?.ConfirmationCode.ToString()! },
+                //Placeholders = new List<KeyValuePair<string, string>>()
+                //{
+                //    new KeyValuePair<string, string>("{{Login}} testset", u?.Email!),
+                //},
             };
 
             _email.SendTestEmailAsync(email);

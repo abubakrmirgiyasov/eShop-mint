@@ -7,25 +7,19 @@ namespace Mint.WebApp.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IAuthenticationRepository authentication) : ControllerBase
 {
-    private readonly IAuthenticationRepository _authentication;
-
-    public AuthenticationController(IAuthenticationRepository authentication)
-    {
-        _authentication = authentication;
-    }
+    private readonly IAuthenticationRepository _authentication = authentication;
 
     [HttpPost]
-    public async Task<IActionResult> SignIn([FromBody] UserFullBindingModel model)
+    public ActionResult SignIn([FromBody] UserFullBindingModel model)
     {
         try
         {
-            model.Ip = Request.GetIp();
-
-            var response = await _authentication.SignInAsync(model);
-            Response.SetTokenCookie(response.RefreshToken!);
-            return Ok(response);
+            //model.Ip = Request.GetIp();
+            //var response = await _authentication.SignInAsync(model);
+            //Response.SetTokenCookie(response.RefreshToken!);
+            return Ok(); // response
         }
         catch (Exception ex)
         {

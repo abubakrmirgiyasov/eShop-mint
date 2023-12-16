@@ -13,8 +13,8 @@ using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var identitySettings = builder.Configuration.GetSection("IdentitySettings");
-builder.Services.Configure<IdentitySettings>(identitySettings);
+var appSettings = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettings);
 
 builder.Configuration.AddJsonFile("OcelotJson\\ocelotSettings.json", false, true);
 builder.Services.AddOcelot(builder.Configuration).AddDelegatingHandler<DebuggingHandler>(true);
@@ -22,9 +22,6 @@ builder.Services.AddOcelot(builder.Configuration).AddDelegatingHandler<Debugging
 var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
 builder.Services.AddMessageBusSender<User>(brokerOptions);
-
-var redisSettings = builder.Configuration.GetSection("RedisSettings");
-builder.Services.Configure<RedisSettings>(redisSettings);
 
 var connection = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));

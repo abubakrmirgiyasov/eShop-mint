@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models.Base;
 
+/// <summary>
+/// Base entity for MINT
+/// </summary>
+/// <typeparam name="TKey"></typeparam>
 public class Entity<TKey> : IHasKey<TKey>, ITrackable
 {
     [Key]

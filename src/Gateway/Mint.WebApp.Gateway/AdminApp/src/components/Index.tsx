@@ -6,6 +6,7 @@ import PublicRoutesLayout from "./Layouts/PublicRoutesLayout";
 import ProtectedRoutesLayout from "./Layouts/ProtectedRoutesLayout";
 import AdminLayout from "./Layouts/AdminLayout";
 import NotFound404 from "../pages/Errors/NotFound404";
+import InternalServer500 from "../pages/Errors/InternalServer500";
 
 const Index: FC = () => {
     const themeDetector = useThemeDetector();
@@ -17,6 +18,10 @@ const Index: FC = () => {
                     <Route
                         path={"*"}
                         element={<NotFound404 />}
+                    />
+                    <Route
+                        path={"/internal-server-500"}
+                        element={<InternalServer500 />}
                     />
                     {publicRoutes.map((route, key) => (
                         <Route

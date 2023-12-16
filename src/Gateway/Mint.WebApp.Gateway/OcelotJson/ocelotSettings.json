@@ -38,6 +38,18 @@
           "Port": 7084
         }
       ]
+    },
+    { // Admin Identity
+      "UpstreamPathTemplate": "/a/v1/{version}/{everything}",
+      "UpstreamHttpMethod": [ "POST", "DELETE" ],
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7219
+        }
+      ]
     }
   ]
 }

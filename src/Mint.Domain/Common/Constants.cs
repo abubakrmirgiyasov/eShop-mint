@@ -1,8 +1,8 @@
 ﻿namespace Mint.Domain.Common;
 
-public class Constants
+public partial class Constants
 {
-    public const string CONNECTION_STRING = "Default";
+    public const string CONNECTION_STRING = "AppSettings:ConnectionStrings:Default";
 
     public const string ADMIN = "Админ";
     public const string BUYER = "Покупатель";
@@ -12,16 +12,43 @@ public class Constants
 
     public const string IDENTITY_KEY = "MintIdentityQueue";
     public const string CONFIRMATION_KEY = "MintIdentityConfirmationQueue";
+}
 
-    public const string REDIS_SAMPLE_CATEGORIES = "REDIS_SAMPLE_CATEGORIES";
-    public const string REDIS_SAMPLE_TAGS = "REDIS_SAMPLE_TAGS";
+/// <summary>
+/// Projects Name
+/// </summary>
+public enum SchemeNames : int
+{
+    /// <summary>
+    /// None
+    /// </summary>
+    None = 0,
+    /// <summary>
+    /// Main project name
+    /// </summary>
+    Mint = 1,
+}
 
-    public enum AuthType : int
-    {
-        None = 0,
-        Admin = 1,
-        Client = 2,
-    }
+/// <summary>
+/// Genders for user
+/// </summary>
+public enum Genders : int
+{
+    /// <summary>
+    /// Мужской
+    /// </summary>
+    Male = 0,
+    /// <summary>
+    /// Женский
+    /// </summary>
+    Female = 1,
+}
+
+public enum AuthType : int
+{
+    None = 0,
+    Admin = 1,
+    Client = 2,
 }
 
 public enum Roles : int
@@ -30,4 +57,10 @@ public enum Roles : int
     Admin = 1,
     Buyer = 2,
     Seller = 3,
+}
+
+public enum ContactType : int
+{
+    Email = 0,
+    Phone = 1,
 }

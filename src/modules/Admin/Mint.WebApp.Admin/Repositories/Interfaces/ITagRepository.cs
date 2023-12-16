@@ -3,7 +3,7 @@
 namespace Mint.WebApp.Admin.Repositories.Interfaces;
 
 /// <summary>
-///  interface of Tag Repository
+///  Tag Repository CRUD functions
 /// </summary>
 public interface ITagRepository
 {
@@ -13,6 +13,15 @@ public interface ITagRepository
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<IEnumerable<TagFullViewModel>> GetTagsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// This methods gets all tags with pagination result
+    /// </summary>
+    /// <param name="pageIndex"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>IEnumerable<TagFullViewModel></returns>
+    Task<IEnumerable<TagFullViewModel>> GetTagsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method returns single tag by id

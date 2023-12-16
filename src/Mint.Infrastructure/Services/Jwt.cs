@@ -11,31 +11,28 @@ using System.Text;
 
 namespace Mint.Infrastructure.Services;
 
-public class Jwt : IJwt
+public class Jwt(
+    ILogger<Jwt> logger,
+    IOptions<AppSettings> appSettings,
+    ApplicationDbContext context) : IJwt
 {
-    private readonly ILogger<Jwt> _logger;
-    private readonly IdentitySettings _appSettings;
-    private readonly ApplicationDbContext _context;
-
-    public Jwt(
-        ILogger<Jwt> logger,
-        IOptions<IdentitySettings> appSettings,
-        ApplicationDbContext context)
-    {
-        _logger = logger;
-        _appSettings = appSettings.Value;
-        _context = context;
-    }
+    private readonly ILogger<Jwt> _logger = logger;
+    private readonly AppSettings _appSettings = appSettings.Value;
+    private readonly ApplicationDbContext _context = context;
 
     public string GenerateJwtToken(User user)
     {
         try
         {
-            var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);
+            var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] 
+                { 
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    //new Claim(ClaimTypes.Emailm),
+                }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(
                     key: new SymmetricSecurityKey(key),
@@ -77,7 +74,7 @@ public class Jwt : IJwt
                 return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);
+            var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
             tokenHandler.ValidateToken(token, new TokenValidationParameters()
             {
                 ValidateIssuer = false,

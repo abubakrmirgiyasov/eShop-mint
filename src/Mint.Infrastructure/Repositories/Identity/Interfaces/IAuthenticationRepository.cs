@@ -15,21 +15,21 @@ public interface IAuthenticationRepository
     /// <exception cref="UnauthorizedAccessException"></exception>
     /// <exception cref="BlockedException"></exception>
     /// <exception cref="Exception"></exception>
-    Task<AuthenticationAdminResponse> SignAsAdmin(UserSignInBindingModel model);
+    Task<AuthenticationAdminResponse> SignAsAdmin(SignInRequest model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method calls when user is signing
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task<AuthenticationResponse> SignInAsync(UserFullBindingModel model);
+    Task<AuthenticationResponse> SignInAsync(SignInRequest model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method calls when user is creating new profile
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task<UserFullViewModel> SignUpAsync(UserFullBindingModel model);
+    Task<UserFullViewModel> SignUpAsync(UserFullBindingModel model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method calls when users token has been expired
@@ -37,14 +37,14 @@ public interface IAuthenticationRepository
     /// <param name="refreshToken"></param>
     /// <param name="ip"></param>
     /// <returns></returns>
-    Task<AuthenticationResponse> RefreshTokenAsync(string? refreshToken, string? ip);
+    Task<AuthenticationResponse> RefreshTokenAsync(string? refreshToken, string? ip, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// This method calls when user forgot his password
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task ForgotPasswordAsync(UserFullBindingModel model);
+    Task ForgotPasswordAsync(UserFullBindingModel model, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// This method calls when user is logout
@@ -52,5 +52,5 @@ public interface IAuthenticationRepository
     /// <param name="refreshToken"></param>
     /// <param name="ip"></param>
     /// <returns></returns>
-    Task RevokeToken(string? refreshToken, string? ip);
+    Task RevokeToken(string? refreshToken, string? ip, CancellationToken cancellationToken = default);
 }

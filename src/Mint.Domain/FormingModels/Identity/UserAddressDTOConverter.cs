@@ -20,23 +20,24 @@ public class UserAddressDTOConverter
         {
             var addresses = new List<UserAddressFullViewModel>();
 
-            for (int i = 0; i < models?.Count; i++)
-            {
-                addresses.Add(new UserAddressFullViewModel()
-                {
-                    Id = models[i].Id,
-                    Email = models[i].Email,
-                    Phone = models[i].Phone,
-                    FullName = models[i].FullName,
-                    FullAddress = models[i].FullAddress,
-                    Country = models[i].Country,
-                    Street = models[i].Street,
-                    City = models[i].City,
-                    CreatedDate = models[i].CreatedDate,
-                    ZipCode = models[i].ZipCode,
-                    Description = models[i].Description,
-                });
-            }
+            //for (int i = 0; i < models?.Count; i++)
+            //{
+            //    addresses.Add(new UserAddressFullViewModel()
+            //    {
+            //        Id = models[i].Id,
+            //        Email = models[i].Email,
+            //        Phone = models[i].Phone,
+            //        FullName = models[i].FullName,
+            //        FullAddress = models[i].FullAddress,
+            //        Country = models[i].Country,
+            //        Street = models[i].Street,
+            //        City = models[i].City,
+            //        CreatedDate = models[i].CreatedDate,
+            //        ZipCode = models[i].ZipCode,
+            //        Description = models[i].Description,
+            //    });
+            //}
+
             return addresses;
         }
         catch (Exception ex)
@@ -55,19 +56,20 @@ public class UserAddressDTOConverter
     {
         try
         {
-            return new UserAddressFullViewModel()
-            {
-                Id = Guid.NewGuid(),
-                FullName = model.FullName,
-                Email = model.Email,
-                Phone = model.Phone,
-                FullAddress = model.FullAddress,
-                Country = model.Country,
-                Street = model.Street,
-                City = model.City,
-                ZipCode = model.ZipCode,
-                Description = model.Description,
-            };
+            return new UserAddressFullViewModel();
+            //return new UserAddressFullViewModel()
+            //{
+            //    Id = Guid.NewGuid(),
+            //    FullName = model.FullName,
+            //    Email = model.Email,
+            //    Phone = model.Phone,
+            //    FullAddress = model.FullAddress,
+            //    Country = model.Country,
+            //    Street = model.Street,
+            //    City = model.City,
+            //    ZipCode = model.ZipCode,
+            //    Description = model.Description,
+            //};
         }
         catch (Exception ex)
         {
@@ -85,19 +87,19 @@ public class UserAddressDTOConverter
     {
         try
         {
-            return new UserAddress()
-            {
-                Id = Guid.NewGuid(),
-                FullName = model.FullName!,
-                Email = model.Email!,
-                Phone = (long)model.Phone!,
-                FullAddress = model.FullAddress!,
-                Country = model.Country?.Label!,
-                Street = model.Street,
-                City = model.City!,
-                ZipCode = (int)model.ZipCode!,
-                Description = model.Description,
-            };
+            return new UserAddress();
+            //{
+            //    Id = Guid.NewGuid(),
+            //    FullName = model.FullName!,
+            //    Email = model.Email!,
+            //    Phone = (long)model.Phone!,
+            //    FullAddress = model.FullAddress!,
+            //    Country = model.Country?.Label!,
+            //    Street = model.Street,
+            //    City = model.City!,
+            //    ZipCode = (int)model.ZipCode!,
+            //    Description = model.Description,
+            //};
         }
         catch (Exception ex)
         {
