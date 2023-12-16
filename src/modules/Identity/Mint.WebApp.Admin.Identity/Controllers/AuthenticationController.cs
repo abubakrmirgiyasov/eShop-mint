@@ -15,15 +15,8 @@ public class AuthenticationController(IMediator mediator) : ControllerBase
         [FromBody] SignInRequest model,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            model.Ip = Request.GetIp();
-            var response = await mediator.Send(new SignInCommand(model), cancellationToken);
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        model.Ip = Request.GetIp();
+        var response = await mediator.Send(new SignInCommand(model), cancellationToken);
+        return Ok(response);
     }
 }

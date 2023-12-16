@@ -21,23 +21,27 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         }
         catch (Exception ex)
         {
-            var response = context.Response;
-            response.ContentType = "application/json";
-
-            response.StatusCode = ex switch
-            {
-                ValidationException => (int)HttpStatusCode.BadRequest,
-                UserNotFoundException => (int)HttpStatusCode.NotFound,
-                BlockedException => (int)HttpStatusCode.Locked,
-                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
-                SecurityTokenExpiredException => (int)HttpStatusCode.Unauthorized,
-                _ => (int)HttpStatusCode.BadRequest,
-            };
-
-            var res = JsonSerializer.Serialize(new { message = ex?.Message });
-            await response.WriteAsync(res);
-
-            _logger.LogCritical("{Type}: {Message}", ex?.GetType(), ex?.Message);
+            await HandleExceptionAsync(context, ex);
         }
+    }
+
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+
+        context.Response.StatusCode = exception switch
+        {
+            ValidationException => (int)HttpStatusCode.BadRequest,
+            UserNotFoundException => (int)HttpStatusCode.NotFound,
+            BlockedException => (int)HttpStatusCode.Locked,
+            UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+            SecurityTokenExpiredException => (int)HttpStatusCode.Unauthorized,
+            _ => (int)HttpStatusCode.BadRequest,
+        };
+
+        var res = JsonSerializer.Serialize(new { message = exception?.Message });
+        await context.Response.WriteAsync(res);
+
+        _logger.LogCritical("{Type}: {Message}", exception?.GetType(), exception?.Message);
     }
 }
