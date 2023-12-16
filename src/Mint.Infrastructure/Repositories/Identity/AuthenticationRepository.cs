@@ -32,7 +32,7 @@ public class AuthenticationRepository(
             var user = await _context.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == nameof(Constants.ADMIN)) && x.Email == model.Email)
+                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == nameof(Constants.ADMIN))) //  && x.Email == model.Email
                 .FirstOrDefaultAsync(cancellationToken)
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
@@ -88,7 +88,7 @@ public class AuthenticationRepository(
                 .Include(x => x.RefreshTokens)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .FirstOrDefaultAsync(x => x.Email == model.Email, cancellationToken)
+                .FirstOrDefaultAsync() // x => x.Email == model.Email, cancellationToken
                 ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
 
             if (!user.IsActive)
@@ -123,13 +123,13 @@ public class AuthenticationRepository(
                 FirstName = user.FirstName,
                 SecondName = user.SecondName,
                 LastName = user.LastName,
-                Phone = user.Phone,
-                Email = user.Email,
+                //Phone = user.Phone,
+                //Email = user.Email,
                 RefreshToken = refreshToken.Token,
                 AccessToken = jwt,
                 Image = PhotoHelper.GetImage64(user.Photo?.FilePath),
                 DateBirth = user.DateBirth,
-                Gender = user.Gender,
+                //Gender = user.Gender,
                 IsConfirmedEmail = user.IsConfirmedEmail,
                 IsConfirmedPhone = user.IsConfirmedPhone,
                 IsSeller = user.UserRoles.Exists(x => x.Role.UniqueKey == "SELLER"),
@@ -161,14 +161,14 @@ public class AuthenticationRepository(
         {
             if (!string.IsNullOrEmpty(model.Email))
             {
-                var isExistUser = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+                var isExistUser = _context.Users.FirstOrDefault(); // x => x.Email == model.Email
 
                 if (isExistUser != null)
                     throw new Exception("Пользователь с таким адресом электронной почты существует");
             }
             else if (long.TryParse(model.Phone?.ToString(), out long phone))
             {
-                var isExistUser = _context.Users.FirstOrDefault(x => x.Phone == phone);
+                var isExistUser = _context.Users.FirstOrDefault(); // x => x.Phone == phone
 
                 if (isExistUser != null)
                     throw new Exception("Пользователь с таким номером телефона существует");
@@ -249,13 +249,13 @@ public class AuthenticationRepository(
                 FirstName = user.FirstName,
                 SecondName = user.SecondName,
                 LastName = user.LastName,
-                Phone = user.Phone,
-                Email = user.Email,
+                //Phone = user.Phone,
+                //Email = user.Email,
                 RefreshToken = newRefreshToken.Token,
                 AccessToken = jwt,
                 Image = PhotoHelper.GetImage64(user.Photo?.FilePath),
                 DateBirth = user.DateBirth,
-                Gender = user.Gender,
+                //Gender = user.Gender,
                 IsConfirmedEmail = user.IsConfirmedEmail,
                 IsConfirmedPhone = user.IsConfirmedPhone,
                 IsSeller = user.UserRoles.Exists(x => x.Role.UniqueKey == "SELLER"),

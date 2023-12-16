@@ -5,51 +5,51 @@ using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models.Admin;
 using Mint.Domain.Models.Stores;
 using Mint.Domain.Models.Admin.Manufactures;
+using Mint.Domain.Models.Common;
+using Mint.Domain.Common;
 
 namespace Mint.Infrastructure;
 
 /// <summary>
-/// Identity Application Db Context
+/// Application Db Context
 /// </summary>
-public class ApplicationDbContext : DbContext
+/// <remarks>
+/// Constructor
+/// </remarks>
+/// <param name="options"></param>
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+    : DbContext(options)
 {
-    /// <summary>
-	/// Constructor
-	/// </summary>
-	/// <param name="options"></param>
-	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options) { }
-
     /// <summary>
     /// Users Table
     /// </summary>
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users => Set<User>();
 
     /// <summary>
     /// Roles Table
     /// </summary>
-    public DbSet<Role> Roles { get; set; }
+    public DbSet<Role> Roles => Set<Role>();
+
+    /// <summary>
+    /// User Roles Table
+    /// </summary>
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+
+    /// <summary>
+    /// User Addresses Table
+    /// </summary>
+    public DbSet<UserAddress> UserAddresses => Set<UserAddress>();
 
     /// <summary>
     /// Contacts Table
     /// </summary>
-    public DbSet<Contact> Contacts { get; set; }
+    public DbSet<Contact> Contacts => Set<Contact>();
 
     /// <summary>
     /// Photos Table
     /// </summary>
     public DbSet<Photo> Photos { get; set; }
-
-    /// <summary>
-    /// User Roles Table
-    /// </summary>
-    public DbSet<UserRole> UserRoles { get; set; }
-
-    /// <summary>
-    /// User Addresses Table
-    /// </summary>
-    public DbSet<UserAddress> UserAddresses { get; set; }
-
+    
     /// <summary>
     /// Products Table
     /// </summary>
@@ -135,8 +135,17 @@ public class ApplicationDbContext : DbContext
     /// </summary>
     public DbSet<ManufactureTag> ManufactureTags { get; set; }
 
+    /// <summary>
+    /// Countries Table
+    /// </summary>
+    public DbSet<Country> Countries => Set<Country>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder
+            .HasDefaultSchema(SchemeNames.Mint.ToString())
+            .ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
         builder.Entity<Product>()
             .HasIndex(x => x.Sku)
             .IsUnique(true);

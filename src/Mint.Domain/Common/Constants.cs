@@ -14,6 +14,36 @@ public partial class Constants
     public const string CONFIRMATION_KEY = "MintIdentityConfirmationQueue";
 }
 
+/// <summary>
+/// Projects Name
+/// </summary>
+public enum SchemeNames : int
+{
+    /// <summary>
+    /// None
+    /// </summary>
+    None = 0,
+    /// <summary>
+    /// Main project name
+    /// </summary>
+    Mint = 1,
+}
+
+/// <summary>
+/// Genders for user
+/// </summary>
+public enum Genders : int
+{
+    /// <summary>
+    /// Мужской
+    /// </summary>
+    Male = 0,
+    /// <summary>
+    /// Женский
+    /// </summary>
+    Female = 1,
+}
+
 public enum AuthType : int
 {
     None = 0,

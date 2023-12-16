@@ -5,6 +5,9 @@ using Mint.Domain.Models.Common;
 
 namespace Mint.Infrastructure.Configurations.Common;
 
+/// <summary>
+/// Country Entity Type Configuration
+/// </summary>
 internal sealed class CountryConfiguration : EntityConfiguration<Country, Guid>
 {
     public override void Configure(EntityTypeBuilder<Country> builder)

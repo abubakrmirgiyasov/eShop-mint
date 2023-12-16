@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Mint.Domain.Common.Data;
 using Mint.Domain.Models.Identity;
 
 namespace Mint.Infrastructure.Configurations.Identity;
 
+/// <summary>
+/// User Address Entity Type Configuration
+/// </summary>
 internal sealed class UserAddressConfiguration : EntityConfiguration<UserAddress, Guid>
 {
     public override void Configure(EntityTypeBuilder<UserAddress> builder)
@@ -21,5 +25,7 @@ internal sealed class UserAddressConfiguration : EntityConfiguration<UserAddress
             .WithMany(x => x.UserAddresses)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasData(UserAddressData.UserAddresses);
     }
 }

@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Mint.Domain.Common;
 using StackExchange.Redis;
-using System.Security.Authentication;
 
 namespace Mint.Infrastructure.Redis;
 

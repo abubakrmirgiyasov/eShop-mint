@@ -25,28 +25,28 @@ public class UserDTOConverter
             {
                 var user = new UserFullViewModel()
                 {
-                    Id = model.Id,
-                    FirstName = model.FirstName,
-                    SecondName = model.LastName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    Phone = model.Phone,
-                    DateBirth = model.DateBirth,
-                    Gender = model.Gender,
-                    Description = model.Description,
-                    IsConfirmedEmail = model.IsConfirmedEmail,
-                    IsConfirmedPhone = model.IsConfirmedPhone,
-                    Photo = PhotoHelper.GetImage64(model.Photo?.FilePath),
-                    Roles = new List<RoleSampleDTO>(),
+                    //Id = model.Id,
+                    //FirstName = model.FirstName,
+                    //SecondName = model.LastName,
+                    //LastName = model.LastName,
+                    //Email = model.Email,
+                    //Phone = model.Phone,
+                    //DateBirth = model.DateBirth,
+                    //Gender = model.Gender,
+                    //Description = model.Description,
+                    //IsConfirmedEmail = model.IsConfirmedEmail,
+                    //IsConfirmedPhone = model.IsConfirmedPhone,
+                    //Photo = PhotoHelper.GetImage64(model.Photo?.FilePath),
+                    //Roles = new List<RoleSampleDTO>(),
                 };
 
                 foreach (var role in model.UserRoles)
                 {
-                    user.Roles.Add(new RoleSampleDTO()
-                    {
-                        Label = role.Role.Name,
-                        Value = role.Role.UniqueKey,
-                    });
+                    //user.Roles.Add(new RoleSampleDTO()
+                    //{
+                    //    Label = role.Role.Name,
+                    //    Value = role.Role.UniqueKey,
+                    //});
                 }
 
                 users.Add(user);
@@ -69,28 +69,28 @@ public class UserDTOConverter
     {
         var user = new UserFullViewModel()
         {
-            Id = model.Id,
-            FirstName = model.FirstName,
-            SecondName = model.LastName,
-            LastName = model.LastName,
-            Email = model.Email,
-            Phone = model.Phone,
-            DateBirth = model.DateBirth,
-            Gender = model.Gender,
-            Description = model.Description,
-            IsConfirmedEmail = model.IsConfirmedEmail,
-            IsConfirmedPhone = model.IsConfirmedPhone,
-            Photo = PhotoHelper.GetImage64(model.Photo?.FilePath),
-            Roles = new List<RoleSampleDTO>(),
+            //Id = model.Id,
+            //FirstName = model.FirstName,
+            //SecondName = model.LastName,
+            //LastName = model.LastName,
+            //Email = model.Email,
+            //Phone = model.Phone,
+            //DateBirth = model.DateBirth,
+            //Gender = model.Gender,
+            //Description = model.Description,
+            //IsConfirmedEmail = model.IsConfirmedEmail,
+            //IsConfirmedPhone = model.IsConfirmedPhone,
+            //Photo = PhotoHelper.GetImage64(model.Photo?.FilePath),
+            //Roles = new List<RoleSampleDTO>(),
         };
 
         foreach (var role in model.UserRoles)
         {
-            user.Roles.Add(new RoleSampleDTO()
-            {
-                Label = role.Role.Name,
-                Value = role.Role.UniqueKey,
-            });
+            //user.Roles.Add(new RoleSampleDTO()
+            //{
+            //    Label = role.Role.Name,
+            //    Value = role.Role.UniqueKey,
+            //});
         }
 
         return user;
@@ -112,20 +112,20 @@ public class UserDTOConverter
 
             return new()
             {
-                FirstName = model.FirstName!,
-                SecondName = model.SecondName!,
-                LastName = model.LastName!,
-                DateBirth = model.DateBirth,
-                Description = model.Description,
-                Password = model.Password!,
-                Email = model.Email!,
-                Gender = model.Gender!,
-                Ip = model.Ip,
-                Phone = (long)model.Phone!,
-                IsActive = true,
-                NumOfAttempts = 0,
-                IsConfirmedEmail = false,
-                IsConfirmedPhone = false,
+                //FirstName = model.FirstName!,
+                //SecondName = model.SecondName!,
+                //LastName = model.LastName!,
+                //DateBirth = model.DateBirth,
+                //Description = model.Description,
+                //Password = model.Password!,
+                //Email = model.Email!,
+                //Gender = model.Gender!,
+                //Ip = model.Ip,
+                //Phone = (long)model.Phone!,
+                //IsActive = true,
+                //NumOfAttempts = 0,
+                //IsConfirmedEmail = false,
+                //IsConfirmedPhone = false,
             };
         }
         catch (ArgumentNullException ex)

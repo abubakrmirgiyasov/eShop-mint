@@ -4,6 +4,9 @@ using Mint.Domain.Models.Identity;
 
 namespace Mint.Infrastructure.Configurations.Identity;
 
+/// <summary>
+/// Refresh Token Entity Type Configuration
+/// </summary>
 internal sealed class RefreshTokenConfiguration : EntityConfiguration<RefreshToken, Guid>
 {
     public override void Configure(EntityTypeBuilder<RefreshToken> builder)

@@ -1,4 +1,5 @@
-﻿using Mint.Domain.Models.Base;
+﻿using Mint.Domain.Common;
+using Mint.Domain.Models.Base;
 using Mint.Domain.Models.Stores;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -31,7 +32,7 @@ public class User : Entity<Guid>
     public DateTime? DateBirth { get; set; }
 
     [Required(ErrorMessage = "Заполните поле Пол")]
-    public string Gender { get; set; } = default!;
+    public Genders Gender { get; set; } = default!;
 
     public byte[] Salt { get; set; } = default!;
 

@@ -1,14 +1,12 @@
-using Mint.Domain.Models.Identity;
-using Mint.Infrastructure.MessageBrokers;
+using Mint.Domain.Common;
 using Mint.Infrastructure.Repositories.Email;
 using Mint.Infrastructure.Services.Interfaces;
-using Mint.WebApp.Email.Common;
 using Mint.WebApp.Email.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var appSettings = builder.Configuration.GetSection("MailConfig");
-builder.Services.Configure<MailConfig>(appSettings);
+var appSettings = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettings);
 
 //var brokerSettings = builder.Configuration.GetSection("MessageBroker");
 //var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();

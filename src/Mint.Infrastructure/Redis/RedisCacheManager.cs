@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Mint.Domain.Extensions;
+﻿using Mint.Domain.Extensions;
 using Mint.Infrastructure.Redis.Interface;
 using Newtonsoft.Json;
 using System.Text;
@@ -16,7 +15,7 @@ public class RedisCacheManager(RedisClient redisClient) : IDistributedCacheManag
 
         if (isKeyExist)
             return _redisClient.RedisCache.StringGet(key)!;
-        
+
         return null!;
     }
 

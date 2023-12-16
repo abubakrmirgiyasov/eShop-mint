@@ -6,13 +6,17 @@ public class UserData
 {
     private static readonly byte[] _salt = new Hasher().GetSalt();
 
-    public static Guid Id => Guid.NewGuid();
+    public static Guid[] Ids => 
+    [
+        Guid.Parse("e256100b-0328-4a16-924a-76bdf987e6a0"),
+        Guid.Parse("2448250c-0fc7-464b-9872-ce6a17de0572"),
+    ];
 
     public static List<User> Users =>
     [
         new()
         {
-            Id = Id,
+            Id = Ids[0],
             FirstName = "Миргиясов",
             SecondName = "Абубакр",
             LastName = "Мукимжонович",
@@ -21,55 +25,25 @@ public class UserData
             NumOfAttempts = 0,
             Salt = _salt,
             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
-            Gender = "M",
+            Gender = Genders.Male,
             DateBirth = new DateTime(2001, 12, 5),
             IsActive = true,
             IsConfirmedEmail = true,
-            Contacts =
-            [
-                new()
-                {
-                    Id = Id,
-                    Type = ContactType.Phone,
-                    ContactInformation = "+79502768428"
-                },
-                new()
-                {
-                    Id = Id,
-                    Type = ContactType.Email,
-                    ContactInformation = "abubakrmirgiyasov@gmail.com"
-                }
-            ]
         },
         new()
         {
-            Id = Id,
+            Id = Ids[1],
             FirstName = "Test",
             SecondName = "User",
             Ip = "127.0.0.2",
             Password = new Hasher().GetHash("test_1", _salt),
             NumOfAttempts = 0,
             Salt = _salt,
-            Gender = "F",
+            Gender = Genders.Female,
             DateBirth = new DateTime(2003, 10, 1),
             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
             IsActive = true,
             IsConfirmedEmail = true,
-            Contacts =
-            [
-                new()
-                {
-                    Id = Id,
-                    Type = ContactType.Email,
-                    ContactInformation = "admin@mint.com"
-                },
-                new()
-                {
-                    Id = Id,
-                    Type = ContactType.Phone,
-                    ContactInformation = "+73452763423"
-                }
-            ]
         },
     ];
 }

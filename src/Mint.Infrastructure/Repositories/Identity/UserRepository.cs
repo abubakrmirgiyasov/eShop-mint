@@ -176,7 +176,7 @@ public class UserRepository : IUserRepository
                 .ThenInclude(x => x.Role)
                 .ToListAsync(cancellationToken);
 
-            var user = users.FirstOrDefault(x => x.Email == email)
+            var user = users.FirstOrDefault() // x => x.Email == email
                 ?? throw new ArgumentNullException(nameof(User), "User doesn't exists");
 
             return UserDTOConverter.FormingSingleViewModel(user);
@@ -209,7 +209,7 @@ public class UserRepository : IUserRepository
                 .ThenInclude(x => x.Role)
                 .ToListAsync(cancellationToken);
 
-            var user = users.FirstOrDefault(x => x.Phone == phone)
+            var user = users.FirstOrDefault() // x => x.Phone == phone
                 ?? throw new ArgumentNullException(nameof(User), "User doesn't exists");
 
             return UserDTOConverter.FormingSingleViewModel(user);
@@ -237,18 +237,18 @@ public class UserRepository : IUserRepository
             var random = new Random();
             int code = random.Next(100000, 999999);
 
-            var isUserExists = _context.Users.FirstOrDefault(x => x.Email == email);
+            //var isUserExists = _context.Users.FirstOrDefault(x => x.Email == email);
 
-            if (isUserExists != null)
-                throw new Exception("Пользователь с таким адресом электронной почты существует");
+            //if (isUserExists != null)
+            //    throw new Exception("Пользователь с таким адресом электронной почты существует");
 
-            var user = new User()
-            {
-                Email = email,
-                ConfirmationCode = code,
-            };
+            //var user = new User()
+            //{
+            //    Email = email,
+            //    ConfirmationCode = code,
+            //};
 
-            await _sender.SendAsync(user, null, Constants.CONFIRMATION_KEY);
+            //await _sender.SendAsync(user, null, Constants.CONFIRMATION_KEY);
             return code;
         }
         catch (Exception ex)
@@ -281,8 +281,8 @@ public class UserRepository : IUserRepository
         {
             var users = await _context.Users.ToListAsync(cancellationToken);
 
-            var user = users.FirstOrDefault(x => x.Email?.ToLower() == model.Email?.ToLower())
-                ?? throw new ArgumentNullException(nameof(User), "Пользователь не существует");
+            var user = users.FirstOrDefault() // x => x.Email?.ToLower() == model.Email?.ToLower()
+                ?? throw new ArgumentNullException(nameof(model), "Пользователь не существует");
 
             var address = UserAddressDTOConverter.FormingSingleFullBindingModel(model);
             address.UserId = user.Id;
@@ -318,7 +318,7 @@ public class UserRepository : IUserRepository
             var address = addresses.FirstOrDefault(x => x.Id == model.Id)
                 ?? throw new ArgumentNullException(nameof(User), "Адрес не существует");
 
-            address.Country = model.Country?.Label ?? address.Country;
+            //address.Country = model.Country?.Label ?? address.Country;
             address.City = model.City ?? address.City;
             address.Street = model.Street ?? address.Street;
             address.ZipCode = model.ZipCode ?? address.ZipCode;
