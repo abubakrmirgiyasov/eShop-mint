@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {ChangeEvent, ChangeEventHandler, FC, MutableRefObject, useEffect, useRef, useState} from "react";
 import {
     Card,
     CardBody,
@@ -8,10 +8,8 @@ import {
     Row,
     Spinner,
 } from "reactstrap";
-import Notification from "../../components/Notifications/Notification";
-import {Colors} from "../../constants/commonList";
 import * as Yup from "yup";
-import {useForm} from "react-hook-form";
+import {ChangeHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ISignIn} from "../../types/Authentication/ISignIn";
 import {Link, useNavigate} from "react-router-dom";
@@ -19,6 +17,7 @@ import ParticlesAuth from "../../components/Layouts/ParticlesAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {signInStore} from "../../stores/Authentication/authActions";
 import {useAxios} from "../../hooks/useAxios";
+import PhoneInput from "react-phone-input-2";
 
 // static files
 import logo from "../../assets/images/logos/logo.png";
@@ -32,9 +31,10 @@ const SignInPage: FC = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
+    const [type, setType] = useState<number>(0);
 
     const validation = Yup.object().shape({
-        email: Yup.string()
+        login: Yup.string()
             .required("Заполните обязательное поле")
             .email("Введите действительный адрес электронной почты")
             .matches(/^(?!.*@[^,]*,)/),
@@ -54,10 +54,23 @@ const SignInPage: FC = () => {
     }));
 
     useEffect(() => {
-        if (signIn.isLoggedIn) {
+        if (signIn.isLoggedIn)
             navigate("/");
-        }
+
+
     }, [navigate]);
+
+    const onLoginTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        console.log(e)
+        switch (e.currentTarget.value) {
+            case 0:
+                setType(0);
+            case 1:
+                setType(1);
+            default:
+                console.log("error");
+        }
+    };
 
     const onSubmit = (values: ISignIn) => {
         setIsLoading(true);
@@ -102,23 +115,46 @@ const SignInPage: FC = () => {
                                     </div>
                                     <div className={"p-2 mt-4"}>
                                         <form onSubmit={handleSubmit(onSubmit)}>
-                                            <div className={"mb-3"}>
-                                                <label className={"form-label"} htmlFor={"email"}>
-                                                    Email или Телефон
+                                            <Row className={"mb-3"}>
+                                                <label className={"form-label"} htmlFor={"login"}>
+                                                    Логин
                                                 </label>
-                                                <input
-                                                    type={"text"}
-                                                    id={"email"}
-                                                    className={`form-control ${
-                                                        errors.email ? "is-invalid" : ""
-                                                    }`}
-                                                    placeholder={"Введите email или телефон"}
-                                                    {...register("email")}
-                                                />
-                                                <FormFeedback type={"invalid"}>
-                                                    {errors.email?.message}
-                                                </FormFeedback>
-                                            </div>
+                                                <Row className={"d-flex justify-content-center"} style={{ paddingRight: 0 }}>
+                                                    <Col lg={3} style={{ paddingRight: 0 }}>
+                                                        <select
+                                                            className={"form-select"}
+                                                            onChange={onLoginTypeChange}
+                                                            {...register("type")}
+                                                        >
+                                                            <option value={0}>Email</option>
+                                                            <option value={1}>Телефон</option>
+                                                        </select>
+                                                    </Col>
+                                                    <Col lg={9} style={{ paddingRight: 0 }}>
+                                                        {type === 0 ? (
+                                                            <>
+                                                                <input
+                                                                    type={"text"}
+                                                                    id={"login"}
+                                                                    className={`form-control ${
+                                                                        errors.login ? "is-invalid" : ""
+                                                                    }`}
+                                                                    placeholder={"Введите email"}
+                                                                    {...register("login")}
+                                                                />
+                                                                <FormFeedback type={"invalid"}>
+                                                                    {errors.login?.message}
+                                                                </FormFeedback>
+                                                            </>
+                                                        ) : (
+                                                            <PhoneInput
+
+                                                            />
+                                                        )}
+
+                                                    </Col>
+                                                </Row>
+                                            </Row>
                                             <div className={"mb-0"}>
                                                 <label className={"form-label"} htmlFor={"password"}>
                                                     Пароль

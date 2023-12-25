@@ -31,7 +31,10 @@ public class Jwt(
                 Subject = new ClaimsIdentity(new[] 
                 { 
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    //new Claim(ClaimTypes.Emailm),
+                    new Claim(ClaimTypes.Email, user.Contacts.First(x => x.Type == ContactType.Phone).ContactInformation),
+                    new Claim(ClaimTypes.Name, string.Join(" ", user.FirstName, user.LastName)),
+                    new Claim(ClaimTypes.Role, string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey)))
+                    //new Claim(ClaimTypes.Photo, user.Photo?.)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(
@@ -52,7 +55,7 @@ public class Jwt(
     {
         try
         {
-            return new RefreshToken()
+            return new RefreshToken
             {
                 Token = GetUniqueToken(),
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -78,9 +81,9 @@ public class Jwt(
             tokenHandler.ValidateToken(token, new TokenValidationParameters()
             {
                 ValidateIssuer = false,
-                ValidIssuer = "change me pls, ISSUER",
+                ValidIssuer = _appSettings.IdentitySettings.Issuer,
                 ValidateAudience = false,
-                ValidAudience = "change me pls, AUDIENCE",
+                ValidAudience = _appSettings.IdentitySettings.Audience,
                 ValidateLifetime = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuerSigningKey = true,

@@ -32,9 +32,10 @@ public class AuthenticationRepository(
             var user = await _context.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == nameof(Constants.ADMIN))) //  && x.Email == model.Email
-                .FirstOrDefaultAsync(cancellationToken)
-                ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+                .Include(x => x.Contacts)
+                .Where(x => x.UserRoles.Any(y => y.Role.UniqueKey == nameof(Constants.ADMIN)))
+                .FirstOrDefaultAsync(x => x.Contacts.Any(y => y.ContactInformation.ToLower() == model.Login), cancellationToken)
+                ?? throw new UnauthorizedAccessException("Не правильный Логин/Пароль");
 
             if (!user.IsActive)
                 throw new Exception("Аккаунт не активен");
@@ -50,14 +51,13 @@ public class AuthenticationRepository(
             {
                 user.NumOfAttempts++;
                 await _context.SaveChangesAsync(cancellationToken);
-                throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+                throw new UnauthorizedAccessException("Не правильный Логин/Пароль");
             }
 
             var token = _jwt.GenerateJwtToken(user);
 
             return new AuthenticationAdminResponse
             {
-                Id = user.Id,
                 Token = token,
             };
         }
@@ -89,7 +89,7 @@ public class AuthenticationRepository(
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
                 .FirstOrDefaultAsync() // x => x.Email == model.Email, cancellationToken
-                ?? throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+                ?? throw new UnauthorizedAccessException("Не правильный Логин/Пароль");
 
             if (!user.IsActive)
                 throw new Exception("Аккаунт не активен");
@@ -105,7 +105,7 @@ public class AuthenticationRepository(
             {
                 user.NumOfAttempts++;
                 await _context.SaveChangesAsync(cancellationToken);
-                throw new UnauthorizedAccessException("Не правильный Email/Пароль");
+                throw new UnauthorizedAccessException("Не правильный Логин/Пароль");
             }
 
             var jwt = _jwt.GenerateJwtToken(user);
