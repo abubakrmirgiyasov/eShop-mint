@@ -14,6 +14,14 @@ export default defineConfig({
           Connection: "Keep-Alive",
         }
       },
+      "/a": {
+        target: "https://localhost:7064",
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          Connection: "Keep-Alive",
+        }
+      },
       "/pass": {
         target: "https://localhost:7064",
         changeOrigin: true,

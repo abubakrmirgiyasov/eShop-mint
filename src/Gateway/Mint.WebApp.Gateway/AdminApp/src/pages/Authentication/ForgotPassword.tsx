@@ -99,13 +99,13 @@ const ForgotPassword: FC = () => {
                                                 <input
                                                     type={"text"}
                                                     className={`form-control ${
-                                                        errors.email ? "is-invalid" : ""
+                                                        errors.login ? "is-invalid" : ""
                                                     }`}
                                                     placeholder={"Enter email/phone"}
                                                     {...register("email")}
                                                 />
                                                 <FormFeedback type={"invalid"}>
-                                                    {errors.email?.message}
+                                                    {errors.login?.message}
                                                 </FormFeedback>
                                             </div>
                                             <div className={"text-center mt-4"}>

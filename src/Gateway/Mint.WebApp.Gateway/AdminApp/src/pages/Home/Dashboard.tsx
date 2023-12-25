@@ -22,7 +22,7 @@ const Dashboard: FC = () => {
             <br/>
             <Link to={"/sign-in"}>go back</Link>
 
-            <CustomDataTable data={[]} name={columns} />
+            {/*<CustomDataTable data={[]} name={columns} />*/}
         </div>
     );
 };

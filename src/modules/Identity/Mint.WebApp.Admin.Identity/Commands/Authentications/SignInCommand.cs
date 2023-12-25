@@ -18,7 +18,7 @@ internal sealed class SignInCommandHandler(IAuthenticationRepository authenticat
         var validator = new SignInCommandValidation().Validate(request.Auth);
 
         if (!validator.IsValid)
-            throw new Exception("");
+            throw new Exception("error sign in command");
 
         return await _authentication.SignAsAdmin(request.Auth, cancellationToken);
     }
