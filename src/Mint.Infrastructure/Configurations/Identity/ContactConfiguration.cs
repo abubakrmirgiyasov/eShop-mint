@@ -8,9 +8,9 @@ namespace Mint.Infrastructure.Configurations.Identity;
 /// <summary>
 /// Contact Entity Type Configuration
 /// </summary>
-internal sealed class ContactConfiguration : EntityConfiguration<Contact, Guid>
+internal sealed class ContactConfiguration : IEntityConfiguration<Contact, Guid>
 {
-    public override void Configure(EntityTypeBuilder<Contact> builder)
+    public void Configure(EntityTypeBuilder<Contact> builder)
     {
         builder.ToTable("contacts");
 

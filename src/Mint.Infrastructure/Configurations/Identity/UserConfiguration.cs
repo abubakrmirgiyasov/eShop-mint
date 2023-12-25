@@ -8,9 +8,9 @@ namespace Mint.Infrastructure.Configurations.Identity;
 /// <summary>
 /// User Entity Type Configuration
 /// </summary>
-internal sealed class UserConfiguration : EntityConfiguration<User, Guid>
+internal sealed class UserConfiguration : IEntityConfiguration<User, Guid>
 {
-    public override void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("users");
 
