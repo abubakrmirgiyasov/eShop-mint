@@ -1,20 +1,13 @@
 ﻿using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.WebApp.StorageCloud.Models;
 
 namespace Mint.WebApp.StorageCloud.Services;
 
-public class MessageBrokerBackgroundService : BackgroundService
+public class MessageBrokerBackgroundService(
+    ILogger<MessageBrokerBackgroundService> logger,
+    IMessageReceiver<Models.StorageCloud> receiver) : BackgroundService
 {
-    private readonly ILogger<MessageBrokerBackgroundService> _logger;
-    private readonly IMessageReceiver<Models.StorageCloud> _receiver;
-
-    public MessageBrokerBackgroundService(
-        ILogger<MessageBrokerBackgroundService> logger, 
-        IMessageReceiver<Models.StorageCloud> receiver)
-    {
-        _logger = logger;
-        _receiver = receiver;
-    }
+    private readonly ILogger<MessageBrokerBackgroundService> _logger = logger;
+    private readonly IMessageReceiver<Models.StorageCloud> _receiver = receiver;
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {

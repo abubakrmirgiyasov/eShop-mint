@@ -8,9 +8,9 @@ namespace Mint.Infrastructure.Configurations.Common;
 /// <summary>
 /// Country Entity Type Configuration
 /// </summary>
-internal sealed class CountryConfiguration : EntityConfiguration<Country, Guid>
+internal sealed class CountryConfiguration : IEntityConfiguration<Country, Guid>
 {
-    public override void Configure(EntityTypeBuilder<Country> builder)
+    public void Configure(EntityTypeBuilder<Country> builder)
     {
         builder.ToTable("countries");
 

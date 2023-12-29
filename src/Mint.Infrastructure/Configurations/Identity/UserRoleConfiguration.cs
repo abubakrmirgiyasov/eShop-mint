@@ -8,9 +8,9 @@ namespace Mint.Infrastructure.Configurations.Identity;
 /// <summary>
 /// User Role Entity Type Configuration
 /// </summary>
-internal sealed class UserRoleConfiguration : EntityConfiguration<UserRole>
+internal sealed class UserRoleConfiguration : IEntityConfiguration<UserRole>
 {
-    public override void Configure(EntityTypeBuilder<UserRole> builder)
+    public void Configure(EntityTypeBuilder<UserRole> builder)
     {
         builder.ToTable("user_roles");
 

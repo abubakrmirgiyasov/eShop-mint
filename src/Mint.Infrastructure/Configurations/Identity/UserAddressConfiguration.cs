@@ -8,9 +8,9 @@ namespace Mint.Infrastructure.Configurations.Identity;
 /// <summary>
 /// User Address Entity Type Configuration
 /// </summary>
-internal sealed class UserAddressConfiguration : EntityConfiguration<UserAddress, Guid>
+internal sealed class UserAddressConfiguration : IEntityConfiguration<UserAddress, Guid>
 {
-    public override void Configure(EntityTypeBuilder<UserAddress> builder)
+    public void Configure(EntityTypeBuilder<UserAddress> builder)
     {
         builder.ToTable("user_addresses");
 

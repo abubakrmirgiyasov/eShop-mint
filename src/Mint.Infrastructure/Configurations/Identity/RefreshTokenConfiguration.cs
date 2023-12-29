@@ -7,9 +7,9 @@ namespace Mint.Infrastructure.Configurations.Identity;
 /// <summary>
 /// Refresh Token Entity Type Configuration
 /// </summary>
-internal sealed class RefreshTokenConfiguration : EntityConfiguration<RefreshToken, Guid>
+internal sealed class RefreshTokenConfiguration : IEntityConfiguration<RefreshToken, Guid>
 {
-    public override void Configure(EntityTypeBuilder<RefreshToken> builder)
+    public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
         builder.ToTable("refresh_tokens");
 

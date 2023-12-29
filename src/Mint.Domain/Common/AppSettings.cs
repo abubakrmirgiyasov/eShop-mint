@@ -1,5 +1,7 @@
 ﻿#nullable disable
 
+using Mint.Domain.Common.Settings;
+
 namespace Mint.Domain.Common;
 
 public class AppSettings
@@ -11,6 +13,8 @@ public class AppSettings
     public RedisSettings RedisSettings { get; set; }
 
     public MailConfig MailConfig { get; set; }
+
+    public MinioSettings MinioSettings { get; set; }
 }
 
 public class MailConfig
