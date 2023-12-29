@@ -2,5 +2,7 @@
 
 public class StorageCloud
 {
-    public IFormCollection? Files { get; set; }
+    public string Bucket { get; set; } = default!;
+
+    public IFormFile File { get; set; } = default!;
 }
