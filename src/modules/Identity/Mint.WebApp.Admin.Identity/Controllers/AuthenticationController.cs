@@ -11,12 +11,11 @@ namespace Mint.WebApp.Admin.Controllers;
 public class AuthenticationController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> SignIn(
+    public async Task<ActionResult<AuthenticationAdminResponse>> SignIn(
         [FromBody] SignInRequest model,
         CancellationToken cancellationToken = default)
     {
         model.Ip = Request.GetIp();
-        var response = await mediator.Send(new SignInCommand(model), cancellationToken);
-        return Ok(response);
+        return await mediator.Send(new SignInCommand(model), cancellationToken);
     }
 }

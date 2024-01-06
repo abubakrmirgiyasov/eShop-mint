@@ -8,7 +8,7 @@ public class SignInCommandValidation : AbstractValidator<SignInRequest>
 {
     public SignInCommandValidation()
     {
-        RuleFor(x => x.Type).IsInEnum();
+        RuleFor(x => Enum.Parse<ContactType>(x.Type)).IsInEnum();
         RuleFor(x => x.Login)
             .EmailAddress()
             .When(x => Enum.Parse<ContactType>(x.Type) == ContactType.Email, ApplyConditionTo.CurrentValidator)

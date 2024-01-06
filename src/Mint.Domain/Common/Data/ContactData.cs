@@ -19,6 +19,7 @@ public class ContactData
             Type = ContactType.Phone,
             ContactInformation = "+79502768428",
             UserId = UserData.Ids[0],
+            CountryCode = "RU"
         },
         new()
         {
@@ -40,6 +41,7 @@ public class ContactData
             Type = ContactType.Phone,
             ContactInformation = "+73452763423",
             UserId = UserData.Ids[1],
+            CountryCode = "RU"
         }
     ];
 }

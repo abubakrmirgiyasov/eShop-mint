@@ -7,6 +7,8 @@ public class Contact : Entity<Guid>
 {
     public string ContactInformation { get; set; } = default!;
 
+    public string? CountryCode { get; set; }
+
     public ContactType Type { get; set; }
 
     public Guid UserId { get; set; }

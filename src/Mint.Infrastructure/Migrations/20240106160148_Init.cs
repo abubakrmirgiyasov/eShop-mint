@@ -464,7 +464,8 @@ namespace Mint.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContactInformation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactInformation = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
@@ -746,20 +747,20 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "ConfirmationCode", "DateBirth", "Description", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "Test", "Female", "127.0.0.2", true, true, false, false, false, null, 0, "jWOnoIuvOH90XII8E/GleqdVK1PNO0w1/zLMatf7Ec4=", null, new byte[] { 102, 205, 68, 248, 183, 201, 95, 253, 191, 151, 53, 181, 175, 67, 155, 33 }, "User", null },
-                    { new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "Миргиясов", "Male", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "eWnLyXEeGl/1WoQmsosufkOJd47HzaZPdRTG9eAeFBE=", null, new byte[] { 102, 205, 68, 248, 183, 201, 95, 253, 191, 151, 53, 181, 175, 67, 155, 33 }, "Абубакр", null }
+                    { new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "Test", "Female", "127.0.0.2", true, true, false, false, false, null, 0, "QqefH9FC5R94xCagcA3UaOEttLZ2nGYhWv6rYZiVro4=", null, new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 }, "User", null },
+                    { new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "Миргиясов", "Male", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "dk33SGOv38YCrAY9E/BkCRINffJ8ersiXZE/bT+8hPk=", null, new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 }, "Абубакр", null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Mint",
                 table: "contacts",
-                columns: new[] { "Id", "ContactInformation", "Type", "UpdateDateTime", "UserId" },
+                columns: new[] { "Id", "ContactInformation", "CountryCode", "Type", "UpdateDateTime", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"), "+79502768428", "Phone", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
-                    { new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"), "+73452763423", "Phone", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") },
-                    { new Guid("70298181-e41d-41a9-86c5-ac349a74af6d"), "abubakrmirgiyasov@gmail.com", "Email", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
-                    { new Guid("83733797-4c73-457a-874b-cba254c6d71e"), "admin@mint.com", "Email", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") }
+                    { new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"), "+79502768428", "RU", "Phone", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
+                    { new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"), "+73452763423", "RU", "Phone", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") },
+                    { new Guid("70298181-e41d-41a9-86c5-ac349a74af6d"), "abubakrmirgiyasov@gmail.com", null, "Email", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
+                    { new Guid("83733797-4c73-457a-874b-cba254c6d71e"), "admin@mint.com", null, "Email", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") }
                 });
 
             migrationBuilder.InsertData(
@@ -768,8 +769,8 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "City", "CountryId", "Description", "FullAddress", "FullName", "Street", "UpdateDateTime", "UserId", "ZipCode" },
                 values: new object[,]
                 {
-                    { new Guid("7004e076-57ef-424f-b94b-b185bc1acc18"), "Новосибирск", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Заллесского", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 635600 },
-                    { new Guid("dc20a457-ad9c-4a10-8d12-fd7e4fa72d1c"), "Худжанд", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Тиллокон", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 735700 }
+                    { new Guid("29df3dac-70c2-4a19-8a3b-56b724e64004"), "Новосибирск", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Заллесского", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 635600 },
+                    { new Guid("e29a0622-f90b-4072-ae7e-1e9cadc1d0da"), "Худжанд", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Тиллокон", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 735700 }
                 });
 
             migrationBuilder.InsertData(
@@ -811,6 +812,13 @@ namespace Mint.Infrastructure.Migrations
                 schema: "Mint",
                 table: "CommonCharacteristics",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_contacts_ContactInformation",
+                schema: "Mint",
+                table: "contacts",
+                column: "ContactInformation",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_contacts_UserId",
