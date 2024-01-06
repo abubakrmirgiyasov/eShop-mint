@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Mint.WebApp.Admin\Mint.WebApp.Admin.csproj" />
+    <ProjectReference Include="..\Mint.WebApp.Admin\Mint.WebApp.Admin.csproj" />
   </ItemGroup>
 
 </Project>

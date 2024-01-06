@@ -12,7 +12,7 @@ using Mint.Infrastructure;
 namespace Mint.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231216120944_Init")]
+    [Migration("20240106160148_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -546,6 +546,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("ContactInformation")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CountryCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
@@ -565,6 +568,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ContactInformation")
+                        .IsUnique();
+
                     b.HasIndex("UserId");
 
                     b.ToTable("contacts", "Mint");
@@ -574,6 +580,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"),
                             ContactInformation = "+79502768428",
+                            CountryCode = "RU",
                             Type = "Phone",
                             UserId = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0")
                         },
@@ -595,6 +602,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"),
                             ContactInformation = "+73452763423",
+                            CountryCode = "RU",
                             Type = "Phone",
                             UserId = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572")
                         });
@@ -809,8 +817,8 @@ namespace Mint.Infrastructure.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "eWnLyXEeGl/1WoQmsosufkOJd47HzaZPdRTG9eAeFBE=",
-                            Salt = new byte[] { 102, 205, 68, 248, 183, 201, 95, 253, 191, 151, 53, 181, 175, 67, 155, 33 },
+                            Password = "dk33SGOv38YCrAY9E/BkCRINffJ8ersiXZE/bT+8hPk=",
+                            Salt = new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 },
                             SecondName = "Абубакр"
                         },
                         new
@@ -828,8 +836,8 @@ namespace Mint.Infrastructure.Migrations
                             IsDeleted = false,
                             IsSeller = false,
                             NumOfAttempts = 0,
-                            Password = "jWOnoIuvOH90XII8E/GleqdVK1PNO0w1/zLMatf7Ec4=",
-                            Salt = new byte[] { 102, 205, 68, 248, 183, 201, 95, 253, 191, 151, 53, 181, 175, 67, 155, 33 },
+                            Password = "QqefH9FC5R94xCagcA3UaOEttLZ2nGYhWv6rYZiVro4=",
+                            Salt = new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 },
                             SecondName = "User"
                         });
                 });
@@ -889,7 +897,7 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dc20a457-ad9c-4a10-8d12-fd7e4fa72d1c"),
+                            Id = new Guid("e29a0622-f90b-4072-ae7e-1e9cadc1d0da"),
                             City = "Худжанд",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             Description = "full address for custom user",
@@ -901,7 +909,7 @@ namespace Mint.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7004e076-57ef-424f-b94b-b185bc1acc18"),
+                            Id = new Guid("29df3dac-70c2-4a19-8a3b-56b724e64004"),
                             City = "Новосибирск",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             Description = "full address for custom user",
