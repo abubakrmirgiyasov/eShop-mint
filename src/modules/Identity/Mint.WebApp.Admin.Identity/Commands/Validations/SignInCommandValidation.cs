@@ -11,8 +11,8 @@ public class SignInCommandValidation : AbstractValidator<SignInRequest>
         RuleFor(x => x.Type).IsInEnum();
         RuleFor(x => x.Login)
             .EmailAddress()
-            .When(x => x.Type == ContactType.Email, ApplyConditionTo.CurrentValidator)
+            .When(x => Enum.Parse<ContactType>(x.Type) == ContactType.Email, ApplyConditionTo.CurrentValidator)
             .Matches("^\\+\\d{10,14}$")
-            .When(x => x.Type == ContactType.Phone, ApplyConditionTo.CurrentValidator);
+            .When(x => Enum.Parse<ContactType>(x.Type) == ContactType.Phone, ApplyConditionTo.CurrentValidator);
     }
 }

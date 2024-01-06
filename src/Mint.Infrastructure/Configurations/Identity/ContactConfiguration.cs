@@ -19,6 +19,10 @@ internal sealed class ContactConfiguration : IEntityConfiguration<Contact, Guid>
             .HasConversion<string>();
 
         builder
+            .HasIndex(x => x.ContactInformation)
+            .IsUnique(true);
+
+        builder
             .HasOne(x => x.User)
             .WithMany(x => x.Contacts)
             .HasForeignKey(x => x.UserId)
