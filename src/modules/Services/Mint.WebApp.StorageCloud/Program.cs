@@ -1,5 +1,5 @@
 using Mint.Domain.Common;
-using Mint.Infrastructure.Services;
+using Mint.Infrastructure.Middlewares;
 using Mint.WebApp.StorageCloud.Services;
 using Mint.WebApp.StorageCloud.Services.Interfaces;
 

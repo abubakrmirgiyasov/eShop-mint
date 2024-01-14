@@ -10,7 +10,7 @@ public static class IdentityExtensions
 {
     public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
     {
-        services.AddScoped<IJwt, Jwt>();
+        services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
         return services;

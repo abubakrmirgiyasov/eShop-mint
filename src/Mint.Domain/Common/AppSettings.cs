@@ -1,6 +1,8 @@
 ﻿#nullable disable
 
+using Microsoft.IdentityModel.Tokens;
 using Mint.Domain.Common.Settings;
+using System.Text;
 
 namespace Mint.Domain.Common;
 
@@ -44,9 +46,23 @@ public class IdentitySettings
 
     public int RefreshTokenTTL { get; set; }
 
-    public string Issuer { get; set; }
+    public string ValidIssuer { get; set; }
 
     public string Audience { get; set; }
+
+    public bool ValidateIssuerSigningKey { get; set; }
+
+    public bool ValidateAudience { get; set; }
+
+    public bool ValidateIssuer { get; set; }
+
+    public bool ValidateLifetime { get; set; }
+
+    public SymmetricSecurityKey GetSecurityKey()
+    {
+        var key = Encoding.ASCII.GetBytes(SecretKey);
+        return new SymmetricSecurityKey(key);
+    }
 }
 
 public class RedisSettings

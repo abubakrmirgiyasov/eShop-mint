@@ -6,7 +6,7 @@ using Mint.Domain.Exceptions;
 using System.Net;
 using System.Text.Json;
 
-namespace Mint.Infrastructure.Services;
+namespace Mint.Infrastructure.Middlewares;
 
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {

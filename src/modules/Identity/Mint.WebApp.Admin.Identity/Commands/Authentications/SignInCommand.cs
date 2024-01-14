@@ -1,7 +1,7 @@
 ﻿using Mint.Domain.DTO_s.Identity;
 using Mint.Infrastructure.Messaging;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
-using Mint.WebApp.Admin.Identity.Commands.Validations;
+using Mint.WebApp.Admin.Identity.Commands.Validations.Authentications;
 
 namespace Mint.WebApp.Admin.Identity.Commands.Authentications;
 

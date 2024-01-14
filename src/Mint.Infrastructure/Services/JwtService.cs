@@ -11,15 +11,17 @@ using System.Text;
 
 namespace Mint.Infrastructure.Services;
 
-public class Jwt(
-    ILogger<Jwt> logger,
+/// <inheritdoc cref="IJwtService"/>
+public class JwtService(
+    ILogger<JwtService> logger,
     IOptions<AppSettings> appSettings,
-    ApplicationDbContext context) : IJwt
+    ApplicationDbContext context) : IJwtService
 {
-    private readonly ILogger<Jwt> _logger = logger;
+    private readonly ILogger<JwtService> _logger = logger;
     private readonly AppSettings _appSettings = appSettings.Value;
     private readonly ApplicationDbContext _context = context;
 
+    /// <inheritdoc />
     public string GenerateJwtToken(User user)
     {
         try
@@ -30,17 +32,34 @@ public class Jwt(
             {
                 Subject = new ClaimsIdentity(new[] 
                 { 
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Contacts.First(x => x.Type == ContactType.Phone).ContactInformation),
-                    new Claim(ClaimTypes.Name, string.Join(" ", user.FirstName, user.LastName)),
-                    new Claim(ClaimTypes.Role, string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey)))
-                    //new Claim(ClaimTypes.Photo, user.Photo?.)
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("fullName", string.Join(" ", user.FirstName, user.SecondName)),
+                    new Claim("role", string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
+                    //new Claim("avatar", ToBase64(user.Photo))
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(
                     key: new SymmetricSecurityKey(key),
                     algorithm: SecurityAlgorithms.HmacSha256Signature),
             };
+
+            var phone = user.Contacts.FirstOrDefault(x => x.Type == ContactType.Phone);
+            var email = user.Contacts.FirstOrDefault(x => x.Type == ContactType.Email);
+
+            if (phone is null && email is not null)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim("email", email.ContactInformation));
+            }
+            else if (phone is not null && email is null)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim("phone", phone.ContactInformation));
+            }
+            else if (phone is not null && email is not null)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim("phone", phone.ContactInformation));
+                tokenDescriptor.Subject.AddClaim(new Claim("email", email.ContactInformation));
+            }
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
@@ -77,16 +96,15 @@ public class Jwt(
                 return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
             tokenHandler.ValidateToken(token, new TokenValidationParameters()
             {
-                ValidateIssuer = false,
-                ValidIssuer = _appSettings.IdentitySettings.Issuer,
-                ValidateAudience = false,
+                ValidateIssuer = _appSettings.IdentitySettings.ValidateIssuer,
+                ValidIssuer = _appSettings.IdentitySettings.ValidIssuer,
+                ValidateAudience = _appSettings.IdentitySettings.ValidateAudience,
                 ValidAudience = _appSettings.IdentitySettings.Audience,
-                ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuerSigningKey = true,
+                ValidateLifetime = _appSettings.IdentitySettings.ValidateLifetime,
+                IssuerSigningKey = _appSettings.IdentitySettings.GetSecurityKey(),
+                ValidateIssuerSigningKey = _appSettings.IdentitySettings.ValidateIssuerSigningKey,
                 ClockSkew = TimeSpan.Zero,
             }, out SecurityToken validatedToken);
 

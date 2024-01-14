@@ -17,12 +17,12 @@ public class AuthenticationRepository(
     IOptions<AppSettings> appSettings,
     ILogger<AuthenticationRepository> logger,
     ApplicationDbContext context,
-    IJwt jwt) : IAuthenticationRepository
+    IJwtService jwt) : IAuthenticationRepository
 {
     private readonly ILogger<AuthenticationRepository> _logger = logger;
     private readonly AppSettings _appSettings = appSettings.Value;
     private readonly ApplicationDbContext _context = context;
-    private readonly IJwt _jwt = jwt;
+    private readonly IJwtService _jwt = jwt;
 
     /// <inheritdoc />
     public async Task<AuthenticationAdminResponse> SignAsAdmin(SignInRequest model, CancellationToken cancellationToken = default)

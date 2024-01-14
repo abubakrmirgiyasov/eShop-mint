@@ -4,7 +4,7 @@
   },
   "Routes": [
     { // Admin
-      "UpstreamPathTemplate": "/main/{version}/{everything}",
+      "UpstreamPathTemplate": "/a/v1/{version}/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",
@@ -40,7 +40,7 @@
       ]
     },
     { // Admin Identity
-      "UpstreamPathTemplate": "/a/v1/{version}/{everything}",
+      "UpstreamPathTemplate": "/a/identity/{version}/{everything}",
       "UpstreamHttpMethod": [ "POST", "DELETE" ],
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",
@@ -48,6 +48,18 @@
         {
           "Host": "localhost",
           "Port": 7219
+        }
+      ]
+    },
+    { // Storage
+      "UpstreamPathTemplate": "/storage/{version}/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7001
         }
       ]
     }

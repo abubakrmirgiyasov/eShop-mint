@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Mint.WebApp.StorageCloud.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class MiniosController(IStorageCloudService storageService) : ControllerBase
 {
     [HttpGet]
@@ -21,7 +21,7 @@ public class MiniosController(IStorageCloudService storageService) : ControllerB
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromForm] Models.StorageCloud storageCloud,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         await storageService.UploadFileAsync(storageCloud.File, storageCloud.Bucket, cancellationToken);
         return NoContent();

@@ -5,7 +5,7 @@ namespace Mint.Infrastructure.Services.Interfaces;
 /// <summary>
 /// Interface for Jwt generator & checker class
 /// </summary>
-public interface IJwt
+public interface IJwtService
 {
     /// <summary>
     /// Generates jwt token

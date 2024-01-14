@@ -5,7 +5,7 @@ using Mint.WebApp.Email.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var appSettings = builder.Configuration.GetSection("AppSettings");
+var appSettings = builder.Configuration.GetSection(nameof(AppSettings));
 builder.Services.Configure<AppSettings>(appSettings);
 
 //var brokerSettings = builder.Configuration.GetSection("MessageBroker");
