@@ -1,29 +1,32 @@
 ﻿using ClosedXML.Excel;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.StorageCloud.Services.Interfaces;
+using Mint.Domain.DTO_s.MessageBroker;
+using Mint.WebApp.StorageCloud.Commands;
+using Mint.WebApp.StorageCloud.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Mint.WebApp.StorageCloud.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
-public class MiniosController(IStorageCloudService storageService) : ControllerBase
+[Route("api/[controller]")]
+public class MiniosController(IMediator mediator) : ControllerBase
 {
-    [HttpGet]
-    public async Task<ActionResult> GetSingleImage(
+    [HttpGet("link")]
+    public async Task<ActionResult<UserImage>> GetSingleImage(
         [FromQuery, Required] string bucket,
         [FromQuery, Required] string name,
         CancellationToken cancellationToken = default)
     {
-        return Ok(await storageService.GetFileLinkAsync(name, bucket, cancellationToken));
+        return await mediator.Send(new GetImageLinkCommand(bucket, name), cancellationToken);
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult> Create(
-        [FromForm] Models.StorageCloud storageCloud,
+        [FromForm] StorageCloudDto storageCloud,
         CancellationToken cancellationToken = default)
     {
-        await storageService.UploadFileAsync(storageCloud.File, storageCloud.Bucket, cancellationToken);
+        //await storageService.UploadFileAsync(storageCloud.File, storageCloud.Bucket, cancellationToken);
         return NoContent();
     }
 

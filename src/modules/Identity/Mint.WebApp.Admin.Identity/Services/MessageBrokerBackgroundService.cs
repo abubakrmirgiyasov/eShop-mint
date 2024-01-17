@@ -1,14 +1,15 @@
-﻿using Mint.Infrastructure.MessageBrokers.Interfaces;
+﻿using Mint.Domain.DTO_s.MessageBroker;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 
-namespace Mint.WebApp.StorageCloud.Services;
+namespace Mint.WebApp.Admin.Identity.Services;
 
 public class MessageBrokerBackgroundService(
     ILogger<MessageBrokerBackgroundService> logger,
-    IMessageReceiver<Models.StorageCloudDto> receiver
+    IMessageReceiver<UserImage> receiver
 ) : BackgroundService
 {
     private readonly ILogger<MessageBrokerBackgroundService> _logger = logger;
-    private readonly IMessageReceiver<Models.StorageCloudDto> _receiver = receiver;
+    private readonly IMessageReceiver<UserImage> _receiver = receiver;
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -16,7 +17,7 @@ public class MessageBrokerBackgroundService(
 
         var task = _receiver?.ReceiveAsync(async (data, metaData) =>
         {
-            _logger.LogInformation("Message: {Message}", data.ToString());
+            _logger.LogInformation("Info: Id={Id}, Image={ImagePath}", data.Id, data.ImagePath);
 
             await Task.Delay(100);
         }, stoppingToken);

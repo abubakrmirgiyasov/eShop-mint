@@ -4,18 +4,13 @@ using Mint.Infrastructure.MessageBrokers.Interfaces;
 
 namespace Mint.Infrastructure.MessageBrokers;
 
-public class MessageBrokerBackgroundService<T> : BackgroundService
+public class MessageBrokerBackgroundService<T>(
+    ILogger<MessageBrokerBackgroundService<T>> logger,
+    IMessageReceiver<T> receiver
+) : BackgroundService
 {
-    private readonly ILogger<MessageBrokerBackgroundService<T>> _logger;
-    private readonly IMessageReceiver<T> _receiver;
-
-    public MessageBrokerBackgroundService(
-        ILogger<MessageBrokerBackgroundService<T>> logger, 
-        IMessageReceiver<T> receiver)
-    {
-        _logger = logger;
-        _receiver = receiver;
-    }
+    private readonly ILogger<MessageBrokerBackgroundService<T>> _logger = logger;
+    private readonly IMessageReceiver<T> _receiver = receiver;
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {

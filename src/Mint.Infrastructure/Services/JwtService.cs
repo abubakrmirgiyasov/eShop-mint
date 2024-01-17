@@ -26,21 +26,11 @@ public class JwtService(
     {
         try
         {
-            var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor()
+            var claims = new List<Claim> 
             {
-                Subject = new ClaimsIdentity(new[] 
-                { 
-                    new Claim("id", user.Id.ToString()),
-                    new Claim("fullName", string.Join(" ", user.FirstName, user.SecondName)),
-                    new Claim("role", string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
-                    //new Claim("avatar", ToBase64(user.Photo))
-                }),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(
-                    key: new SymmetricSecurityKey(key),
-                    algorithm: SecurityAlgorithms.HmacSha256Signature),
+                new("id", user.Id.ToString()),
+                new("fullName", string.Join(" ", user.FirstName, user.SecondName)),
+                new("role", string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
             };
 
             var phone = user.Contacts.FirstOrDefault(x => x.Type == ContactType.Phone);
@@ -48,20 +38,33 @@ public class JwtService(
 
             if (phone is null && email is not null)
             {
-                tokenDescriptor.Subject.AddClaim(new Claim("email", email.ContactInformation));
+                claims.Add(new Claim("email", email.ContactInformation));
             }
             else if (phone is not null && email is null)
             {
-                tokenDescriptor.Subject.AddClaim(new Claim("phone", phone.ContactInformation));
+                claims.Add(new Claim("phone", phone.ContactInformation));
             }
             else if (phone is not null && email is not null)
             {
-                tokenDescriptor.Subject.AddClaim(new Claim("phone", phone.ContactInformation));
-                tokenDescriptor.Subject.AddClaim(new Claim("email", email.ContactInformation));
+                claims.Add(new Claim("phone", phone.ContactInformation));
+                claims.Add(new Claim("email", email.ContactInformation));
             }
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
+            var credentials = new SigningCredentials(
+                key: new SymmetricSecurityKey(key),
+                algorithm: SecurityAlgorithms.HmacSha256Signature
+            );
+
+            var jwtToken = new JwtSecurityToken(
+                issuer: _appSettings.IdentitySettings.ValidIssuer,
+                audience: _appSettings.IdentitySettings.ValidAudience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: _appSettings.IdentitySettings.GetCredentialsKey()
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
         catch (Exception ex)
         {
@@ -80,41 +83,6 @@ public class JwtService(
                 Expires = DateTime.UtcNow.AddDays(7),
                 CreatedByIp = ip,
             };
-        }
-        catch (Exception ex)
-        {
-            _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
-            throw new Exception(ex.Message, ex);
-        }
-    }
-
-    public Guid? ValidateJwtToken(string token)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(token))
-                return null;
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            tokenHandler.ValidateToken(token, new TokenValidationParameters()
-            {
-                ValidateIssuer = _appSettings.IdentitySettings.ValidateIssuer,
-                ValidIssuer = _appSettings.IdentitySettings.ValidIssuer,
-                ValidateAudience = _appSettings.IdentitySettings.ValidateAudience,
-                ValidAudience = _appSettings.IdentitySettings.Audience,
-                ValidateLifetime = _appSettings.IdentitySettings.ValidateLifetime,
-                IssuerSigningKey = _appSettings.IdentitySettings.GetSecurityKey(),
-                ValidateIssuerSigningKey = _appSettings.IdentitySettings.ValidateIssuerSigningKey,
-                ClockSkew = TimeSpan.Zero,
-            }, out SecurityToken validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            return Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-        }
-        catch (SecurityTokenExpiredException ex)
-        {
-            _logger.LogCritical("SecurityTokenExpiredException Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
-            throw new SecurityTokenExpiredException(ex.Message, ex);
         }
         catch (Exception ex)
         {

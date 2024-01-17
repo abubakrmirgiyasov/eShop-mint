@@ -15,13 +15,6 @@ public interface IJwtService
     string GenerateJwtToken(User user);
 
     /// <summary>
-    /// Validate Jwt Token
-    /// </summary>
-    /// <param name="token"></param>
-    /// <returns>if valid userId else null</returns>
-    Guid? ValidateJwtToken(string token);
-
-    /// <summary>
     /// Generates Refresh Token
     /// </summary>
     /// <param name="ip"></param>

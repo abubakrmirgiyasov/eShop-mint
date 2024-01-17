@@ -1,6 +1,6 @@
 ﻿namespace Mint.WebApp.StorageCloud.Models;
 
-public class StorageCloud
+public class StorageCloudDto
 {
     public string Bucket { get; set; } = default!;
 

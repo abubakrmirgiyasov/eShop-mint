@@ -13,4 +13,6 @@ public class AdminInfoDto
     public string[] ContactInformationType { get; set; } = default!;
 
     public string Gender { get; set; } = default!;
+
+    public string Avatar { get; set; } = default!;
 }

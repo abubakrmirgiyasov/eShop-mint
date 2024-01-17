@@ -4,7 +4,7 @@ using Mint.Domain.DTO_s.Identity;
 using Mint.Domain.Extensions;
 using Mint.WebApp.Admin.Identity.Commands.Authentications;
 
-namespace Mint.WebApp.Admin.Controllers;
+namespace Mint.WebApp.Admin.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]

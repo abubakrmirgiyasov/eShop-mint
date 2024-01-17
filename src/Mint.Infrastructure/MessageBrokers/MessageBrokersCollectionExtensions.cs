@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Mint.Domain.Common;
 using Mint.Infrastructure.HealthChekcs;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.MessageBrokers.RabbitMQ;

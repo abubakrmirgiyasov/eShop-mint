@@ -17,6 +17,43 @@ public class AppSettings
     public MailConfig MailConfig { get; set; }
 
     public MinioSettings MinioSettings { get; set; }
+
+    public MessageBrokerOptions MessageBroker { get; set; }
+}
+
+public class MessageBrokerOptions
+{
+    public string Provider { get; set; } = null!;
+
+    public RabbitMQOptions RabbitMQ { get; set; } = null!;
+
+    public bool UseRabbitMQ()
+    {
+        return Provider == "RabbitMQ";
+    }
+}
+
+public class RabbitMQOptions
+{
+    public string HostName { get; set; }
+
+    public string UserName { get; set; }
+
+    public string Password { get; set; }
+
+    public string ExchangeName { get; set; }
+
+    public Dictionary<string, string> RoutingKeys { get; set; }
+
+    public Dictionary<string, string> QueueNames { get; set; }
+
+    public string ConnectionString
+    {
+        get
+        {
+            return $"amqp://{UserName}:{Password}@{HostName}/%2f";
+        }
+    }
 }
 
 public class MailConfig
@@ -46,9 +83,11 @@ public class IdentitySettings
 
     public int RefreshTokenTTL { get; set; }
 
+    public int AccessTokenTTL { get; set; }
+
     public string ValidIssuer { get; set; }
 
-    public string Audience { get; set; }
+    public string ValidAudience { get; set; }
 
     public bool ValidateIssuerSigningKey { get; set; }
 
@@ -58,10 +97,15 @@ public class IdentitySettings
 
     public bool ValidateLifetime { get; set; }
 
-    public SymmetricSecurityKey GetSecurityKey()
+    public bool ValidateLifeTime { get; set; }
+
+    public SigningCredentials GetCredentialsKey()
     {
         var key = Encoding.ASCII.GetBytes(SecretKey);
-        return new SymmetricSecurityKey(key);
+        return new SigningCredentials(
+            key: new SymmetricSecurityKey(key),
+            algorithm: SecurityAlgorithms.HmacSha256Signature
+        );
     }
 }
 

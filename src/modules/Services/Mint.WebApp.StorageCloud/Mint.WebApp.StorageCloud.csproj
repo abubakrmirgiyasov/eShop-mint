@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
+    <ProjectReference Include="..\Mint.WebApp.Extensions\Mint.WebApp.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

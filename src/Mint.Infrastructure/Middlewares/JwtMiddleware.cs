@@ -18,13 +18,13 @@ public class JwtMiddleware(RequestDelegate next)
             .Split(" ")
             .Last();
 
-        var userId = jwt.ValidateJwtToken(token!);
+        //var userId = jwt.ValidateJwtToken(token!);
 
-        if (userId is not null)
-        {
-            var roles = await user.GetUserRoleForAuthAsync(userId.Value);
-            context.Request.Headers.Add("X-Role", roles);
-        }
+        //if (userId is not null)
+        //{
+        //    var roles = await user.GetUserRoleForAuthAsync(userId.Value);
+        //    context.Request.Headers.Add("X-Role", roles);
+        //}
 
         await _next(context);
     }
