@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Common;
 using Mint.Infrastructure;
-using Mint.Infrastructure.Messaging;
+using Mint.Infrastructure.MessageBrokers;
 using Mint.Infrastructure.Redis;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.Infrastructure.Repositories.Admin;

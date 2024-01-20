@@ -26,7 +26,7 @@ public class MiniosController(IMediator mediator) : ControllerBase
         [FromForm] StorageCloudDto storageCloud,
         CancellationToken cancellationToken = default)
     {
-        //await storageService.UploadFileAsync(storageCloud.File, storageCloud.Bucket, cancellationToken);
+        await mediator.Send(new UploadFileCommand(storageCloud), cancellationToken);
         return NoContent();
     }
 

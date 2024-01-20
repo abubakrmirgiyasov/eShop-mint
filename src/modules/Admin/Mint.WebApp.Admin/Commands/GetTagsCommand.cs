@@ -1,5 +1,5 @@
 ﻿using Mint.Domain.Helpers;
-using Mint.Infrastructure.Messaging;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.Services;
 

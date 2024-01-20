@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Mint.Infrastructure.Messaging;
+using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Admin.Identity.Commands.Dtos;
 using Mint.WebApp.Admin.Identity.Repositories.Interfaces;
 

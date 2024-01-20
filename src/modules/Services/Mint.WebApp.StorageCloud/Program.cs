@@ -5,6 +5,7 @@ using Mint.WebApp.StorageCloud.Services.Interfaces;
 using Mint.WebApp.Extensions.Identities;
 using Mint.Infrastructure.MessageBrokers;
 using Mint.WebApp.StorageCloud.Models;
+using Mint.Domain.DTO_s.MessageBroker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var appSettings = config.Get<AppSettings>();
 builder.Services.Configure<AppSettings>(config);
 
 builder.Services.AddMessageBusSender<BrokerDataDto>(appSettings?.MessageBroker);
+builder.Services.AddMessageBusSender<UserImage>(appSettings?.MessageBroker);
 
 builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
 

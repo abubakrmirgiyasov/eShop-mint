@@ -12,7 +12,7 @@ internal sealed class AdminSettingsCommandHandler(IAdminRepository adminReposito
 {
     private readonly IAdminRepository _adminRepository = adminRepository;
 
-    public async Task HandleAsync(AdminSettingsCommand command, CancellationToken cancellationToken = default)
+    public async Task Handle(AdminSettingsCommand command, CancellationToken cancellationToken = default)
     {
         var validator = new AdminSettingsCommandValidator();
 

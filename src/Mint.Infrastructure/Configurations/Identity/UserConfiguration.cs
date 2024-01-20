@@ -19,6 +19,12 @@ internal sealed class UserConfiguration : IEntityConfiguration<User, Guid>
             .HasConversion<string>();
 
         builder
+            .HasOne(x => x.BackgroundPhoto)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.BackgroundPhotoId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder
             .HasOne(x => x.Photo)
             .WithMany(x => x.Users)
             .HasForeignKey(x => x.PhotoId)

@@ -52,6 +52,10 @@ public class User : Entity<Guid>
 
     public bool IsDeleted { get; set; } = false;
 
+    public Guid? BackgroundPhotoId { get; set; }
+
+    public Photo? BackgroundPhoto { get; set; }
+
     public Guid? PhotoId { get; set; }
 
     public Photo? Photo { get; set; }
