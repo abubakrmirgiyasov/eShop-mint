@@ -166,10 +166,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasIndex(x => x.Website)
             .IsUnique(true);
 
-        builder.Entity<Category>()
-            .HasIndex(x => x.DefaultLink)
-            .IsUnique(true);
-
         builder.Entity<Store>()
             .HasIndex(x => x.Url)
             .IsUnique(true);
@@ -194,13 +190,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             {
                 x.ProductId,
                 x.PhotoId,
-            });
-
-        builder.Entity<CategoryTag>()
-            .HasKey(x => new
-            {
-                x.TagId,
-                x.CategoryId,
             });
 
         builder.Entity<ProductCharacteristic>()
@@ -292,28 +281,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(x => x.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Category>()
-            .HasOne(x => x.Photo)
-            .WithMany(x => x.Categories)
-            .HasForeignKey(x => x.PhotoId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.Entity<SubCategory>()
             .HasOne(x => x.Category)
             .WithMany(x => x.SubCategories)
             .HasForeignKey(x => x.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<CategoryTag>()
-            .HasOne(x => x.Category)
-            .WithMany(x => x.CategoryTags)
-            .HasForeignKey(x => x.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<CategoryTag>()
-            .HasOne(x => x.Tag)
-            .WithMany(x => x.CategoryTags)
-            .HasForeignKey(x => x.TagId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<ProductCharacteristic>()

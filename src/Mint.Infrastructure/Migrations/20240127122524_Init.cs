@@ -33,19 +33,19 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "countries",
+                name: "Countries",
                 schema: "Mint",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
                     UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_countries", x => x.Id);
+                    table.PrimaryKey("PK_Countries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,7 +68,7 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "roles",
+                name: "Roles",
                 schema: "Mint",
                 columns: table => new
                 {
@@ -81,7 +81,7 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_roles", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,7 +111,10 @@ namespace Mint.Infrastructure.Migrations
                     BadgeText = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     BadgeStyle = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     DefaultLink = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: true),
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
+                    IsPublished = table.Column<bool>(type: "bit", nullable: false),
+                    ShowOnHomePage = table.Column<bool>(type: "bit", nullable: false),
                     PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
                     UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
@@ -124,7 +127,8 @@ namespace Mint.Infrastructure.Migrations
                         column: x => x.PhotoId,
                         principalSchema: "Mint",
                         principalTable: "Photos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,7 +192,7 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "Users",
                 schema: "Mint",
                 columns: table => new
                 {
@@ -209,20 +213,26 @@ namespace Mint.Infrastructure.Migrations
                     IsConfirmedEmail = table.Column<bool>(type: "bit", nullable: false),
                     IsConfirmedPhone = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    BackgroundPhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true),
                     UpdateDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_users_Photos_PhotoId",
+                        name: "FK_Users_Photos_BackgroundPhotoId",
+                        column: x => x.BackgroundPhotoId,
+                        principalSchema: "Mint",
+                        principalTable: "Photos",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Users_Photos_PhotoId",
                         column: x => x.PhotoId,
                         principalSchema: "Mint",
                         principalTable: "Photos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -235,7 +245,7 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryTags", x => new { x.TagId, x.CategoryId });
+                    table.PrimaryKey("PK_CategoryTags", x => new { x.CategoryId, x.TagId });
                     table.ForeignKey(
                         name: "FK_CategoryTags_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -459,7 +469,7 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "contacts",
+                name: "Contacts",
                 schema: "Mint",
                 columns: table => new
                 {
@@ -473,18 +483,18 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_contacts", x => x.Id);
+                    table.PrimaryKey("PK_Contacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_contacts_users_UserId",
+                        name: "FK_Contacts_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Mint",
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "refresh_tokens",
+                name: "RefreshToken",
                 schema: "Mint",
                 columns: table => new
                 {
@@ -504,12 +514,12 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_refresh_tokens", x => x.Id);
+                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_refresh_tokens_users_UserId",
+                        name: "FK_RefreshToken_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Mint",
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -538,16 +548,16 @@ namespace Mint.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StoreReviews_users_UserId",
+                        name: "FK_StoreReviews_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Mint",
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_addresses",
+                name: "UserAddresses",
                 schema: "Mint",
                 columns: table => new
                 {
@@ -565,25 +575,25 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_addresses", x => x.Id);
+                    table.PrimaryKey("PK_UserAddresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_user_addresses_countries_CountryId",
+                        name: "FK_UserAddresses_Countries_CountryId",
                         column: x => x.CountryId,
                         principalSchema: "Mint",
-                        principalTable: "countries",
+                        principalTable: "Countries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_user_addresses_users_UserId",
+                        name: "FK_UserAddresses_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Mint",
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user_roles",
+                name: "UserRoles",
                 schema: "Mint",
                 columns: table => new
                 {
@@ -592,19 +602,19 @@ namespace Mint.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_roles", x => new { x.RoleId, x.UserId });
+                    table.PrimaryKey("PK_UserRoles", x => new { x.RoleId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_user_roles_roles_RoleId",
+                        name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Mint",
-                        principalTable: "roles",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_user_roles_users_UserId",
+                        name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Mint",
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -721,7 +731,7 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 schema: "Mint",
-                table: "countries",
+                table: "Countries",
                 columns: new[] { "Id", "CountryCode", "Name", "UpdateDateTime" },
                 values: new object[,]
                 {
@@ -732,7 +742,7 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 schema: "Mint",
-                table: "roles",
+                table: "Roles",
                 columns: new[] { "Id", "Name", "TranslateEn", "UniqueKey", "UpdateDateTime" },
                 values: new object[,]
                 {
@@ -743,17 +753,17 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 schema: "Mint",
-                table: "users",
-                columns: new[] { "Id", "ConfirmationCode", "DateBirth", "Description", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
+                table: "Users",
+                columns: new[] { "Id", "BackgroundPhotoId", "ConfirmationCode", "DateBirth", "Description", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "Test", "Female", "127.0.0.2", true, true, false, false, false, null, 0, "QqefH9FC5R94xCagcA3UaOEttLZ2nGYhWv6rYZiVro4=", null, new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 }, "User", null },
-                    { new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "Миргиясов", "Male", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "dk33SGOv38YCrAY9E/BkCRINffJ8ersiXZE/bT+8hPk=", null, new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 }, "Абубакр", null }
+                    { new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), null, 0, new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "Test", "Female", "127.0.0.2", true, true, false, false, false, null, 0, "58NdVVPnzKxTpNLkVpckY7H8Ryx0GkyDLwZxtVSWo5Q=", null, new byte[] { 95, 28, 78, 92, 203, 155, 133, 43, 69, 244, 5, 142, 137, 50, 20, 42 }, "User", null },
+                    { new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), null, 0, new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "Миргиясов", "Male", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "SGJrnay7gOtCmX544c8mQWk0tyVvb+UwTU7vqUxiFpE=", null, new byte[] { 95, 28, 78, 92, 203, 155, 133, 43, 69, 244, 5, 142, 137, 50, 20, 42 }, "Абубакр", null }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Mint",
-                table: "contacts",
+                table: "Contacts",
                 columns: new[] { "Id", "ContactInformation", "CountryCode", "Type", "UpdateDateTime", "UserId" },
                 values: new object[,]
                 {
@@ -765,17 +775,17 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 schema: "Mint",
-                table: "user_addresses",
+                table: "UserAddresses",
                 columns: new[] { "Id", "City", "CountryId", "Description", "FullAddress", "FullName", "Street", "UpdateDateTime", "UserId", "ZipCode" },
                 values: new object[,]
                 {
-                    { new Guid("29df3dac-70c2-4a19-8a3b-56b724e64004"), "Новосибирск", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Заллесского", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 635600 },
-                    { new Guid("e29a0622-f90b-4072-ae7e-1e9cadc1d0da"), "Худжанд", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Тиллокон", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 735700 }
+                    { new Guid("3b00adf1-7d8e-4807-9689-a908b9a570af"), "Худжанд", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Тиллокон", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 735700 },
+                    { new Guid("65054825-14a7-4dec-999b-a1c44b3bbf9a"), "Новосибирск", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "full address for custom user", "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Заллесского", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 635600 }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Mint",
-                table: "user_roles",
+                table: "UserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
@@ -791,9 +801,13 @@ namespace Mint.Infrastructure.Migrations
                 name: "IX_Categories_DefaultLink",
                 schema: "Mint",
                 table: "Categories",
-                column: "DefaultLink",
-                unique: true,
-                filter: "[DefaultLink] IS NOT NULL");
+                column: "DefaultLink");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Name",
+                schema: "Mint",
+                table: "Categories",
+                column: "Name");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_PhotoId",
@@ -802,10 +816,10 @@ namespace Mint.Infrastructure.Migrations
                 column: "PhotoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryTags_CategoryId",
+                name: "IX_CategoryTags_TagId",
                 schema: "Mint",
                 table: "CategoryTags",
-                column: "CategoryId");
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommonCharacteristics_ProductId",
@@ -814,17 +828,29 @@ namespace Mint.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_contacts_ContactInformation",
+                name: "IX_Contacts_ContactInformation",
                 schema: "Mint",
-                table: "contacts",
+                table: "Contacts",
                 column: "ContactInformation",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_contacts_UserId",
+                name: "IX_Contacts_UserId",
                 schema: "Mint",
-                table: "contacts",
+                table: "Contacts",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Countries_CountryCode",
+                schema: "Mint",
+                table: "Countries",
+                column: "CountryCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Countries_Name",
+                schema: "Mint",
+                table: "Countries",
+                column: "Name");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ManufactureCategories_ManufactureId",
@@ -912,15 +938,15 @@ namespace Mint.Infrastructure.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_refresh_tokens_UserId",
+                name: "IX_RefreshToken_UserId",
                 schema: "Mint",
-                table: "refresh_tokens",
+                table: "RefreshToken",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_roles_UniqueKey",
+                name: "IX_Roles_UniqueKey",
                 schema: "Mint",
-                table: "roles",
+                table: "Roles",
                 column: "UniqueKey",
                 unique: true);
 
@@ -988,27 +1014,39 @@ namespace Mint.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_addresses_CountryId",
+                name: "IX_SubCategories_Name",
                 schema: "Mint",
-                table: "user_addresses",
+                table: "SubCategories",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAddresses_CountryId",
+                schema: "Mint",
+                table: "UserAddresses",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_addresses_UserId",
+                name: "IX_UserAddresses_UserId",
                 schema: "Mint",
-                table: "user_addresses",
+                table: "UserAddresses",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_roles_UserId",
+                name: "IX_UserRoles_UserId",
                 schema: "Mint",
-                table: "user_roles",
+                table: "UserRoles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_PhotoId",
+                name: "IX_Users_BackgroundPhotoId",
                 schema: "Mint",
-                table: "users",
+                table: "Users",
+                column: "BackgroundPhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_PhotoId",
+                schema: "Mint",
+                table: "Users",
                 column: "PhotoId");
         }
 
@@ -1024,7 +1062,7 @@ namespace Mint.Infrastructure.Migrations
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "contacts",
+                name: "Contacts",
                 schema: "Mint");
 
             migrationBuilder.DropTable(
@@ -1048,7 +1086,7 @@ namespace Mint.Infrastructure.Migrations
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "refresh_tokens",
+                name: "RefreshToken",
                 schema: "Mint");
 
             migrationBuilder.DropTable(
@@ -1072,11 +1110,11 @@ namespace Mint.Infrastructure.Migrations
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "user_addresses",
+                name: "UserAddresses",
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "user_roles",
+                name: "UserRoles",
                 schema: "Mint");
 
             migrationBuilder.DropTable(
@@ -1096,15 +1134,15 @@ namespace Mint.Infrastructure.Migrations
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "countries",
+                name: "Countries",
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "roles",
+                name: "Roles",
                 schema: "Mint");
 
             migrationBuilder.DropTable(
-                name: "users",
+                name: "Users",
                 schema: "Mint");
 
             migrationBuilder.DropTable(

@@ -4,9 +4,9 @@ using Mint.WebApp.Admin.Identity.Commands.Dtos;
 
 namespace Mint.WebApp.Admin.Identity.Utils;
 
-public class AdminMapper : Profile
+public class AdminIdentityMapper : Profile
 {
-    public AdminMapper()
+    public AdminIdentityMapper()
     {
         CreateMap<User, AdminInfoDto>()
             .ForMember(x => x.ContactInformation, opt => opt.MapFrom(x => x.Contacts.Select(y => y.ContactInformation)))

@@ -12,8 +12,6 @@ internal sealed class UserRoleConfiguration : IEntityConfiguration<UserRole>
 {
     public void Configure(EntityTypeBuilder<UserRole> builder)
     {
-        builder.ToTable("user_roles");
-
         builder.HasKey(x => new
         {
             x.RoleId,

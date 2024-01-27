@@ -1,5 +1,4 @@
-﻿using Mint.Domain.Models;
-using Mint.Domain.Models.Admin.Manufactures;
+﻿using Mint.Domain.Models.Admin.Manufactures;
 using Mint.Domain.Models.Base;
 using Mint.Domain.Models.Stores;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +23,14 @@ public class Category : Entity<Guid>
     [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
     public string? DefaultLink { get; set; }
 
+    [MaxLength(800, ErrorMessage = "Превышено макс. длина строки (800).")]
+    public string? Description { get; set; }
+
     public int DisplayOrder { get; set; }
+
+    public bool IsPublished { get; set; }
+
+    public bool ShowOnHomePage { get; set; }
 
     public Guid? PhotoId { get; set; }
 

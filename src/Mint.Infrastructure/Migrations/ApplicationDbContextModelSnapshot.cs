@@ -41,12 +41,19 @@ namespace Mint.Infrastructure.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.Property<string>("Ico")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -61,14 +68,17 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
+                    b.Property<bool>("ShowOnHomePage")
+                        .HasColumnType("bit");
+
                     b.Property<DateTimeOffset?>("UpdateDateTime")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DefaultLink")
-                        .IsUnique()
-                        .HasFilter("[DefaultLink] IS NOT NULL");
+                    b.HasIndex("DefaultLink");
+
+                    b.HasIndex("Name");
 
                     b.HasIndex("PhotoId");
 
@@ -77,15 +87,15 @@ namespace Mint.Infrastructure.Migrations
 
             modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.CategoryTag", b =>
                 {
-                    b.Property<Guid?>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("TagId", "CategoryId");
+                    b.Property<Guid?>("TagId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("CategoryId");
+                    b.HasKey("CategoryId", "TagId");
+
+                    b.HasIndex("TagId");
 
                     b.ToTable("CategoryTags", "Mint");
                 });
@@ -360,6 +370,8 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("Name");
+
                     b.ToTable("SubCategories", "Mint");
                 });
 
@@ -496,11 +508,11 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("CountryCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -512,7 +524,11 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("countries", "Mint");
+                    b.HasIndex("CountryCode");
+
+                    b.HasIndex("Name");
+
+                    b.ToTable("Countries", "Mint");
 
                     b.HasData(
                         new
@@ -570,7 +586,7 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("contacts", "Mint");
+                    b.ToTable("Contacts", "Mint");
 
                     b.HasData(
                         new
@@ -653,7 +669,7 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("refresh_tokens", "Mint");
+                    b.ToTable("RefreshToken", "Mint");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Identity.Role", b =>
@@ -690,7 +706,7 @@ namespace Mint.Infrastructure.Migrations
                     b.HasIndex("UniqueKey")
                         .IsUnique();
 
-                    b.ToTable("roles", "Mint");
+                    b.ToTable("Roles", "Mint");
 
                     b.HasData(
                         new
@@ -720,6 +736,9 @@ namespace Mint.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BackgroundPhotoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ConfirmationCode")
@@ -793,9 +812,11 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BackgroundPhotoId");
+
                     b.HasIndex("PhotoId");
 
-                    b.ToTable("users", "Mint");
+                    b.ToTable("Users", "Mint");
 
                     b.HasData(
                         new
@@ -814,8 +835,8 @@ namespace Mint.Infrastructure.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "dk33SGOv38YCrAY9E/BkCRINffJ8ersiXZE/bT+8hPk=",
-                            Salt = new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 },
+                            Password = "SGJrnay7gOtCmX544c8mQWk0tyVvb+UwTU7vqUxiFpE=",
+                            Salt = new byte[] { 95, 28, 78, 92, 203, 155, 133, 43, 69, 244, 5, 142, 137, 50, 20, 42 },
                             SecondName = "Абубакр"
                         },
                         new
@@ -833,8 +854,8 @@ namespace Mint.Infrastructure.Migrations
                             IsDeleted = false,
                             IsSeller = false,
                             NumOfAttempts = 0,
-                            Password = "QqefH9FC5R94xCagcA3UaOEttLZ2nGYhWv6rYZiVro4=",
-                            Salt = new byte[] { 228, 182, 29, 160, 199, 116, 218, 220, 105, 173, 241, 60, 153, 148, 49, 204 },
+                            Password = "58NdVVPnzKxTpNLkVpckY7H8Ryx0GkyDLwZxtVSWo5Q=",
+                            Salt = new byte[] { 95, 28, 78, 92, 203, 155, 133, 43, 69, 244, 5, 142, 137, 50, 20, 42 },
                             SecondName = "User"
                         });
                 });
@@ -889,12 +910,12 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_addresses", "Mint");
+                    b.ToTable("UserAddresses", "Mint");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e29a0622-f90b-4072-ae7e-1e9cadc1d0da"),
+                            Id = new Guid("3b00adf1-7d8e-4807-9689-a908b9a570af"),
                             City = "Худжанд",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             Description = "full address for custom user",
@@ -906,7 +927,7 @@ namespace Mint.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("29df3dac-70c2-4a19-8a3b-56b724e64004"),
+                            Id = new Guid("65054825-14a7-4dec-999b-a1c44b3bbf9a"),
                             City = "Новосибирск",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             Description = "full address for custom user",
@@ -930,7 +951,7 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_roles", "Mint");
+                    b.ToTable("UserRoles", "Mint");
 
                     b.HasData(
                         new
@@ -1189,7 +1210,7 @@ namespace Mint.Infrastructure.Migrations
                     b.HasOne("Mint.Domain.Models.Photo", "Photo")
                         .WithMany("Categories")
                         .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Photo");
                 });
@@ -1378,10 +1399,17 @@ namespace Mint.Infrastructure.Migrations
 
             modelBuilder.Entity("Mint.Domain.Models.Identity.User", b =>
                 {
+                    b.HasOne("Mint.Domain.Models.Photo", "BackgroundPhoto")
+                        .WithMany("UserBackgroundPhotos")
+                        .HasForeignKey("BackgroundPhotoId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Mint.Domain.Models.Photo", "Photo")
-                        .WithMany("Users")
+                        .WithMany("UserPhotos")
                         .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("BackgroundPhoto");
 
                     b.Navigation("Photo");
                 });
@@ -1584,7 +1612,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Navigation("Stores");
 
-                    b.Navigation("Users");
+                    b.Navigation("UserBackgroundPhotos");
+
+                    b.Navigation("UserPhotos");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Stores.Store", b =>

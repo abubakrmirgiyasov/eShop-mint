@@ -3,9 +3,9 @@
 /// <summary>
 /// Base repository
 /// </summary>
-/// <typeparam name="T">Model</typeparam>
+/// <typeparam name="TModel">Model</typeparam>
 /// <typeparam name="TKey">Type of key</typeparam>
-public interface IBaseRepository<T, TKey>
+public interface IBaseRepository<TModel, TKey>
 {
     /// <summary>
     /// Application db base context
@@ -20,5 +20,5 @@ public interface IBaseRepository<T, TKey>
     /// <exception cref="UserNotFoundException"></exception>
     /// <exception cref="Exception"></exception>
     /// <returns></returns>
-    Task<T> FindByIdAsync(TKey id, CancellationToken cancellation = default);
+    Task<TModel> FindByIdAsync(TKey id, CancellationToken cancellation = default);
 }

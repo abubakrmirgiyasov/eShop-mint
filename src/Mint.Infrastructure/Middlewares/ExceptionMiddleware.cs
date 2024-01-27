@@ -35,6 +35,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             UserNotFoundException => (int)HttpStatusCode.NotFound,
             BlockedException => (int)HttpStatusCode.Locked,
             UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+            NotFoundException => (int)HttpStatusCode.NotFound,
             SecurityTokenExpiredException => (int)HttpStatusCode.Unauthorized,
             _ => (int)HttpStatusCode.BadRequest,
         };

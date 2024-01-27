@@ -12,7 +12,13 @@ internal sealed class CountryConfiguration : IEntityConfiguration<Country, Guid>
 {
     public void Configure(EntityTypeBuilder<Country> builder)
     {
-        builder.ToTable("countries");
+        builder
+            .HasIndex(x => x.Name)
+            .IsUnique(false);
+
+        builder
+            .HasIndex(x => x.CountryCode)
+            .IsUnique(false);
 
         builder.HasData(CountryData.Countries);
     }

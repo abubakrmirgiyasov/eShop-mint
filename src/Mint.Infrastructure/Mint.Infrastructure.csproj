@@ -35,4 +35,8 @@
     <ProjectReference Include="..\Mint.Domain\Mint.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configurations\Admin\Manufactures\" />
+  </ItemGroup>
+
 </Project>

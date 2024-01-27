@@ -23,7 +23,9 @@ public class Photo : Entity<Guid>
 
     public long FileSize { get; set; }
 
-    public List<User>? Users { get; set; }
+    public List<User>? UserBackgroundPhotos { get; set; }
+
+    public List<User>? UserPhotos { get; set; }
 
     public List<Manufacture>? Manufactures { get; set; }
 

@@ -11,8 +11,6 @@ internal sealed class RefreshTokenConfiguration : IEntityConfiguration<RefreshTo
 {
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
-        builder.ToTable("refresh_tokens");
-
         builder
             .HasOne(x => x.User)
             .WithMany(x => x.RefreshTokens)

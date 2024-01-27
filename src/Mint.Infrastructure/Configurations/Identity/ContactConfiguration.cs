@@ -12,8 +12,6 @@ internal sealed class ContactConfiguration : IEntityConfiguration<Contact, Guid>
 {
     public void Configure(EntityTypeBuilder<Contact> builder)
     {
-        builder.ToTable("contacts");
-
         builder
             .Property(x => x.Type)
             .HasConversion<string>();

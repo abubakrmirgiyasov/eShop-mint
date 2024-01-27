@@ -20,7 +20,7 @@ builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(type
 builder.Services.AddDbContextServices(builder.Configuration, Constants.CONNECTION_STRING);
 
 builder.Services.AddAuthenticationServices();
-builder.Services.AdminServicesCollection();
+builder.Services.AdminIdentityServicesCollection();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

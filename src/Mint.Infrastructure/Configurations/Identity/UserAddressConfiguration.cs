@@ -12,8 +12,6 @@ internal sealed class UserAddressConfiguration : IEntityConfiguration<UserAddres
 {
     public void Configure(EntityTypeBuilder<UserAddress> builder)
     {
-        builder.ToTable("user_addresses");
-
         builder
             .HasOne(x => x.Country)
             .WithMany(x => x.UserAddresses)

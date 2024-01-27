@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Common;
 using Mint.Infrastructure;
 using Mint.Infrastructure.MessageBrokers;
+using Mint.Infrastructure.Middlewares;
 using Mint.Infrastructure.Redis;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.Infrastructure.Repositories.Admin;
 using Mint.Infrastructure.Repositories.Admin.Interfaces;
+using Mint.WebApp.Admin;
 using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.Repositories;
 using Mint.WebApp.Admin.Repositories.Interfaces;
@@ -16,11 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-var connection = builder.Configuration.GetConnectionString(Constants.CONNECTION_STRING);
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+var connection = builder.Configuration.GetSection(Constants.CONNECTION_STRING);
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection.Value));
 
 var appSettings = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettings);
+
+builder.Services.AdminServicesCollection();
 
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<TagService>();
@@ -47,6 +51,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

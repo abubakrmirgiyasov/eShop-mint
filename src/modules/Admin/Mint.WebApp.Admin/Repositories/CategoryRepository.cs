@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Exceptions;
 using Mint.Domain.Models.Admin.Categories;
 using Mint.Infrastructure.Repositories.Admin.Interfaces;
 using Mint.WebApp.Admin.DTO_s.Categories;
@@ -6,14 +7,12 @@ using Mint.WebApp.Admin.FormingModels.Categories;
 
 namespace Mint.Infrastructure.Repositories.Admin;
 
-public class CategoryRepository : ICategoryRepository
+/// <inheritdoc cref="ICategoryRepository"/>
+public class CategoryRepository(ApplicationDbContext context) : ICategoryRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context = context;
 
-    public CategoryRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    public ApplicationDbContext Context => _context;
 
     public Task<IEnumerable<CategoryFullViewModel>> GetCategoriesAsync()
     {
@@ -34,19 +33,23 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public async Task<CategoryFullViewModel> GetCategoryByIdAsync(Guid id)
+    public async Task<IEnumerable<Category>> GetCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id)
-                ?? throw new ArgumentNullException(nameof(Category), "Категория не найдена");
+        if (string.IsNullOrEmpty(search))
+            return await _context.Categories.ToListAsync(cancellationToken);
 
-            return new CategoryFullViewModel();
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex);
-        }
+        var categories = await _context.Categories
+            .Where(x => x.DefaultLink!.Contains(search))
+            .ToListAsync(cancellationToken);
+        return categories;
+    }
+
+    public async Task<Category> FindByIdAsync(Guid id, CancellationToken cancellation = default)
+    {
+        var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellation)
+            ?? throw new NotFoundException("Категория не найдена");
+
+        return category;
     }
 
     public Task NewCategoryAsync(CategoryFullBindingModel model)

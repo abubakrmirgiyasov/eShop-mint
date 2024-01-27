@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Mint.WebApp.Admin.DTO_s.Manufactures;
+﻿using Mint.WebApp.Admin.DTO_s.Manufactures;
 
 namespace Mint.WebApp.Admin.DTO_s.Categories;
 
@@ -42,7 +41,6 @@ public record CategoryFullViewModel(
     string? BadgeText = null,
     string? DefaultLink = null,
     int? DisplayOrder = null,
-    string? Folder = null,
     List<SubCategoryFullViewModel>? SubCategories = null,
     List<CategoryTagFullViewModel>? CategoryTags = null,
     List<ManufactureCategoryFullViewModel>? ManufactureCategories = null);

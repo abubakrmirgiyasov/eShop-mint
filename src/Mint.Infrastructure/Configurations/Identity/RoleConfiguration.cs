@@ -12,8 +12,6 @@ internal sealed class RoleConfiguration : IEntityConfiguration<Role, Guid>
 {
     public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable("roles");
-
         builder
             .HasIndex(x => x.UniqueKey)
             .IsUnique(true);
