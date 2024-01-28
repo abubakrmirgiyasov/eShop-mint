@@ -15,6 +15,9 @@ builder.Services.Configure<AppSettings>(config);
 
 builder.Services.AddMessageBusSender<BrokerDataDto>(appSettings?.MessageBroker);
 builder.Services.AddMessageBusSender<UserImage>(appSettings?.MessageBroker);
+builder.Services.AddMessageBusReceiver<StorageCloudDto>(appSettings?.MessageBroker);
+
+builder.Services.AddHostedService<MessageBrokerBackgroundService<StorageCloudDto>>();
 
 builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
 

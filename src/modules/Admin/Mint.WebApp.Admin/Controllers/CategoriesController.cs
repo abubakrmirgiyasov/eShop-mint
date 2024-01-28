@@ -56,57 +56,35 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCategoryById(Guid id)
+    public async Task<ActionResult<CategoryFullViewModel>> GetCategoryById(Guid id)
     {
-        try
-        {
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        await Task.Delay(1000);
+        return Ok();
     }
 
-    [HttpPost]
-    [Authorize(Roles = "ADMIN")]
-    public async Task<IActionResult> NewCategory([FromForm] CategoryFullBindingModel model)
+    [HttpPost("create")]
+    //[Authorize(Roles = "ADMIN")]
+    public async Task<IActionResult> Create(
+        [FromForm] CategoryFullBindingModel model,
+        CancellationToken cancellationToken = default)
     {
-        try
-        {
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        var newCategory = await mediator.Send(new CreateCategoryCommand(model), cancellationToken);
+        return Ok(newCategory);
     }
 
     [HttpPut]
     [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> UpdateCategory([FromBody] CategoryFullBindingModel model)
     {
-        try
-        {
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        await Task.Delay(1000);
+        return Ok();
     }
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
-        try
-        {
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        await Task.Delay(1000);
+        return Ok();
     }
 }

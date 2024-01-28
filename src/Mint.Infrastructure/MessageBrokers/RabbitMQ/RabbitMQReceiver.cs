@@ -14,7 +14,7 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
     private readonly RabbitMQReceiverOptions _options;
     private readonly IConnection _connection;
     private readonly string _queueName;
-    private IModel _channel;
+    private readonly IModel _channel;
 
     public RabbitMQReceiver(RabbitMQReceiverOptions options)
     {
@@ -28,8 +28,9 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
             AutomaticRecoveryEnabled = true,
             DispatchConsumersAsync = true,
         }.CreateConnection();
-
         _queueName = options.QueueName;
+
+        _channel = _connection.CreateModel();
 
         _connection.ConnectionShutdown += OnConnectionShutdown;
     }
@@ -42,7 +43,6 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
 
     public Task ReceiveAsync(Func<T, MetaData, Task> action, CancellationToken cancellationToken)
     {
-        _channel = _connection.CreateModel();
 
         if (_options.AutomaticCreateEnable)
         {
@@ -55,6 +55,8 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
         var consumer = new AsyncEventingBasicConsumer(_channel);
         consumer.Received += async (sender, e) =>
         {
+            var ty = typeof(T);
+
             var body = Encoding.UTF8.GetString(e.Body.Span);
             var message = JsonSerializer.Deserialize<Message<T>>(body);
 

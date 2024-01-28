@@ -21,10 +21,11 @@ builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssembly(typeof(Progr
 var connection = builder.Configuration.GetSection(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection.Value));
 
-var appSettings = builder.Configuration.GetSection("AppSettings");
-builder.Services.Configure<AppSettings>(appSettings);
+var configuration = builder.Configuration.GetSection("AppSettings");
+var appSettings = configuration.Get<AppSettings>();
+builder.Services.Configure<AppSettings>(configuration);
 
-builder.Services.AdminServicesCollection();
+builder.Services.AdminServicesCollection(appSettings!);
 
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<TagService>();
