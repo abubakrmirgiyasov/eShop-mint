@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Mint.Domain.Models.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Mint.Domain.Common;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Mint.Domain.Attributes;
 
@@ -20,7 +24,9 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
         if (!isAllowedAnonymus)
         {
-            var roles = context.HttpContext.Request.Headers["X-Role"].ToString();
+            var token = context.HttpContext.Request.Headers["Authorization"].ToString();
+
+            var roles = GetRoles(token);
 
             if (!string.IsNullOrEmpty(roles))
             {
@@ -61,5 +67,30 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
                 };
             }
         }
+    }
+
+    private string? GetRoles(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+            return "";
+
+        //var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
+        //var parameters = new TokenValidationParameters
+        //{
+        //    ValidateIssuer = _appSettings.IdentitySettings.ValidateIssuer,
+        //    ValidIssuer = _appSettings.IdentitySettings.ValidIssuer,
+        //    ValidateAudience = _appSettings.IdentitySettings.ValidateAudience,
+        //    ValidAudience = _appSettings.IdentitySettings.ValidAudience,
+        //    ValidateIssuerSigningKey = _appSettings.IdentitySettings.ValidateIssuerSigningKey,
+        //    ValidateLifetime = _appSettings.IdentitySettings.ValidateLifetime,
+        //    IssuerSigningKey = new SymmetricSecurityKey(key),
+        //    ClockSkew = TimeSpan.Zero
+        //};
+
+
+        //var claims = new JwtSecurityTokenHandler().ValidateToken(token, parameters, out var _);
+
+        //return claims.Claims.First(x => x.Type == "role").Value;
+        return "";
     }
 }

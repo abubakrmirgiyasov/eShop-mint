@@ -1,6 +1,6 @@
 ﻿using Mint.Infrastructure.MessageBrokers.Interfaces;
+using Mint.Infrastructure.Services.Interfaces;
 using Mint.WebApp.StorageCloud.Models;
-using Mint.WebApp.StorageCloud.Services.Interfaces;
 
 namespace Mint.WebApp.StorageCloud.Commands;
 

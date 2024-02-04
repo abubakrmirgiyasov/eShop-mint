@@ -1,4 +1,6 @@
-﻿namespace Mint.WebApp.StorageCloud.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Mint.Infrastructure.Services.Interfaces;
 
 /// <summary>
 /// Base Interface to work with MinIO
@@ -11,9 +13,9 @@ public interface IStorageCloudService
 
     Task<bool> CreateBucketAsync(string bucket, CancellationToken cancellationToken = default);
 
-    Task<bool> UploadFileAsync(IFormFile file, string bucket,  CancellationToken cancellationToken = default);
+    Task<string> UploadFileAsync(IFormFile file, string bucket,  CancellationToken cancellationToken = default);
 
-    Task<bool> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default);
+    Task<string> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default);
 
     Task<bool> DeleteFileAsync(string name, CancellationToken cancellationToken = default);
 

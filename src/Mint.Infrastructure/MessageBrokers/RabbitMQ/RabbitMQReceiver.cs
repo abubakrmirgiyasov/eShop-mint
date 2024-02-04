@@ -55,8 +55,6 @@ public class RabbitMQReceiver<T> : IMessageReceiver<T>, IDisposable
         var consumer = new AsyncEventingBasicConsumer(_channel);
         consumer.Received += async (sender, e) =>
         {
-            var ty = typeof(T);
-
             var body = Encoding.UTF8.GetString(e.Body.Span);
             var message = JsonSerializer.Deserialize<Message<T>>(body);
 

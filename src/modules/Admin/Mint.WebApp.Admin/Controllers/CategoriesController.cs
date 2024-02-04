@@ -46,7 +46,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     //}
 
     [HttpGet("links")]
-    //[Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult<IEnumerable<DefaultLinkDto>>> GetCategoriesDefaultLinks(
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
@@ -63,7 +63,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("create")]
-    //[Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Create(
         [FromForm] CategoryFullBindingModel model,
         CancellationToken cancellationToken = default)

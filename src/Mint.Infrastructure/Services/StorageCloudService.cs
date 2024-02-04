@@ -1,7 +1,10 @@
-﻿using Minio.DataModel.Args;
-using Mint.WebApp.StorageCloud.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Minio.DataModel.Args;
+using Mint.Infrastructure.Helpers;
+using Mint.Infrastructure.Services.Interfaces;
 
-namespace Mint.WebApp.StorageCloud.Services;
+namespace Mint.Infrastructure.Services;
 
 public class StorageCloudService(
     MinioClientConnection minioClient, 
@@ -41,7 +44,7 @@ public class StorageCloudService(
         throw new NotImplementedException();
     }
 
-    public async Task<bool> UploadFileAsync(IFormFile file, string bucket, CancellationToken cancellationToken = default)
+    public async Task<string> UploadFileAsync(IFormFile file, string bucket, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -54,9 +57,9 @@ public class StorageCloudService(
                 .WithContentType(file.ContentType)
                 .WithStreamData(stream);
 
-            await _minio.Client.PutObjectAsync(putObjectArgs, cancellationToken);
+            var res = await _minio.Client.PutObjectAsync(putObjectArgs, cancellationToken);
 
-            return true;
+            return res.ToString()!;
         }
         catch (Exception ex)
         {
@@ -65,7 +68,7 @@ public class StorageCloudService(
         }
     }
 
-    public Task<bool> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default)
+    public Task<string> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Mint.Domain.Common;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.Infrastructure.Services.Interfaces;
 
@@ -18,7 +17,7 @@ public class JwtMiddleware(RequestDelegate next)
             .Split(" ")
             .Last();
 
-        //var userId = jwt.ValidateJwtToken(token!);
+        var roles = jwt.GetRoles(token!);
 
         //if (userId is not null)
         //{

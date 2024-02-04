@@ -1,24 +1,23 @@
-﻿using Azure.Core;
-using Mint.Domain.Common;
+﻿using Mint.Domain.Common;
 using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.Infrastructure.Repositories.Admin.Interfaces;
 using Mint.WebApp.Admin.DTO_s.Categories;
-using Mint.Infrastructure.MessageBrokers.Interfaces;
+using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.WebApp.Admin.Services;
 
 public class CategoryService(
     ICategoryRepository categoryRepository, 
     IDistributedCacheManager cacheManager,
-    IMessageSender<CategoryPhoto> sender,
+    IStorageCloudService storageCloudService,
     ILogger<CategoryService> logger)
 {
     private readonly IDistributedCacheManager _cacheManager = cacheManager;
     private readonly ILogger<CategoryService> _logger = logger;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
-    private readonly IMessageSender<CategoryPhoto> _sender = sender;
+    private readonly IStorageCloudService _storageCloudService = storageCloudService;
 
     public async Task<IEnumerable<CategorySampleViewModel>> GetCategorySamplesAsync()
     {
@@ -61,20 +60,19 @@ public class CategoryService(
 
         if (model.Photo is not null)
         {
+            var bucket = model.Folder ?? "categories";
+
+            var file = await _storageCloudService.UploadFileAsync(model.Photo, bucket, cancellationToken);
+
             category.Photo = new Photo
             {
-
+                Id = Guid.NewGuid(),
+                FileExtension = model.Photo.ContentType,
+                FileName = model.Photo.FileName,
+                FilePath = file,
+                FileSize = model.Photo.Length,
+                FileType = bucket,
             };
-
-            var categoryPhoto = new CategoryPhoto
-            {
-                Id = category.Id,
-                Name = model.Photo.Name,
-                Bucket = model.Folder ?? "categories",
-                Photo = model.Photo,
-            };
-
-            await _sender.SendAsync(categoryPhoto, cancellationToken: cancellationToken);
         }
 
         return category.Id;

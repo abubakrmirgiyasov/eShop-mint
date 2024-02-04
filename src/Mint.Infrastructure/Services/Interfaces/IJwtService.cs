@@ -14,6 +14,8 @@ public interface IJwtService
     /// <returns>generated jwt token (string)</returns>
     string GenerateJwtToken(User user);
 
+    string? GetRoles(string token);
+
     /// <summary>
     /// Generates Refresh Token
     /// </summary>

@@ -2,7 +2,7 @@
 using Minio;
 using Mint.Domain.Common;
 
-namespace Mint.WebApp.StorageCloud.Services;
+namespace Mint.Infrastructure.Helpers;
 
 /// <summary>
 /// Represents a connection to a MinIO server using the MinIO client.

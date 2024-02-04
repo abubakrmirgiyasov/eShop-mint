@@ -30,7 +30,7 @@ public class JwtService(
             {
                 new("id", user.Id.ToString()),
                 new("fullName", string.Join(" ", user.FirstName, user.SecondName)),
-                new("role", string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
+                new(ClaimTypes.Role, string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
             };
 
             var phone = user.Contacts.FirstOrDefault(x => x.Type == ContactType.Phone);
@@ -71,6 +71,27 @@ public class JwtService(
             _logger.LogCritical("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
             throw new Exception(ex.Message, ex);
         }
+    }
+
+    public string? GetRoles(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+            return "";
+
+        var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
+        var parameters = new TokenValidationParameters
+        {
+            ValidateLifetime = _appSettings.IdentitySettings.ValidateLifetime,
+
+            ValidAudience = _appSettings.IdentitySettings.ValidAudience,
+            ValidIssuer = _appSettings.IdentitySettings.ValidIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+
+
+        var claims = new JwtSecurityTokenHandler().ValidateToken(token, parameters, out var _);
+
+        return claims.Claims.First(x => x.Type == "role").Value;
     }
 
     public RefreshToken GenerateRefreshToken(string? ip)

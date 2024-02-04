@@ -9,7 +9,7 @@ namespace Mint.WebApp.Extensions.Identities;
 
 public static class JwtExtensions
 {
-    public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, AppSettings appSettings)
+    public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, AppSettings? appSettings)
     {
         services
             .AddAuthentication(options =>
@@ -19,7 +19,7 @@ public static class JwtExtensions
             })
             .AddJwtBearer(options =>
             {
-                var key = Encoding.ASCII.GetBytes(appSettings.IdentitySettings.SecretKey);
+                var key = Encoding.ASCII.GetBytes(appSettings!.IdentitySettings.SecretKey);
                 options.RequireHttpsMetadata = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

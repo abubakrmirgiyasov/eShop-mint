@@ -1,11 +1,10 @@
 using Mint.Domain.Common;
 using Mint.Infrastructure.Middlewares;
-using Mint.WebApp.StorageCloud.Services;
-using Mint.WebApp.StorageCloud.Services.Interfaces;
 using Mint.WebApp.Extensions.Identities;
 using Mint.Infrastructure.MessageBrokers;
 using Mint.WebApp.StorageCloud.Models;
 using Mint.Domain.DTO_s.MessageBroker;
+using Mint.WebApp.Extensions.Infrastructures;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +20,7 @@ builder.Services.AddHostedService<MessageBrokerBackgroundService<StorageCloudDto
 
 builder.Services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-builder.Services.AddScoped<MinioClientConnection>();
-builder.Services.AddScoped<IStorageCloudService, StorageCloudService>();
+builder.Services.AddMinioServices();
 
 builder.Services.AddControllers();
 
