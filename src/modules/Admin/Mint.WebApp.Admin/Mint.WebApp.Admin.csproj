@@ -17,8 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Validations\" />
-    <Folder Include="FormingModels\Manufactures\" />
+    <Folder Include="Operations\Validations\" />
   </ItemGroup>
 
   <ItemGroup>

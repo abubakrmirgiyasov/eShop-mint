@@ -12,6 +12,8 @@ public static class IdentityExtensions
     {
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

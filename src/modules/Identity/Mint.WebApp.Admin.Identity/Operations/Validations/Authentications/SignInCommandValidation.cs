@@ -2,7 +2,7 @@
 using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Identity;
 
-namespace Mint.WebApp.Admin.Identity.Commands.Validations.Authentications;
+namespace Mint.WebApp.Admin.Identity.Operations.Validations.Authentications;
 
 public class SignInCommandValidation : AbstractValidator<SignInRequest>
 {

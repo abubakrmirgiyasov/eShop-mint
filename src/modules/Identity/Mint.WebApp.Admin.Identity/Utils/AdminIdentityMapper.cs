@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Mint.Domain.Models.Identity;
-using Mint.WebApp.Admin.Identity.Commands.Dtos;
+using Mint.WebApp.Admin.Identity.Operations.Dtos;
 
 namespace Mint.WebApp.Admin.Identity.Utils;
 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Mint.WebApp.Admin.DTO_s.Categories;
 using Mint.WebApp.Admin.DTO_s.Manufactures;
 
-namespace Mint.WebApp.Admin.DTO_s.Categories;
+namespace Mint.WebApp.Admin.Operations.Dtos.Categories;
 
 public class CategoryFullBindingModel
 {

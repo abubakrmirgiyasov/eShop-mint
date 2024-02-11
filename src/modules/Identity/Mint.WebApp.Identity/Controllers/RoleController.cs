@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mint.Domain.Attributes;
-using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 
@@ -8,7 +6,6 @@ namespace Mint.WebApp.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-[Authorize(Roles = Constants.ADMIN)]
 public class RoleController : ControllerBase
 {
     private readonly IRoleRepository _role;

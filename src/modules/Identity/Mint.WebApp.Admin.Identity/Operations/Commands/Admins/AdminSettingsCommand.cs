@@ -1,9 +1,9 @@
 ﻿using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.WebApp.Admin.Identity.Commands.Dtos;
-using Mint.WebApp.Admin.Identity.Commands.Validations.Admins;
+using Mint.WebApp.Admin.Identity.Operations.Dtos;
+using Mint.WebApp.Admin.Identity.Operations.Validations.Admins;
 using Mint.WebApp.Admin.Identity.Repositories.Interfaces;
 
-namespace Mint.WebApp.Admin.Identity.Commands.Admins;
+namespace Mint.WebApp.Admin.Identity.Operations.Commands.Admins;
 
 public sealed record AdminSettingsCommand(Guid UserId, AdminSettingsDto Settings) : ICommand;
 

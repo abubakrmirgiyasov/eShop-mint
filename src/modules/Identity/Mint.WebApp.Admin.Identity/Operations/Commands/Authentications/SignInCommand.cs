@@ -1,9 +1,9 @@
 ﻿using Mint.Domain.DTO_s.Identity;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
-using Mint.WebApp.Admin.Identity.Commands.Validations.Authentications;
+using Mint.WebApp.Admin.Identity.Operations.Validations.Authentications;
 
-namespace Mint.WebApp.Admin.Identity.Commands.Authentications;
+namespace Mint.WebApp.Admin.Identity.Operations.Commands.Authentications;
 
 public sealed record SignInCommand(SignInRequest Auth)
     : ICommand<AuthenticationAdminResponse>;

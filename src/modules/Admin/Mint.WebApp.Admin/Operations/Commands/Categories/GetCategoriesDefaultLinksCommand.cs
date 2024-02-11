@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Mint.Domain.Exceptions;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Repositories.Admin.Interfaces;
-using Mint.WebApp.Admin.Commands.Dtos.Categories;
+using Mint.WebApp.Admin.Operations.Dtos.Categories;
 
-namespace Mint.WebApp.Admin.Commands.Categories;
+namespace Mint.WebApp.Admin.Operations.Commands.Categories;
 
 public sealed record GetCategoriesDefaultLinksCommand(string? Search) : ICommand<IEnumerable<DefaultLinkDto>>;
 

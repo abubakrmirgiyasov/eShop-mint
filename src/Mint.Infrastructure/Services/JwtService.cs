@@ -30,7 +30,7 @@ public class JwtService(
             {
                 new("id", user.Id.ToString()),
                 new("fullName", string.Join(" ", user.FirstName, user.SecondName)),
-                new(ClaimTypes.Role, string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
+                new("role", string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
             };
 
             var phone = user.Contacts.FirstOrDefault(x => x.Type == ContactType.Phone);
@@ -73,25 +73,31 @@ public class JwtService(
         }
     }
 
-    public string? GetRoles(string token)
+    public string? ValidateJwtToken(string? token)
     {
         if (string.IsNullOrWhiteSpace(token))
-            return "";
+            return default;
 
+        var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_appSettings.IdentitySettings.SecretKey);
-        var parameters = new TokenValidationParameters
+
+        try
         {
-            ValidateLifetime = _appSettings.IdentitySettings.ValidateLifetime,
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateLifetime = _appSettings.IdentitySettings.ValidateLifetime,
+                ValidAudience = _appSettings.IdentitySettings.ValidAudience,
+                ValidIssuer = _appSettings.IdentitySettings.ValidIssuer,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            }, out SecurityToken validatedToken);
 
-            ValidAudience = _appSettings.IdentitySettings.ValidAudience,
-            ValidIssuer = _appSettings.IdentitySettings.ValidIssuer,
-            IssuerSigningKey = new SymmetricSecurityKey(key)
-        };
-
-
-        var claims = new JwtSecurityTokenHandler().ValidateToken(token, parameters, out var _);
-
-        return claims.Claims.First(x => x.Type == "role").Value;
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            return jwtToken.Claims.First(x => x.Type == "id").Value;
+        }
+        catch
+        {
+            return default;
+        }
     }
 
     public RefreshToken GenerateRefreshToken(string? ip)

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.Admin.Identity.Commands.Admins;
-using Mint.WebApp.Admin.Identity.Commands.Dtos;
+using Mint.WebApp.Admin.Identity.Operations.Commands.Admins;
+using Mint.WebApp.Admin.Identity.Operations.Dtos;
 
 namespace Mint.WebApp.Admin.Identity.Controllers;
 

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Mint.Domain.Models.Admin.Categories;
-using Mint.WebApp.Admin.Commands.Dtos.Categories;
 using Mint.WebApp.Admin.DTO_s;
-using Mint.WebApp.Admin.DTO_s.Categories;
 using Mint.Domain.Models.Admin;
+using Mint.WebApp.Admin.Operations.Dtos.Categories;
 
 namespace Mint.WebApp.Admin.Utils;
 

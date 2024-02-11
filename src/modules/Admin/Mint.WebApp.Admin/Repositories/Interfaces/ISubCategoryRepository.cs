@@ -1,18 +1,18 @@
-﻿using Mint.WebApp.Admin.DTO_s.Categories;
+﻿using Mint.Domain.Models.Admin.Categories;
+using Mint.Infrastructure.Repositories;
 
 namespace Mint.WebApp.Admin.Repositories.Interfaces;
 
-public interface ISubCategoryRepository
+/// <summary>
+/// Sub Category Base Repository
+/// </summary>
+public interface ISubCategoryRepository : IBaseRepository<SubCategory, Guid>
 {
-    Task<IEnumerable<SubCategoryFullViewModel>> GetSubCategoriesAsync();
-
-    Task<IEnumerable<SubCategorySampleViewModel>> GetSampleSubCategoriesAsync();
-
-    Task<SubCategoryFullViewModel> GetSubCategoryByIdAsync(Guid id);
-
-    Task CreateAsync(SubCategoryFullBindingModel model);
-
-    Task UpdateAsync(SubCategoryFullBindingModel model);
-
-    Task DeleteAsync(Guid id);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }

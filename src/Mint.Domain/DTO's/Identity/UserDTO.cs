@@ -61,3 +61,10 @@ public record UserFullViewModel(
     string? AcceptLanguage = null,
     string? Photo = null,
     List<RoleSampleDTO>? Roles = null);
+
+public class UserJwtAuthorize 
+{
+    public Guid Id { get; set; }
+
+    public string[] Roles { get; set; } = default!;
+}

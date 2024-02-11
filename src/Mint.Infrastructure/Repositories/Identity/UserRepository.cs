@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Identity;
+using Mint.Domain.Exceptions;
 using Mint.Domain.FormingModels.Identity;
 using Mint.Domain.Models.Identity;
-using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 
 namespace Mint.Infrastructure.Repositories.Identity;
@@ -12,26 +13,17 @@ namespace Mint.Infrastructure.Repositories.Identity;
 /// <summary>
 /// User Repository class
 /// </summary>
-public class UserRepository : IUserRepository
+/// <param name="logger"></param>
+/// <param name="context"></param>
+/// <param name="mapper"></param>
+public class UserRepository(
+    ILogger<UserRepository> logger,
+    ApplicationDbContext context,
+    IMapper mapper) : IUserRepository
 {
-    private readonly ILogger<UserRepository> _logger;
-    private readonly ApplicationDbContext _context;
-    private readonly IMessageSender<User> _sender;
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="context"></param>
-    public UserRepository(
-        ILogger<UserRepository> logger, 
-        ApplicationDbContext context, 
-        IMessageSender<User> sender)
-    {
-        _context = context;
-        _logger = logger;
-        _sender = sender;
-    }
+    private readonly ILogger<UserRepository> _logger = logger;
+    private readonly ApplicationDbContext _context = context;
+    private readonly IMapper _mapper = mapper;
 
     /// <summary>
     /// This method gets all users
@@ -96,24 +88,25 @@ public class UserRepository : IUserRepository
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="Exception"></exception>
-    public async Task<UserFullViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<UserJwtAuthorize> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
             var users = await _context.Users
+                .AsNoTracking()
                 .Include(x => x.Photo)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
                 .ToListAsync(cancellationToken);
 
             var user = users.FirstOrDefault(x => x.Id == id)
-                ?? throw new ArgumentNullException(nameof(User), "User doesn't exists");
+                ?? throw new UserNotFoundException("User doesn't exists");
             
-            return UserDTOConverter.FormingSingleViewModel(user);
+            return _mapper.Map<UserJwtAuthorize>(user);
         }
-        catch (ArgumentNullException ex)
+        catch (UserNotFoundException ex)
         {
-            throw new ArgumentNullException(ex.Message, ex);
+            throw new UserNotFoundException(ex.Message);
         }
         catch (Exception ex)
         {

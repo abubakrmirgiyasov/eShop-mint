@@ -1,4 +1,4 @@
-﻿namespace Mint.WebApp.Admin.Identity.Commands.Dtos;
+﻿namespace Mint.WebApp.Admin.Identity.Operations.Dtos;
 
 public class AdminInfoDto
 {

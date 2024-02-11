@@ -1,6 +1,8 @@
 ﻿using Mint.WebApp.Admin.Identity.Repositories;
 using Mint.WebApp.Admin.Identity.Repositories.Interfaces;
 using Mint.WebApp.Admin.Identity.Utils;
+using Mint.WebApp.Extensions.Identities;
+using Mint.WebApp.Extensions.Mappers;
 
 namespace Mint.WebApp.Admin.Identity;
 
@@ -10,9 +12,12 @@ public static class ConfigureAdminIdentityServices
     {
         // Mapper
         services.AddAutoMapper(typeof(AdminIdentityMapper));
+        services.AddUserAutoMapper();
 
         // Repositories
         services.AddScoped<IAdminRepository, AdminRepository>();
+
+        services.AddAuthenticationServices();
 
         return services;
     }

@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.Admin.Commands.Categories;
-using Mint.WebApp.Admin.Commands.Dtos.Categories;
-using Mint.WebApp.Admin.DTO_s.Categories;
+using Mint.Infrastructure.Attributes;
+using Mint.WebApp.Admin.Operations.Commands.Categories;
+using Mint.WebApp.Admin.Operations.Dtos.Categories;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -11,39 +10,12 @@ namespace Mint.WebApp.Admin.Controllers;
 [Route("api/[controller]")]
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
-    //private readonly CategoryService _service;
-
-    //public CategoriesController(CategoryService service)
-    //{
-    //    _service = service;
-    //}
-
-    //[HttpGet]
-    //public async Task<IActionResult> GetCategories()
-    //{
-    //    try
-    //    {
-    //        return Ok();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return BadRequest(new { message = ex.Message });
-    //    }
-    //}
-
-    //[HttpGet]
-    //public async Task<IActionResult> GetSampleCategories()
-    //{
-    //    try
-    //    {
-    //        //var categories = await _service.GetCategorySamplesAsync();
-    //        return Ok(); //categories
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return BadRequest(new { message = ex.Message });
-    //    }
-    //}
+    [HttpGet]
+    public async Task<IActionResult> GetCategories()
+    {
+        await Task.Delay(1000);
+        return Ok();
+    }
 
     [HttpGet("links")]
     [Authorize(Roles = "admin")]
@@ -73,18 +45,20 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Roles = "ADMIN")]
-    public async Task<IActionResult> UpdateCategory([FromBody] CategoryFullBindingModel model)
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> UpdateCategory(
+        [FromForm] CategoryFullBindingModel model,
+        CancellationToken cancellationToken = default)
     {
-        await Task.Delay(1000);
-        return Ok();
+        await mediator.Send(new UpdateCategoryCommand(model), cancellationToken);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "ADMIN")]
-    public async Task<IActionResult> DeleteCategory(Guid id)
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> DeleteCategory(Guid id, CancellationToken cancellationToken = default)
     {
-        await Task.Delay(1000);
-        return Ok();
+        await mediator.Send(new RemoveCategoryCommand(id), cancellationToken);
+        return NoContent();
     }
 }

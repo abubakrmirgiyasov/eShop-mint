@@ -10,7 +10,6 @@ namespace Mint.WebApp.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-[Authorize(Roles = "ADMIN,SELLER,BUYER")]
 public class UserController : ControllerBase
 {
     private readonly IUserRepository _user;

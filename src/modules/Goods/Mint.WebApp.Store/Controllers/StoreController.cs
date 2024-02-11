@@ -8,7 +8,6 @@ namespace Mint.WebApp.Store.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-[Authorize(Roles = "ADMIN,SELLER,BUYER")]
 public class StoreController : ControllerBase
 {
     private readonly ApplicationDbContext _context;

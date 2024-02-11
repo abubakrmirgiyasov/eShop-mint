@@ -1,6 +1,6 @@
 ﻿using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.Repositories;
-using Mint.WebApp.Admin.Identity.Commands.Dtos;
+using Mint.WebApp.Admin.Identity.Operations.Dtos;
 
 namespace Mint.WebApp.Admin.Identity.Repositories.Interfaces;
 

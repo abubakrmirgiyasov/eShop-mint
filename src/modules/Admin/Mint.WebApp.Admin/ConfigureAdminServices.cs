@@ -11,6 +11,7 @@ using Mint.WebApp.Admin.Services;
 using Mint.WebApp.Admin.Utils;
 using Mint.WebApp.Extensions.Infrastructures;
 using Mint.WebApp.Extensions.Identities;
+using Mint.WebApp.Extensions.Mappers;
 
 namespace Mint.WebApp.Admin;
 
@@ -20,6 +21,7 @@ public static class ConfigureAdminServices
     {
         // Mapper
         services.AddAutoMapper(typeof(AdminMapper));
+        services.AddUserAutoMapper();
 
         // Minio
         services.AddMinioServices();
@@ -34,6 +36,8 @@ public static class ConfigureAdminServices
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
         services.AddScoped<IDistributedCacheManager, RedisCacheManager>();
+
+        services.AddAuthenticationServices();
 
         // Utils
         services.AddJwtConfiguration(appSettings);

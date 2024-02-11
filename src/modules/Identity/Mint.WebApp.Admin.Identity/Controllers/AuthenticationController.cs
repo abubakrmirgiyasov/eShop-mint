@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Domain.Extensions;
-using Mint.WebApp.Admin.Identity.Commands.Authentications;
+using Mint.WebApp.Admin.Identity.Operations.Commands.Authentications;
 
 namespace Mint.WebApp.Admin.Identity.Controllers;
 

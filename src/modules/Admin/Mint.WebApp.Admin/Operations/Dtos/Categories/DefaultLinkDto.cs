@@ -1,4 +1,4 @@
-﻿namespace Mint.WebApp.Admin.Commands.Dtos.Categories;
+﻿namespace Mint.WebApp.Admin.Operations.Dtos.Categories;
 
 public class DefaultLinkDto
 {

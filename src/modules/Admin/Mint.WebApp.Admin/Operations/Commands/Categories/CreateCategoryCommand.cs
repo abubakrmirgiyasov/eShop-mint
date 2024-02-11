@@ -1,8 +1,8 @@
 ﻿using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.WebApp.Admin.DTO_s.Categories;
+using Mint.WebApp.Admin.Operations.Dtos.Categories;
 using Mint.WebApp.Admin.Services;
 
-namespace Mint.WebApp.Admin.Commands.Categories;
+namespace Mint.WebApp.Admin.Operations.Commands.Categories;
 
 public sealed record CreateCategoryCommand(CategoryFullBindingModel Category) : ICommand<Guid>;
 

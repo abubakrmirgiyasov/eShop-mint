@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Mint.Domain.Attributes;
-using Mint.Domain.Models.Admin.Manufactures;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Mint.WebApp.Admin.DTO_s.Manufactures;
 
 namespace Mint.WebApp.Admin.Controllers;
@@ -29,7 +28,6 @@ public class ManufactureController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> NewManufacture([FromForm] ManufactureFullBindingModel model)
     {
         try
@@ -43,7 +41,6 @@ public class ManufactureController : ControllerBase
     }
 
     [HttpPut]
-    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> UpdateManufacture([FromForm] ManufactureFullBindingModel model)
     {
         return Ok();
@@ -51,7 +48,6 @@ public class ManufactureController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "ADMIN")]
     public async Task<IActionResult> DeleteManufactureById(Guid id)
     {
         return Ok();

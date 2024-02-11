@@ -3,7 +3,7 @@ using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.Services;
 
-namespace Mint.WebApp.Admin.Commands;
+namespace Mint.WebApp.Admin.Operations.Commands;
 
 public sealed record GetTagsCommand(int PageIndex, int PageSize)
     : ICommand<PaginatedResult<TagFullViewModel>>;
