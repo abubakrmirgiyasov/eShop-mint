@@ -87,4 +87,19 @@ public class StorageCloudService(
     {
         throw new NotImplementedException();
     }
+
+    public async Task<bool> IsBucketExist(string bucket, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var args = new BucketExistsArgs().WithBucket(bucket);
+
+            await _minio.Client.BucketExistsAsync(args, cancellationToken);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
 }

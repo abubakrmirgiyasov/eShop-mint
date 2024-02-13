@@ -8,16 +8,14 @@ namespace Mint.Infrastructure.Repositories.Admin;
 /// <inheritdoc cref="ICategoryRepository"/>
 public class CategoryRepository(ApplicationDbContext context) : ICategoryRepository
 {
-    private readonly ApplicationDbContext _context = context;
-
-    public ApplicationDbContext Context => _context;
+    public ApplicationDbContext Context => context;
 
     public async Task<IEnumerable<Category>> GetCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(search))
-            return await _context.Categories.ToListAsync(cancellationToken);
+            return await Context.Categories.ToListAsync(cancellationToken);
 
-        var categories = await _context.Categories
+        var categories = await Context.Categories
             .Where(x => x.DefaultLink!.Contains(search))
             .ToListAsync(cancellationToken);
         return categories;
@@ -25,7 +23,7 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
 
     public async Task<Category> FindByIdAsync(Guid id, CancellationToken cancellation = default)
     {
-        var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellation)
+        var category = await Context.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellation)
             ?? throw new NotFoundException("Категория не найдена");
 
         return category;
@@ -35,7 +33,7 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
     {
         var category = await FindByIdAsync(id, cancellationToken);
 
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync(cancellationToken);
+        Context.Categories.Remove(category);
+        await Context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -44,6 +44,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.Map("health", () => new { message = "Storage Cloud Service is running..." });
 app.MapControllers();
 
 app.Run();

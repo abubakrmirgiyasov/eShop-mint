@@ -22,4 +22,6 @@ public interface IStorageCloudService
     Task<bool> DeleteFilesAsync(string[] names, CancellationToken cancellationToken = default);
 
     Task<bool> DeleteBucketAsync(string name, CancellationToken cancellationToken = default);
+
+    Task<bool> IsBucketExist(string bucket, CancellationToken cancellationToken = default);
 }

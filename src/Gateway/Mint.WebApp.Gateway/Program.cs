@@ -15,4 +15,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseWebSockets();
 app.UseOcelot().Wait();
 
+//app.Map("health", () => new { message = "Gateway is running..." });
+//app.MapControllers();
+
 app.Run();

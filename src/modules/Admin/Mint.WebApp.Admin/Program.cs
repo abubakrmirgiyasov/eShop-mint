@@ -39,6 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.Map("health", () => new { message = "Admin App is running..." });
 app.MapControllers();
 
 app.Run();
