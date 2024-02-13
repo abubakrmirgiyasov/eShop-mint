@@ -1,4 +1,4 @@
-﻿namespace Mint.WebApp.Admin.DTO_s.Manufactures;
+﻿namespace Mint.WebApp.Admin.Operations.Dtos.Manufactures;
 
 public class ManufactureCategoryBindingModel
 {

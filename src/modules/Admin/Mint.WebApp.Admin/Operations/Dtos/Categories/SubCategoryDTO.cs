@@ -1,6 +1,4 @@
-﻿using Mint.WebApp.Admin.Operations.Dtos.Categories;
-
-namespace Mint.WebApp.Admin.DTO_s.Categories;
+﻿namespace Mint.WebApp.Admin.Operations.Dtos.Categories;
 
 public class SubCategoryFullBindingModel
 {

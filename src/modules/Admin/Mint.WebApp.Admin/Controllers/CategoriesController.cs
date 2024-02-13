@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Operations.Commands.Categories;
 using Mint.WebApp.Admin.Operations.Dtos.Categories;
@@ -11,10 +12,11 @@ namespace Mint.WebApp.Admin.Controllers;
 public class CategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetCategories()
+    public async Task<ActionResult<PaginatedResult<CategoryFullViewModel>>> GetCategories(
+        [FromQuery] GetCategoriesCommand command,
+        CancellationToken cancellationToken = default)
     {
-        await Task.Delay(1000);
-        return Ok();
+        return Ok(await mediator.Send(command, cancellationToken));
     }
 
     [HttpGet("links")]

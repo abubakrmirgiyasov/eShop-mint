@@ -1,4 +1,4 @@
-﻿namespace Mint.WebApp.Admin.DTO_s;
+﻿namespace Mint.WebApp.Admin.Operations.Dtos;
 
 public class TagFullBindingModel
 {
@@ -14,6 +14,6 @@ public class TagFullViewModel
     public Guid? Value { get; set; }
 
     public string? Label { get; set; }
-    
+
     public string? Translate { get; set; }
 }

@@ -37,7 +37,7 @@ public static class JwtExtensions
 
         services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Admin Identity API", Version = "v1" });
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = appSettings?.AppVersion.SwaggerTitle, Version = "v1" });
 
             var securityScheme = new OpenApiSecurityScheme
             {

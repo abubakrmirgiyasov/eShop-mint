@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Mint.WebApp.Admin.DTO_s.Manufactures;
+using Mint.WebApp.Admin.Operations.Dtos.Manufactures;
 
 namespace Mint.WebApp.Admin.Controllers;
 

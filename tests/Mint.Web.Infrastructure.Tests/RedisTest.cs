@@ -1,6 +1,6 @@
 using Mint.Infrastructure.Redis.Interface;
 using Mint.Web.Infrastructure.Tests.Constants;
-using Mint.WebApp.Admin.DTO_s;
+using Mint.WebApp.Admin.Operations.Dtos;
 using Moq;
 
 namespace Mint.Web.Admin.Tests;

@@ -19,6 +19,17 @@ public class AppSettings
     public MinioSettings MinioSettings { get; set; }
 
     public MessageBrokerOptions MessageBroker { get; set; }
+
+    public AppVersion AppVersion { get; set; }
+}
+
+public class AppVersion
+{
+    public string SwaggerTitle { get; set; }
+
+    public string Name { get; set; }
+
+    public string Version { get; set; }
 }
 
 public class MessageBrokerOptions

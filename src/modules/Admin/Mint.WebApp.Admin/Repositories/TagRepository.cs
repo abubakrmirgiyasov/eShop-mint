@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Models.Admin;
 using Mint.Infrastructure;
-using Mint.WebApp.Admin.DTO_s;
+using Mint.WebApp.Admin.Operations.Dtos;
 using Mint.WebApp.Admin.Repositories.Interfaces;
 
 namespace Mint.WebApp.Admin.Repositories;

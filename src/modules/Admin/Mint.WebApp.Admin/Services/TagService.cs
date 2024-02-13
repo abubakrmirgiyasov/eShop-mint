@@ -2,7 +2,7 @@
 using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Common;
 using Mint.Infrastructure.Redis.Interface;
-using Mint.WebApp.Admin.DTO_s;
+using Mint.WebApp.Admin.Operations.Dtos;
 using Mint.WebApp.Admin.Repositories.Interfaces;
 
 namespace Mint.WebApp.Admin.Services;

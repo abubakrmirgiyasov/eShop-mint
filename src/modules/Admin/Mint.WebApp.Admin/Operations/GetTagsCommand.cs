@@ -1,6 +1,6 @@
 ﻿using Mint.Domain.Helpers;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.WebApp.Admin.DTO_s;
+using Mint.WebApp.Admin.Operations.Dtos;
 using Mint.WebApp.Admin.Services;
 
 namespace Mint.WebApp.Admin.Operations.Commands;

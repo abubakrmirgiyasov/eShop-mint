@@ -1,4 +1,4 @@
-﻿using Mint.WebApp.Admin.DTO_s;
+﻿using Mint.WebApp.Admin.Operations.Dtos;
 
 namespace Mint.Web.Infrastructure.Tests.Constants;
 

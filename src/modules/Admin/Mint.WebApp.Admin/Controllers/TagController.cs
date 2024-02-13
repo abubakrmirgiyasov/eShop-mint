@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Helpers;
-using Mint.WebApp.Admin.DTO_s;
 using Mint.WebApp.Admin.Operations.Commands;
+using Mint.WebApp.Admin.Operations.Dtos;
 
 namespace Mint.WebApp.Admin.Controllers;
 

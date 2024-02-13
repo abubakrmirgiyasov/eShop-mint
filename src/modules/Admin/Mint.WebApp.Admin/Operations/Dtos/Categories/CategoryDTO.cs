@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Mint.WebApp.Admin.DTO_s.Categories;
-using Mint.WebApp.Admin.DTO_s.Manufactures;
+using Mint.WebApp.Admin.Operations.Dtos.Manufactures;
 
 namespace Mint.WebApp.Admin.Operations.Dtos.Categories;
 

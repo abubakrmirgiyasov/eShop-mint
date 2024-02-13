@@ -1,4 +1,4 @@
-﻿using Mint.WebApp.Admin.DTO_s;
+﻿using Mint.WebApp.Admin.Operations.Dtos;
 
 namespace Mint.WebApp.Admin.Repositories.Interfaces;
 
