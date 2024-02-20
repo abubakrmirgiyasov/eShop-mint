@@ -13,14 +13,15 @@ public class AdminMapper : Profile
         CreateMap<Category, DefaultLinkDto>();
         CreateMap<Category, CategoryFullViewModel>();
 
+        CreateMap<SubCategory, SubCategoryFullViewModel>();
+        CreateMap<SubCategory, SubCategorySampleViewModel>()
+            .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
+            .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
+
         CreateMap<TagFullViewModel, TagFullBindingModel>();
 
         CreateMap<Tag, TagFullViewModel>()
-            .ForMember(x => x.Label, y => y.MapFrom(z => z.Name))
-            .ForMember(x => x.Value, y => y.MapFrom(z => z.Id));
-
-        CreateMap<Tag, TagFullBindingModel>()
-            .ForMember(x => x.Label, y => y.MapFrom(z => z.Name))
-            .ForMember(x => x.Value, y => y.MapFrom(z => z.Id));
+            .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
+            .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
     }
 }

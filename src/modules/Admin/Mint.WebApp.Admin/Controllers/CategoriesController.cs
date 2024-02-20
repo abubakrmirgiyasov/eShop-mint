@@ -36,7 +36,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Create(
         [FromForm] CategoryFullBindingModel model,

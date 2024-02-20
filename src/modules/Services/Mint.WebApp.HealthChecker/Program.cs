@@ -17,7 +17,7 @@ builder.Services.AddHealthChecks()
     .AddServicesHealthCheck("Gateway", "https://localhost:7064/health")
     .AddServicesHealthCheck("Admin Identity", "https://localhost:7007/health")
     .AddServicesHealthCheck("Admin App", "https://localhost:7135/health")
-    .AddMinio("MINIO Service", "first");
+    .AddMinio("MINIO Service", "hlz");
 
 builder.Services.AddHealthChecksUI(options =>
 {

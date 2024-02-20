@@ -14,7 +14,7 @@ public class ServiceHealthCheck(string url) : IHealthCheck
         if (result is not null)
             return HealthCheckResult.Healthy(result.Message);
 
-        return HealthCheckResult.Unhealthy($"Failed");
+        return HealthCheckResult.Unhealthy("Failed");
     }
 }
 

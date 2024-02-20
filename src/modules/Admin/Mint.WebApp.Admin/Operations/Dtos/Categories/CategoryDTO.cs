@@ -58,6 +58,6 @@ public record CategoryFullViewModel(
     string? DefaultLink = null,
     int? DisplayOrder = null,
     string? Photo = null,
-    List<SubCategoryFullViewModel>? SubCategories = null,
-    List<CategoryTagFullViewModel>? CategoryTags = null,
-    List<ManufactureCategoryFullViewModel>? ManufactureCategories = null);
+    List<SubCategorySampleViewModel>? SubCategories = null,
+    List<CategoryTagSampleViewModel>? CategoryTags = null,
+    List<ManufactureSampleViewModel>? Manufactures = null);

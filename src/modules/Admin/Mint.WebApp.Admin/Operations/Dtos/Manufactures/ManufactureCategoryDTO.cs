@@ -6,3 +6,7 @@ public class ManufactureCategoryBindingModel
 }
 
 public record ManufactureCategoryFullViewModel();
+
+public record ManufactureSampleViewModel(
+    Guid? Value = null,
+    string? Label = null);

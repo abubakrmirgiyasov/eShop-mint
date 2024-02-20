@@ -48,6 +48,11 @@ public class CategoryService(
             };
         }
 
+        await _categoryRepository.Context.AddAsync(category, cancellationToken);
+        await _categoryRepository.Context.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Создана новая категория с Id={Id}", category.Id);
+
         return category.Id;
     }
 }

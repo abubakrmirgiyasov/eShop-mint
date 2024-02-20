@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Mint.Domain.Attributes;
-using Mint.Domain.Common;
+﻿using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.Domain.Extensions;

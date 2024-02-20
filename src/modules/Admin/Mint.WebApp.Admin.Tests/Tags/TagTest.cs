@@ -1,5 +1,4 @@
-﻿using Mint.WebApp.Admin.DTO_s.Categories;
-using Mint.WebApp.Admin.Operations.Dtos;
+﻿using Mint.WebApp.Admin.Operations.Dtos;
 
 namespace Mint.WebApp.Admin.Test.Tags;
 

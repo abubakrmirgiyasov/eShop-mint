@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Minio;
 using Mint.Domain.Common;
+using System.Net;
 
 namespace Mint.Infrastructure.Helpers;
 
@@ -28,12 +29,23 @@ public class MinioClientConnection(IOptions<AppSettings> appSettings, bool isSec
     {
         get
         {
-            var client = new MinioClient()
-                .WithEndpoint(_appSettings.MinioSettings.Endpoint)
-                .WithCredentials(_appSettings.MinioSettings.AccessKey, _appSettings.MinioSettings.SecretKey);
+            var client = new MinioClient();
 
-            if (isSecure)
-                client.WithSSL(isSecure);
+            if (!isSecure)
+            {
+                client
+                    .WithEndpoint("127.0.0.1:9000")
+                    .WithCredentials("minioadmin", "minioadmin")
+                    .WithSSL()
+                    .Build();
+            }
+            else 
+            {
+                client
+                    .WithEndpoint(_appSettings.MinioSettings.Endpoint)
+                    .WithCredentials(_appSettings.MinioSettings.AccessKey, _appSettings.MinioSettings.SecretKey)
+                    .WithSSL(isSecure);
+            }
 
             return client;
         }
