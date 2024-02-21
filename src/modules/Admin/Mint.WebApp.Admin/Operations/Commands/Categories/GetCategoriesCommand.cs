@@ -23,8 +23,12 @@ internal sealed class GetCategoriesCommandHandler(
 
     public async Task<PaginatedResult<CategoryFullViewModel>> Handle(GetCategoriesCommand request, CancellationToken cancellationToken)
     {
-        var categories = await _categoryRepository.Context.Categories
-            .Where(x => x.Name.Contains(request.Search!))
+        var query = _categoryRepository.Context.Categories.AsQueryable();
+
+        if (!string.IsNullOrEmpty(request.Search))
+            query = query.Where(x => x.Name.Contains(request.Search!));
+
+        var categories = await query
             .Skip(request.PageSize * request.PageIndex)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);

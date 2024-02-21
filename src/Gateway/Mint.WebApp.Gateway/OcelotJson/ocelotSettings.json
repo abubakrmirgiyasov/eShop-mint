@@ -4,9 +4,9 @@
   },
   "Routes": [
     { // Admin
-      "UpstreamPathTemplate": "/a/v1/{version}/{everything}",
+      "UpstreamPathTemplate": "/a/v1/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -16,9 +16,9 @@
       ]
     },
     { // Identity
-      "UpstreamPathTemplate": "/identity/{version}/{everything}",
+      "UpstreamPathTemplate": "/identity/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -28,9 +28,9 @@
       ]
     },
     { // Email
-      "UpstreamPathTemplate": "/email/{version}/{everything}",
+      "UpstreamPathTemplate": "/email/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -40,9 +40,9 @@
       ]
     },
     { // Admin Identity
-      "UpstreamPathTemplate": "/a/identity/{version}/{everything}",
+      "UpstreamPathTemplate": "/a/identity/{everything}",
       "UpstreamHttpMethod": [ "POST", "DELETE" ],
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -52,9 +52,9 @@
       ]
     },
     { // Storage
-      "UpstreamPathTemplate": "/storage/{version}/{everything}",
+      "UpstreamPathTemplate": "/storage/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
