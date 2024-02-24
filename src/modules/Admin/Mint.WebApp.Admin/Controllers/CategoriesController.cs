@@ -21,7 +21,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
 
     [HttpGet("links")]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<IEnumerable<DefaultLinkDto>>> GetCategoriesDefaultLinks(
+    public async Task<ActionResult<IEnumerable<DefaultLinkDTO>>> GetCategoriesDefaultLinks(
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
