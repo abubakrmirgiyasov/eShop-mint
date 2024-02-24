@@ -1,6 +1,6 @@
 ﻿namespace Mint.WebApp.Admin.Operations.Dtos.Categories;
 
-public class DefaultLinkDto
+public class DefaultLinkDTO
 {
     public Guid Id { get; set; }
 

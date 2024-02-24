@@ -10,7 +10,7 @@ public class AdminMapper : Profile
 {
     public AdminMapper()
     {
-        CreateMap<Category, DefaultLinkDto>();
+        CreateMap<Category, DefaultLinkDTO>();
         CreateMap<Category, CategoryFullViewModel>();
 
         CreateMap<SubCategory, SubCategoryFullViewModel>();
