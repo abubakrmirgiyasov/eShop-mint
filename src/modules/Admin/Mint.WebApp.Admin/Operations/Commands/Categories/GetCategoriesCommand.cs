@@ -26,14 +26,19 @@ internal sealed class GetCategoriesCommandHandler(
         var query = _categoryRepository.Context.Categories.AsQueryable();
 
         if (!string.IsNullOrEmpty(request.Search))
-            query = query.Where(x => x.Name.Contains(request.Search!));
+            query = query.Where(x => x.Name.Contains(request.Search));
 
         var categories = await query
+            .AsNoTracking()
             .Skip(request.PageSize * request.PageIndex)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
 
-        var totalCount = await _categoryRepository.Context.Categories.CountAsync(cancellationToken);
+        var totalCount = await _categoryRepository
+            .Context
+            .Categories
+            .AsNoTracking()
+            .CountAsync(cancellationToken);
 
         return new PaginatedResult<CategoryFullViewModel>
         {
