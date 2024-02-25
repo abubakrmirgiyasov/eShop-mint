@@ -27,7 +27,6 @@ public static class ConfigureAdminServices
         services.AddMinioServices();
 
         // Services
-        services.AddScoped<CategoryService>();
         services.AddScoped<TagService>();
         services.AddScoped<RedisClient>();
 

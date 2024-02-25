@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Mint.WebApp.Admin.Operations.Dtos.Manufactures;
+﻿using Mint.WebApp.Admin.Operations.Dtos.Manufactures;
 
 namespace Mint.WebApp.Admin.Operations.Dtos.Categories;
 
@@ -16,6 +15,8 @@ public class CategoryFullBindingModel
     public string? BadgeText { get; set; }
 
     public string? DefaultLink { get; set; }
+
+    public string? Description { get; set; }
 
     public int DisplayOrder { get; set; }
 

@@ -3,7 +3,6 @@ using Mint.Infrastructure.Repositories.Admin.Interfaces;
 using Mint.WebApp.Admin.Controllers;
 using Mint.WebApp.Admin.Operations.Dtos.Categories;
 using Mint.WebApp.Admin.Services;
-using Moq;
 
 namespace Mint.WebApp.Test;
 
