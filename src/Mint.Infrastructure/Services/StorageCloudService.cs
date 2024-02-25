@@ -39,27 +39,53 @@ public class StorageCloudService(
         }
     }
 
-    public Task<bool> CreateBucketAsync(string bucket, CancellationToken cancellationToken = default)
+    public async Task<bool> CreateBucketAsync(string bucket, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var makeBucketArgs = new MakeBucketArgs()
+                .WithBucket(bucket);
+
+            await _minio.Client.MakeBucketAsync(makeBucketArgs, cancellationToken);
+
+            _logger.LogInformation("Bucket created successfully: {Bucket}", bucket);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task<string> UploadFileAsync(IFormFile file, string bucket, CancellationToken cancellationToken = default)
     {
         try
         {
-            using var stream = file.OpenReadStream();
+            if (await IsBucketExist(bucket, cancellationToken))
+            {
+                using var stream = file.OpenReadStream();
 
-            var putObjectArgs = new PutObjectArgs()
-                .WithBucket(bucket)
-                .WithObject(file.FileName)
-                .WithObjectSize(file.Length)
-                .WithContentType(file.ContentType)
-                .WithStreamData(stream);
+                var putObjectArgs = new PutObjectArgs()
+                    .WithBucket(bucket)
+                    .WithObject(file.FileName)
+                    .WithObjectSize(file.Length)
+                    .WithContentType(file.ContentType)
+                    .WithStreamData(stream);
 
-            var res = await _minio.Client.PutObjectAsync(putObjectArgs, cancellationToken);
+                var res = await _minio.Client.PutObjectAsync(putObjectArgs, cancellationToken);
 
-            return res.ToString()!;
+                return res.ToString()!;
+            }
+            else
+            {
+                await CreateBucketAsync(bucket, cancellationToken);
+
+                await UploadFileAsync(file, bucket, cancellationToken);
+
+                return default!;
+            }
         }
         catch (Exception ex)
         {
@@ -93,9 +119,7 @@ public class StorageCloudService(
         try
         {
             var args = new BucketExistsArgs().WithBucket(bucket);
-
-            await _minio.Client.BucketExistsAsync(args, cancellationToken);
-            return true;
+            return await _minio.Client.BucketExistsAsync(args, cancellationToken);
         }
         catch (Exception ex)
         {
