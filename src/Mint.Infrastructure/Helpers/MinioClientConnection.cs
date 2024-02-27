@@ -36,7 +36,6 @@ public class MinioClientConnection(IOptions<AppSettings> appSettings, bool isSec
                 client
                     .WithEndpoint("127.0.0.1:9000")
                     .WithCredentials("minioadmin", "minioadmin")
-                    .WithSSL()
                     .Build();
             }
             else 
