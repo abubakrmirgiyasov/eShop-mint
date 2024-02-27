@@ -48,14 +48,14 @@ public class UserRepository(
             throw new Exception(ex.Message, ex);
         }
     }
-    
+
     /// <summary>
     /// Gets all addresses single user by id
     /// </summary>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="UserNotFoundException"></exception>
     /// <exception cref="Exception"></exception>
     public async Task<IEnumerable<UserAddressFullViewModel>> GetUserAddressesAsync(Guid id, CancellationToken cancellationToken = default)
     {
@@ -66,13 +66,13 @@ public class UserRepository(
                 .ToListAsync(cancellationToken);
 
             var user = users.FirstOrDefault(x => x.Id == id)
-                ?? throw new ArgumentNullException(nameof(User), "Пользователь не существует");
+                ?? throw new UserNotFoundException("Пользователь не существует");
 
             return UserAddressDTOConverter.FormingMultiViewModels(user.UserAddresses);
         }
-        catch (ArgumentNullException ex)
+        catch (UserNotFoundException ex)
         {
-            throw new ArgumentNullException(ex.Message, ex);
+            throw new UserNotFoundException(ex.Message);
         }
         catch (Exception ex)
         {
@@ -100,7 +100,7 @@ public class UserRepository(
                 .ToListAsync(cancellationToken);
 
             var user = users.FirstOrDefault(x => x.Id == id)
-                ?? throw new UserNotFoundException("User doesn't exists");
+                ?? throw new UserNotFoundException("Пользователь не существует");
             
             return _mapper.Map<UserJwtAuthorize>(user);
         }
@@ -133,7 +133,7 @@ public class UserRepository(
                 .ToListAsync(cancellationToken);
 
             var user = users.FirstOrDefault(x => x.Id == id)
-                    ?? throw new ArgumentNullException(nameof(User), "User doesn't exists");
+                    ?? throw new UserNotFoundException("Пользователь не существует");
 
             var roles = user.UserRoles
                 .Select(x => x.Role.TranslateEn)
@@ -141,9 +141,9 @@ public class UserRepository(
 
             return roles;
         }
-        catch (ArgumentNullException ex)
+        catch (UserNotFoundException ex)
         {
-            throw new ArgumentNullException(ex.Message, ex);
+            throw new UserNotFoundException(ex.Message);
         }
         catch (Exception ex)
         {
@@ -170,13 +170,13 @@ public class UserRepository(
                 .ToListAsync(cancellationToken);
 
             var user = users.FirstOrDefault() // x => x.Email == email
-                ?? throw new ArgumentNullException(nameof(User), "User doesn't exists");
+                ?? throw new UserNotFoundException("Пользователь не существует");
 
             return UserDTOConverter.FormingSingleViewModel(user);
         }
-        catch (ArgumentNullException ex)
+        catch (UserNotFoundException ex)
         {
-            throw new ArgumentNullException(ex.Message, ex);
+            throw new UserNotFoundException(ex.Message);
         }
         catch (Exception ex)
         {
@@ -203,13 +203,13 @@ public class UserRepository(
                 .ToListAsync(cancellationToken);
 
             var user = users.FirstOrDefault() // x => x.Phone == phone
-                ?? throw new ArgumentNullException(nameof(User), "User doesn't exists");
+                ?? throw new UserNotFoundException("Пользователь не существует");
 
             return UserDTOConverter.FormingSingleViewModel(user);
         }
-        catch (ArgumentNullException ex)
+        catch (UserNotFoundException ex)
         {
-            throw new ArgumentNullException(ex.Message, ex);
+            throw new UserNotFoundException(ex.Message);
         }
         catch (Exception ex)
         {
