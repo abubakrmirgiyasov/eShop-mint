@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Minio.DataModel.Args;
+using Mint.Domain.Models.Admin.Categories;
 using Mint.Infrastructure.Helpers;
 using Mint.Infrastructure.Services.Interfaces;
 
@@ -67,16 +68,16 @@ public class StorageCloudService(
             {
                 using var stream = file.OpenReadStream();
 
-                var putObjectArgs = new PutObjectArgs()
-                    .WithBucket(bucket)
-                    .WithObject(file.FileName)
-                    .WithObjectSize(file.Length)
-                    .WithContentType(file.ContentType)
-                    .WithStreamData(stream);
+            var putObjectArgs = new PutObjectArgs()
+                .WithBucket(bucket)
+                .WithObject($"_{file.Name}")
+                .WithObjectSize(file.Length)
+                .WithContentType(file.ContentType)
+                .WithStreamData(stream);
 
                 var res = await _minio.Client.PutObjectAsync(putObjectArgs, cancellationToken);
 
-                return res.ToString()!;
+                return res.ObjectName;
             }
             else
             {

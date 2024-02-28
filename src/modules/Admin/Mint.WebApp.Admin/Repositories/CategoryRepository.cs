@@ -10,15 +10,14 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
 {
     public ApplicationDbContext Context => context;
 
-    public async Task<IEnumerable<Category>> GetCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default)
+    public async Task<List<Category>> GetCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrEmpty(search))
-            return await Context.Categories.ToListAsync(cancellationToken);
+        var query = Context.Categories.Where(x => x.DefaultLink != null).AsQueryable();
 
-        var categories = await Context.Categories
-            .Where(x => x.DefaultLink!.Contains(search))
-            .ToListAsync(cancellationToken);
-        return categories;
+        if (!string.IsNullOrEmpty(search))
+            query = query.Where(x => x.DefaultLink!.Contains(search));
+
+        return await query.ToListAsync(cancellationToken);
     }
 
     public async Task<Category> FindByIdAsync(Guid id, CancellationToken cancellation = default)

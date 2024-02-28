@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Operations.Commands.Categories;
+using Mint.WebApp.Admin.Operations.Dtos;
 using Mint.WebApp.Admin.Operations.Dtos.Categories;
 
 namespace Mint.WebApp.Admin.Controllers;
@@ -16,12 +17,13 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] GetCategoriesCommand command,
         CancellationToken cancellationToken = default)
     {
-        return Ok(await mediator.Send(command, cancellationToken));
+        var categories = await mediator.Send(command, cancellationToken);
+        return Ok(categories);
     }
 
     [HttpGet("links")]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<IEnumerable<DefaultLinkDTO>>> GetCategoriesDefaultLinks(
+    public async Task<ActionResult<List<DefaultLinkDTO>>> GetCategoriesDefaultLinks(
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
@@ -34,6 +36,15 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     {
         await Task.Delay(1000);
         return Ok();
+    }
+
+    [HttpGet("common")]
+    public async Task<ActionResult<List<CategorySampleViewModel>>> GetSampleCategories(
+        [FromQuery] string? search,
+        CancellationToken cancellationToken = default)
+    {
+        var categories = await mediator.Send(new GetCommonCategoriesCommand(search), cancellationToken);
+        return Ok(categories);
     }
 
     [HttpPost]

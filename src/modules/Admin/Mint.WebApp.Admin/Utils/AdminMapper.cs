@@ -13,6 +13,10 @@ public class AdminMapper : Profile
         CreateMap<Category, DefaultLinkDTO>();
         CreateMap<Category, CategoryFullViewModel>();
 
+        CreateMap<Category, CategorySampleViewModel>()
+            .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
+            .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
+
         CreateMap<SubCategory, SubCategoryFullViewModel>();
         CreateMap<SubCategory, SubCategorySampleViewModel>()
             .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
