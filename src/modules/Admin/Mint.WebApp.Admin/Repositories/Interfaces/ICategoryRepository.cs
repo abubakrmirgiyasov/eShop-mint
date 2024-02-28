@@ -11,7 +11,7 @@ public interface ICategoryRepository : IBaseRepository<Category, Guid>
     /// 
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<Category>> GetCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default);
+    Task<List<Category>> GetCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// 

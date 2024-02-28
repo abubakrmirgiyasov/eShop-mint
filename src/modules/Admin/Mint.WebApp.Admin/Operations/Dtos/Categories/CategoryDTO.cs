@@ -45,9 +45,12 @@ public class CategoryPhoto
     public IFormFile Photo { get; set; } = default!;
 }
 
-public record CategorySampleViewModel(
-    Guid? Value = null,
-    string? Label = null);
+public class CategorySampleViewModel
+{
+    public required Guid Value { get; set; }
+
+    public required string Label { get; set; }
+}
 
 public record CategoryFullViewModel(
     Guid? Id = null,

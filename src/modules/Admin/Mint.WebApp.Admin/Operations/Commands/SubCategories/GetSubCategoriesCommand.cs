@@ -11,24 +11,24 @@ public sealed record GetSubCategoriesCommand(
     string? Search,
     int PageIndex = 0,
     int PageSize = 50
-) : ICommand<PaginatedResult<SubCategoryDTO>>;
+) : ICommand<PaginatedResult<SubCategoryFullViewModel>>;
 
 internal sealed class GetSubCategoriesCommandHandler(
     ISubCategoryRepository subCategoryRepository,
     IMapper mapper
-) : ICommandHandler<GetSubCategoriesCommand, PaginatedResult<SubCategoryDTO>>
+) : ICommandHandler<GetSubCategoriesCommand, PaginatedResult<SubCategoryFullViewModel>>
 {
     private readonly ISubCategoryRepository _subCategoryRepository = subCategoryRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<PaginatedResult<SubCategoryDTO>> Handle(GetSubCategoriesCommand request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<SubCategoryFullViewModel>> Handle(GetSubCategoriesCommand request, CancellationToken cancellationToken)
     {
         var query = _subCategoryRepository.Context.SubCategories.AsQueryable();
 
         if (!string.IsNullOrEmpty(request.Search))
             query = query.Where(x => x.Name.Contains(request.Search));
 
-        var subCategories = query
+        var subCategories = await query
             .AsNoTracking()
             .Include(x => x.Category)
             .Take(request.PageSize)
@@ -40,9 +40,9 @@ internal sealed class GetSubCategoriesCommandHandler(
             .AsNoTracking()
             .CountAsync(cancellationToken);
 
-        return new PaginatedResult<SubCategoryDTO>
+        return new PaginatedResult<SubCategoryFullViewModel>
         {
-            Items = _mapper.Map<List<SubCategoryDTO>>(subCategories),
+            Items = _mapper.Map<List<SubCategoryFullViewModel>>(subCategories),
             TotalCount = totalCount
         };
     }

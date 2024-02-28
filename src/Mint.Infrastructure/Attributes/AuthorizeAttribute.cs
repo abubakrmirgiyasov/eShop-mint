@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Mint.Domain.DTO_s.Identity;
-using Mint.Domain.Models.Identity;
 
 namespace Mint.Infrastructure.Attributes;
 
@@ -45,7 +44,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
                     {
                         if (role != userRole)
                             continue;
-                     
+
                         isValid = true;
                         break;
                     }
