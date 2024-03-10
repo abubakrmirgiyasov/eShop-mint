@@ -18,11 +18,16 @@ internal sealed class AdminRepository(
     public ApplicationDbContext Context => _context;
 
     /// <inheritdoc/>
-    public async Task<User> FindByIdAsync(Guid id, CancellationToken cancellation = default)
+    public async Task<User> FindByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
         try
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellation)
+            var query = Context.Users.AsQueryable();
+
+            if (asNoTracking)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
                 ?? throw new UserNotFoundException($"Пользователь с Id={id} не найден");
         }
         catch (UserNotFoundException ex)

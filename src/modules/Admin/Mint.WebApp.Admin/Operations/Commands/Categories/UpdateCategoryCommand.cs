@@ -14,7 +14,7 @@ internal sealed class UpdateCategoryCommandHandler(
 
     public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.FindByIdAsync(request.Category.Id, cancellationToken);
+        var category = await _categoryRepository.FindByIdAsync(request.Category.Id, cancellationToken: cancellationToken);
 
         category.Name = request.Category.Name;
         category.BadgeText = request.Category.BadgeText ?? category.BadgeText;

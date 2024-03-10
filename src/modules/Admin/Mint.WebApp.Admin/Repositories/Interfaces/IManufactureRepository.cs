@@ -1,5 +1,7 @@
-﻿namespace Mint.WebApp.Admin.Repositories.Interfaces;
+﻿using Mint.Domain.Models.Admin.Manufactures;
+using Mint.Infrastructure.Repositories;
 
-public interface IManufactureRepository
-{
-}
+namespace Mint.WebApp.Admin.Repositories.Interfaces;
+
+public interface IManufactureRepository 
+    : IBaseRepository<Manufacture, Guid> { }

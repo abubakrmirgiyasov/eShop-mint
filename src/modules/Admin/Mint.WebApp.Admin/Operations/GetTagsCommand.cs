@@ -15,14 +15,12 @@ internal sealed class GetTagsCommandHandler(TagService tagService)
 
     public async Task<PaginatedResult<TagFullViewModel>> Handle(GetTagsCommand request, CancellationToken cancellationToken)
     {
-		try
-		{
-			var tags = await _tagService.GetTagsAsync(request.PageIndex, request.PageSize, cancellationToken);
-			return new PaginatedResult<TagFullViewModel>(tags.Items, tags.TotalCount);
-		}
-		catch (Exception ex)
-		{
-			throw new Exception(ex.Message, ex);
-		}
+        var tags = await _tagService.GetTagsAsync(request.PageIndex, request.PageSize, cancellationToken);
+
+        return new PaginatedResult<TagFullViewModel>
+        {
+            Items = tags.Items,
+            TotalCount = tags.TotalCount,
+        };
     }
 }

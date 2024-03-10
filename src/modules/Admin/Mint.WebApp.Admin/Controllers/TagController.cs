@@ -10,16 +10,14 @@ namespace Mint.WebApp.Admin.Controllers;
 [Route("api/[controller]/[action]")]
 public class TagController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("index={pageIndex}&size={pageSize}")]
+    [HttpGet]
     [ProducesDefaultResponseType]
     [ProducesResponseType(200)]
     public async Task<ActionResult<PaginatedResult<TagFullViewModel>>> GetTags(
-        int pageIndex,
-        int pageSize,
+        [FromQuery] GetTagsCommand command,
         CancellationToken cancellationToken = default)
     {
-        var tags = await mediator.Send(new GetTagsCommand(pageIndex, pageSize), cancellationToken);
-        return tags;
+        return await mediator.Send(command, cancellationToken);
     }
 
     //[HttpGet("{id}")]

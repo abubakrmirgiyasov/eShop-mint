@@ -17,8 +17,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] GetCategoriesCommand command,
         CancellationToken cancellationToken = default)
     {
-        var categories = await mediator.Send(command, cancellationToken);
-        return Ok(categories);
+        return await mediator.Send(command, cancellationToken);
     }
 
     [HttpGet("links")]
@@ -27,8 +26,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
-        var links = await mediator.Send(new GetCategoriesDefaultLinksCommand(search), cancellationToken);
-        return Ok(links);
+        return await mediator.Send(new GetCategoriesDefaultLinksCommand(search), cancellationToken);
     }
 
     [HttpGet("{id}")]
@@ -43,18 +41,25 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
-        var categories = await mediator.Send(new GetCommonCategoriesCommand(search), cancellationToken);
-        return Ok(categories);
+        return await mediator.Send(new GetCommonCategoriesCommand(search), cancellationToken);
+    }
+
+    [HttpGet("{id:guid}/common")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<List<CategorySampleViewModel>>> GetSampleCategoryById(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetSampleCategoryByIdCommand(id), cancellationToken);
     }
 
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<Guid>> Create(
         [FromForm] CategoryFullBindingModel model,
         CancellationToken cancellationToken = default)
     {
-        var newCategory = await mediator.Send(new CreateCategoryCommand(model), cancellationToken);
-        return Ok(newCategory);
+        return await mediator.Send(new CreateCategoryCommand(model), cancellationToken);
     }
 
     [HttpPut]

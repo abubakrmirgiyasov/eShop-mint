@@ -29,4 +29,13 @@ public class SubCategoriesController(IMediator mediator) : ControllerBase
         var links = await mediator.Send(new GetSubCategoriesDefaultLinksCommand(search), cancellationToken);
         return Ok(links);
     }
+
+    [HttpPost]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<SubCategoryFullViewModel>> Create(
+        [FromBody] SubCategoryFullBindingModel subCategory,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new CreateSubCategoryCommand(subCategory), cancellationToken);
+    }
 }

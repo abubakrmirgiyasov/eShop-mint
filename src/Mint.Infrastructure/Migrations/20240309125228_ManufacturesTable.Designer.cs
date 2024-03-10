@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mint.Infrastructure;
 
@@ -11,9 +12,11 @@ using Mint.Infrastructure;
 namespace Mint.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309125228_ManufacturesTable")]
+    partial class ManufacturesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -464,9 +467,8 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("UpdateDateTime")
                         .HasColumnType("datetimeoffset");
@@ -478,7 +480,7 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("ManufactureId");
 
-                    b.ToTable("ManufactureContacts", "Mint");
+                    b.ToTable("ManufactureContact", "Mint");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Admin.Manufactures.ManufactureTag", b =>
@@ -859,8 +861,8 @@ namespace Mint.Infrastructure.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "AJ/OS0GCvU8mvtx5bHy2lBA+ikwV48YzA5TTraOUAW4=",
-                            Salt = new byte[] { 160, 4, 9, 82, 50, 163, 174, 54, 28, 181, 219, 119, 250, 116, 205, 236 },
+                            Password = "FsUuyNYbzjrlOMFv9fHtWLsie/F83bMPYM7G1lajX8o=",
+                            Salt = new byte[] { 202, 225, 72, 136, 222, 207, 49, 51, 243, 244, 165, 48, 130, 12, 240, 71 },
                             SecondName = "Абубакр"
                         },
                         new
@@ -878,8 +880,8 @@ namespace Mint.Infrastructure.Migrations
                             IsDeleted = false,
                             IsSeller = false,
                             NumOfAttempts = 0,
-                            Password = "hsBE2bnpdJycXxT/d3YvOQvHvrznMBrhpO9j0e+e034=",
-                            Salt = new byte[] { 160, 4, 9, 82, 50, 163, 174, 54, 28, 181, 219, 119, 250, 116, 205, 236 },
+                            Password = "dD6t4QYGsz+PXIl1hibpMYFDOzUzxlC7wo1OnL6awJc=",
+                            Salt = new byte[] { 202, 225, 72, 136, 222, 207, 49, 51, 243, 244, 165, 48, 130, 12, 240, 71 },
                             SecondName = "User"
                         });
                 });
@@ -939,7 +941,7 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6b4298a0-8c23-48ff-a68c-55328d809e13"),
+                            Id = new Guid("76efdb7f-a5bc-438c-a746-d61d4383af45"),
                             City = "Худжанд",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             Description = "full address for custom user",
@@ -951,7 +953,7 @@ namespace Mint.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("65d781b0-d9bf-4fba-ae3a-f9e7c98715af"),
+                            Id = new Guid("bac1cabf-cb89-479d-a4c0-8f621dd3bf67"),
                             City = "Новосибирск",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             Description = "full address for custom user",

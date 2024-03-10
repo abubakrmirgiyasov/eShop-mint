@@ -63,7 +63,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Store.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Admin.Tests", "src\modules\Admin\Mint.WebApp.Admin.Tests\Mint.WebApp.Admin.Tests.csproj", "{EC4FA327-929A-465E-B2F8-155A1A187A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.HealthChecker", "src\modules\Services\Mint.WebApp.HealthChecker\Mint.WebApp.HealthChecker.csproj", "{C5647212-6FC3-44B7-A741-2A47E1DC8EF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.HealthChecker", "src\modules\Services\Mint.WebApp.HealthChecker\Mint.WebApp.HealthChecker.csproj", "{C5647212-6FC3-44B7-A741-2A47E1DC8EF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mint.WebApp.Admin.Application", "src\modules\Admin\Mint.WebApp.Admin.Application\Mint.WebApp.Admin.Application.csproj", "{2EE99609-9259-4E94-902C-091C56B2A337}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +157,10 @@ Global
 		{C5647212-6FC3-44B7-A741-2A47E1DC8EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5647212-6FC3-44B7-A741-2A47E1DC8EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5647212-6FC3-44B7-A741-2A47E1DC8EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EE99609-9259-4E94-902C-091C56B2A337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE99609-9259-4E94-902C-091C56B2A337}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE99609-9259-4E94-902C-091C56B2A337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE99609-9259-4E94-902C-091C56B2A337}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +194,7 @@ Global
 		{164E94FE-7CF8-489A-BD7A-2C8093FD2C5A} = {3896F982-F5AD-4A69-BE14-7A95C7F834A9}
 		{EC4FA327-929A-465E-B2F8-155A1A187A9C} = {E02DA575-B073-4084-89A9-2615E37C0C06}
 		{C5647212-6FC3-44B7-A741-2A47E1DC8EF5} = {B4987191-ABF8-472B-9432-C0222120D832}
+		{2EE99609-9259-4E94-902C-091C56B2A337} = {E02DA575-B073-4084-89A9-2615E37C0C06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}

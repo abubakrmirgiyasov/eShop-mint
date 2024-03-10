@@ -24,9 +24,14 @@ public class SubCategoryRepository(ApplicationDbContext context) : ISubCategoryR
     }
 
     /// <inheritdoc/>
-    public async Task<SubCategory> FindByIdAsync(Guid id, CancellationToken cancellation = default)
+    public async Task<SubCategory> FindByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
-        var subCategory = await Context.SubCategories.FirstOrDefaultAsync(x => x.Id == id, cancellation)
+        var query = Context.SubCategories.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        var subCategory = await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
             ?? throw new NotFoundException("Под категория не найдена");
 
         return subCategory;
@@ -35,7 +40,7 @@ public class SubCategoryRepository(ApplicationDbContext context) : ISubCategoryR
     /// <inheritdoc/>
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var subCategory = await FindByIdAsync(id, cancellationToken);
+        var subCategory = await FindByIdAsync(id, cancellationToken: cancellationToken);
 
         Context.SubCategories.Remove(subCategory);
         await Context.SaveChangesAsync(cancellationToken);

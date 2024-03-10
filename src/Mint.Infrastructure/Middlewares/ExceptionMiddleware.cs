@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Mint.Domain.Exceptions;
 using System.Net;
-using System.Text.Json;
 
 namespace Mint.Infrastructure.Middlewares;
 
@@ -40,8 +39,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             _ => (int)HttpStatusCode.BadRequest,
         };
 
-        var res = JsonSerializer.Serialize(new { message = exception?.Message });
-        await context.Response.WriteAsync(res);
+        await context.Response.WriteAsync(exception?.Message);
 
         _logger.LogCritical("{Type}: {Message}", exception?.GetType(), exception?.Message);
     }

@@ -17,7 +17,7 @@ internal sealed class AdminInfoCommandHandler(
 
     public async Task<AdminInfoDto> Handle(AdminInfoCommand request, CancellationToken cancellationToken)
     {
-        var user = await _adminRepository.FindByIdAsync(request.Id, cancellationToken);
+        var user = await _adminRepository.FindByIdAsync(request.Id, cancellationToken: cancellationToken);
 
         return _mapper.Map<AdminInfoDto>(user);
     }

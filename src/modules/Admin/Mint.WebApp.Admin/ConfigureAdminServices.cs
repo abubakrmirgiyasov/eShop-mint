@@ -35,6 +35,8 @@ public static class ConfigureAdminServices
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+        services.AddScoped<IManufactureRepository, ManufactureRepository>();
+
         services.AddScoped<IDistributedCacheManager, RedisCacheManager>();
 
         services.AddAuthenticationServices();

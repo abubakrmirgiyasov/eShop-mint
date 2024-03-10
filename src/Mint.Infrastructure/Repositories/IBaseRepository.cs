@@ -16,9 +16,9 @@ public interface IBaseRepository<TModel, TKey>
     /// Filtering by first or default value
     /// </summary>
     /// <param name="id"></param>
-    /// <param name="cancellation"></param>
-    /// <exception cref="UserNotFoundException"></exception>
+    /// <param name="cancellationToken"></param>
+    /// <exception cref="NotFoundException"></exception>
     /// <exception cref="Exception"></exception>
     /// <returns></returns>
-    Task<TModel> FindByIdAsync(TKey id, CancellationToken cancellation = default);
+    Task<TModel> FindByIdAsync(TKey id, bool asNoTracking = false, CancellationToken cancellationToken = default);
 }

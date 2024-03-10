@@ -16,7 +16,7 @@ internal sealed class UploadFileCommandHandler(
 
     public async Task Handle(UploadFileCommand command, CancellationToken cancellationToken = default)
     {
-        await _storageCloudService.UploadFileAsync(command.StorageCloud.Photo, command.StorageCloud.Bucket, cancellationToken);
+        //await _storageCloudService.UploadFileAsync(command.StorageCloud.Photo, command.StorageCloud.Bucket, cancellationToken);
 
         _logger.LogInformation(
             "File upload successfully: Image={Image}, Bucket={Bucket}", 

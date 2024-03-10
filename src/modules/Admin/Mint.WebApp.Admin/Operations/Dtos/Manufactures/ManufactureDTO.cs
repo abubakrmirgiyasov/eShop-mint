@@ -1,18 +1,14 @@
-﻿namespace Mint.WebApp.Admin.Operations.Dtos.Manufactures;
+﻿using Mint.Domain.Common;
+
+namespace Mint.WebApp.Admin.Operations.Dtos.Manufactures;
 
 public class ManufactureFullBindingModel
 {
-    public Guid? Id { get; set; }
-
-    public string? Name { get; set; }
+    public required string Name { get; set; }
 
     public string? Description { get; set; }
 
-    public string? Country { get; set; }
-
-    public string? Email { get; set; }
-
-    public long Phone { get; set; }
+    public required string Country { get; set; }
 
     public string? FullAddress { get; set; }
 
@@ -24,21 +20,37 @@ public class ManufactureFullBindingModel
 
     public IFormFile? Photo { get; set; }
 
+    public List<ManufactureContactDto>? Contacts { get; set; }
+
     public List<ManufactureCategoryBindingModel>? ManufactureCategories { get; set; }
 
     public List<ManufactureTagBindingModel>? ManufactureTags { get; set; }
 }
 
-public record ManufactureFullViewModel(
-    Guid? Id = null,
-    string? Name = null,
-    string? Description = null,
-    string? Email = null,
-    long Phone = 0,
-    string? FullAddress = null,
-    string? Website = null,
-    string? Folder = null,
-    int DisplayOrder = 0,
-    string? ImagePath = null,
-    List<ManufactureCategoryFullViewModel>? ManufactureCategories = null,
-    List<object>? Products = null);
+public class ManufactureContactDto
+{
+    public required ContactType Type { get; set; }
+
+    public required string ContactInformation { get; set; }
+}
+
+public class ManufactureFullViewModel 
+{
+    public Guid Id { get; set; }
+
+    public int DisplayOrder { get; set; }
+
+    public required string Name { get; set; }
+
+    public string? FullAddress { get; set; }
+
+    public string? ImagePath { get; set; }
+
+    public string? Website { get; set; }
+
+    public string? Description { get; set; }
+
+    public required List<ManufactureContactDto> Contacts { get; set; }
+
+    public List<ManufactureCategoryFullViewModel>? ManufactureCategories { get; set; }
+}

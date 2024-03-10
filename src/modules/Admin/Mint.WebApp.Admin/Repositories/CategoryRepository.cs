@@ -20,9 +20,14 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<Category> FindByIdAsync(Guid id, CancellationToken cancellation = default)
+    public async Task<Category> FindByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
-        var category = await Context.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellation)
+        var query = Context.Categories.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        var category = await query.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
             ?? throw new NotFoundException("Категория не найдена");
 
         return category;
@@ -30,7 +35,7 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
 
     public async Task DeleteCategoryAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var category = await FindByIdAsync(id, cancellationToken);
+        var category = await FindByIdAsync(id, cancellationToken: cancellationToken);
 
         Context.Categories.Remove(category);
         await Context.SaveChangesAsync(cancellationToken);

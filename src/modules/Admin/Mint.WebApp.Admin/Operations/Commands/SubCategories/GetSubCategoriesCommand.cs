@@ -31,6 +31,7 @@ internal sealed class GetSubCategoriesCommandHandler(
         var subCategories = await query
             .AsNoTracking()
             .Include(x => x.Category)
+            .Skip(request.PageSize * request.PageIndex)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
 

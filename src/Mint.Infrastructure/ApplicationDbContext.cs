@@ -136,6 +136,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ManufactureTag> ManufactureTags { get; set; }
 
     /// <summary>
+    /// Manufacture Contacts Table
+    /// </summary>
+    public DbSet<ManufactureContact> ManufactureContacts => Set<ManufactureContact>();
+
+    /// <summary>
     /// Countries Table
     /// </summary>
     public DbSet<Country> Countries => Set<Country>();
@@ -152,14 +157,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         builder.Entity<Product>()
             .HasIndex(x => x.Gtin)
-            .IsUnique(true);
-
-        builder.Entity<Manufacture>()
-            .HasIndex(x => x.Email)
-            .IsUnique(true);
-
-        builder.Entity<Manufacture>()
-            .HasIndex(x => x.Phone)
             .IsUnique(true);
 
         builder.Entity<Manufacture>()
@@ -261,12 +258,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(x => x.Category)
             .WithMany(x => x.Products)
             .HasForeignKey(x => x.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<Manufacture>()
-            .HasOne(x => x.Photo)
-            .WithMany(x => x.Manufactures)
-            .HasForeignKey(x => x.PhotoId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<ManufactureCategory>()
