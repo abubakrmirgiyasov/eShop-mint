@@ -47,6 +47,16 @@ public class ManufacturesController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id:guid}/contacts")]
+    public async Task<IActionResult> UpdateContacts(
+        [FromRoute] Guid id,
+        [FromForm] List<ManufactureContactDto> contacts,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new UpdateManufactureContactsCommand(id, contacts), cancellationToken);
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Delete(

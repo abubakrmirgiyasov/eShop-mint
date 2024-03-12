@@ -42,6 +42,8 @@ public class ManufactureFullViewModel
 
     public required string Name { get; set; }
 
+    public required string Country { get; set; }
+
     public string? FullAddress { get; set; }
 
     public string? ImagePath { get; set; }

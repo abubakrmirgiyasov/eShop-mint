@@ -48,92 +48,92 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// <summary>
     /// Photos Table
     /// </summary>
-    public DbSet<Photo> Photos { get; set; }
+    public DbSet<Photo> Photos => Set<Photo>();
     
     /// <summary>
     /// Products Table
     /// </summary>
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products => Set<Product>();
 
     /// <summary>
     /// Product Photos Table
     /// </summary>
-    public DbSet<ProductPhoto> ProductPhotos { get; set; }
+    public DbSet<ProductPhoto> ProductPhotos => Set<ProductPhoto>();
 
     /// <summary>
     /// Tags Table
     /// </summary>
-    public DbSet<Tag> Tags { get; set; }
+    public DbSet<Tag> Tags => Set<Tag>();
 
     /// <summary>
     /// Product Tags Table
     /// </summary>
-    public DbSet<ProductTag> ProductTags { get; set; }
+    public DbSet<ProductTag> ProductTags => Set<ProductTag>();
 
     /// <summary>
     /// Categories Table
     /// </summary>
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<Category> Categories => Set<Category>();
 
     /// <summary>
     /// Sub Categories Table
     /// </summary>
-    public DbSet<SubCategory> SubCategories { get; set; }
+    public DbSet<SubCategory> SubCategories => Set<SubCategory>();
 
     /// <summary>
     /// Categories Tag Table
     /// </summary>
-    public DbSet<CategoryTag> CategoryTags { get; set; }
+    public DbSet<CategoryTag> CategoryTags => Set<CategoryTag>();
 
     /// <summary>
     /// Common Characteristics Table
     /// </summary>
-    public DbSet<CommonCharacteristic> CommonCharacteristics { get; set; }
+    public DbSet<CommonCharacteristic> CommonCharacteristics => Set<CommonCharacteristic>();
 
     /// <summary>
     /// Characteristics Table
     /// </summary>
-    public DbSet<Characteristic> Characteristics { get; set; }
+    public DbSet<Characteristic> Characteristics => Set<Characteristic>();
 
     /// <summary>
     /// Product Characteristics Table
     /// </summary>
-    public DbSet<ProductCharacteristic> ProductCharacteristics { get; set; }
+    public DbSet<ProductCharacteristic> ProductCharacteristics => Set<ProductCharacteristic>();
 
     /// <summary>
     /// Stores Table
     /// </summary>
-    public DbSet<Store> Stores { get; set; }
+    public DbSet<Store> Stores => Set<Store>();
 
     /// <summary>
     /// Store Addresses Table
     /// </summary>
-    public DbSet<StoreAddress> StoreAddresses { get; set; }
+    public DbSet<StoreAddress> StoreAddresses => Set<StoreAddress>();
 
     /// <summary>
     /// Store Tags Table
     /// </summary>
-    public DbSet<StoreTag> StoreTags { get; set; }
+    public DbSet<StoreTag> StoreTags => Set<StoreTag>();
 
     /// <summary>
     /// Store Reviews Table
     /// </summary>
-    public DbSet<StoreReview> StoreReviews { get; set; }
+    public DbSet<StoreReview> StoreReviews => Set<StoreReview>();
 
     /// <summary>
     /// Manufactures Table
     /// </summary>
-    public DbSet<Manufacture> Manufactures { get; set; }
+    public DbSet<Manufacture> Manufactures => Set<Manufacture>();
 
     /// <summary>
     /// ManufactureCategories Table
     /// </summary>
-    public DbSet<ManufactureCategory> ManufactureCategories { get; set; }
+    public DbSet<ManufactureCategory> ManufactureCategories => Set<ManufactureCategory>();
 
     /// <summary>
     /// Manufacture Tags Table
     /// </summary>
-    public DbSet<ManufactureTag> ManufactureTags { get; set; }
+    public DbSet<ManufactureTag> ManufactureTags => Set<ManufactureTag>();
 
     /// <summary>
     /// Manufacture Contacts Table

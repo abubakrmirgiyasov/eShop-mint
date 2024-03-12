@@ -5,14 +5,9 @@ using RabbitMQ.Client;
 
 namespace Mint.Infrastructure.MessageBrokers.RabbitMQ;
 
-public class RabbitMQHealthCheck : IHealthCheck
+public class RabbitMQHealthCheck(RabbitMQHealthCheckOptions options) : IHealthCheck
 {
-    private readonly RabbitMQHealthCheckOptions _options;
-
-    public RabbitMQHealthCheck(RabbitMQHealthCheckOptions options)
-    {
-        _options = options;
-    }
+    private readonly RabbitMQHealthCheckOptions _options = options;
 
     public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {

@@ -76,6 +76,8 @@ internal sealed class GetManufacturesCommandHandler(
                     Website = manufacture.Website,
                     FullAddress = manufacture.FullAddress,
                     DisplayOrder = manufacture.DisplayOrder,
+                    Description = manufacture.Description,
+                    Country = manufacture.Country,
                     Contacts = _mapper.Map<List<ManufactureContactDto>>(manufacture.Contacts),
                 }
             );
