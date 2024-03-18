@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
-using Mint.WebApp.Admin.Operations.Commands.Categories;
-using Mint.WebApp.Admin.Operations.Dtos;
-using Mint.WebApp.Admin.Operations.Dtos.Categories;
+using Mint.WebApp.Admin.Application.Operations.Commands.Categories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 
 namespace Mint.WebApp.Admin.Controllers;
 

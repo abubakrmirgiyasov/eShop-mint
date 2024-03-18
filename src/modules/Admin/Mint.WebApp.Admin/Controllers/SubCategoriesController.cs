@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
+using Mint.WebApp.Admin.Application.Operations.Commands.SubCategories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
+using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Operations.Commands.SubCategories;
-using Mint.WebApp.Admin.Operations.Dtos;
-using Mint.WebApp.Admin.Operations.Dtos.SubCategories;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -15,7 +16,7 @@ public class SubCategoriesController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<PaginatedResult<SubCategoryFullViewModel>>> Get(
         [FromQuery] GetSubCategoriesCommand command,
-        CancellationToken cancellationToken = default) 
+        CancellationToken cancellationToken = default)
     {
         return await mediator.Send(command, cancellationToken);
     }

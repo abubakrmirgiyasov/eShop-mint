@@ -1,17 +1,18 @@
-﻿using Mint.Domain.DTO_s.MessageBroker;
+﻿using MediatR;
+using Mint.Domain.DTO_s.MessageBroker;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.WebApp.StorageCloud.Commands;
 
 public sealed record GetImageLinkCommand(string Bucket, string Name)
-    : ICommand<UserImage>;
+    : IRequest<UserImage>;
 
 internal sealed class GetImageLinkCommandHandler(
     IMessageSender<UserImage> messageSender,
     IStorageCloudService storageCloudService,
     ILogger<GetImageLinkCommandHandler> logger
-) : ICommandHandler<GetImageLinkCommand, UserImage>
+) : IRequestHandler<GetImageLinkCommand, UserImage>
 {
     private readonly IMessageSender<UserImage> _messageSender = messageSender;
     private readonly IStorageCloudService _storageCloudService = storageCloudService;

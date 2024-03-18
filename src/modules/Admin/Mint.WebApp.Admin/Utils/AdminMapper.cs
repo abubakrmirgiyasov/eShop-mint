@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models.Admin;
-using Mint.WebApp.Admin.Operations.Dtos.Categories;
-using Mint.WebApp.Admin.Operations.Dtos;
+using Mint.Domain.Models.Admin.Categories;
 using Mint.Domain.Models.Admin.Manufactures;
-using Mint.WebApp.Admin.Operations.Dtos.Manufactures;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
+using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
 
 namespace Mint.WebApp.Admin.Utils;
 

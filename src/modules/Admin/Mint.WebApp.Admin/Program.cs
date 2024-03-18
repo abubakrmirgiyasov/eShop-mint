@@ -6,8 +6,6 @@ using Mint.WebApp.Admin;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssembly(typeof(Program).Assembly));
-
 var connection = builder.Configuration.GetSection(Constants.CONNECTION_STRING);
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection.Value));
 

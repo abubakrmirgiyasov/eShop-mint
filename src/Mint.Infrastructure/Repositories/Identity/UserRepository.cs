@@ -223,7 +223,7 @@ public class UserRepository(
     /// <param name="email"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<int> SendEmailConfirmationCodeAsync(string email)
+    public Task<int> SendEmailConfirmationCodeAsync(string email)
     {
         try
         {
@@ -242,7 +242,8 @@ public class UserRepository(
             //};
 
             //await _sender.SendAsync(user, null, Constants.CONFIRMATION_KEY);
-            return code;
+            //return code;
+            return (Task<int>)Task.CompletedTask;
         }
         catch (Exception ex)
         {

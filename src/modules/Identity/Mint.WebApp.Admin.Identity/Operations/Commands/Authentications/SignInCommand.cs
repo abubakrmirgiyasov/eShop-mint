@@ -1,15 +1,15 @@
-﻿using Mint.Domain.DTO_s.Identity;
-using Mint.Infrastructure.MessageBrokers.Interfaces;
+﻿using MediatR;
+using Mint.Domain.DTO_s.Identity;
 using Mint.Infrastructure.Repositories.Identity.Interfaces;
 using Mint.WebApp.Admin.Identity.Operations.Validations.Authentications;
 
 namespace Mint.WebApp.Admin.Identity.Operations.Commands.Authentications;
 
 public sealed record SignInCommand(SignInRequest Auth)
-    : ICommand<AuthenticationAdminResponse>;
+    : IRequest<AuthenticationAdminResponse>;
 
 internal sealed class SignInCommandHandler(IAuthenticationRepository authentication)
-        : ICommandHandler<SignInCommand, AuthenticationAdminResponse>
+        : IRequestHandler<SignInCommand, AuthenticationAdminResponse>
 {
     private readonly IAuthenticationRepository _authentication = authentication;
 
