@@ -3,7 +3,7 @@ using Mint.Domain.Models.Admin;
 
 namespace Mint.Infrastructure.Configurations.Admin;
 
-public class UnitConfiguration : IEntityConfiguration<Unit, Guid>
+internal sealed class UnitConfiguration : IEntityConfiguration<Unit, Guid>
 {
     public void Configure(EntityTypeBuilder<Unit> builder)
     {
