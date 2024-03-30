@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mint.Domain.Common;
 using Mint.Domain.Helpers;
-using Mint.Domain.Models.Admin;
+using Mint.Domain.Models.Admin.Tags;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.Infrastructure.Repositories.Admin;
 using Mint.Infrastructure.Services.Interfaces;

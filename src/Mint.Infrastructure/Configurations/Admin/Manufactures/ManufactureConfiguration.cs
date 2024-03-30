@@ -16,6 +16,10 @@ internal sealed class ManufactureConfiguration : IEntityConfiguration<Manufactur
             .IsUnique(true);
 
         builder
+            .HasIndex(x => x.Website)
+            .IsUnique(true);
+
+        builder
             .HasOne(x => x.Photo)
             .WithMany(x => x.Manufactures)
             .HasForeignKey(x => x.PhotoId)

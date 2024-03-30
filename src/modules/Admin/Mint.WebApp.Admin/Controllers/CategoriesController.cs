@@ -30,10 +30,11 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CategoryFullViewModel>> GetCategoryById(Guid id)
+    public async Task<ActionResult<CategoryFullViewModel>> GetCategoryById(
+        Guid id,
+        CancellationToken cancellationToken = default)
     {
-        await Task.Delay(1000);
-        return Ok();
+        return await mediator.Send(new GetCategoryByIdCommand(id), cancellationToken);
     }
 
     [HttpGet("common")]

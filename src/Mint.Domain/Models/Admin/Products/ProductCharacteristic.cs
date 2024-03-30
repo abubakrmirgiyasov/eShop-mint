@@ -1,4 +1,4 @@
-﻿namespace Mint.Domain.Models.Admin.Categories;
+﻿namespace Mint.Domain.Models.Admin.Products;
 
 public class ProductCharacteristic
 {

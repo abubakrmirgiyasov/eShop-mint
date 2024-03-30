@@ -1,4 +1,6 @@
-﻿namespace Mint.Domain.Models.Admin.Categories;
+﻿using Mint.Domain.Models.Admin.Tags;
+
+namespace Mint.Domain.Models.Admin.Products;
 
 public class ProductTag
 {

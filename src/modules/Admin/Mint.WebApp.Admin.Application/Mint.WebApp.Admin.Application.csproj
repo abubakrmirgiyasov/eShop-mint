@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Operations\Commands\Stores\" />
+    <Folder Include="Operations\Queries\Categories\" />
     <Folder Include="Operations\Validations\Manufactures\" />
     <Folder Include="Operations\Validations\SubCategories\" />
   </ItemGroup>

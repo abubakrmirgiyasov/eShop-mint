@@ -1,4 +1,4 @@
-﻿using Mint.Domain.Models.Admin.Categories;
+﻿using Mint.Domain.Models.Admin.Products;
 using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
 

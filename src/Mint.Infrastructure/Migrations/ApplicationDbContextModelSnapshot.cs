@@ -37,6 +37,9 @@ namespace Mint.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("DefaultLink")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
@@ -100,238 +103,6 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("CategoryTags", "Mint");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.Characteristic", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Characteristics", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.CommonCharacteristic", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Availability")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Color")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Guaranty")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Length")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Material")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Rate")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Width")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CommonCharacteristics", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AdminComment")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CountryOfOrigin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DeliveryMaxDay")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeliveryMinDay")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FullDescription")
-                        .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)");
-
-                    b.Property<string>("Gtin")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsFreeTax")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LongName")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("ManufactureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("OldPrice")
-                        .HasMaxLength(7)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Price")
-                        .HasMaxLength(7)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductNumber")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductNumber"));
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasMaxLength(800)
-                        .HasColumnType("nvarchar(800)");
-
-                    b.Property<string>("ShortName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool?>("ShowOnHomePage")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Sku")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TaxPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("Gtin")
-                        .IsUnique()
-                        .HasFilter("[Gtin] IS NOT NULL");
-
-                    b.HasIndex("ManufactureId");
-
-                    b.HasIndex("Sku")
-                        .IsUnique();
-
-                    b.ToTable("Products", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.ProductCharacteristic", b =>
-                {
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CharacteristicId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProductId", "CharacteristicId");
-
-                    b.HasIndex("CharacteristicId");
-
-                    b.ToTable("ProductCharacteristics", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.ProductPhoto", b =>
-                {
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PhotoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProductId", "PhotoId");
-
-                    b.HasIndex("PhotoId");
-
-                    b.ToTable("ProductPhotos", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.ProductTag", b =>
-                {
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProductId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("ProductTags", "Mint");
-                });
-
             modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.SubCategory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -340,6 +111,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DefaultLink")
                         .IsRequired()
@@ -385,6 +159,9 @@ namespace Mint.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasMaxLength(800)
@@ -456,6 +233,9 @@ namespace Mint.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<Guid>("ManufactureId")
                         .HasColumnType("uniqueidentifier");
 
@@ -496,11 +276,621 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("ManufactureTags", "Mint");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Tag", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Characteristic", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Characteristics", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.CommonCharacteristic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Availability")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Guaranty")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Length")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Material")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Width")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CommonCharacteristics", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Discount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsExpired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Percent")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdminComment")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CountryOfOrigin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("DeliveryMaxDay")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeliveryMinDay")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("DiscountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FullDescription")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("Gtin")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool?>("IsFreeTax")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LongName")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("ManufactureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("OldPrice")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("OwnStorage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OwnStore")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("Price")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductNumber"));
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("ShowOnHomePage")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("Sku")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("TaxPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("UnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UrlToProduct")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("Gtin")
+                        .IsUnique()
+                        .HasFilter("[Gtin] IS NOT NULL");
+
+                    b.HasIndex("ManufactureId");
+
+                    b.HasIndex("ProductNumber")
+                        .IsUnique();
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("UnitId");
+
+                    b.HasIndex("UrlToProduct")
+                        .IsUnique();
+
+                    b.ToTable("Products", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductCharacteristic", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CharacteristicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "CharacteristicId");
+
+                    b.HasIndex("CharacteristicId");
+
+                    b.ToTable("ProductCharacteristics", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductPhoto", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "PhotoId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("ProductPhotos", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CommentType")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("CountOfVoted")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Minuses")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Pluses")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductReviews", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductReviewPhoto", b =>
+                {
+                    b.Property<Guid?>("ProductReviewId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductReviewId", "PhotoId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("ProductReviewPhotos", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductTag", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProductTags", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.Storage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Storages", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsPhysical")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<Guid?>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WorkHours")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("Url")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Stores", "Mint");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d307c97f-2ebf-4b77-a35b-f728ebaaad0d"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 767, DateTimeKind.Unspecified).AddTicks(6905), new TimeSpan(0, 7, 0, 0, 0)),
+                            IsPhysical = false,
+                            Name = "Mint",
+                            Url = "mint",
+                            UserId = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572")
+                        });
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.StoreAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("StoreAddresses", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.StoreContact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ContactInformation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactInformation")
+                        .IsUnique();
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("StoreContacts", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.StoreReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CountOfVoted")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("StoreRating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("StoreReviews", "Mint");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Tags.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -524,6 +914,45 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("Tags", "Mint");
                 });
 
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Unit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("DefaultUnitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DefaultUnitId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTimeOffset?>("UpdateDateTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Units", "Mint");
+                });
+
             modelBuilder.Entity("Mint.Domain.Models.Common.Country", b =>
                 {
                     b.Property<Guid>("Id")
@@ -533,6 +962,9 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<string>("CountryCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -559,18 +991,21 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("3616c928-a4d1-4dfb-a622-1d750bbb5739"),
                             CountryCode = "RU-ru",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(4326), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Россия"
                         },
                         new
                         {
                             Id = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             CountryCode = "TJ-tj",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(4342), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Тоҷикистон"
                         },
                         new
                         {
                             Id = new Guid("6f7652b5-92de-4a44-9342-a68a4b92ff52"),
                             CountryCode = "KZ-kz",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(4345), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Қазақстан"
                         });
                 });
@@ -587,6 +1022,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("CountryCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -618,6 +1056,7 @@ namespace Mint.Infrastructure.Migrations
                             Id = new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"),
                             ContactInformation = "+79502768428",
                             CountryCode = "RU",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(7713), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Phone",
                             UserId = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0")
                         },
@@ -625,6 +1064,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("70298181-e41d-41a9-86c5-ac349a74af6d"),
                             ContactInformation = "abubakrmirgiyasov@gmail.com",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(7730), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Email",
                             UserId = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0")
                         },
@@ -632,6 +1072,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("83733797-4c73-457a-874b-cba254c6d71e"),
                             ContactInformation = "admin@mint.com",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(7734), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Email",
                             UserId = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572")
                         },
@@ -640,6 +1081,7 @@ namespace Mint.Infrastructure.Migrations
                             Id = new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"),
                             ContactInformation = "+73452763423",
                             CountryCode = "RU",
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 769, DateTimeKind.Unspecified).AddTicks(7738), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Phone",
                             UserId = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572")
                         });
@@ -656,6 +1098,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<DateTime>("Expires")
                         .HasColumnType("datetime2");
@@ -693,7 +1138,7 @@ namespace Mint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken", "Mint");
+                    b.ToTable("RefreshTokens", "Mint");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Identity.Role", b =>
@@ -701,6 +1146,9 @@ namespace Mint.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -736,6 +1184,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("68c2f692-2f9a-4d0e-9d89-9c2ff7f0409b"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 770, DateTimeKind.Unspecified).AddTicks(2991), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Админ",
                             TranslateEn = "ADMIN",
                             UniqueKey = "ADMIN"
@@ -743,6 +1192,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22a99751-e418-49c5-ac4e-ce221dd7ae0d"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 770, DateTimeKind.Unspecified).AddTicks(3014), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Продавец",
                             TranslateEn = "SELLER",
                             UniqueKey = "SELLER"
@@ -750,6 +1200,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("7582ed34-eb4a-4628-a7e7-971af7379ec8"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 770, DateTimeKind.Unspecified).AddTicks(3017), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Покупатель",
                             TranslateEn = "BUYER",
                             UniqueKey = "BUYER"
@@ -767,6 +1218,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<int>("ConfirmationCode")
                         .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<DateTime?>("DateBirth")
                         .HasColumnType("datetime2");
@@ -847,6 +1301,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"),
                             ConfirmationCode = 0,
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 779, DateTimeKind.Unspecified).AddTicks(212), new TimeSpan(0, 7, 0, 0, 0)),
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             FirstName = "Миргиясов",
@@ -859,14 +1314,15 @@ namespace Mint.Infrastructure.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "AJ/OS0GCvU8mvtx5bHy2lBA+ikwV48YzA5TTraOUAW4=",
-                            Salt = new byte[] { 160, 4, 9, 82, 50, 163, 174, 54, 28, 181, 219, 119, 250, 116, 205, 236 },
+                            Password = "67hfjXGpdLo0E4G4bTedta27yfP57sf3CC6dAqZ5wOQ=",
+                            Salt = new byte[] { 97, 23, 217, 93, 235, 181, 41, 109, 141, 216, 21, 212, 225, 34, 216, 57 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
                             Id = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"),
                             ConfirmationCode = 0,
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 779, DateTimeKind.Unspecified).AddTicks(5680), new TimeSpan(0, 7, 0, 0, 0)),
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             FirstName = "Test",
@@ -876,10 +1332,10 @@ namespace Mint.Infrastructure.Migrations
                             IsConfirmedEmail = true,
                             IsConfirmedPhone = false,
                             IsDeleted = false,
-                            IsSeller = false,
+                            IsSeller = true,
                             NumOfAttempts = 0,
-                            Password = "hsBE2bnpdJycXxT/d3YvOQvHvrznMBrhpO9j0e+e034=",
-                            Salt = new byte[] { 160, 4, 9, 82, 50, 163, 174, 54, 28, 181, 219, 119, 250, 116, 205, 236 },
+                            Password = "yc21xcUk5kX6es4J003T/CDJ13Ay8t1GYmj9tNOgjqM=",
+                            Salt = new byte[] { 97, 23, 217, 93, 235, 181, 41, 109, 141, 216, 21, 212, 225, 34, 216, 57 },
                             SecondName = "User"
                         });
                 });
@@ -897,6 +1353,9 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<Guid>("CountryId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasMaxLength(999)
@@ -939,9 +1398,10 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6b4298a0-8c23-48ff-a68c-55328d809e13"),
+                            Id = new Guid("f11ce4a4-ed39-43da-a57b-9a21a2a65ee5"),
                             City = "Худжанд",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 771, DateTimeKind.Unspecified).AddTicks(814), new TimeSpan(0, 7, 0, 0, 0)),
                             Description = "full address for custom user",
                             FullAddress = "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49",
                             FullName = "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр",
@@ -951,9 +1411,10 @@ namespace Mint.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("65d781b0-d9bf-4fba-ae3a-f9e7c98715af"),
+                            Id = new Guid("1b207324-cc0c-4a86-afef-da5453b2bf27"),
                             City = "Новосибирск",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 3, 30, 19, 56, 17, 773, DateTimeKind.Unspecified).AddTicks(2373), new TimeSpan(0, 7, 0, 0, 0)),
                             Description = "full address for custom user",
                             FullAddress = "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49",
                             FullName = "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр",
@@ -1016,6 +1477,9 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("FileExtension")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -1052,116 +1516,6 @@ namespace Mint.Infrastructure.Migrations
                     b.ToTable("Photos", "Mint");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Stores.Store", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<bool>("IsPhysical")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<long>("Phone")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid?>("PhotoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("WorkHours")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Phone")
-                        .IsUnique();
-
-                    b.HasIndex("PhotoId");
-
-                    b.HasIndex("Url")
-                        .IsUnique();
-
-                    b.ToTable("Stores", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Stores.StoreAddress", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<Guid>("StoreId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("ZipCode")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StoreId");
-
-                    b.ToTable("StoreAddresses", "Mint");
-                });
-
             modelBuilder.Entity("Mint.Domain.Models.Stores.StoreCategory", b =>
                 {
                     b.Property<Guid?>("StoreId")
@@ -1175,43 +1529,6 @@ namespace Mint.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("StoreCategory", "Mint");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Stores.StoreReview", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<Guid>("StoreId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("StoreRating")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
-
-                    b.Property<DateTimeOffset?>("UpdateDateTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StoreId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("StoreReviews", "Mint");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Stores.StoreTag", b =>
@@ -1247,96 +1564,13 @@ namespace Mint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mint.Domain.Models.Admin.Tag", "Tag")
+                    b.HasOne("Mint.Domain.Models.Admin.Tags.Tag", "Tag")
                         .WithMany("CategoryTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.CommonCharacteristic", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Admin.Categories.Product", "Product")
-                        .WithMany("CommonCharacteristics")
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.Product", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Admin.Categories.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Mint.Domain.Models.Admin.Manufactures.Manufacture", "Manufacture")
-                        .WithMany("Products")
-                        .HasForeignKey("ManufactureId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Manufacture");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.ProductCharacteristic", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Admin.Categories.Characteristic", "Characteristic")
-                        .WithMany("ProductCharacteristics")
-                        .HasForeignKey("CharacteristicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mint.Domain.Models.Admin.Categories.Product", "Product")
-                        .WithMany("ProductCharacteristics")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Characteristic");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.ProductPhoto", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
-                        .WithMany("ProductPhotos")
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Mint.Domain.Models.Admin.Categories.Product", "Product")
-                        .WithMany("ProductPhotos")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Photo");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.ProductTag", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Admin.Categories.Product", "Product")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mint.Domain.Models.Admin.Tag", "Tag")
-                        .WithMany("ProductTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("Tag");
                 });
@@ -1399,7 +1633,7 @@ namespace Mint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mint.Domain.Models.Admin.Tag", "Tag")
+                    b.HasOne("Mint.Domain.Models.Admin.Tags.Tag", "Tag")
                         .WithMany("ManufactureTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1408,6 +1642,223 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Manufacture");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.CommonCharacteristic", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Product", "Product")
+                        .WithMany("CommonCharacteristics")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Product", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Categories.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Discount", "Discount")
+                        .WithMany("Products")
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Mint.Domain.Models.Admin.Manufactures.Manufacture", "Manufacture")
+                        .WithMany("Products")
+                        .HasForeignKey("ManufactureId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId");
+
+                    b.HasOne("Mint.Domain.Models.Admin.Unit", "Unit")
+                        .WithMany("Products")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Manufacture");
+
+                    b.Navigation("Store");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductCharacteristic", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Characteristic", "Characteristic")
+                        .WithMany("ProductCharacteristics")
+                        .HasForeignKey("CharacteristicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Product", "Product")
+                        .WithMany("ProductCharacteristics")
+                        .HasForeignKey("CharacteristicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Characteristic");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductPhoto", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Product", "Product")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductReview", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Product", "Product")
+                        .WithMany("ProductReviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Identity.User", "User")
+                        .WithMany("ProductReviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductReviewPhoto", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithMany("ProductReviewPhotos")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Admin.Products.ProductReview", "ProductReview")
+                        .WithMany("ProductReviewPhotos")
+                        .HasForeignKey("ProductReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("ProductReview");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductTag", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Product", "Product")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Admin.Tags.Tag", "Tag")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.Storage", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Products.Product", "Product")
+                        .WithMany("Storages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
+                        .WithMany("Storages")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.Store", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
+                        .WithMany("Stores")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Mint.Domain.Models.Identity.User", "User")
+                        .WithMany("Stores")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.StoreAddress", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
+                        .WithMany("StoreAddresses")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.StoreContact", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
+                        .WithMany("StoreContacts")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.StoreReview", b =>
+                {
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
+                        .WithMany("StoreReviews")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mint.Domain.Models.Identity.User", "User")
+                        .WithMany("StoreReviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Identity.Contact", b =>
@@ -1487,39 +1938,18 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Stores.Store", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Photo", "Photo")
-                        .WithMany("Stores")
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Photo");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Stores.StoreAddress", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Stores.Store", "Store")
-                        .WithMany("StoreAddresses")
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Store");
-                });
-
             modelBuilder.Entity("Mint.Domain.Models.Stores.StoreCategory", b =>
                 {
                     b.HasOne("Mint.Domain.Models.Admin.Categories.Category", "Category")
                         .WithMany("StoreCategories")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mint.Domain.Models.Stores.Store", "Store")
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
                         .WithMany("StoreCategories")
                         .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -1527,37 +1957,18 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Stores.StoreReview", b =>
-                {
-                    b.HasOne("Mint.Domain.Models.Stores.Store", "Store")
-                        .WithMany("StoreReviews")
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Mint.Domain.Models.Identity.User", "User")
-                        .WithMany("StoreReviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Store");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Mint.Domain.Models.Stores.StoreTag", b =>
                 {
-                    b.HasOne("Mint.Domain.Models.Stores.Store", "Store")
+                    b.HasOne("Mint.Domain.Models.Admin.Stores.Store", "Store")
                         .WithMany("StoreTags")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mint.Domain.Models.Admin.Tag", "Tag")
+                    b.HasOne("Mint.Domain.Models.Admin.Tags.Tag", "Tag")
                         .WithMany("StoreTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Store");
@@ -1578,22 +1989,6 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.Characteristic", b =>
-                {
-                    b.Navigation("ProductCharacteristics");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Categories.Product", b =>
-                {
-                    b.Navigation("CommonCharacteristics");
-
-                    b.Navigation("ProductCharacteristics");
-
-                    b.Navigation("ProductPhotos");
-
-                    b.Navigation("ProductTags");
-                });
-
             modelBuilder.Entity("Mint.Domain.Models.Admin.Manufactures.Manufacture", b =>
                 {
                     b.Navigation("Contacts");
@@ -1605,7 +2000,52 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Mint.Domain.Models.Admin.Tag", b =>
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Characteristic", b =>
+                {
+                    b.Navigation("ProductCharacteristics");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Discount", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.Product", b =>
+                {
+                    b.Navigation("CommonCharacteristics");
+
+                    b.Navigation("ProductCharacteristics");
+
+                    b.Navigation("ProductPhotos");
+
+                    b.Navigation("ProductReviews");
+
+                    b.Navigation("ProductTags");
+
+                    b.Navigation("Storages");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Products.ProductReview", b =>
+                {
+                    b.Navigation("ProductReviewPhotos");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Stores.Store", b =>
+                {
+                    b.Navigation("Storages");
+
+                    b.Navigation("StoreAddresses");
+
+                    b.Navigation("StoreCategories");
+
+                    b.Navigation("StoreContacts");
+
+                    b.Navigation("StoreReviews");
+
+                    b.Navigation("StoreTags");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Tags.Tag", b =>
                 {
                     b.Navigation("CategoryTags");
 
@@ -1614,6 +2054,11 @@ namespace Mint.Infrastructure.Migrations
                     b.Navigation("ProductTags");
 
                     b.Navigation("StoreTags");
+                });
+
+            modelBuilder.Entity("Mint.Domain.Models.Admin.Unit", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Mint.Domain.Models.Common.Country", b =>
@@ -1630,9 +2075,13 @@ namespace Mint.Infrastructure.Migrations
                 {
                     b.Navigation("Contacts");
 
+                    b.Navigation("ProductReviews");
+
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("StoreReviews");
+
+                    b.Navigation("Stores");
 
                     b.Navigation("UserAddresses");
 
@@ -1647,22 +2096,13 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Navigation("ProductPhotos");
 
+                    b.Navigation("ProductReviewPhotos");
+
                     b.Navigation("Stores");
 
                     b.Navigation("UserBackgroundPhotos");
 
                     b.Navigation("UserPhotos");
-                });
-
-            modelBuilder.Entity("Mint.Domain.Models.Stores.Store", b =>
-                {
-                    b.Navigation("StoreAddresses");
-
-                    b.Navigation("StoreCategories");
-
-                    b.Navigation("StoreReviews");
-
-                    b.Navigation("StoreTags");
                 });
 #pragma warning restore 612, 618
         }

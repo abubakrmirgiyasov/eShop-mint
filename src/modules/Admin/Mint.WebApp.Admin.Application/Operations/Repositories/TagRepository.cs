@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Exceptions;
-using Mint.Domain.Models.Admin;
+using Mint.Domain.Models.Admin.Tags;
 using Mint.Infrastructure;
 using Mint.Infrastructure.Repositories.Admin;
 

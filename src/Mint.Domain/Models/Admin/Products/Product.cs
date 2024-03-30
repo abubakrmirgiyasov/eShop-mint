@@ -1,62 +1,73 @@
-﻿using Mint.Domain.Models.Admin.Manufactures;
+﻿using Mint.Domain.Models.Admin.Categories;
+using Mint.Domain.Models.Admin.Manufactures;
+using Mint.Domain.Models.Admin.Stores;
 using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Mint.Domain.Models.Admin.Categories;
+namespace Mint.Domain.Models.Admin.Products;
 
 public class Product : Entity<Guid>
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ProductNumber { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле")]
     [StringLength(255, ErrorMessage = "Перевешено макс. длина строки (255).")]
-    public string ShortName { get; set; } = null!;
+    public required string ShortName { get; set; }
 
     [StringLength(450, ErrorMessage = "Перевешено макс. длина строки (450).")]
-    public string LongName { get; set; } = null!;
+    public required string LongName { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
-    public int Sku { get; set; }
+    public required long Sku { get; set; }
 
     [StringLength(255, ErrorMessage = "Превышено макс. длина строки (255).")]
     public string? Gtin { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
     [StringLength(800, ErrorMessage = "Превышено макс. длина строки (800).")]
-    public string ShortDescription { get; set; } = null!;
+    public required string ShortDescription { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
     [StringLength(4000, ErrorMessage = "Превышено макс. длина строки (4000).")]
-    public string FullDescription { get; set; } = null!;
+    public required string FullDescription { get; set; }
 
     [StringLength(255, ErrorMessage = "Превышено макс. длина строки (255).")]
     public string? AdminComment { get; set; }
 
-    public bool? ShowOnHomePage { get; set; }
+    [StringLength(255, ErrorMessage = "Превышено макс. длина строки (255).")]
+    public string UrlToProduct { get; set; } = "";
+
+    public bool ShowOnHomePage { get; set; } = false;
 
     public string? CountryOfOrigin { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
     [MaxLength(7, ErrorMessage = "Превышено макс. длина строки (7).")]
     [MinLength(2, ErrorMessage = "Мин. длина строки (2).")]
-    public decimal Price { get; set; }
+    public decimal? Price { get; set; } = 0;
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
     [MaxLength(7, ErrorMessage = "Превышено макс. длина строки (7).")]
     [MinLength(2, ErrorMessage = "Мин. длина строки (2).")]
-    public decimal OldPrice { get; set; }
+    public decimal? OldPrice { get; set; } = 0;
 
     public bool IsPublished { get; set; } = false;
 
-    public bool IsFreeTax { get; set; } = false;
+    public bool? IsFreeTax { get; set; } = false;
 
-    public decimal TaxPrice { get; set; } = 0;
+    public decimal? TaxPrice { get; set; } = 0;
 
     public int DeliveryMinDay { get; set; }
 
     public int DeliveryMaxDay { get; set; }
+
+    public bool OwnStorage { get; set; } = false;
+
+    public bool OwnStore { get; set; } = false;
+
+    public Guid? UnitId { get; set; }
+
+    public Unit? Unit { get; set; }
 
     public Guid? ManufactureId { get; set; }
 
@@ -66,6 +77,14 @@ public class Product : Entity<Guid>
 
     public Category? Category { get; set; }
 
+    public Guid? StoreId { get; set; }
+
+    public Store? Store { get; set; }
+
+    public Guid? DiscountId { get; set; }
+
+    public Discount? Discount { get; set; }
+
     public List<ProductPhoto>? ProductPhotos { get; set; }
 
     public List<ProductTag>? ProductTags { get; set; }
@@ -73,4 +92,8 @@ public class Product : Entity<Guid>
     public List<CommonCharacteristic>? CommonCharacteristics { get; set; }
 
     public List<ProductCharacteristic>? ProductCharacteristics { get; set; }
+
+    public List<Storage>? Storages { get; set; }
+
+    public List<ProductReview>? ProductReviews { get; set; }
 }

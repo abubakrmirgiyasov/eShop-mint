@@ -1,4 +1,6 @@
-﻿namespace Mint.Domain.Models.Admin.Manufactures;
+﻿using Mint.Domain.Models.Admin.Tags;
+
+namespace Mint.Domain.Models.Admin.Manufactures;
 
 public class ManufactureTag
 {

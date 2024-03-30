@@ -2,8 +2,9 @@
 using Mint.Domain.Models.Base;
 using Mint.Domain.Models.Identity;
 using System.ComponentModel.DataAnnotations;
-using Mint.Domain.Models.Stores;
 using Mint.Domain.Models.Admin.Manufactures;
+using Mint.Domain.Models.Admin.Products;
+using Mint.Domain.Models.Admin.Stores;
 
 namespace Mint.Domain.Models;
 
@@ -34,4 +35,6 @@ public class Photo : Entity<Guid>
     public List<ProductPhoto>? ProductPhotos { get; set; }
 
     public List<Store>? Stores { get; set; }
+
+    public List<ProductReviewPhoto>? ProductReviewPhotos { get; set; }
 }

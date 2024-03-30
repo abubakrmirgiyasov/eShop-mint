@@ -1,7 +1,7 @@
 ﻿using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mint.Domain.Models.Admin.Categories;
+namespace Mint.Domain.Models.Admin.Products;
 
 public class Characteristic : Entity<Guid>
 {

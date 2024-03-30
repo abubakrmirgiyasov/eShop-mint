@@ -1,6 +1,7 @@
 ﻿using Mint.Domain.Common;
+using Mint.Domain.Models.Admin.Products;
+using Mint.Domain.Models.Admin.Stores;
 using Mint.Domain.Models.Base;
-using Mint.Domain.Models.Stores;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -69,7 +70,11 @@ public class User : Entity<Guid>
 
     public List<UserAddress> UserAddresses { get; set; } = default!;
 
-    public List<StoreReview> StoreReviews { get; set; } = default!;
+    public List<Store> Stores { get; set; } = default!;
+
+    public List<StoreReview>? StoreReviews { get; set; }
+
+    public List<ProductReview>? ProductReviews { get; set; }
 
     public override string ToString()
     {

@@ -1,5 +1,5 @@
 ﻿using Mint.Domain.Helpers;
-using Mint.Domain.Models.Admin;
+using Mint.Domain.Models.Admin.Tags;
 
 namespace Mint.Infrastructure.Services.Interfaces;
 

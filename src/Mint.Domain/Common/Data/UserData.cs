@@ -44,6 +44,7 @@ public class UserData
             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
             IsActive = true,
             IsConfirmedEmail = true,
+            IsSeller = true,
         },
     ];
 }
