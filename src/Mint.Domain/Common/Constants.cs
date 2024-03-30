@@ -10,6 +10,9 @@ public partial class Constants
 
     public const string IMAGE_PATH = "statics/images";
 
+    public const string IMAGE_DEFAULT_NAME = "default-image.png";
+    public const string IMAGE_DEFAULT_PATH = "common";
+
     public const string IDENTITY_KEY = "MintIdentityQueue";
     public const string CONFIRMATION_KEY = "MintIdentityConfirmationQueue";
 }

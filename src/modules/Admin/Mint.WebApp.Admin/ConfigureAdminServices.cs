@@ -2,7 +2,6 @@
 using Mint.Infrastructure.Redis;
 using Mint.Infrastructure.Redis.Interface;
 using Mint.WebApp.Admin.Application;
-using Mint.WebApp.Admin.Utils;
 using Mint.WebApp.Extensions.Identities;
 using Mint.WebApp.Extensions.Infrastructures;
 using Mint.WebApp.Extensions.Mappers;
@@ -14,7 +13,6 @@ public static class ConfigureAdminServices
     public static IServiceCollection AdminServicesCollection(this IServiceCollection services, AppSettings? appSettings)
     {
         // Mapper
-        services.AddAutoMapper(typeof(AdminMapper));
         services.AddUserAutoMapper();
 
         // Minio

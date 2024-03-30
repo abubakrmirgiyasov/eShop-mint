@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Mint.WebApp.Admin.Identity.Operations.Commands.Admins;
 using Mint.WebApp.Admin.Identity.Operations.Dtos;
+using Mint.WebApp.Admin.Identity.Operations.Queries.Admins;
 
 namespace Mint.WebApp.Admin.Identity.Controllers;
 
@@ -17,6 +18,15 @@ public class AccountController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(new AdminInfoCommand(id), cancellationToken);
+    }
+
+    [HttpGet("{id:guid}/image")]
+    [AllowAnonymous]
+    public async Task<ActionResult<object>> GetPicture(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetUserPictureQuery(id), cancellationToken);
     }
 
     [HttpPut("settings")]

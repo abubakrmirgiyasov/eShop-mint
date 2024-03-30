@@ -31,6 +31,7 @@ public class JwtService(
                 new("id", user.Id.ToString()),
                 new("fullName", string.Join(" ", user.FirstName, user.SecondName)),
                 new("role", string.Join(",", user.UserRoles.Select(x => x.Role.UniqueKey.ToLower()))),
+                new("isSeller", user.IsSeller.ToString())
             };
 
             var phone = user.Contacts.FirstOrDefault(x => x.Type == ContactType.Phone);

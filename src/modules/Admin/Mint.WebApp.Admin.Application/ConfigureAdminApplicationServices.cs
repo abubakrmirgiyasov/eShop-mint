@@ -16,6 +16,7 @@ public static class ConfigureAdminApplicationServices
     public static IServiceCollection ConfigureAdminApplication(this IServiceCollection services)
     {
         // mapper
+        services.AddAutoMapper(typeof(AdminMapper));
         services.AddAutoMapper(typeof(ProductProfile));
 
         services.AddMediatR(opt => opt.RegisterServicesFromAssembly(typeof(AdminApplicationRef).Assembly));

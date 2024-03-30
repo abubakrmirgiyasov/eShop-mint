@@ -1,11 +1,12 @@
 ﻿using Mint.Domain.DTO_s.Identity;
+using Mint.Domain.Models.Identity;
 
 namespace Mint.Infrastructure.Repositories.Identity.Interfaces;
 
 /// <summary>
 /// User Interface Interface
 /// </summary>
-public interface IUserRepository
+public interface IUserRepository : IBaseRepository<User, Guid>
 {
     /// <summary>
     /// Method gets all users

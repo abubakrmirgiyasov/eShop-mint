@@ -25,6 +25,8 @@ public class UserRepository(
     private readonly ApplicationDbContext _context = context;
     private readonly IMapper _mapper = mapper;
 
+    public ApplicationDbContext Context => _context;
+
     /// <summary>
     /// This method gets all users
     /// </summary>
@@ -405,6 +407,11 @@ public class UserRepository(
     }
 
     public Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<User> FindByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -8,7 +8,7 @@ using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
 
-namespace Mint.WebApp.Admin.Utils;
+namespace Mint.WebApp.Admin.Application.Mapper;
 
 public class AdminMapper : Profile
 {
