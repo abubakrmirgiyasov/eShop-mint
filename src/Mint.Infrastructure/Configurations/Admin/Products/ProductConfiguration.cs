@@ -42,17 +42,5 @@ internal sealed class ProductConfiguration : IEntityConfiguration<Product, Guid>
             .WithMany(x => x.Products)
             .HasForeignKey(x => x.ManufactureId)
             .OnDelete(DeleteBehavior.NoAction);
-
-        builder
-            .HasOne(x => x.Category)
-            .WithMany(x => x.Products)
-            .HasForeignKey(x => x.CategoryId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        builder
-            .HasOne(x => x.Discount)
-            .WithMany(x => x.Products)
-            .HasForeignKey(x => x.DiscountId)
-            .OnDelete(DeleteBehavior.SetNull);
     }
 }

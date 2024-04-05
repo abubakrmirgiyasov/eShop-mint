@@ -1,5 +1,4 @@
-﻿using Mint.Domain.Models.Admin.Categories;
-using Mint.Domain.Models.Admin.Manufactures;
+﻿using Mint.Domain.Models.Admin.Manufactures;
 using Mint.Domain.Models.Admin.Stores;
 using Mint.Domain.Models.Base;
 using System.ComponentModel.DataAnnotations;
@@ -18,10 +17,10 @@ public class Product : Entity<Guid>
     public required string LongName { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
-    public required long Sku { get; set; }
+    public required string Sku { get; set; }
 
     [StringLength(255, ErrorMessage = "Превышено макс. длина строки (255).")]
-    public string? Gtin { get; set; }
+    public long? Gtin { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
     [StringLength(800, ErrorMessage = "Превышено макс. длина строки (800).")]
@@ -39,6 +38,8 @@ public class Product : Entity<Guid>
 
     public bool ShowOnHomePage { get; set; } = false;
 
+    public bool DisableBuyButton { get; set; }
+
     public string? CountryOfOrigin { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле.")]
@@ -50,6 +51,18 @@ public class Product : Entity<Guid>
     [MaxLength(7, ErrorMessage = "Превышено макс. длина строки (7).")]
     [MinLength(2, ErrorMessage = "Мин. длина строки (2).")]
     public decimal? OldPrice { get; set; } = 0;
+
+    public bool CustomerEntersPrice { get; set; } = false;
+
+    public decimal? MinCustomerEntersPrice { get; set; }
+
+    public decimal? MaxCustomerEntersPrice { get; set; }
+
+    public decimal? SpecialPrice { get; set; }
+
+    public DateTimeOffset? SpecialPriceStartDateTimeUtc { get; set; }
+    
+    public DateTimeOffset? SpecialPriceEndDateTimeUtc { get; set; }
 
     public bool IsPublished { get; set; } = false;
 
@@ -73,10 +86,6 @@ public class Product : Entity<Guid>
 
     public Manufacture? Manufacture { get; set; }
 
-    public Guid? CategoryId { get; set; }
-
-    public Category? Category { get; set; }
-
     public Guid? StoreId { get; set; }
 
     public Store? Store { get; set; }
@@ -96,4 +105,8 @@ public class Product : Entity<Guid>
     public List<Storage>? Storages { get; set; }
 
     public List<ProductReview>? ProductReviews { get; set; }
+
+    public List<ProductCategory>? ProductCategories { get; set; }
+
+    public List<ProductDiscount>? ProductDiscounts { get; set; }
 }

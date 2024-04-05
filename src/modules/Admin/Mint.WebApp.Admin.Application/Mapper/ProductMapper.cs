@@ -4,10 +4,11 @@ using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 
 namespace Mint.WebApp.Admin.Application.Mapper;
 
-public class ProductProfile : Profile
+public class ProductMapper : Profile
 {
-    public ProductProfile()
+    public ProductMapper()
     {
         CreateMap<Product, ProductFullViewModel>();
+        CreateMap<Product, ProductInfoViewModel>();
     }
 }

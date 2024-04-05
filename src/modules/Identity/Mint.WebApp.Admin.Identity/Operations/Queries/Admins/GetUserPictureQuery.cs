@@ -7,17 +7,22 @@ using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.WebApp.Admin.Identity.Operations.Queries.Admins;
 
-public sealed record GetUserPictureQuery(Guid Id) : IRequest<string>;
+public sealed record GetUserPictureQuery(Guid Id) : IRequest<UserPictureResponse>;
+
+public class UserPictureResponse
+{
+    public required string Link { get; set; }
+}
 
 internal sealed class GetUserPictureQueryHandler(
     IUserRepository userRepository,
     IStorageCloudService storageCloudService
-) : IRequestHandler<GetUserPictureQuery, string>
+) : IRequestHandler<GetUserPictureQuery, UserPictureResponse>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IStorageCloudService _storageCloudService = storageCloudService;
 
-    public async Task<string> Handle(GetUserPictureQuery request, CancellationToken cancellationToken)
+    public async Task<UserPictureResponse> Handle(GetUserPictureQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository
             .Context
@@ -36,11 +41,17 @@ internal sealed class GetUserPictureQueryHandler(
                 cancellationToken: cancellationToken
             );
 
-            return storage;
+            return new UserPictureResponse
+            {
+                Link = storage
+            };
         }
         else
         {
-            return user.Photo.FilePath;
+            return new UserPictureResponse 
+            {
+                Link = user.Photo.FilePath
+            };
         }
     }
 }

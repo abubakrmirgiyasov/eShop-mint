@@ -94,16 +94,14 @@ public class UserRepository(
     {
         try
         {
-            var users = await _context.Users
+            var user = await _context.Users
                 .AsNoTracking()
                 .Include(x => x.Photo)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .ToListAsync(cancellationToken);
-
-            var user = users.FirstOrDefault(x => x.Id == id)
-                ?? throw new UserNotFoundException("Пользователь не существует");
-            
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+                    ?? throw new UserNotFoundException("Пользователь не найден.");
+                        
             return _mapper.Map<UserJwtAuthorize>(user);
         }
         catch (UserNotFoundException ex)

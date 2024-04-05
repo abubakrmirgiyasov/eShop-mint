@@ -33,9 +33,11 @@ internal sealed class CreateInfoProductCommandHandler(
             Sku = request.Model.Sku,
             ShortDescription = request.Model.ShortDescription,
             Gtin = request.Model.Gtin,
+            StoreId = request.Model.Store,
+            AdminComment = request.Model.AdminComment,
         };
 
-        product.UrlToProduct = $"nm_{product.ProductNumber}#uu_{product.Id}";
+        product.UrlToProduct = $"nm#uu_{product.Id}";
 
         await _productRepository.Context.Products.AddAsync(product, cancellationToken);
         await _productRepository.Context.SaveChangesAsync(cancellationToken);

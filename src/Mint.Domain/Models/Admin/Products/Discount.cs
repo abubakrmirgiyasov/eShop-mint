@@ -15,5 +15,5 @@ public class Discount : Entity<Guid>
 
     public bool IsExpired { get; set; }
 
-    public List<Product>? Products { get; set; }
+    public List<ProductDiscount>? ProductDiscounts { get; set; }
 }

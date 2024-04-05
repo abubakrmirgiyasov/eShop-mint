@@ -101,6 +101,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ProductCharacteristic> ProductCharacteristics => Set<ProductCharacteristic>();
 
     /// <summary>
+    /// Product Categories Table
+    /// </summary>
+    public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
+
+    /// <summary>
     /// Stores Table
     /// </summary>
     public DbSet<Store> Stores => Set<Store>();

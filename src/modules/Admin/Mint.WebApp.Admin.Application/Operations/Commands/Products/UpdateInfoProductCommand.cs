@@ -19,6 +19,8 @@ internal sealed class UpdateInfoProductCommandHandler(IProductRepository product
         if (!validatorValidate.IsValid)
             throw new Exception("validator error!");
 
+        // TODO: Update fields ...
+
         await _productRepository.Context.SaveChangesAsync(cancellationToken);
     }
 }

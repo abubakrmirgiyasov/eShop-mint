@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Identity.Operations.Commands.Admins;
 using Mint.WebApp.Admin.Identity.Operations.Dtos;
 using Mint.WebApp.Admin.Identity.Operations.Queries.Admins;
@@ -9,7 +9,7 @@ namespace Mint.WebApp.Admin.Identity.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "admin,seller")]
 public class AccountController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{id:guid}")]
@@ -21,8 +21,7 @@ public class AccountController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id:guid}/image")]
-    [AllowAnonymous]
-    public async Task<ActionResult<object>> GetPicture(
+    public async Task<ActionResult<UserPictureResponse>> GetPicture(
         Guid id,
         CancellationToken cancellationToken = default)
     {

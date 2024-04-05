@@ -1,4 +1,5 @@
 using Mint.Domain.Common;
+using Mint.Infrastructure.Middlewares;
 using Mint.WebApp.Admin.Identity;
 using Mint.WebApp.Extensions;
 using Mint.WebApp.Extensions.Identities;
@@ -28,6 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();
 

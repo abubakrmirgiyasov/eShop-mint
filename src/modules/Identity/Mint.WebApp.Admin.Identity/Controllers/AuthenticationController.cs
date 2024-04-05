@@ -7,10 +7,10 @@ using Mint.WebApp.Admin.Identity.Operations.Commands.Authentications;
 namespace Mint.WebApp.Admin.Identity.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 public class AuthenticationController(IMediator mediator) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("signIn")]
     public async Task<ActionResult<AuthenticationAdminResponse>> SignIn(
         [FromBody] SignInRequest model,
         CancellationToken cancellationToken = default)

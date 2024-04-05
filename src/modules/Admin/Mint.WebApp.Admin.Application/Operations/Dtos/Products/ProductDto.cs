@@ -28,26 +28,3 @@ public class ProductFullViewModel
 
     public decimal OldPrice { get; set; }
 }
-
-public class ProductInfoBindingModel
-{
-    public bool ShowOnHomePage { get; set; }
-
-    public bool IsPublished { get; set; }
-
-    public required string ProductType { get; set; }
-
-    public required string ShortName { get; set; }
-
-    public required string LongName { get; set; }
-
-    public required long Sku { get; set; }
-
-    public string? Gtin { get; set; }
-
-    public required string ShortDescription { get; set; }
-
-    public required string FullDescription { get; set; }
-
-    public string? AdminComment { get; set; }
-}

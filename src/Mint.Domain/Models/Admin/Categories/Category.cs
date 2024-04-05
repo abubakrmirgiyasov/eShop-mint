@@ -41,7 +41,7 @@ public class Category : Entity<Guid>
 
     public List<CategoryTag>? CategoryTags { get; set; }
 
-    public List<Product>? Products { get; set; }
+    public List<ProductCategory>? ProductCategories { get; set; }
 
     public List<StoreCategory>? StoreCategories { get; set; }
 

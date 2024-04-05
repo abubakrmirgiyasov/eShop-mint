@@ -8,6 +8,7 @@ using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 namespace Mint.WebApp.Admin.Application.Operations.Queries.Products;
 
 public sealed record GetProductsQuery(
+    Guid UserId,
     string? SearchPhrase,
     int Sort,
     int PageIndex,
@@ -47,11 +48,13 @@ internal sealed class GetProductsQueryHandler(
 
         var products = await query
             .AsNoTracking()
-            .Include(x => x.Category)
+            .Include(x => x.ProductCategories!)
+            .ThenInclude(x => x.Category)
             .Include(x => x.Manufacture)
             .Include(x => x.CommonCharacteristics)
             .Include(x => x.ProductCharacteristics)
             .Include(x => x.ProductPhotos)
+            .Where(x => x.Store!.UserId == request.UserId)
             .Skip(request.PageIndex * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
