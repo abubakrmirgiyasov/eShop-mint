@@ -19,6 +19,9 @@ public class Photo : Entity<Guid>
     [MaxLength(400, ErrorMessage = "Превышено макс. длина строки (400).")]
     public string FilePath { get; set; } = null!;
 
+    /// <summary>
+    /// Bucket
+    /// </summary>
     [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
     public string FileType { get; set; } = null!;
 

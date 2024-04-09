@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Mint.Infrastructure.Services.Interfaces;
+using Mint.Application.Interfaces;
 using Mint.WebApp.StorageCloud.Services;
 
 namespace Mint.WebApp.StorageCloud;

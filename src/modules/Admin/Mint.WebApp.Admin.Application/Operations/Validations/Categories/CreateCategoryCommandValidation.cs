@@ -3,7 +3,7 @@ using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Validations.Categories;
 
-public sealed class CreateCategoryCommandValidation 
+internal sealed class CreateCategoryCommandValidation 
     : AbstractValidator<CategoryFullBindingModel>
 {
     public CreateCategoryCommandValidation()

@@ -1,6 +1,5 @@
+using Mint.Application.Interfaces;
 using Mint.Domain.Common;
-using Mint.Infrastructure.Repositories.Email;
-using Mint.Infrastructure.Services.Interfaces;
 using Mint.WebApp.Email.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +11,6 @@ builder.Services.Configure<AppSettings>(appSettings);
 //var brokerOptions = brokerSettings.Get<MessageBrokerOptions>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 
 //builder.Services.AddMessageBusSender<User>(brokerOptions);
 //builder.Services.AddMessageBusReceiver<User>(brokerOptions);

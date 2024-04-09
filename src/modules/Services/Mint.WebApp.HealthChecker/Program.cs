@@ -1,9 +1,10 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Mint.Application.Interfaces;
 using Mint.Domain.Common;
 using Mint.Infrastructure;
 using Mint.Infrastructure.MessageBrokers.RabbitMQ;
-using Mint.WebApp.Extensions.Infrastructures;
+using Mint.Infrastructure.Services;
 using Mint.WebApp.HealthChecker;
 using Mint.WebApp.StorageCloud;
 
@@ -12,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration.GetSection(nameof(AppSettings));
 builder.Services.Configure<AppSettings>(config);
 
-builder.Services.AddMinioServices();
+builder.Services.AddScoped<IStorageCloudService, StorageCloudService>();
 
 var rabbitMQConf = config.GetSection("RabbitMQ");
 var rabbitMqHostOpt = rabbitMQConf.Get<RabbitMQHealthCheckOptions>()!;

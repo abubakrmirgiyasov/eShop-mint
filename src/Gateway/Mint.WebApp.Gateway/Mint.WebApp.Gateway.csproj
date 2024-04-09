@@ -8,25 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AdminApp\**" />
-    <Compile Remove="ClientApp\**" />
-    <Content Remove="AdminApp\**" />
-    <Content Remove="ClientApp\**" />
-    <EmbeddedResource Remove="AdminApp\**" />
-    <EmbeddedResource Remove="ClientApp\**" />
-    <None Remove="AdminApp\**" />
-    <None Remove="ClientApp\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.3" />
     <PackageReference Include="Ocelot" Version="23.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Mint.Domain\Mint.Domain.csproj" />
-    <ProjectReference Include="..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\modules\Services\Mint.WebApp.Extensions\Mint.WebApp.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

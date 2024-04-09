@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Mint.Infrastructure.Services.Interfaces;
+using Mint.Application.Interfaces;
 
 namespace Mint.WebApp.StorageCloud.Services;
 
@@ -17,7 +17,7 @@ public class MinioHealthCheckService(
     {
         try
         {
-            await _storageCloudService.IsBucketExist(_bucket, cancellationToken);
+            await _storageCloudService.IsBucketExists(_bucket, cancellationToken);
 
             return HealthCheckResult.Healthy("MINIO is working");
         }

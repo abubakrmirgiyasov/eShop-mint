@@ -7,22 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Operations\Commands\Stores\" />
-    <Folder Include="Operations\Queries\Categories\" />
-    <Folder Include="Operations\Validations\Manufactures\" />
-    <Folder Include="Operations\Validations\SubCategories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.32" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Mint.Application\Mint.Application.csproj" />
     <ProjectReference Include="..\..\..\Mint.Domain\Mint.Domain.csproj" />
-    <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Services\Mint.WebApp.Extensions\Mint.WebApp.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Operations\Commands\Stores\" />
+    <Folder Include="Operations\Validations\SubCategories\" />
   </ItemGroup>
 
 </Project>

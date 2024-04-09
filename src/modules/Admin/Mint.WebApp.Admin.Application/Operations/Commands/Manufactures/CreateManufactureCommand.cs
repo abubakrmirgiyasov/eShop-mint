@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluentValidation;
+using Microsoft.Extensions.Logging;
+using Mint.Application.Interfaces;
+using Mint.Domain.Extensions;
 using Mint.Domain.Models;
 using Mint.Domain.Models.Admin.Manufactures;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.Infrastructure.Services.Interfaces;
-using Mint.WebApp.Admin.Application.Common.Messaging;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
-using Mint.WebApp.Extensions.Models;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
+using Mint.WebApp.Admin.Application.Operations.Validations.Manufactures;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Manufactures;
 
@@ -14,15 +15,23 @@ public sealed record CreateManufactureCommand(ManufactureFullBindingModel Manufa
 internal sealed class CreateManufactureCommandHandler(
     IManufactureRepository manufactureRepository,
     IStorageCloudService storageCloudService,
+    IUnitOfWork unitOfWork,
     ILogger<CreateManufactureCommandHandler> logger
 ) : ICommandHandler<CreateManufactureCommand, Guid>
 {
     private readonly IManufactureRepository _manufactureRepository = manufactureRepository;
     private readonly IStorageCloudService _storageCloudService = storageCloudService;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ILogger<CreateManufactureCommandHandler> _logger = logger;
 
     public async Task<Guid> Handle(CreateManufactureCommand request, CancellationToken cancellationToken)
     {
+        var validation = new CreateManufactureCommandValidation();
+        var validationValidator = validation.Validate(request.Manufacture);
+
+        if (!validationValidator.IsValid)
+            throw new ValidationException(validationValidator.Errors);
+
         var manufacture = new Manufacture
         {
             Id = Guid.NewGuid(),
@@ -53,11 +62,22 @@ internal sealed class CreateManufactureCommandHandler(
             };
         }
 
-        await _manufactureRepository.Context.AddAsync(manufacture, cancellationToken);
-        await _manufactureRepository.Context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _manufactureRepository.AddAsync(manufacture, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Новый производитель создан с Id={Id}", manufacture.Id);
+            _logger.LogInformation("Новый производитель создан с Id={Id}", manufacture.Id);
 
-        return manufacture.Id;
+            return manufacture.Id;
+        }
+        catch (Exception ex)
+        {
+            if (request.Manufacture.Photo is not null)
+                await _storageCloudService.DeleteFileAsync(manufacture.Photo!.FileName, manufacture.Photo.FileType, cancellationToken);
+
+            _logger.LogError(ex, "{Message}", ex.Message);
+            throw new Exception(ex.Message, ex);
+        }
     }
 }

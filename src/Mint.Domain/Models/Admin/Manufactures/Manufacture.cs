@@ -10,11 +10,11 @@ public class Manufacture : Entity<Guid>
 
     [Required(ErrorMessage = "Заполните обязательное поле")]
     [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     [Required(ErrorMessage = "Заполните обязательное поле")]
     [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
-    public string Country { get; set; } = null!;
+    public required string Country { get; set; }
 
     [MaxLength(100, ErrorMessage = "Превышено макс. длина строки (100).")]
     public string? FullAddress { get; set; }

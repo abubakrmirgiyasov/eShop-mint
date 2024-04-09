@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Mint.Infrastructure.Repositories.Identity.Interfaces;
-using Mint.Infrastructure.Services.Interfaces;
+using Mint.Application.Interfaces;
+using Mint.WebApp.Identity.Application.Operations.Repositories;
 
 namespace Mint.Infrastructure.Middlewares;
 
@@ -12,7 +12,8 @@ public class JwtMiddleware(RequestDelegate next)
     {
         var token = context
             .Request
-            .Headers["Authorization"]
+            .Headers
+            .Authorization
             .FirstOrDefault()?
             .Split(" ")
             .Last();

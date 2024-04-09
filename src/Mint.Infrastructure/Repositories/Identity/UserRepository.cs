@@ -1,38 +1,24 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mint.Domain.Common;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Domain.Exceptions;
 using Mint.Domain.FormingModels.Identity;
 using Mint.Domain.Models.Identity;
-using Mint.Infrastructure.Repositories.Identity.Interfaces;
+using Mint.WebApp.Identity.Application.Operations.Repositories;
 
 namespace Mint.Infrastructure.Repositories.Identity;
 
-/// <summary>
-/// User Repository class
-/// </summary>
-/// <param name="logger"></param>
-/// <param name="context"></param>
-/// <param name="mapper"></param>
-public class UserRepository(
-    ILogger<UserRepository> logger,
+/// <inheritdoc cref="IUserRepository"/>
+internal sealed class UserRepository(
     ApplicationDbContext context,
-    IMapper mapper) : IUserRepository
+    ILogger<UserRepository> logger
+) : GenericRepository<User>(context), IUserRepository
 {
     private readonly ILogger<UserRepository> _logger = logger;
     private readonly ApplicationDbContext _context = context;
-    private readonly IMapper _mapper = mapper;
 
-    public ApplicationDbContext Context => _context;
-
-    /// <summary>
-    /// This method gets all users
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<IEnumerable<UserFullViewModel>> GetUsersAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -51,14 +37,7 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// Gets all addresses single user by id
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="UserNotFoundException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<IEnumerable<UserAddressFullViewModel>> GetUserAddressesAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
@@ -82,15 +61,8 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// This method gets single user by id
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
-    public async Task<UserJwtAuthorize> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public async Task<User> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -101,8 +73,8 @@ public class UserRepository(
                 .ThenInclude(x => x.Role)
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
                     ?? throw new UserNotFoundException("Пользователь не найден.");
-                        
-            return _mapper.Map<UserJwtAuthorize>(user);
+
+            return user;
         }
         catch (UserNotFoundException ex)
         {
@@ -114,14 +86,7 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// This method gets single user with roles and returns roles array
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<string[]> GetUserRoleForAuthAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
@@ -151,14 +116,7 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// This method gets single user by email
-    /// </summary>
-    /// <param name="email"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<UserFullViewModel> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         try
@@ -184,14 +142,7 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// This method gets single user by phone
-    /// </summary>
-    /// <param name="phone"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<UserFullViewModel> GetUserByPhoneAsync(long phone, CancellationToken cancellationToken = default)
     {
         try
@@ -217,12 +168,17 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// This method sends to user email confirmation code
-    /// </summary>
-    /// <param name="email"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
+    public async Task<User?> GetUserWithPhotoAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var user = await _context.Users
+            .Include(x => x.Photo)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        return user;
+    }
+
+    /// <inheritdoc/>
     public Task<int> SendEmailConfirmationCodeAsync(string email)
     {
         try
@@ -251,24 +207,19 @@ public class UserRepository(
         }
     }
 
+    /// <inheritdoc/>
     public Task<UserFullViewModel> CreateUserWithEmailAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public Task<UserFullViewModel> CreateUserWithPhoneAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    /// <summary>
-    /// This method creates new address
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<UserAddressFullViewModel> CreateUserAddressAsync(UserAddressFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
@@ -296,14 +247,7 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// Method updates user address
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <inheritdoc/>
     public async Task<UserAddressFullViewModel> UpdateUserAddressAsync(UserAddressFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
@@ -333,12 +277,7 @@ public class UserRepository(
         }
     }
 
-    /// <summary>
-    /// Updates user password
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <inheritdoc/>
     public async Task UpdateUserPasswordAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
@@ -368,6 +307,7 @@ public class UserRepository(
         }
     }
 
+    /// <inheritdoc/>
     public async Task DeleteUserAddressAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
@@ -389,6 +329,7 @@ public class UserRepository(
         }
     }
 
+    /// <inheritdoc/>
     public async Task<UserFullViewModel> UpdateUserAsync(UserFullBindingModel model, CancellationToken cancellationToken = default)
     {
         try
@@ -404,11 +345,13 @@ public class UserRepository(
         }
     }
 
+    /// <inheritdoc/>
     public Task DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public Task<User> FindByIdAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

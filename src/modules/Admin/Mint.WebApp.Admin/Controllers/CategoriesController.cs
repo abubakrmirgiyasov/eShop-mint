@@ -5,6 +5,7 @@ using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.Categories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
+using Mint.WebApp.Admin.Application.Operations.Queries.Categories;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -14,10 +15,10 @@ public class CategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<PaginatedResult<CategoryFullViewModel>>> GetCategories(
-        [FromQuery] GetCategoriesCommand command,
+        [FromQuery] GetCategoriesQuery query,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(command, cancellationToken);
+        return await mediator.Send(query, cancellationToken);
     }
 
     [HttpGet("links")]
@@ -26,15 +27,15 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(new GetCategoriesDefaultLinksCommand(search), cancellationToken);
+        return await mediator.Send(new GetCategoriesDefaultLinksQuery(search), cancellationToken);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<ActionResult<CategoryFullViewModel>> GetCategoryById(
         Guid id,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(new GetCategoryByIdCommand(id), cancellationToken);
+        return await mediator.Send(new GetCategoryByIdQuery(id), cancellationToken);
     }
 
     [HttpGet("common")]
@@ -42,7 +43,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(new GetCommonCategoriesCommand(search), cancellationToken);
+        return await mediator.Send(new GetCommonCategoriesQuery(search), cancellationToken);
     }
 
     [HttpGet("{id:guid}/common")]
@@ -51,7 +52,7 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         Guid id,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(new GetSampleCategoryByIdCommand(id), cancellationToken);
+        return await mediator.Send(new GetSampleCategoryByIdQuery(id), cancellationToken);
     }
 
     [HttpPost]
@@ -63,21 +64,25 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return await mediator.Send(new CreateCategoryCommand(model), cancellationToken);
     }
 
-    [HttpPut]
+    [HttpPut("{id:guid}")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateCategory(
+        Guid id,
         [FromForm] CategoryFullBindingModel model,
         CancellationToken cancellationToken = default)
     {
-        await mediator.Send(new UpdateCategoryCommand(model), cancellationToken);
+        await mediator.Send(new UpdateCategoryCommand(
+            id,
+            model
+        ), cancellationToken);
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> DeleteCategory(Guid id, CancellationToken cancellationToken = default)
     {
-        await mediator.Send(new RemoveCategoryCommand(id), cancellationToken);
+        await mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
         return NoContent();
     }
 }

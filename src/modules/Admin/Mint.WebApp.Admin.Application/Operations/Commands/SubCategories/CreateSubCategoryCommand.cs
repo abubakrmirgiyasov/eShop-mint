@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Mint.Application.Interfaces;
 using Mint.Domain.Models.Admin.Categories;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Admin.Application.Common.Messaging;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.SubCategories;
 
@@ -11,10 +11,12 @@ public sealed record CreateSubCategoryCommand(SubCategoryFullBindingModel SubCat
 
 internal sealed class CreateSubCategoryCommandHandler(
     ISubCategoryRepository subCategoryRepository,
+    IUnitOfWork unitOfWork,
     IMapper mapper
 ) : ICommandHandler<CreateSubCategoryCommand, SubCategoryFullViewModel>
 {
     private readonly ISubCategoryRepository _subCategoryRepository = subCategoryRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
 
     public async Task<SubCategoryFullViewModel> Handle(CreateSubCategoryCommand request, CancellationToken cancellationToken)
@@ -29,7 +31,8 @@ internal sealed class CreateSubCategoryCommandHandler(
             CategoryId = request.SubCategory.CategoryId,
         };
 
-        await _subCategoryRepository.Context.AddAsync(subCategory, cancellationToken);
+        await _subCategoryRepository.AddAsync(subCategory, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<SubCategoryFullViewModel>(subCategory);
     }

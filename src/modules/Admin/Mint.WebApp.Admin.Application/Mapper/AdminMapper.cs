@@ -16,7 +16,6 @@ public class AdminMapper : Profile
     {
         CreateMap<Category, DefaultLinkDTO>();
         CreateMap<Category, CategoryFullViewModel>();
-
         CreateMap<Category, CategorySampleViewModel>()
             .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
             .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
@@ -34,5 +33,11 @@ public class AdminMapper : Profile
         CreateMap<Tag, TagFullViewModel>()
             .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
             .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
+
+        CreateMap<Tag, TagSampleViewModel>()
+            .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
+            .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
+
+        CreateMap<CategoryTag, CategoryTagViewModel>();
     }
 }

@@ -7,6 +7,10 @@ public class ManufactureCategoryBindingModel
 
 public record ManufactureCategoryFullViewModel();
 
-public record ManufactureSampleViewModel(
-    Guid? Value = null,
-    string? Label = null);
+public class ManufactureSampleViewModel
+{
+    public required Guid Value { get; set; }
+
+    public required string Label { get; set; }
+}
+

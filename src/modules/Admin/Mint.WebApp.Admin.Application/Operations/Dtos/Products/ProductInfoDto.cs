@@ -29,5 +29,5 @@ public class ProductInfoBindingModel
 
     public string? AdminComment { get; set; }
 
-    public Guid Store { get; set; }
+    public Guid? Store { get; set; }
 }

@@ -12,6 +12,13 @@ internal sealed class ProductTagConfiguration : IEntityConfiguration<ProductTag>
     public void Configure(EntityTypeBuilder<ProductTag> builder)
     {
         builder
+           .HasKey(x => new
+           {
+               x.ProductId,
+               x.TagId,
+           });
+
+        builder
             .HasOne(x => x.Tag)
             .WithMany(x => x.ProductTags)
             .HasForeignKey(x => x.TagId)

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Mint.Domain.Common;
 using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.Products;
@@ -12,19 +13,23 @@ namespace Mint.WebApp.Admin.Controllers;
 [ApiController]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("user/{userId:guid}")]
+    [HttpGet("user")]
     [Authorize(Roles = "admin,seller")]
     public async Task<ActionResult<PaginatedResult<ProductFullViewModel>>> GetProductsByUserId(
-        Guid userId,
         [FromQuery] string? searchPhrase,
-        [FromQuery] int sort,
+        [FromQuery] SortType sort,
         [FromQuery] int pageIndex,
         [FromQuery] int pageSize,
         CancellationToken cancellationToken = default)
     {
+        var userId = User.FindFirst("id");
+
+        if (userId is null)
+            return Unauthorized();
+
         return await mediator.Send(
             new GetProductsQuery(
-                UserId: userId,
+                UserId: Guid.Parse(userId.Value),
                 SearchPhrase: searchPhrase,
                 Sort: sort,
                 PageIndex: pageIndex,
@@ -58,7 +63,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         [FromBody] ProductInfoBindingModel productInfo,
         CancellationToken cancellationToken = default)
     {
-        await mediator.Send(new UpdateInfoProductCommand(productInfo), cancellationToken);
+        await mediator.Send(new UpdateInfoProductCommand(id, productInfo), cancellationToken);
         return NoContent();
     }
 
@@ -85,13 +90,13 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = "admin,seller")]
     public async Task<IActionResult> UpdateCategories(
         Guid id,
-        [FromBody] List<ProductCategoryBindingModel> productCategory,
+        [FromBody] List<ProductCategoryBindingModel> productCategories,
         CancellationToken cancellationToken = default)
     {
         await mediator.Send(
             new UpdateProductCategoryCommand(
                 ProductId: id,
-                CategoriesIds: productCategory
+                ProductCategories: productCategories
             ), cancellationToken
         );
         return NoContent();

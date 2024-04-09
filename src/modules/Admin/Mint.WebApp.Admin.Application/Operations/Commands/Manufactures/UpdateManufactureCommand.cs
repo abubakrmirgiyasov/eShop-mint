@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Mint.Application.Interfaces;
 using Mint.Domain.Exceptions;
 using Mint.Domain.Models;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.Infrastructure.Services.Interfaces;
-using Mint.WebApp.Admin.Application.Common.Messaging;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
-using Mint.WebApp.Extensions.Models;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
+using Mint.Domain.Extensions;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Manufactures;
 
@@ -15,20 +13,18 @@ public sealed record UpdateManufactureCommand(Guid Id, ManufactureFullBindingMod
 internal sealed class UpdateManufactureCommandHandler(
     IManufactureRepository manufactureRepository,
     IStorageCloudService storageCloudService,
+    IUnitOfWork unitOfWork,
     ILogger<UpdateManufactureCommandHandler> logger
 ) : ICommandHandler<UpdateManufactureCommand>
 {
     private readonly IManufactureRepository _manufactureRepository = manufactureRepository;
     private readonly IStorageCloudService _storageCloudService = storageCloudService;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly ILogger<UpdateManufactureCommandHandler> _logger = logger;
 
     public async Task Handle(UpdateManufactureCommand request, CancellationToken cancellationToken)
     {
-        var manufacture = await _manufactureRepository
-            .Context
-            .Manufactures
-            .Include(x => x.Photo)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken)
+        var manufacture = await _manufactureRepository.GetManufactureWithPhotoAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException($"Производитель с Id={request.Id} не найден.");
 
         manufacture.Name = request.Manufacture.Name;
@@ -83,8 +79,15 @@ internal sealed class UpdateManufactureCommandHandler(
             }
         }
 
-        await _manufactureRepository.Context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Успешно обновлено! Id={Id}", manufacture.Id);
+           _logger.LogInformation("Успешно обновлено! Id={Id}", manufacture.Id);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 }

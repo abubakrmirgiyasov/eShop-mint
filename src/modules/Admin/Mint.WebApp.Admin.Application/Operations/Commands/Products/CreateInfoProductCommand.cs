@@ -1,7 +1,8 @@
-﻿using Mint.Domain.Models.Admin.Products;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Admin.Application.Common.Messaging;
+﻿using FluentValidation;
+using Mint.Application.Interfaces;
+using Mint.Domain.Models.Admin.Products;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
 using Mint.WebApp.Admin.Application.Operations.Validations.Products;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Products;
@@ -11,22 +12,25 @@ public sealed record CreateInfoProductCommand(
 ) : ICommand<Guid>;
 
 internal sealed class CreateInfoProductCommandHandler(
-    IProductRepository productRepository
+    IProductRepository productRepository,
+    IUnitOfWork unitOfWork
 ) : ICommandHandler<CreateInfoProductCommand, Guid>
 {
     private readonly IProductRepository _productRepository = productRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Guid> Handle(CreateInfoProductCommand request, CancellationToken cancellationToken)
     {
-        var validator = new ProductInfoValidator();
+        var validator = new CreateProductInfoCommandValidation();
         var validatorValidate = validator.Validate(request.Model);
 
         if (!validatorValidate.IsValid)
-            throw new Exception("validator error");
+            throw new ValidationException(validatorValidate.Errors);
 
         var product = new Product
         {
             Id = Guid.NewGuid(),
+            Type = request.Model.ProductType,
             ShortName = request.Model.ShortName,
             LongName = request.Model.LongName,
             FullDescription = request.Model.FullDescription,
@@ -39,8 +43,8 @@ internal sealed class CreateInfoProductCommandHandler(
 
         product.UrlToProduct = $"nm#uu_{product.Id}";
 
-        await _productRepository.Context.Products.AddAsync(product, cancellationToken);
-        await _productRepository.Context.SaveChangesAsync(cancellationToken);
+        await _productRepository.AddAsync(product, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return product.Id;
     }

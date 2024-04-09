@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Identity\Mint.WebApp.Admin.Identity\Mint.WebApp.Admin.Identity.csproj" />
-    <ProjectReference Include="..\Mint.WebApp.Extensions\Mint.WebApp.Extensions.csproj" />
     <ProjectReference Include="..\Mint.WebApp.StorageCloud\Mint.WebApp.StorageCloud.csproj" />
   </ItemGroup>
 

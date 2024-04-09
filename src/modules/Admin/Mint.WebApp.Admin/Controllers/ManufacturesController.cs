@@ -4,6 +4,7 @@ using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
+using Mint.WebApp.Admin.Application.Operations.Queries.Manufactures;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -13,18 +14,18 @@ public class ManufacturesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<PaginatedResult<ManufactureFullViewModel>>> GetManufactures(
-        [FromQuery] GetManufacturesCommand command,
+        [FromQuery] GetManufacturesQuery query,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(command, cancellationToken);
+        return await mediator.Send(query, cancellationToken);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<ActionResult<ManufactureFullViewModel>> GetManufactureById(
         Guid id,
         CancellationToken cancellationToken = default)
     {
-        return await mediator.Send(new GetManufactureByIdCommand(id), cancellationToken);
+        return await mediator.Send(new GetManufactureByIdQuery(id), cancellationToken);
     }
 
     [HttpPost]
@@ -39,7 +40,7 @@ public class ManufacturesController(IMediator mediator) : ControllerBase
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Update(
-        [FromRoute] Guid id,
+        Guid id,
         [FromForm] ManufactureFullBindingModel model,
         CancellationToken cancellationToken = default)
     {
@@ -49,7 +50,7 @@ public class ManufacturesController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id:guid}/contacts")]
     public async Task<IActionResult> UpdateContacts(
-        [FromRoute] Guid id,
+        Guid id,
         [FromForm] List<ManufactureContactDto> contacts,
         CancellationToken cancellationToken = default)
     {

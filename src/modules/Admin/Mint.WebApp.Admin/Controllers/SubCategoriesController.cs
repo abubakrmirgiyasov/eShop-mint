@@ -5,7 +5,7 @@ using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
-using Mint.WebApp.Admin.Operations.Commands.SubCategories;
+using Mint.WebApp.Admin.Application.Operations.Queries.SubCategories;
 
 namespace Mint.WebApp.Admin.Controllers;
 
@@ -15,7 +15,7 @@ public class SubCategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<PaginatedResult<SubCategoryFullViewModel>>> Get(
-        [FromQuery] GetSubCategoriesCommand command,
+        [FromQuery] GetSubCategoriesQuery command,
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(command, cancellationToken);
@@ -27,7 +27,7 @@ public class SubCategoriesController(IMediator mediator) : ControllerBase
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
-        var links = await mediator.Send(new GetSubCategoriesDefaultLinksCommand(search), cancellationToken);
+        var links = await mediator.Send(new GetSubCategoriesDefaultLinksQuery(search), cancellationToken);
         return Ok(links);
     }
 

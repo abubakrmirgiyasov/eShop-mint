@@ -1,26 +1,20 @@
-﻿using Mint.WebApp.Admin.Identity.Repositories;
-using Mint.WebApp.Admin.Identity.Repositories.Interfaces;
-using Mint.WebApp.Admin.Identity.Utils;
-using Mint.WebApp.Extensions.Identities;
-using Mint.WebApp.Extensions.Infrastructures;
-using Mint.WebApp.Extensions.Mappers;
+﻿using Mint.Domain.Common;
+using Mint.Infrastructure;
+using Mint.WebApp.Identity.Application;
 
 namespace Mint.WebApp.Admin.Identity;
 
 public static class ConfigureAdminIdentityServices
 {
-    public static IServiceCollection AdminIdentityServicesCollection(this IServiceCollection services)
+    public static IServiceCollection AdminIdentityServicesCollection(this IServiceCollection services, AppSettings? appSettings)
     {
-        // Mapper
-        services.AddAutoMapper(typeof(AdminIdentityMapper));
-        services.AddUserAutoMapper();
-
-        // Repositories
-        services.AddScoped<IAdminRepository, AdminRepository>();
-
         // Services
-        services.AddAuthenticationServices();
-        services.AddMinioServices();
+        services
+            .ConfigureIdentityApplication()
+            .AddInfrastructureServices()
+            .AddAdminIdentityRepositories()
+            .AddAuthenticationServices()
+            .AddJwtConfiguration(appSettings);
 
         return services;
     }

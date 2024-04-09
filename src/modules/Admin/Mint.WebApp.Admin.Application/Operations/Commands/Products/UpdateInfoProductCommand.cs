@@ -1,26 +1,37 @@
-﻿using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Admin.Application.Common.Messaging;
+﻿using Mint.Application.Interfaces;
+using Mint.Domain.Exceptions;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
-using Mint.WebApp.Admin.Application.Operations.Validations.Products;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Products;
 
-public sealed record UpdateInfoProductCommand(ProductInfoBindingModel Product) : ICommand;
+public sealed record UpdateInfoProductCommand(Guid ProductId, ProductInfoBindingModel Product) : ICommand;
 
-internal sealed class UpdateInfoProductCommandHandler(IProductRepository productRepository) : ICommandHandler<UpdateInfoProductCommand>
+internal sealed class UpdateInfoProductCommandHandler(
+    IProductRepository productRepository,
+    IUnitOfWork unitOfWork
+) : ICommandHandler<UpdateInfoProductCommand>
 {
     private readonly IProductRepository _productRepository = productRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task Handle(UpdateInfoProductCommand request, CancellationToken cancellationToken)
     {
-        var validator = new ProductInfoValidator();
-        var validatorValidate = validator.Validate(request.Product);
+        var product = await _productRepository.FirstOrDefaultAsync(x => x.Id == request.ProductId, cancellationToken)
+            ?? throw new NotFoundException("Товар не найден.");
 
-        if (!validatorValidate.IsValid)
-            throw new Exception("validator error!");
+        product.ShowOnHomePage = request.Product.ShowOnHomePage;
+        product.IsPublished = request.Product.IsPublished;
+        product.Type = request.Product.ProductType;
+        product.ShortName = request.Product.ShortName;
+        product.LongName = request.Product.LongName;
+        product.Sku = request.Product.Sku;
+        product.Gtin = request.Product.Gtin;
+        product.ShortDescription = request.Product.ShortDescription;
+        product.FullDescription = request.Product.FullDescription;
+        product.AdminComment = request.Product.AdminComment;
+        product.UpdateDateTime = DateTimeOffset.Now;
 
-        // TODO: Update fields ...
-
-        await _productRepository.Context.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

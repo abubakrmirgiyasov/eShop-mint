@@ -67,3 +67,9 @@ public enum ContactType : int
     Email = 0,
     Phone = 1,
 }
+
+public enum SortType: int
+{
+    Ascending = 1,
+    Descending = -1,
+}

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Mint.Infrastructure.Services.Interfaces;
+using Mint.Application.Interfaces;
 using Mint.WebApp.StorageCloud.Models;
 
 namespace Mint.WebApp.StorageCloud.Commands;

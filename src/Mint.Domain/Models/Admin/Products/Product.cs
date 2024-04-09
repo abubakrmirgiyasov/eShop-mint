@@ -52,6 +52,8 @@ public class Product : Entity<Guid>
     [MinLength(2, ErrorMessage = "Мин. длина строки (2).")]
     public decimal? OldPrice { get; set; } = 0;
 
+    public string? Type { get; set; }
+
     public bool CustomerEntersPrice { get; set; } = false;
 
     public decimal? MinCustomerEntersPrice { get; set; }

@@ -1,27 +1,34 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Minio.DataModel.Args;
+using Minio.Exceptions;
+using Mint.Application.Interfaces;
+using Mint.Domain.Common;
 using Mint.Infrastructure.Helpers;
-using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.Infrastructure.Services;
 
+/// <inheritdoc cref="IStorageCloudService" />
 public class StorageCloudService(
-    MinioClientConnection minioClient,
-    ILogger<StorageCloudService> logger) : IStorageCloudService
+    IOptions<AppSettings> appSettings, 
+    ILogger<StorageCloudService> logger
+) : IStorageCloudService
 {
-    private readonly MinioClientConnection _minio = minioClient;
+    private readonly MinioClientConnection _minio = new(appSettings);
     private readonly ILogger<StorageCloudService> _logger = logger;
 
+    /// <inheritdoc />
     public Task<string[]> GetFilesLinkAsync(string[] names, string bucket, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<string> GetFileLinkAsync(string name, string bucket, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<string?> GetFileLinkAsync(string name, string bucket, CancellationToken cancellationToken = default)
     {
         if (cancellationToken.IsCancellationRequested)
-            return "";
+            return null;
 
         try
         {
@@ -32,6 +39,10 @@ public class StorageCloudService(
 
             return await _minio.Client.PresignedGetObjectAsync(getObjectArgs);
         }
+        catch (ObjectNotFoundException)
+        {
+            return null;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
@@ -39,6 +50,7 @@ public class StorageCloudService(
         }
     }
 
+    /// <inheritdoc />
     public async Task<bool> CreateBucketAsync(string bucket, CancellationToken cancellationToken = default)
     {
         try
@@ -58,11 +70,12 @@ public class StorageCloudService(
         }
     }
 
+    /// <inheritdoc />
     public async Task<string> UploadFileAsync(IFormFile file, string name, string bucket, CancellationToken cancellationToken = default)
     {
         try
         {
-            if (await IsBucketExist(bucket, cancellationToken))
+            if (await IsBucketExists(bucket, cancellationToken))
             {
                 using var stream = file.OpenReadStream();
 
@@ -93,16 +106,47 @@ public class StorageCloudService(
         }
     }
 
+    /// <inheritdoc />
     public Task<string> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
+    public async Task<string> UpdateFileAsync(IFormFile file, string currentFileName, string newFileName, string bucket, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var isFileExists = await IsFileExists(bucket, currentFileName, cancellationToken);
+
+            string res = "";
+            if (isFileExists)
+            {
+                await DeleteFileAsync(currentFileName, bucket, cancellationToken);
+
+                res = await UploadFileAsync(file, newFileName, bucket, cancellationToken);
+            }
+            else
+            {
+                res = await UploadFileAsync(file, newFileName, bucket, cancellationToken);
+            }
+
+            return res;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    /// <inheritdoc />
     public Task<bool> DeleteBucketAsync(string name, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteFileAsync(string name, string bucket, CancellationToken cancellationToken = default)
     {
         try
@@ -124,12 +168,28 @@ public class StorageCloudService(
         }
     }
 
+    /// <inheritdoc />
     public Task<bool> DeleteFilesAsync(string[] names, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> IsBucketExist(string bucket, CancellationToken cancellationToken = default)
+    /// <inheritdoc />
+    public async Task<bool> IsFileExists(string bucket, string name, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var file = await GetFileLinkAsync(name, bucket, cancellationToken);
+            return !string.IsNullOrEmpty(file);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> IsBucketExists(string bucket, CancellationToken cancellationToken = default)
     {
         try
         {

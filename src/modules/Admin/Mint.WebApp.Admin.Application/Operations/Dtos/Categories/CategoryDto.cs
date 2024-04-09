@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
 
 namespace Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 
@@ -57,7 +58,7 @@ public class CategorySampleViewModel
 
 public class CategoryFullViewModel
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
 
     public required string Name { get; set; }
 
@@ -71,11 +72,11 @@ public class CategoryFullViewModel
 
     public int DisplayOrder { get; set; }
 
-    public string? Photo { get; set; }
+    public string? ImagePath { get; set; }
 
     public List<SubCategorySampleViewModel>? SubCategories { get; set; }
 
-    public List<CategoryTagSampleViewModel>? CategoryTags { get; set; }
+    public List<TagSampleViewModel>? CategoryTags { get; set; }
 
     public List<ManufactureSampleViewModel>? Manufactures { get; set; }
 }

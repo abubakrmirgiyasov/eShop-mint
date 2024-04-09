@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Minio;
 using Mint.Domain.Common;
-using System.Net;
 
 namespace Mint.Infrastructure.Helpers;
 
@@ -10,7 +9,7 @@ namespace Mint.Infrastructure.Helpers;
 /// </summary>
 /// <param name="appSettings">The application settings, including MinIO configuration.</param>
 /// <param name="isSecure">Flag indicating whether the connection should use SSL/TLS (default is false).</param>
-public class MinioClientConnection(IOptions<AppSettings> appSettings, bool isSecure = false)
+public class MinioClientConnection(IOptions<AppSettings> appSettings)
 {
     private readonly AppSettings _appSettings = appSettings.Value;
 
@@ -22,6 +21,11 @@ public class MinioClientConnection(IOptions<AppSettings> appSettings, bool isSec
         get => _appSettings.MinioSettings.Expiry;
     }
 
+    public bool IsSecure
+    {
+        get => _appSettings.MinioSettings.Secure;
+    }
+
     /// <summary>
     /// Gets the configured MinIO client for interacting with the MinIO server.
     /// </summary>
@@ -31,7 +35,7 @@ public class MinioClientConnection(IOptions<AppSettings> appSettings, bool isSec
         {
             var client = new MinioClient();
 
-            if (!isSecure)
+            if (!IsSecure)
             {
                 client
                     .WithEndpoint("127.0.0.1:9000")
@@ -43,7 +47,7 @@ public class MinioClientConnection(IOptions<AppSettings> appSettings, bool isSec
                 client
                     .WithEndpoint(_appSettings.MinioSettings.Endpoint)
                     .WithCredentials(_appSettings.MinioSettings.AccessKey, _appSettings.MinioSettings.SecretKey)
-                    .WithSSL(isSecure);
+                    .WithSSL(IsSecure);
             }
 
             return client;

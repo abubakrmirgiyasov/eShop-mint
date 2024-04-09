@@ -3,25 +3,18 @@ using Microsoft.Extensions.Logging;
 using Mint.Domain.DTO_s.Identity;
 using Mint.Domain.FormingModels.Identity;
 using Mint.Domain.Models.Identity;
-using Mint.Infrastructure.Repositories.Identity.Interfaces;
+using Mint.WebApp.Identity.Application.Operations.Repositories;
 
 namespace Mint.Infrastructure.Repositories.Identity;
 
-public class RoleRepository : IRoleRepository
+/// <inheritdoc cref="IRoleRepository"/>
+internal sealed class RoleRepository(
+    ApplicationDbContext context,
+    ILogger<RoleRepository> logger
+) : GenericRepository<User>(context), IRoleRepository
 {
-    private readonly ILogger<RoleRepository> _logger;
-    private readonly ApplicationDbContext _context;
-
-    /// <summary>
-    /// Consturctor
-    /// </summary>
-    /// <param name="logger"></param>
-    /// <param name="context"></param>
-    public RoleRepository(ILogger<RoleRepository> logger, ApplicationDbContext context)
-    {
-        _logger = logger;
-        _context = context;
-    }
+    private readonly ApplicationDbContext _context = context;
+    private readonly ILogger<RoleRepository> _logger = logger;
 
     /// <summary>
     /// Get All Roles Async

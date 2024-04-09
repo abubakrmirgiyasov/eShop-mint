@@ -2,7 +2,6 @@
 using Mint.Domain.Models.Identity;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
 using Mint.Domain.Models.Email;
-using Mint.Infrastructure.Repositories.Email;
 
 namespace Mint.WebApp.Email.Services;
 
@@ -12,8 +11,6 @@ public class MessageBrokerBackgroundService : BackgroundService
     private readonly IMessageReceiver<User> _receiver;
     private readonly IMessageSender<User> _sender;
     private readonly IServiceProvider _scope;
-
-    private IEmailRepository _email = default!;
 
     public MessageBrokerBackgroundService(
         ILogger<MessageBrokerBackgroundService> logger,
@@ -31,8 +28,8 @@ public class MessageBrokerBackgroundService : BackgroundService
     {
         stoppingToken.ThrowIfCancellationRequested();
 
-        using var scope = _scope.CreateScope();
-        _email = scope.ServiceProvider.GetRequiredService<IEmailRepository>();
+        //using var scope = _scope.CreateScope();
+        //_email = scope.ServiceProvider.GetRequiredService<IEmailRepository>();
 
          User? u = null;
 
@@ -57,7 +54,7 @@ public class MessageBrokerBackgroundService : BackgroundService
                 //},
             };
 
-            _email.SendTestEmailAsync(email);
+            //_email.SendTestEmailAsync(email);
         }
 
         return Task.CompletedTask;

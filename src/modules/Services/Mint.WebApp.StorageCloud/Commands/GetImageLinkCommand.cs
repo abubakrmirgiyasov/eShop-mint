@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using Mint.Application.Interfaces;
 using Mint.Domain.DTO_s.MessageBroker;
 using Mint.Infrastructure.MessageBrokers.Interfaces;
-using Mint.Infrastructure.Services.Interfaces;
 
 namespace Mint.WebApp.StorageCloud.Commands;
 

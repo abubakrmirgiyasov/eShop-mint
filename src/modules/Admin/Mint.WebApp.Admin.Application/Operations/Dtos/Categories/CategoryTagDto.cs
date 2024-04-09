@@ -1,16 +1,15 @@
-﻿namespace Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
+﻿using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
+
+namespace Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 
 public class CategoryTagBindingModel
 {
     public Guid? Value { get; set; }
 }
 
-public record CategoryTagFullViewModel(
-    Guid? Value = null,
-    string? Name = null);
+public class CategoryTagViewModel
+{
+    public required TagSampleViewModel Tag { get; set; }
 
-public record CategoryTagSampleViewModel(
-    Guid? Value = null,
-    string? Label = null);
-
-public record CategoryViewModel();
+    public required CategorySampleViewModel Category { get; set; }
+}

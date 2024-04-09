@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
+using Mint.Application.Interfaces;
 using Mint.Domain.Models;
 using Mint.Domain.Models.Admin.Categories;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.Infrastructure.Services.Interfaces;
-using Mint.WebApp.Admin.Application.Common.Messaging;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
 using Mint.WebApp.Admin.Application.Operations.Validations.Categories;
-using Mint.WebApp.Extensions.Models;
 using System.Text.Json;
+using Mint.Domain.Extensions;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Categories;
 
@@ -16,12 +15,14 @@ public sealed record CreateCategoryCommand(CategoryFullBindingModel Category) : 
 internal sealed class CreateCategoryCommandHandler(
     ICategoryRepository categoryRepository,
     IStorageCloudService storageCloudService,
+    IUnitOfWork unitOfWork,
     ILogger<CreateCategoryCommandHandler> logger
 ) : ICommandHandler<CreateCategoryCommand, Guid>
 {
     private readonly ILogger<CreateCategoryCommandHandler> _logger = logger;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IStorageCloudService _storageCloudService = storageCloudService;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -64,11 +65,21 @@ internal sealed class CreateCategoryCommandHandler(
             };
         }
 
-        await _categoryRepository.Context.AddAsync(category, cancellationToken);
-        await _categoryRepository.Context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await _categoryRepository.AddAsync(category, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Создана новая категория с Id={Id}", category.Id);
+            _logger.LogInformation("Создана новая категория с Id={Id}", category.Id);
+            return category.Id;
+        }
+        catch (Exception ex)
+        {
+            if (request.Category.Photo is not null)
+                await _storageCloudService.DeleteFileAsync(category.Photo!.FileName, category.Photo.FileType, cancellationToken);
 
-        return category.Id;
+            _logger.LogError(ex, "{Message}", ex.Message);
+            throw new Exception(ex.Message, ex);
+        }
     }
 }

@@ -1,3 +1,3 @@
 ﻿namespace Mint.Domain.Exceptions;
 
-public class LogicException(string message) : Exception;
+public class LogicException(string message) : Exception(message);

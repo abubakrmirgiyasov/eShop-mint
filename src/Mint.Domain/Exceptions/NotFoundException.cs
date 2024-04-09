@@ -1,4 +1,3 @@
 ﻿namespace Mint.Domain.Exceptions;
 
-public class NotFoundException(string message)
-    : Exception(message) { }
+public class NotFoundException(string message) : Exception(message);

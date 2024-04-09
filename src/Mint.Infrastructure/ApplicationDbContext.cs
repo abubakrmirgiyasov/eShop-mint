@@ -10,6 +10,8 @@ using Mint.Domain.Common;
 using Mint.Domain.Models.Admin.Products;
 using Mint.Domain.Models.Admin.Tags;
 using Mint.Domain.Models.Admin.Stores;
+using Mint.Application.Interfaces;
+using Mint.Infrastructure.Helpers;
 
 namespace Mint.Infrastructure;
 
@@ -17,8 +19,9 @@ namespace Mint.Infrastructure;
 /// Application Database Instance
 /// </summary>
 /// <param name="options"></param>
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
-    : DbContext(options)
+public class ApplicationDbContext(
+    DbContextOptions<ApplicationDbContext> options
+) : DbContext(options), IUnitOfWork
 {
     /// <summary>
     /// Users Table
@@ -185,19 +188,24 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// </summary>
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
+    async Task<ITransaction> IUnitOfWork.BeginTransactionAsync(CancellationToken cancellationToken)
+    {
+        var transaction = await Database.BeginTransactionAsync(cancellationToken).ConfigureAwait(false);
+        return new EfCoreTransactionProxy(transaction);
+    }
+
+    async Task<int> IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await this.BulkSaveChangesAsync(cancellationToken);
+        return 1;
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder
             .HasDefaultSchema(SchemeNames.Mint.ToString())
             .ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-
-        builder.Entity<ProductTag>()
-            .HasKey(x => new
-            {
-                x.ProductId,
-                x.TagId,
-            });
-
+        
         builder.Entity<ManufactureCategory>()
             .HasKey(x => new 
             {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Admin.Application.Common.Messaging;
+using Mint.Application.Interfaces;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Queries.Products;
 
@@ -20,9 +20,8 @@ internal sealed class GetProductInfoQueryHandler(
 
     public async Task<ProductInfoViewModel> Handle(GetProductInfoQuery request, CancellationToken cancellationToken)
     {
-        var product = await _productRepository.FindByIdAsync(
-            id: request.Id,
-            asNoTracking: true,
+        var product = await _productRepository.GetProductInfoAsync(
+            productId: request.Id,
             cancellationToken: cancellationToken
         );
 

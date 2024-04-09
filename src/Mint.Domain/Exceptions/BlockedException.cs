@@ -1,7 +1,3 @@
 ﻿namespace Mint.Domain.Exceptions;
 
-public class BlockedException : Exception
-{
-    public BlockedException(string message)
-        : base(message) { }
-}
+public class BlockedException(string message) : Exception(message);

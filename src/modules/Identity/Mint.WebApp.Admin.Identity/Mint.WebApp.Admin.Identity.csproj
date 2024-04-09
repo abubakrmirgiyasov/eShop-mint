@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Mint.Infrastructure\Mint.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\Services\Mint.WebApp.Extensions\Mint.WebApp.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

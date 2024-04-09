@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using Mint.Application.Interfaces;
 using Mint.Domain.Exceptions;
-using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Admin.Application.Common.Messaging;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Stores;
+using Mint.WebApp.Admin.Application.Operations.Repositories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Queries.Stores;
 
@@ -19,13 +18,11 @@ internal sealed class GetSimpleStoreQueryHandler(
 
     public async Task<List<SimpleStoreViewModel>> Handle(GetSimpleStoreQuery request, CancellationToken cancellationToken)
     {
-        var store = await _storeRepository.Context.Stores
-            .Where(x => x.UserId == request.UserId)
-            .ToListAsync(cancellationToken);
+        var stores = await _storeRepository.GetSampleStoreAsync(request.UserId, cancellationToken);
 
-        if (store.Count == 0)
+        if (stores.Count == 0)
             throw new LogicException("Вы еще не продавец. Хотите открыть свой магазин?");
 
-        return _mapper.Map<List<SimpleStoreViewModel>>(store);
+        return _mapper.Map<List<SimpleStoreViewModel>>(stores);
     }
 }
