@@ -24,5 +24,14 @@ public interface ISubCategoryRepository : IGenericRepository<SubCategory>
     /// <param name="search"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IEnumerable<SubCategory>> GetSubCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default);
+    Task<List<SubCategory>> GetSubCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a collection of simplified subcategories.
+    /// </summary>
+    /// <param name="search"></param>
+    /// <param name="asNoTracking"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<List<SubCategory>> GetSimpleSubCategoriesAsync(string? search = default, bool asNoTracking = false, CancellationToken cancellationToken = default);
 }

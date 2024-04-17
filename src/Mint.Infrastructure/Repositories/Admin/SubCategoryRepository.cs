@@ -31,12 +31,26 @@ internal sealed class SubCategoryRepository(ApplicationDbContext context)
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<SubCategory>> GetSubCategoriesLinkAsync(string? search = null, CancellationToken cancellationToken = default)
+    public async Task<List<SubCategory>> GetSubCategoriesLinkAsync(string? search = default, CancellationToken cancellationToken = default)
     {
         var query = _context.SubCategories.AsQueryable();
 
         if (!string.IsNullOrEmpty(search))
             query = query.Where(x => x.DefaultLink.Contains(search));
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<List<SubCategory>> GetSimpleSubCategoriesAsync(string? search = default, bool asNoTracking = false, CancellationToken cancellationToken = default)
+    {
+        var query = _context.SubCategories.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        if (!string.IsNullOrEmpty(search))
+            query = query.Where(x => x.Name.Contains(search));
 
         return await query.ToListAsync(cancellationToken);
     }

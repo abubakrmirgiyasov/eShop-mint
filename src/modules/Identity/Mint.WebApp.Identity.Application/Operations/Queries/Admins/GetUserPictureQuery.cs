@@ -24,7 +24,7 @@ internal sealed class GetUserPictureQueryHandler(
 
         var storage = await _storageCloudService.GetFileLinkAsync(
             user.Photo?.FileName ?? Constants.IMAGE_DEFAULT_NAME,
-            user.Photo?.FileType ?? Constants.IMAGE_DEFAULT_PATH,
+            user.Photo?.Bucket ?? Constants.IMAGE_DEFAULT_PATH,
             cancellationToken: cancellationToken
         );
 

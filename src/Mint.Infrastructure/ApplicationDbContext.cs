@@ -129,6 +129,11 @@ public class ApplicationDbContext(
     public DbSet<StoreReview> StoreReviews => Set<StoreReview>();
 
     /// <summary>
+    /// Store Category Table
+    /// </summary>
+    public DbSet<StoreCategory> StoreCategories => Set<StoreCategory>();
+
+    /// <summary>
     /// Manufactures Table
     /// </summary>
     public DbSet<Manufacture> Manufactures => Set<Manufacture>();

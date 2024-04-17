@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Mint.Application.Interfaces;
+using Mint.Domain.Common;
 using Mint.Domain.Helpers;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
@@ -11,6 +13,7 @@ namespace Mint.WebApp.Admin.Application.Operations.Queries.Categories;
 
 public sealed record GetCategoriesQuery(
     string? Search,
+    SortType Sorter,
     int PageIndex = 0,
     int PageSize = 50
 ) : IQuery<PaginatedResult<CategoryFullViewModel>>;
@@ -29,6 +32,7 @@ internal sealed class GetCategoriesQueryHandler(
     {
         var (categories, totalCount) = await _categoryRepository.GetCategoriesAsync(
             searchPhrase: request.Search,
+            sorter: request.Sorter,
             pageIndex: request.PageIndex,
             pageSize: request.PageSize,
             cancellationToken: cancellationToken
@@ -44,7 +48,7 @@ internal sealed class GetCategoriesQueryHandler(
             {
                 imagePath = await _storageCloudService.GetFileLinkAsync(
                     name: category.Photo.FileName,
-                    bucket: category.Photo.FileType,
+                    bucket: category.Photo.Bucket,
                     cancellationToken: cancellationToken
                 );
             }
@@ -57,10 +61,12 @@ internal sealed class GetCategoriesQueryHandler(
                     DisplayOrder = category.DisplayOrder,
                     BadgeStyle = category.BadgeStyle,
                     BadgeText = category.BadgeText,
-                    DefaultLink = category.DefaultLink,
                     Ico = category.Ico,
                     ImagePath = imagePath,
-                    SubCategories = _mapper.Map<List<SubCategorySampleViewModel>>(category.SubCategories),
+                    IsPublished = category.IsPublished,
+                    ShowOnHomePage = category.ShowOnHomePage,
+                    DefaultLink = new DefaultLinkDTO { DefaultLink = category.DefaultLink ?? "" },
+                    SubCategories = _mapper.Map<List<SubCategorySimpleViewModel>>(category.SubCategories),
                     CategoryTags = _mapper.Map<List<TagSampleViewModel>>(category.CategoryTags),
                     Manufactures = _mapper.Map<List<ManufactureSampleViewModel>>(category.ManufactureCategories)
                 }

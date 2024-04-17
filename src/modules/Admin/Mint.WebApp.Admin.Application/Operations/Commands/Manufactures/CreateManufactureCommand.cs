@@ -58,7 +58,7 @@ internal sealed class CreateManufactureCommandHandler(
                 FileName = photoName,
                 FilePath = file,
                 FileSize = request.Manufacture.Photo.Length,
-                FileType = bucket,
+                Bucket = bucket,
             };
         }
 
@@ -74,7 +74,7 @@ internal sealed class CreateManufactureCommandHandler(
         catch (Exception ex)
         {
             if (request.Manufacture.Photo is not null)
-                await _storageCloudService.DeleteFileAsync(manufacture.Photo!.FileName, manufacture.Photo.FileType, cancellationToken);
+                await _storageCloudService.DeleteFileAsync(manufacture.Photo!.FileName, manufacture.Photo.Bucket, cancellationToken);
 
             _logger.LogError(ex, "{Message}", ex.Message);
             throw new Exception(ex.Message, ex);

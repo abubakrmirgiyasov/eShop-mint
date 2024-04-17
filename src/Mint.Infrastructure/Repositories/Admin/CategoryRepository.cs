@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
 using Mint.Domain.Models.Admin.Categories;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
@@ -13,7 +14,7 @@ internal class CategoryRepository(
     private readonly ApplicationDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default)
+    public async Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, SortType sorter = SortType.Ascending,  int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default)
     {
         var query = _context.Categories
             .AsNoTracking()
@@ -21,6 +22,11 @@ internal class CategoryRepository(
 
         if (!string.IsNullOrEmpty(searchPhrase))
             query = query.Where(x => x.Name.Contains(searchPhrase));
+
+        if (sorter == SortType.Ascending)
+            query = query.OrderBy(x => x.DisplayOrder);
+        else
+            query = query.OrderByDescending(x => x.DisplayOrder);
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -79,22 +85,46 @@ internal class CategoryRepository(
     }
 
     /// <inheritdoc />
-    public async Task<Category> GetSampleCategoryById(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Category> GetSampleCategoryById(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
-        var category = await _context.Categories
-           .AsNoTracking()
-           .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-               ?? throw new NotFoundException("Категория не найдена.");
+        var query = _context.Categories.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+            ?? throw new NotFoundException("Категория не найдена.");
 
         return category;
     }
 
-    public async Task<Category?> GetCategoryWithPhotoAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Category?> GetCategoryWithPhotoAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
     {
-        var category = await _context.Categories
+        var query = _context.Categories.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        var category = await query
             .Include(x => x.Photo)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         return category;
+    }
+
+    /// <inheritdoc/>
+    public async Task<Category> GetCategoryWithSubCategoriesAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Categories.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        var categories = await query
+            .Include(x => x.SubCategories)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+                ?? throw new NotFoundException("Категория не найдена.");
+
+        return categories;
     }
 }

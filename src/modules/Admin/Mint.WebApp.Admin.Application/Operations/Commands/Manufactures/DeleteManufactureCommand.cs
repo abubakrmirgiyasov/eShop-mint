@@ -28,7 +28,7 @@ internal sealed class DeleteManufactureCommandHandler(
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             if (manufacture.Photo is not null)
-                await _storageCloudService.DeleteFileAsync(manufacture.Photo.FileName, manufacture.Photo.FileType, cancellationToken);
+                await _storageCloudService.DeleteFileAsync(manufacture.Photo.FileName, manufacture.Photo.Bucket, cancellationToken);
 
             _logger.LogWarning("Удалено успешно! Id={Id}", manufacture.Id);
         }

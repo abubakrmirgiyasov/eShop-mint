@@ -4,7 +4,7 @@ using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 namespace Mint.WebApp.Admin.Application.Operations.Validations.Categories;
 
 internal sealed class CreateCategoryCommandValidation 
-    : AbstractValidator<CategoryFullBindingModel>
+    : AbstractValidator<CategoryInfoBindingModel>
 {
     public CreateCategoryCommandValidation()
     {
@@ -13,7 +13,8 @@ internal sealed class CreateCategoryCommandValidation
         RuleFor(x => x.Ico).NotEmpty().MaximumLength(60);
         RuleFor(x => x.BadgeText).MaximumLength(30);
         RuleFor(x => x.BadgeStyle).MaximumLength(60);
-        RuleFor(x => x.DefaultLink).MaximumLength(60);
         RuleFor(x => x.Description).MaximumLength(800);
+
+        RuleFor(x => x.DefaultLink).ChildRules(x => x.RuleFor(y => y.DefaultLink).MaximumLength(60));
     }
 }

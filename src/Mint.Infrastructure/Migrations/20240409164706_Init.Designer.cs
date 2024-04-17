@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mint.Infrastructure;
 
@@ -11,9 +12,11 @@ using Mint.Infrastructure;
 namespace Mint.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240409164706_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -799,7 +802,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("d307c97f-2ebf-4b77-a35b-f728ebaaad0d"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 594, DateTimeKind.Unspecified).AddTicks(1951), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 39, DateTimeKind.Unspecified).AddTicks(5675), new TimeSpan(0, 7, 0, 0, 0)),
                             IsPhysical = false,
                             Name = "Mint",
                             Url = "mint",
@@ -1044,21 +1047,21 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("3616c928-a4d1-4dfb-a622-1d750bbb5739"),
                             CountryCode = "RU-ru",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(2277), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 41, DateTimeKind.Unspecified).AddTicks(6500), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Россия"
                         },
                         new
                         {
                             Id = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
                             CountryCode = "TJ-tj",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(2329), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 41, DateTimeKind.Unspecified).AddTicks(6532), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Тоҷикистон"
                         },
                         new
                         {
                             Id = new Guid("6f7652b5-92de-4a44-9342-a68a4b92ff52"),
                             CountryCode = "KZ-kz",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(2337), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 41, DateTimeKind.Unspecified).AddTicks(6535), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Қазақстан"
                         });
                 });
@@ -1109,7 +1112,7 @@ namespace Mint.Infrastructure.Migrations
                             Id = new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"),
                             ContactInformation = "+79502768428",
                             CountryCode = "RU",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(9332), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(595), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Phone",
                             UserId = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0")
                         },
@@ -1117,7 +1120,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("70298181-e41d-41a9-86c5-ac349a74af6d"),
                             ContactInformation = "abubakrmirgiyasov@gmail.com",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(9371), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(616), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Email",
                             UserId = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0")
                         },
@@ -1125,7 +1128,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("83733797-4c73-457a-874b-cba254c6d71e"),
                             ContactInformation = "admin@mint.com",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(9378), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(620), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Email",
                             UserId = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572")
                         },
@@ -1134,7 +1137,7 @@ namespace Mint.Infrastructure.Migrations
                             Id = new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"),
                             ContactInformation = "+73452763423",
                             CountryCode = "RU",
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 598, DateTimeKind.Unspecified).AddTicks(9384), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(624), new TimeSpan(0, 7, 0, 0, 0)),
                             Type = "Phone",
                             UserId = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572")
                         });
@@ -1237,7 +1240,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("68c2f692-2f9a-4d0e-9d89-9c2ff7f0409b"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 599, DateTimeKind.Unspecified).AddTicks(7508), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(6493), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Админ",
                             TranslateEn = "ADMIN",
                             UniqueKey = "ADMIN"
@@ -1245,7 +1248,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22a99751-e418-49c5-ac4e-ce221dd7ae0d"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 599, DateTimeKind.Unspecified).AddTicks(7532), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(6515), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Продавец",
                             TranslateEn = "SELLER",
                             UniqueKey = "SELLER"
@@ -1253,7 +1256,7 @@ namespace Mint.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("7582ed34-eb4a-4628-a7e7-971af7379ec8"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 599, DateTimeKind.Unspecified).AddTicks(7547), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(6526), new TimeSpan(0, 7, 0, 0, 0)),
                             Name = "Покупатель",
                             TranslateEn = "BUYER",
                             UniqueKey = "BUYER"
@@ -1354,7 +1357,7 @@ namespace Mint.Infrastructure.Migrations
                         {
                             Id = new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"),
                             ConfirmationCode = 0,
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 614, DateTimeKind.Unspecified).AddTicks(4748), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 52, DateTimeKind.Unspecified).AddTicks(1815), new TimeSpan(0, 7, 0, 0, 0)),
                             DateBirth = new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428",
                             FirstName = "Миргиясов",
@@ -1367,15 +1370,15 @@ namespace Mint.Infrastructure.Migrations
                             IsSeller = false,
                             LastName = "Мукимжонович",
                             NumOfAttempts = 0,
-                            Password = "T3ljSMyLakDcChSvC2bYP3/91j5BJu9J9bll+vmue74=",
-                            Salt = new byte[] { 56, 178, 139, 211, 198, 245, 120, 94, 48, 161, 71, 137, 25, 204, 205, 34 },
+                            Password = "3hYhFVCJI1pkRSsyiLcNkjqqGhueHtxVaU96zDGt3Rw=",
+                            Salt = new byte[] { 32, 16, 64, 216, 21, 72, 79, 244, 70, 242, 189, 28, 185, 39, 213, 63 },
                             SecondName = "Абубакр"
                         },
                         new
                         {
                             Id = new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"),
                             ConfirmationCode = 0,
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 615, DateTimeKind.Unspecified).AddTicks(949), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 52, DateTimeKind.Unspecified).AddTicks(7210), new TimeSpan(0, 7, 0, 0, 0)),
                             DateBirth = new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Test User Почта: test@gmail.com Телефон: 83452763423",
                             FirstName = "Test",
@@ -1387,8 +1390,8 @@ namespace Mint.Infrastructure.Migrations
                             IsDeleted = false,
                             IsSeller = true,
                             NumOfAttempts = 0,
-                            Password = "vDwJR/fM1amO2PD0KCwuA2947X+jos2sNXtV9dhtXMg=",
-                            Salt = new byte[] { 56, 178, 139, 211, 198, 245, 120, 94, 48, 161, 71, 137, 25, 204, 205, 34 },
+                            Password = "v9qwDKGBPupu/a6FOJ1jzQ+VKfcq8bEgfg87volggbw=",
+                            Salt = new byte[] { 32, 16, 64, 216, 21, 72, 79, 244, 70, 242, 189, 28, 185, 39, 213, 63 },
                             SecondName = "User"
                         });
                 });
@@ -1451,10 +1454,10 @@ namespace Mint.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3eb5919a-e677-4512-861b-47d61d1bf3e4"),
+                            Id = new Guid("b7169285-78f5-4bcd-ac76-9bff2ee6b61e"),
                             City = "Худжанд",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 600, DateTimeKind.Unspecified).AddTicks(4357), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 43, DateTimeKind.Unspecified).AddTicks(1448), new TimeSpan(0, 7, 0, 0, 0)),
                             Description = "full address for custom user",
                             FullAddress = "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49",
                             FullName = "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр",
@@ -1464,10 +1467,10 @@ namespace Mint.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2cdddcab-5b41-40a8-9403-003df1e8d791"),
+                            Id = new Guid("9df2ce0d-c81c-462f-8f1c-dfeead332a17"),
                             City = "Новосибирск",
                             CountryId = new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"),
-                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 12, 19, 48, 16, 602, DateTimeKind.Unspecified).AddTicks(6425), new TimeSpan(0, 7, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 45, DateTimeKind.Unspecified).AddTicks(3451), new TimeSpan(0, 7, 0, 0, 0)),
                             Description = "full address for custom user",
                             FullAddress = "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49",
                             FullName = "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр",
@@ -1530,11 +1533,6 @@ namespace Mint.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Bucket")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
@@ -1545,8 +1543,8 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
@@ -1555,6 +1553,11 @@ namespace Mint.Infrastructure.Migrations
 
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

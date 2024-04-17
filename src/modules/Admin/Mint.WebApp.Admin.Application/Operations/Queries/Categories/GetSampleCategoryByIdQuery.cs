@@ -17,7 +17,7 @@ internal sealed class GetSampleCategoryByIdQueryHandler(
 
     public async Task<List<CategorySampleViewModel>> Handle(GetSampleCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetSampleCategoryById(request.Id, cancellationToken);
+        var category = await _categoryRepository.GetSampleCategoryById(request.Id, asNoTracking: true, cancellationToken: cancellationToken);
 
         var result = new List<CategorySampleViewModel>()
         {

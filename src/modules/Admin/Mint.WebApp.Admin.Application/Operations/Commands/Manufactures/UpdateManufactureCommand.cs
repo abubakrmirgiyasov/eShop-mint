@@ -43,7 +43,7 @@ internal sealed class UpdateManufactureCommandHandler(
             {
                 await _storageCloudService.DeleteFileAsync(
                     name: manufacture.Photo.FileName,
-                    bucket: manufacture.Photo.FileType,
+                    bucket: manufacture.Photo.Bucket,
                     cancellationToken: cancellationToken
                 );
 
@@ -55,7 +55,7 @@ internal sealed class UpdateManufactureCommandHandler(
                 manufacture.Photo.FileName = photoName;
                 manufacture.Photo.FilePath = file;
                 manufacture.Photo.FileSize = request.Manufacture.Photo.Length;
-                manufacture.Photo.FileType = bucket;
+                manufacture.Photo.Bucket = bucket;
                 manufacture.Photo.UpdateDateTime = DateTimeOffset.Now;
             }
         }
@@ -74,7 +74,7 @@ internal sealed class UpdateManufactureCommandHandler(
                     FileName = photoName,
                     FilePath = file,
                     FileSize = request.Manufacture.Photo.Length,
-                    FileType = bucket,
+                    Bucket = bucket,
                 };
             }
         }

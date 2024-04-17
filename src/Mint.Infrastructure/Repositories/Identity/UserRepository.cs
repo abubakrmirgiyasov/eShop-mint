@@ -62,7 +62,7 @@ internal sealed class UserRepository(
     }
 
     /// <inheritdoc/>
-    public async Task<User> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<UserJwtAuthorize> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -74,7 +74,15 @@ internal sealed class UserRepository(
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
                     ?? throw new UserNotFoundException("Пользователь не найден.");
 
-            return user;
+            var roles = user.UserRoles
+                .Select(x => x.Role.UniqueKey.ToLower())
+                .ToArray();
+
+            return new UserJwtAuthorize 
+            {
+                Id = user.Id,
+                Roles = roles
+            };
         }
         catch (UserNotFoundException ex)
         {

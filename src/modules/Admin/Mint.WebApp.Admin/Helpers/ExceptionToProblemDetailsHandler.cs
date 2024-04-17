@@ -55,6 +55,7 @@ public class ExceptionToProblemDetailsHandler(IProblemDetailsService problemDeta
             {
                 Title = "Внутренняя ошибка сервера.",
                 Status = StatusCodes.Status500InternalServerError,
+                Detail = exception.ToString()
             }
         };
     }

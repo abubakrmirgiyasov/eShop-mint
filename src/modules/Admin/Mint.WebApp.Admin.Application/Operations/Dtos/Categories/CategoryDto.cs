@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
 
 namespace Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 
-public class CategoryFullBindingModel
+public class CategoryInfoBindingModel
 {
     public Guid Id { get; set; }
 
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; }
 
     public string? Ico { get; set; }
 
     public string? BadgeStyle { get; set; }
 
     public string? BadgeText { get; set; }
-
-    public string? DefaultLink { get; set; }
 
     public int DisplayOrder { get; set; }
 
@@ -29,23 +28,11 @@ public class CategoryFullBindingModel
 
     public string? Description { get; set; }
 
-    public IFormFile? Photo { get; set; }
-
-    public List<Guid>? Childs { get; set; }
-
-    public List<CategoryTagBindingModel>? CategoryTags { get; set; }
-
-    public List<ManufactureCategoryBindingModel>? ManufactureCategories { get; set; }
+    public DefaultLinkDTO? DefaultLink { get; set; }
 }
 
 public class CategoryPhotoDto
 {
-    public Guid Id { get; set; }
-
-    public required string Name { get; set; }
-
-    public required string Bucket { get; set; }
-
     public required IFormFile Photo { get; set; }
 }
 
@@ -56,25 +43,18 @@ public class CategorySampleViewModel
     public required string Label { get; set; }
 }
 
-public class CategoryFullViewModel
+public class CategoryInfoViewModel : CategoryInfoBindingModel
 {
-    public required Guid Id { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
 
-    public required string Name { get; set; }
+    public DateTimeOffset? UpdateDateTime { get; set; }
+}
 
-    public string? Ico { get; set; }
-
-    public string? BadgeStyle { get; set; }
-
-    public string? BadgeText { get; set; }
-
-    public string? DefaultLink { get; set; }
-
-    public int DisplayOrder { get; set; }
-
+public class CategoryFullViewModel : CategoryInfoViewModel
+{
     public string? ImagePath { get; set; }
 
-    public List<SubCategorySampleViewModel>? SubCategories { get; set; }
+    public List<SubCategorySimpleViewModel>? SubCategories { get; set; }
 
     public List<TagSampleViewModel>? CategoryTags { get; set; }
 

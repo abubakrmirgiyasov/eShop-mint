@@ -14,14 +14,17 @@ public class AdminMapper : Profile
 {
     public AdminMapper()
     {
+        CreateMap<Category, CategoryFullViewModel>()
+            .ForMember(x => x.DefaultLink, opt => opt.Ignore());
+        CreateMap<Category, CategoryInfoViewModel>()
+            .ForMember(x => x.DefaultLink, opt => opt.Ignore());
         CreateMap<Category, DefaultLinkDTO>();
-        CreateMap<Category, CategoryFullViewModel>();
         CreateMap<Category, CategorySampleViewModel>()
             .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
             .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
 
         CreateMap<SubCategory, SubCategoryFullViewModel>();
-        CreateMap<SubCategory, SubCategorySampleViewModel>()
+        CreateMap<SubCategory, SubCategorySimpleViewModel>()
             .ForMember(x => x.Label, opt => opt.MapFrom(x => x.Name))
             .ForMember(x => x.Value, opt => opt.MapFrom(x => x.Id));
 

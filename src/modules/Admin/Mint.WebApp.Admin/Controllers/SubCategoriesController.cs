@@ -31,6 +31,15 @@ public class SubCategoriesController(IMediator mediator) : ControllerBase
         return Ok(links);
     }
 
+    [HttpGet("simple")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<List<SubCategorySimpleViewModel>>> GetSimpleSubCategories(
+        [FromQuery] string? search,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetSimpleSubCategoriesQuery(search), cancellationToken);
+    }
+
     [HttpPost]
     [Authorize(Roles = "admin")]
     public async Task<ActionResult<SubCategoryFullViewModel>> Create(

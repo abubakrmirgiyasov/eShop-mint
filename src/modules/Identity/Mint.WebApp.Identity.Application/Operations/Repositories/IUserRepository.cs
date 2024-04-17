@@ -29,7 +29,7 @@ public interface IUserRepository : IGenericRepository<User>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<User> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<UserJwtAuthorize> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Method name of returns roles sample user

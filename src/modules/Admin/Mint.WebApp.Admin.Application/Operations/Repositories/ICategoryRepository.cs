@@ -1,4 +1,5 @@
 ﻿using Mint.Application.Interfaces;
+using Mint.Domain.Common;
 using Mint.Domain.Models.Admin.Categories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Repositories;
@@ -16,7 +17,7 @@ public interface ICategoryRepository : IGenericRepository<Category>
     /// <param name="pageSize"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default);
+    Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, SortType sorter = SortType.Ascending, int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a category by its unique identifier asynchronously.
@@ -45,7 +46,7 @@ public interface ICategoryRepository : IGenericRepository<Category>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Category> GetSampleCategoryById(Guid id, CancellationToken cancellationToken = default);
+    Task<Category> GetSampleCategoryById(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a category with photo by unique identifier asynchronously.
@@ -53,5 +54,13 @@ public interface ICategoryRepository : IGenericRepository<Category>
     /// <param name="id"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Category?> GetCategoryWithPhotoAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Category?> GetCategoryWithPhotoAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a category with list of subCategories asynchronously.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Category> GetCategoryWithSubCategoriesAsync(Guid id, bool asNoTracking = false, CancellationToken cancellationToken = default);
 }

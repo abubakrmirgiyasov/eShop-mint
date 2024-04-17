@@ -10,7 +10,7 @@ namespace Mint.Domain.Models;
 
 public class Photo : Entity<Guid>
 {
-    [StringLength(4000, ErrorMessage = "Превышено макс. длина строки (2000).")]
+    [StringLength(2000, ErrorMessage = "Превышено макс. длина строки (2000).")]
     public string FileName { get; set; } = null!;
 
     [MaxLength(30, ErrorMessage = "Превышено макс. длина строки (30).")]
@@ -23,7 +23,7 @@ public class Photo : Entity<Guid>
     /// Bucket
     /// </summary>
     [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
-    public string FileType { get; set; } = null!;
+    public string Bucket { get; set; } = null!;
 
     public long FileSize { get; set; }
 

@@ -43,7 +43,7 @@ internal sealed class GetManufacturesQueryHandler(
             {
                 imagePath = await _storageCloudService.GetFileLinkAsync(
                     name: manufacture.Photo.FilePath,
-                    bucket: manufacture.Photo.FileType,
+                    bucket: manufacture.Photo.Bucket,
                     cancellationToken: cancellationToken
                 );
             }

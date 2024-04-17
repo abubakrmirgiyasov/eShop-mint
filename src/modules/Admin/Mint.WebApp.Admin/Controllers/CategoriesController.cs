@@ -5,6 +5,7 @@ using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.Categories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
+using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Queries.Categories;
 
 namespace Mint.WebApp.Admin.Controllers;
@@ -38,7 +39,26 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetCategoryByIdQuery(id), cancellationToken);
     }
 
+    [HttpGet("{id:guid}/info")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<CategoryInfoViewModel>> GetCategoryInfo(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetCategoryInfoQuery(id), cancellationToken);
+    }
+
+    [HttpGet("{id:guid}/photo")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<CategoryPhotoResponse?>> GetCategoryPhoto(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetCategoryPhotoQuery(id), cancellationToken);
+    }
+
     [HttpGet("common")]
+    [Authorize(Roles = "admin")]
     public async Task<ActionResult<List<CategorySampleViewModel>>> GetSampleCategories(
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
@@ -55,10 +75,18 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetSampleCategoryByIdQuery(id), cancellationToken);
     }
 
+    [HttpGet("{id:guid}/subCategories")]
+    public async Task<ActionResult<List<CategoryWithSubCategoryResponse>>> UpdateSubCategories(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetCategoryWithSubCategoriesQuery(id), cancellationToken);
+    }
+
     [HttpPost]
     [Authorize(Roles = "admin")]
     public async Task<ActionResult<Guid>> Create(
-        [FromForm] CategoryFullBindingModel model,
+        [FromBody] CategoryInfoBindingModel model,
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(new CreateCategoryCommand(model), cancellationToken);
@@ -68,15 +96,23 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> UpdateCategory(
         Guid id,
-        [FromForm] CategoryFullBindingModel model,
+        [FromBody] CategoryInfoBindingModel model,
         CancellationToken cancellationToken = default)
     {
-        await mediator.Send(new UpdateCategoryCommand(
-            id,
-            model
-        ), cancellationToken);
+        await mediator.Send(new UpdateCategoryCommand(id, model), cancellationToken);
         return NoContent();
     }
+
+    [HttpPut("{id:guid}/photo")]
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> UpdateCategoryPhoto(
+        Guid id,
+        [FromForm] CategoryPhotoDto photo,
+        CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new UpdateCategoryPhotoCommand(id, photo), cancellationToken);
+        return NoContent();
+    }    
 
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "admin")]

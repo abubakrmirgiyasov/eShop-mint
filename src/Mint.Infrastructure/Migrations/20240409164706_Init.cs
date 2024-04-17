@@ -549,16 +549,24 @@ namespace Mint.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ShortName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LongName = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
-                    Sku = table.Column<long>(type: "bigint", nullable: false),
-                    Gtin = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Sku = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Gtin = table.Column<long>(type: "bigint", maxLength: 255, nullable: true),
                     ShortDescription = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: false),
                     FullDescription = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
                     AdminComment = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     UrlToProduct = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     ShowOnHomePage = table.Column<bool>(type: "bit", nullable: false),
+                    DisableBuyButton = table.Column<bool>(type: "bit", nullable: false),
                     CountryOfOrigin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", maxLength: 7, nullable: false),
                     OldPrice = table.Column<decimal>(type: "decimal(18,2)", maxLength: 7, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerEntersPrice = table.Column<bool>(type: "bit", nullable: false),
+                    MinCustomerEntersPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MaxCustomerEntersPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SpecialPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SpecialPriceStartDateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    SpecialPriceEndDateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     IsPublished = table.Column<bool>(type: "bit", nullable: false),
                     IsFreeTax = table.Column<bool>(type: "bit", nullable: true),
                     TaxPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
@@ -582,8 +590,7 @@ namespace Mint.Infrastructure.Migrations
                         column: x => x.DiscountId,
                         principalSchema: "Mint",
                         principalTable: "Discounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Manufactures_ManufactureId",
                         column: x => x.ManufactureId,
@@ -833,6 +840,33 @@ namespace Mint.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductDiscount",
+                schema: "Mint",
+                columns: table => new
+                {
+                    DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDiscount", x => new { x.ProductId, x.DiscountId });
+                    table.ForeignKey(
+                        name: "FK_ProductDiscount_Discounts_DiscountId",
+                        column: x => x.DiscountId,
+                        principalSchema: "Mint",
+                        principalTable: "Discounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductDiscount_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "Mint",
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductPhotos",
                 schema: "Mint",
                 columns: table => new
@@ -987,9 +1021,9 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "CountryCode", "CreatedDate", "Name", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("3616c928-a4d1-4dfb-a622-1d750bbb5739"), "RU-ru", new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(1371), new TimeSpan(0, 7, 0, 0, 0)), "Россия", null },
-                    { new Guid("6f7652b5-92de-4a44-9342-a68a4b92ff52"), "KZ-kz", new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(1414), new TimeSpan(0, 7, 0, 0, 0)), "Қазақстан", null },
-                    { new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "TJ-tj", new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(1411), new TimeSpan(0, 7, 0, 0, 0)), "Тоҷикистон", null }
+                    { new Guid("3616c928-a4d1-4dfb-a622-1d750bbb5739"), "RU-ru", new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 41, DateTimeKind.Unspecified).AddTicks(6500), new TimeSpan(0, 7, 0, 0, 0)), "Россия", null },
+                    { new Guid("6f7652b5-92de-4a44-9342-a68a4b92ff52"), "KZ-kz", new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 41, DateTimeKind.Unspecified).AddTicks(6535), new TimeSpan(0, 7, 0, 0, 0)), "Қазақстан", null },
+                    { new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), "TJ-tj", new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 41, DateTimeKind.Unspecified).AddTicks(6532), new TimeSpan(0, 7, 0, 0, 0)), "Тоҷикистон", null }
                 });
 
             migrationBuilder.InsertData(
@@ -998,9 +1032,9 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedDate", "Name", "TranslateEn", "UniqueKey", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("22a99751-e418-49c5-ac4e-ce221dd7ae0d"), new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 622, DateTimeKind.Unspecified).AddTicks(6383), new TimeSpan(0, 7, 0, 0, 0)), "Продавец", "SELLER", "SELLER", null },
-                    { new Guid("68c2f692-2f9a-4d0e-9d89-9c2ff7f0409b"), new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 622, DateTimeKind.Unspecified).AddTicks(6214), new TimeSpan(0, 7, 0, 0, 0)), "Админ", "ADMIN", "ADMIN", null },
-                    { new Guid("7582ed34-eb4a-4628-a7e7-971af7379ec8"), new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 622, DateTimeKind.Unspecified).AddTicks(6386), new TimeSpan(0, 7, 0, 0, 0)), "Покупатель", "BUYER", "BUYER", null }
+                    { new Guid("22a99751-e418-49c5-ac4e-ce221dd7ae0d"), new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(6515), new TimeSpan(0, 7, 0, 0, 0)), "Продавец", "SELLER", "SELLER", null },
+                    { new Guid("68c2f692-2f9a-4d0e-9d89-9c2ff7f0409b"), new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(6493), new TimeSpan(0, 7, 0, 0, 0)), "Админ", "ADMIN", "ADMIN", null },
+                    { new Guid("7582ed34-eb4a-4628-a7e7-971af7379ec8"), new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(6526), new TimeSpan(0, 7, 0, 0, 0)), "Покупатель", "BUYER", "BUYER", null }
                 });
 
             migrationBuilder.InsertData(
@@ -1009,8 +1043,8 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "BackgroundPhotoId", "ConfirmationCode", "CreatedDate", "DateBirth", "Description", "FirstName", "Gender", "Ip", "IsActive", "IsConfirmedEmail", "IsConfirmedPhone", "IsDeleted", "IsSeller", "LastName", "NumOfAttempts", "Password", "PhotoId", "Salt", "SecondName", "UpdateDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), null, 0, new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 633, DateTimeKind.Unspecified).AddTicks(1687), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "Test", "Female", "127.0.0.2", true, true, false, false, true, null, 0, "wesntcMf4XyXFxRAdAZOmZ05Mky1xPcdFmwhRz7CRsE=", null, new byte[] { 156, 76, 190, 178, 167, 197, 99, 155, 54, 46, 38, 45, 230, 216, 172, 150 }, "User", null },
-                    { new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), null, 0, new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 632, DateTimeKind.Unspecified).AddTicks(6107), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "Миргиясов", "Male", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "Gzb/mbyprJT5N/gzr63E+YQPa6cKQNgltPR6idvYLxY=", null, new byte[] { 156, 76, 190, 178, 167, 197, 99, 155, 54, 46, 38, 45, 230, 216, 172, 150 }, "Абубакр", null }
+                    { new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), null, 0, new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 52, DateTimeKind.Unspecified).AddTicks(7210), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2003, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Test User Почта: test@gmail.com Телефон: 83452763423", "Test", "Female", "127.0.0.2", true, true, false, false, true, null, 0, "v9qwDKGBPupu/a6FOJ1jzQ+VKfcq8bEgfg87volggbw=", null, new byte[] { 32, 16, 64, 216, 21, 72, 79, 244, 70, 242, 189, 28, 185, 39, 213, 63 }, "User", null },
+                    { new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), null, 0, new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 52, DateTimeKind.Unspecified).AddTicks(1815), new TimeSpan(0, 7, 0, 0, 0)), new DateTime(2001, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Миргиясов Абубакр Почта: abubakrmirgiyasov@gmail.com Телефон: 89502768428", "Миргиясов", "Male", "127.0.0.1", true, true, false, false, false, "Мукимжонович", 0, "3hYhFVCJI1pkRSsyiLcNkjqqGhueHtxVaU96zDGt3Rw=", null, new byte[] { 32, 16, 64, 216, 21, 72, 79, 244, 70, 242, 189, 28, 185, 39, 213, 63 }, "Абубакр", null }
                 });
 
             migrationBuilder.InsertData(
@@ -1019,17 +1053,17 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "ContactInformation", "CountryCode", "CreatedDate", "Type", "UpdateDateTime", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"), "+79502768428", "RU", new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(6236), new TimeSpan(0, 7, 0, 0, 0)), "Phone", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
-                    { new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"), "+73452763423", "RU", new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(6284), new TimeSpan(0, 7, 0, 0, 0)), "Phone", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") },
-                    { new Guid("70298181-e41d-41a9-86c5-ac349a74af6d"), "abubakrmirgiyasov@gmail.com", null, new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(6276), new TimeSpan(0, 7, 0, 0, 0)), "Email", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
-                    { new Guid("83733797-4c73-457a-874b-cba254c6d71e"), "admin@mint.com", null, new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 621, DateTimeKind.Unspecified).AddTicks(6280), new TimeSpan(0, 7, 0, 0, 0)), "Email", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") }
+                    { new Guid("5f33ad47-a973-418c-a6b7-08660a4bd652"), "+79502768428", "RU", new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(595), new TimeSpan(0, 7, 0, 0, 0)), "Phone", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
+                    { new Guid("66e835d3-7aaf-42be-9e7d-970173e4bae7"), "+73452763423", "RU", new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(624), new TimeSpan(0, 7, 0, 0, 0)), "Phone", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") },
+                    { new Guid("70298181-e41d-41a9-86c5-ac349a74af6d"), "abubakrmirgiyasov@gmail.com", null, new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(616), new TimeSpan(0, 7, 0, 0, 0)), "Email", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0") },
+                    { new Guid("83733797-4c73-457a-874b-cba254c6d71e"), "admin@mint.com", null, new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 42, DateTimeKind.Unspecified).AddTicks(620), new TimeSpan(0, 7, 0, 0, 0)), "Email", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572") }
                 });
 
             migrationBuilder.InsertData(
                 schema: "Mint",
                 table: "Stores",
                 columns: new[] { "Id", "CreatedDate", "Description", "IsPhysical", "Name", "PhotoId", "UpdateDateTime", "Url", "UserId", "WorkHours" },
-                values: new object[] { new Guid("d307c97f-2ebf-4b77-a35b-f728ebaaad0d"), new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 618, DateTimeKind.Unspecified).AddTicks(9677), new TimeSpan(0, 7, 0, 0, 0)), null, false, "Mint", null, null, "mint", new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), null });
+                values: new object[] { new Guid("d307c97f-2ebf-4b77-a35b-f728ebaaad0d"), new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 39, DateTimeKind.Unspecified).AddTicks(5675), new TimeSpan(0, 7, 0, 0, 0)), null, false, "Mint", null, null, "mint", new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), null });
 
             migrationBuilder.InsertData(
                 schema: "Mint",
@@ -1037,8 +1071,8 @@ namespace Mint.Infrastructure.Migrations
                 columns: new[] { "Id", "City", "CountryId", "CreatedDate", "Description", "FullAddress", "FullName", "Street", "UpdateDateTime", "UserId", "ZipCode" },
                 values: new object[,]
                 {
-                    { new Guid("4110eecf-9d87-4ba6-be7f-2dffc8b3a6a3"), "Новосибирск", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 625, DateTimeKind.Unspecified).AddTicks(7267), new TimeSpan(0, 7, 0, 0, 0)), "full address for custom user", "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Заллесского", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 635600 },
-                    { new Guid("ce30fc99-a1b6-4a60-ad84-2ecf4575b7b8"), "Худжанд", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), new DateTimeOffset(new DateTime(2024, 4, 4, 17, 3, 48, 623, DateTimeKind.Unspecified).AddTicks(5777), new TimeSpan(0, 7, 0, 0, 0)), "full address for custom user", "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Тиллокон", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 735700 }
+                    { new Guid("9df2ce0d-c81c-462f-8f1c-dfeead332a17"), "Новосибирск", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 45, DateTimeKind.Unspecified).AddTicks(3451), new TimeSpan(0, 7, 0, 0, 0)), "full address for custom user", "Россия, г. Новосибирск, ул. Заллесского, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Заллесского", null, new Guid("2448250c-0fc7-464b-9872-ce6a17de0572"), 635600 },
+                    { new Guid("b7169285-78f5-4bcd-ac76-9bff2ee6b61e"), "Худжанд", new Guid("e8fc7423-4c93-4465-bfb4-8db45abb1296"), new DateTimeOffset(new DateTime(2024, 4, 9, 23, 47, 2, 43, DateTimeKind.Unspecified).AddTicks(1448), new TimeSpan(0, 7, 0, 0, 0)), "full address for custom user", "Таджикистан, г. Худжанд, ул. Тиллокон, дом 12 кв. 49", "#e256100b-0328-4a16-924a-76bdf987e6a0 - FirstName:Миргиясов SecondName:Абубакр", "ул. Тиллокон", null, new Guid("e256100b-0328-4a16-924a-76bdf987e6a0"), 735700 }
                 });
 
             migrationBuilder.InsertData(
@@ -1167,6 +1201,12 @@ namespace Mint.Infrastructure.Migrations
                 schema: "Mint",
                 table: "ProductCharacteristics",
                 column: "CharacteristicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDiscount_DiscountId",
+                schema: "Mint",
+                table: "ProductDiscount",
+                column: "DiscountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductPhotos_PhotoId",
@@ -1421,6 +1461,10 @@ namespace Mint.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductCharacteristics",
+                schema: "Mint");
+
+            migrationBuilder.DropTable(
+                name: "ProductDiscount",
                 schema: "Mint");
 
             migrationBuilder.DropTable(

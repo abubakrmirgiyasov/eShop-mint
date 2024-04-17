@@ -28,7 +28,7 @@ public class SubCategoryFullViewModel
     public string? FullName { get; set; }
 }
 
-public class SubCategorySampleViewModel
+public class SubCategorySimpleViewModel
 {
     public required Guid Value { get; set; }
 

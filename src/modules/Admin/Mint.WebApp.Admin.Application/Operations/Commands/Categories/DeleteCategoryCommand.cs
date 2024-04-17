@@ -20,7 +20,7 @@ internal sealed class DeleteCategoryCommandHandler(
 
     public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetCategoryWithPhotoAsync(request.CategoryId, cancellationToken);
+        var category = await _categoryRepository.GetCategoryWithPhotoAsync(request.CategoryId, cancellationToken: cancellationToken);
 
         if (category is null)
             return;
@@ -32,8 +32,8 @@ internal sealed class DeleteCategoryCommandHandler(
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             if (category.Photo is not null)
-                await _storageCloudService.DeleteFileAsync(category.Photo.FileName, category.Photo.FileType, cancellationToken);
-      
+                await _storageCloudService.DeleteFileAsync(category.Photo.FileName, category.Photo.Bucket, cancellationToken);
+
             _logger.LogWarning("Удалено успешно! Id={Id}", category.Id);
         }
         catch (Exception ex)
