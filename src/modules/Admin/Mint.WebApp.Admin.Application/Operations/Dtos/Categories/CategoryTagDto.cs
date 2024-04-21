@@ -11,5 +11,5 @@ public class CategoryTagViewModel
 {
     public required TagSampleViewModel Tag { get; set; }
 
-    public required CategorySampleViewModel Category { get; set; }
+    public required CategorySimpleViewModel Category { get; set; }
 }

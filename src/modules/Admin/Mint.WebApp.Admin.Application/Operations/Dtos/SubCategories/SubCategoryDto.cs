@@ -2,9 +2,9 @@
 
 namespace Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 
-public class SubCategoryFullBindingModel
+public class SubCategoryInfoBindingModel
 {
-    public int DisplayOrder { get; set; }
+    public required int DisplayOrder { get; set; }
 
     public required string Name { get; set; }
 
@@ -12,18 +12,20 @@ public class SubCategoryFullBindingModel
 
     public string? FullName { get; set; }
 
-    public Guid? CategoryId { get; set; }
+    public required CategorySimpleViewModel Category { get; set; }
 }
 
-public class SubCategoryFullViewModel
+public class SubCategoryInfoViewModel
 {
     public Guid Id { get; set; }
+
+    public int DisplayOrder { get; set; }
 
     public required string Name { get; set; }
 
     public required string DefaultLink { get; set; }
 
-    public required CategoryFullViewModel Category { get; set; }
+    public required CategorySimpleViewModel Category { get; set; }
 
     public string? FullName { get; set; }
 }

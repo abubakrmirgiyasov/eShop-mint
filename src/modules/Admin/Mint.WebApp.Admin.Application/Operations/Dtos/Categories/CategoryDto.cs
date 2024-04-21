@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
@@ -28,7 +27,7 @@ public class CategoryInfoBindingModel
 
     public string? Description { get; set; }
 
-    public DefaultLinkDTO? DefaultLink { get; set; }
+    public string? DefaultLink { get; set; }
 }
 
 public class CategoryPhotoDto
@@ -36,7 +35,7 @@ public class CategoryPhotoDto
     public required IFormFile Photo { get; set; }
 }
 
-public class CategorySampleViewModel
+public class CategorySimpleViewModel
 {
     public required Guid Value { get; set; }
 

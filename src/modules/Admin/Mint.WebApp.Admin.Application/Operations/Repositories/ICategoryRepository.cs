@@ -30,7 +30,7 @@ public interface ICategoryRepository : IGenericRepository<Category>
     /// Retrieves a collection of categories link based on the specified search criteria.
     /// </summary>
     /// <returns></returns>
-    Task<List<Category>> GetCategoriesLinkAsync(string? searchPhrase = default, CancellationToken cancellationToken = default);
+    Task<List<string>> GetCategoriesLinkAsync(string? searchPhrase = default, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a list of common categories asynchronously.

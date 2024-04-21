@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Mint.Application.Interfaces;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
-using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Queries.Categories;
@@ -20,14 +19,6 @@ internal sealed class GetCategoryByIdIQueryHandler(
     {
         var category = await _categoryRepository.GetCategoryByIdAsync(request.Id, cancellationToken);
 
-        var categoryDto = _mapper.Map<CategoryFullViewModel>(category);
-        categoryDto.DefaultLink = new DefaultLinkDTO
-        {
-            Id = category.Id,
-            DisplayOrder = category.DisplayOrder,
-            DefaultLink = category.DefaultLink ?? ""
-        };
-
-        return categoryDto;
+        return _mapper.Map<CategoryFullViewModel>(category);
     }
 }

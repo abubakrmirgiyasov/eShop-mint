@@ -12,14 +12,12 @@ public sealed record CreateCategoryCommand(CategoryInfoBindingModel Category) : 
 
 internal sealed class CreateCategoryCommandHandler(
     ICategoryRepository categoryRepository,
-    IStorageCloudService storageCloudService,
     IUnitOfWork unitOfWork,
     ILogger<CreateCategoryCommandHandler> logger
 ) : ICommandHandler<CreateCategoryCommand, Guid>
 {
     private readonly ILogger<CreateCategoryCommandHandler> _logger = logger;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
-    private readonly IStorageCloudService _storageCloudService = storageCloudService;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
@@ -37,7 +35,7 @@ internal sealed class CreateCategoryCommandHandler(
             DisplayOrder = request.Category.DisplayOrder,
             BadgeText = request.Category.BadgeText,
             BadgeStyle = request.Category.BadgeStyle,
-            DefaultLink = request.Category.DefaultLink?.DefaultLink,
+            DefaultLink = request.Category.DefaultLink,
             Description = request.Category.Description,
             Ico = request.Category.Ico,
             IsPublished = request.Category.IsPublished,

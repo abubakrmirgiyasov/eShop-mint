@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Operations\Commands\Stores\" />
-    <Folder Include="Operations\Validations\SubCategories\" />
   </ItemGroup>
 
 </Project>

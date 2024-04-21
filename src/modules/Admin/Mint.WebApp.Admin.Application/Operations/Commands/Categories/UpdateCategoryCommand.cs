@@ -35,7 +35,7 @@ internal sealed class UpdateCategoryCommandHandler(
         category.BadgeText = request.Category.BadgeText;
         category.BadgeStyle = request.Category.BadgeStyle;
         category.Ico = request.Category.Ico;
-        category.DefaultLink = request.Category.DefaultLink?.DefaultLink;
+        category.DefaultLink = request.Category.DefaultLink;
         category.Description = request.Category.Description;
         category.UpdateDateTime = DateTimeOffset.Now;
 

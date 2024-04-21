@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.SubCategories;
-using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Queries.SubCategories;
 
@@ -14,16 +13,25 @@ namespace Mint.WebApp.Admin.Controllers;
 public class SubCategoriesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<PaginatedResult<SubCategoryFullViewModel>>> Get(
+    public async Task<ActionResult<PaginatedResult<SubCategoryInfoViewModel>>> Get(
         [FromQuery] GetSubCategoriesQuery command,
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(command, cancellationToken);
     }
 
+    [HttpGet("{id:guid}/info")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<SubCategoryInfoViewModel>> GetSubCategoryInfoById(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetSubCategoryInfoQuery(id), cancellationToken);
+    }
+
     [HttpGet("links")]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<List<DefaultLinkDTO>>> GetCategoriesDefaultLinks(
+    public async Task<ActionResult<List<string>>> GetSubCategoriesDefaultLinks(
         [FromQuery] string? search,
         CancellationToken cancellationToken = default)
     {
@@ -42,8 +50,8 @@ public class SubCategoriesController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<SubCategoryFullViewModel>> Create(
-        [FromBody] SubCategoryFullBindingModel subCategory,
+    public async Task<ActionResult<SubCategoryInfoViewModel>> Create(
+        [FromBody] SubCategoryInfoBindingModel subCategory,
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(new CreateSubCategoryCommand(subCategory), cancellationToken);

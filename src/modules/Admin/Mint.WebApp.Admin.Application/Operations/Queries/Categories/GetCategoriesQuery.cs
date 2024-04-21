@@ -3,7 +3,6 @@ using Mint.Application.Interfaces;
 using Mint.Domain.Common;
 using Mint.Domain.Helpers;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
-using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Manufactures;
 using Mint.WebApp.Admin.Application.Operations.Dtos.SubCategories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Tags;
@@ -65,7 +64,7 @@ internal sealed class GetCategoriesQueryHandler(
                     ImagePath = imagePath,
                     IsPublished = category.IsPublished,
                     ShowOnHomePage = category.ShowOnHomePage,
-                    DefaultLink = new DefaultLinkDTO { DefaultLink = category.DefaultLink ?? "" },
+                    DefaultLink = category.DefaultLink,
                     SubCategories = _mapper.Map<List<SubCategorySimpleViewModel>>(category.SubCategories),
                     CategoryTags = _mapper.Map<List<TagSampleViewModel>>(category.CategoryTags),
                     Manufactures = _mapper.Map<List<ManufactureSampleViewModel>>(category.ManufactureCategories)

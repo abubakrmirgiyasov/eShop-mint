@@ -56,7 +56,7 @@ internal class CategoryRepository(
     }
 
     /// <inheritdoc />
-    public async Task<List<Category>> GetCategoriesLinkAsync(string? searchPhrase = default, CancellationToken cancellationToken = default)
+    public async Task<List<string>> GetCategoriesLinkAsync(string? searchPhrase = default, CancellationToken cancellationToken = default)
     {
         var query = _context.Categories
             .AsNoTracking()
@@ -66,7 +66,10 @@ internal class CategoryRepository(
         if (!string.IsNullOrEmpty(searchPhrase))
             query = query.Where(x => x.DefaultLink!.Contains(searchPhrase));
 
-        return await query.ToListAsync(cancellationToken);
+        return await query
+            .Where(x => !string.IsNullOrEmpty(x.DefaultLink))
+            .Select(x => x.DefaultLink!)
+            .ToListAsync(cancellationToken);
     }
 
     /// <inheritdoc />
