@@ -7,18 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="BindingModels\**" />
-    <Compile Remove="FormingModelsssss\**" />
-    <Compile Remove="ViewModels\**" />
-    <EmbeddedResource Remove="BindingModels\**" />
-    <EmbeddedResource Remove="FormingModelsssss\**" />
-    <EmbeddedResource Remove="ViewModels\**" />
-    <None Remove="BindingModels\**" />
-    <None Remove="FormingModelsssss\**" />
-    <None Remove="ViewModels\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.25.0" />
