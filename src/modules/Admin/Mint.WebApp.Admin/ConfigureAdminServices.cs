@@ -14,7 +14,7 @@ public static class ConfigureAdminServices
             .AddExceptionHandler<ExceptionToProblemDetailsHandler>();
 
         services
-            .ConfigureAdminApplication()
+            .AddAdminApplicationServices()
             .AddInfrastructureServices()
             .AddAdminRepositories()
             .AddAuthenticationServices()

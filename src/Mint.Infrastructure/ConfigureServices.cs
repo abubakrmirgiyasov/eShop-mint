@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Mint.Infrastructure.Redis.Interface;
-using Mint.Infrastructure.Redis;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
 using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Admin.Application.Operations.Services;
-using Mint.Infrastructure.Services.Admin;
 using Mint.WebApp.Identity.Application.Operations.Repositories;
 using Mint.Infrastructure.Repositories.Identity;
 using Mint.Application.Interfaces;
@@ -14,6 +10,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Mint.WebApp.Client.Application.Operations.Services;
+using Mint.Infrastructure.Services.Client;
+using Mint.WebApp.Client.Application.Operations.Repositories;
+using Mint.Infrastructure.Repositories.Client;
 
 namespace Mint.Infrastructure;
 
@@ -32,8 +32,14 @@ public static class ConfigureServices
 
     public static IServiceCollection AddAdminServices(this IServiceCollection services)
     {
-        services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<ITagService, TagService>();
+        //services.AddScoped<ITagService, TagService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddClientServices(this IServiceCollection services)
+    {
+        services.AddScoped<IClientCategoryService, ClientCategoryService>();
 
         return services;
     }
@@ -46,6 +52,13 @@ public static class ConfigureServices
         services.AddScoped<IStoreRepository, StoreRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddClientRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IClientCategoryRepository, ClientCategoryRepository>();
 
         return services;
     }

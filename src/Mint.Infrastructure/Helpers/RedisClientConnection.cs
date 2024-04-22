@@ -2,9 +2,9 @@
 using Mint.Domain.Common;
 using StackExchange.Redis;
 
-namespace Mint.Infrastructure.Redis;
+namespace Mint.Infrastructure.Helpers;
 
-public class RedisClient(IOptions<AppSettings> redis)
+public class RedisClientConnection(IOptions<AppSettings> redis)
 {
     private readonly AppSettings _redis = redis.Value;
 

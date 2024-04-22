@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.Options;
+using Mint.Application.Interfaces;
 using Mint.Domain.Common;
 using Mint.Domain.Extensions;
-using Mint.Infrastructure.Redis.Interface;
+using Mint.Infrastructure.Helpers;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace Mint.Infrastructure.Redis;
+namespace Mint.Infrastructure.Services;
 
 public class RedisCacheService(IOptions<AppSettings> appSettings) : IRedisCacheService
 {
-    private readonly RedisClient _redisClient = new(appSettings);
+    private readonly RedisClientConnection _redisClient = new(appSettings);
 
     public byte[] Get(string key)
     {

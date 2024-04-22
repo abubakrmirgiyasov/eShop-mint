@@ -7,7 +7,7 @@ namespace Mint.WebApp.Admin.Application;
 
 public static class ConfigureAdminApplicationServices
 {
-    public static IServiceCollection ConfigureAdminApplication(this IServiceCollection services)
+    public static IServiceCollection AddAdminApplicationServices(this IServiceCollection services)
     {
         // mapper
         services.AddAutoMapper(typeof(AdminMapper));

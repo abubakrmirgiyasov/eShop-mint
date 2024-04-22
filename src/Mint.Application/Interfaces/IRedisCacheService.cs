@@ -1,4 +1,4 @@
-﻿namespace Mint.Infrastructure.Redis.Interface;
+﻿namespace Mint.Application.Interfaces;
 
 /// <summary>
 /// 
