@@ -13,17 +13,17 @@ public sealed record GetProductsQuery(
     SortType Sort,
     int PageIndex,
     int PageSize
-) : IQuery<PaginatedResult<ProductFullViewModel>>;
+) : IQuery<PaginatedResult<ProductViewModel>>;
 
 internal sealed class GetProductsQueryHandler(
   IProductRepository productRepository,
   IMapper mapper
-) : IQueryHandler<GetProductsQuery, PaginatedResult<ProductFullViewModel>>
+) : IQueryHandler<GetProductsQuery, PaginatedResult<ProductViewModel>>
 {
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<PaginatedResult<ProductFullViewModel>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResult<ProductViewModel>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
         var (products, totalCount) = await _productRepository.GetProductsAsync(
             userId: request.UserId,
@@ -34,9 +34,9 @@ internal sealed class GetProductsQueryHandler(
             cancellationToken: cancellationToken
         );
 
-        return new PaginatedResult<ProductFullViewModel>
+        return new PaginatedResult<ProductViewModel>
         {
-            Items = _mapper.Map<List<ProductFullViewModel>>(products),
+            Items = _mapper.Map<List<ProductViewModel>>(products),
             TotalCount = totalCount
         };
     }

@@ -28,7 +28,7 @@ public interface IGenericRepository<T> : IGenericReadRepository<T> where T : cla
     /// Обновляет указанные сущности в базе данных.
     /// </summary>
     /// <param name="entities">Обновляемые сущности.</param>
-    Task UpdateRange(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+    void UpdateRange(IEnumerable<T> entities);
 
     /// <summary>
     /// Удаляет указанную сущность из базы данных.
@@ -40,5 +40,5 @@ public interface IGenericRepository<T> : IGenericReadRepository<T> where T : cla
     /// Удаляет указанные сущности из базы данных.
     /// </summary>
     /// <param name="entities">Удаляемые сущности.</param>
-    Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+    void RemoveRange(IEnumerable<T> entities);
 }

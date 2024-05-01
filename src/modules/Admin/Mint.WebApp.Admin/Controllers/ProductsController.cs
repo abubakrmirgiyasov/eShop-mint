@@ -15,7 +15,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("user")]
     [Authorize(Roles = "admin,seller")]
-    public async Task<ActionResult<PaginatedResult<ProductFullViewModel>>> GetProductsByUserId(
+    public async Task<ActionResult<PaginatedResult<ProductViewModel>>> GetProductsByUserId(
         [FromQuery] string? searchPhrase,
         [FromQuery] SortType sort,
         [FromQuery] int pageIndex,
@@ -47,6 +47,15 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetProductInfoQuery(id), cancellationToken);
     }
 
+    [HttpGet("{id:guid}/price")]
+    [Authorize(Roles = "admin,seller")]
+    public async Task<ActionResult<ProductPriceViewModel>> GetProductPrice(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetProductPriceQuery(id), cancellationToken);
+    }
+
     [HttpPost]
     [Authorize(Roles = "admin,seller")]
     public async Task<ActionResult<Guid>> CreateInfo(
@@ -69,11 +78,12 @@ public class ProductsController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id:guid}/price")]
     [Authorize(Roles = "admin,seller")]
-    public IActionResult UpdatePrice(
+    public async Task<IActionResult> UpdatePrice(
         Guid id,
         [FromBody] ProductPriceBindingModel product,
         CancellationToken cancellationToken = default)
     {
+        await mediator.Send(new UpdateProductPriceCommand(id, product), cancellationToken);
         return NoContent();
     }
 

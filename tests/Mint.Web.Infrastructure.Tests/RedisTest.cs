@@ -1,4 +1,3 @@
-using Mint.Infrastructure.Redis.Interface;
 using Mint.Web.Infrastructure.Tests.Constants;
 using Moq;
 

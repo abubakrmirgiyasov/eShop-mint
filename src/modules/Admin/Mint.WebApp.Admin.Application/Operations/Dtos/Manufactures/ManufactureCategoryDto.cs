@@ -7,10 +7,5 @@ public class ManufactureCategoryBindingModel
 
 public record ManufactureCategoryFullViewModel();
 
-public class ManufactureSampleViewModel
-{
-    public required Guid Value { get; set; }
-
-    public required string Label { get; set; }
-}
+public class ManufactureSimpleViewModel : SimpleDto;
 

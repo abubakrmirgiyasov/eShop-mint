@@ -46,7 +46,7 @@ internal class GenericRepository<T>(ApplicationDbContext context) : IGenericRepo
 
     public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-        await _dbSet.BulkInsertAsync(entities, cancellationToken);
+        await _dbSet.AddRangeAsync(entities, cancellationToken);
     }
 
     public void Update(T entity)
@@ -54,9 +54,9 @@ internal class GenericRepository<T>(ApplicationDbContext context) : IGenericRepo
         _dbSet.Entry(entity).State = EntityState.Modified;
     }
 
-    public Task UpdateRange(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public void UpdateRange(IEnumerable<T> entities)
     {
-        return _dbSet.BulkUpdateAsync(entities, cancellationToken);
+        _dbSet.UpdateRange(entities);
     }
 
     public void Remove(T entity)
@@ -64,8 +64,8 @@ internal class GenericRepository<T>(ApplicationDbContext context) : IGenericRepo
         _dbSet.Remove(entity);
     }
 
-    public Task RemoveRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public void RemoveRange(IEnumerable<T> entities)
     {
-        return _dbSet.BulkDeleteAsync(entities, cancellationToken);
+        _dbSet.RemoveRange(entities);
     }
 }

@@ -67,7 +67,7 @@ internal sealed class GetCategoriesQueryHandler(
                     DefaultLink = category.DefaultLink,
                     SubCategories = _mapper.Map<List<SubCategorySimpleViewModel>>(category.SubCategories),
                     CategoryTags = _mapper.Map<List<TagSampleViewModel>>(category.CategoryTags),
-                    Manufactures = _mapper.Map<List<ManufactureSampleViewModel>>(category.ManufactureCategories)
+                    Manufactures = _mapper.Map<List<ManufactureSimpleViewModel>>(category.ManufactureCategories)
                 }
             );
         }

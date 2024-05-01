@@ -1,8 +1,10 @@
 ﻿namespace Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 
-public class ProductInfoViewModel : ProductFullViewModel
+public class ProductInfoViewModel : ProductViewModel
 {
     public required string UrlToProduct { get; set; }
+
+    public required Guid StoreId { get; set; }
 
     public required DateTimeOffset CreatedDate { get; set; }
 }

@@ -53,7 +53,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
-    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="8.102.2.1" />
   </ItemGroup>
 
   <ItemGroup>

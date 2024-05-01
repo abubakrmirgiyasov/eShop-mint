@@ -1,4 +1,5 @@
 ﻿using Mint.Domain.Models.Base;
+using Mint.Domain.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace Mint.Domain.Models.Admin.Products;
@@ -14,6 +15,12 @@ public class Discount : Entity<Guid>
     public int Percent { get; set; }
 
     public bool IsExpired { get; set; }
+
+    public required DateTimeOffset ActiveDateUntil { get; set; }
+
+    public Guid? UserId { get; set; }
+
+    public User? User { get; set; }
 
     public List<ProductDiscount>? ProductDiscounts { get; set; }
 }

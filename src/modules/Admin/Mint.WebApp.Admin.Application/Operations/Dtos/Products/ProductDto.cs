@@ -1,6 +1,6 @@
 ﻿namespace Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 
-public class ProductFullViewModel
+public class ProductViewModel
 {
     public required Guid Id { get; set; }
 
@@ -14,9 +14,9 @@ public class ProductFullViewModel
 
     public required string LongName { get; set; }
 
-    public required long Sku { get; set; }
+    public required string Sku { get; set; }
 
-    public required string Gtin { get; set; }
+    public long? Gtin { get; set; }
 
     public required string AdminComment { get; set; }
 

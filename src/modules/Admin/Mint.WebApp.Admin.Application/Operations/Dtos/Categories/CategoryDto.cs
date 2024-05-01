@@ -35,12 +35,7 @@ public class CategoryPhotoDto
     public required IFormFile Photo { get; set; }
 }
 
-public class CategorySimpleViewModel
-{
-    public required Guid Value { get; set; }
-
-    public required string Label { get; set; }
-}
+public class CategorySimpleViewModel : SimpleDto;
 
 public class CategoryInfoViewModel : CategoryInfoBindingModel
 {
@@ -57,5 +52,5 @@ public class CategoryFullViewModel : CategoryInfoViewModel
 
     public List<TagSampleViewModel>? CategoryTags { get; set; }
 
-    public List<ManufactureSampleViewModel>? Manufactures { get; set; }
+    public List<ManufactureSimpleViewModel>? Manufactures { get; set; }
 }

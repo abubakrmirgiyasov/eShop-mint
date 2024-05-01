@@ -201,7 +201,7 @@ public class ApplicationDbContext(
 
     async Task<int> IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
     {
-        await this.BulkSaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
         return 1;
     }
 
