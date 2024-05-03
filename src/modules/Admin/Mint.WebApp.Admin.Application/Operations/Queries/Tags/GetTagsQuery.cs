@@ -27,10 +27,8 @@ internal sealed class GetTagsQueryHandler(ITagRepository tagRepository, IMapper 
             cancellationToken: cancellationToken
         );
 
-        return new PaginatedResult<TagFullViewModel>
-        {
-            Items = _mapper.Map<List<TagFullViewModel>>(tags),
-            TotalCount = totalCount,
-        };
+        var res = _mapper.Map<List<TagFullViewModel>>(tags);
+
+        return new PaginatedResult<TagFullViewModel>(res, totalCount);
     }
 }

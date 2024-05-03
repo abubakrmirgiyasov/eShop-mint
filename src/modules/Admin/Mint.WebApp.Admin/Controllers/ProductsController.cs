@@ -4,6 +4,7 @@ using Mint.Domain.Common;
 using Mint.Domain.Helpers;
 using Mint.Infrastructure.Attributes;
 using Mint.WebApp.Admin.Application.Operations.Commands.Products;
+using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 using Mint.WebApp.Admin.Application.Operations.Queries.Products;
 
@@ -56,6 +57,15 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetProductPriceQuery(id), cancellationToken);
     }
 
+    [HttpGet("{id:guid}/images")]
+    [Authorize(Roles = "admin,seller")]
+    public async Task<ActionResult<List<ImageLink>>> GetProductImages(
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetProductImagesQuery(id), cancellationToken);
+    }
+
     [HttpPost]
     [Authorize(Roles = "admin,seller")]
     public async Task<ActionResult<Guid>> CreateInfo(
@@ -89,10 +99,12 @@ public class ProductsController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id:guid}/images")]
     [Authorize(Roles = "admin,seller")]
-    public IActionResult UpdateImages(
+    public async Task<IActionResult> UpdateImages(
         Guid id,
+        [FromForm] FileRequest images,
         CancellationToken cancellationToken = default)
     {
+        await mediator.Send(new UpdateProductImagesCommand(id, images), cancellationToken);
         return NoContent();
     }
 

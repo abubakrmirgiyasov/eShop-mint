@@ -11,21 +11,21 @@ namespace Mint.Domain.Models;
 public class Photo : Entity<Guid>
 {
     [StringLength(2000, ErrorMessage = "Превышено макс. длина строки (2000).")]
-    public string FileName { get; set; } = null!;
+    public required string FileName { get; set; }
 
     [MaxLength(30, ErrorMessage = "Превышено макс. длина строки (30).")]
-    public string FileExtension { get; set; } = null!;
+    public required string FileExtension { get; set; }
 
     [MaxLength(400, ErrorMessage = "Превышено макс. длина строки (400).")]
-    public string FilePath { get; set; } = null!;
+    public required string FilePath { get; set; }
 
     /// <summary>
     /// Bucket
     /// </summary>
     [MaxLength(60, ErrorMessage = "Превышено макс. длина строки (60).")]
-    public string Bucket { get; set; } = null!;
+    public required string Bucket { get; set; }
 
-    public long FileSize { get; set; }
+    public required long FileSize { get; set; }
 
     public List<User>? UserBackgroundPhotos { get; set; }
 

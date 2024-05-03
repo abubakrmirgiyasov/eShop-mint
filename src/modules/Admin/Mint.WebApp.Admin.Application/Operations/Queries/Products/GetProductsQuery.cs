@@ -34,10 +34,8 @@ internal sealed class GetProductsQueryHandler(
             cancellationToken: cancellationToken
         );
 
-        return new PaginatedResult<ProductViewModel>
-        {
-            Items = _mapper.Map<List<ProductViewModel>>(products),
-            TotalCount = totalCount
-        };
+        var res = _mapper.Map<List<ProductViewModel>>(products);
+
+        return new PaginatedResult<ProductViewModel>(res, totalCount);
     }
 }

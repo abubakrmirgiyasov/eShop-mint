@@ -64,10 +64,6 @@ internal sealed class GetManufacturesQueryHandler(
             );
         }
 
-        return new PaginatedResult<ManufactureFullViewModel>
-        {
-            Items = result,
-            TotalCount = totalCount
-        };
+        return new PaginatedResult<ManufactureFullViewModel>(result, totalCount);
     }
 }

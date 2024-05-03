@@ -72,10 +72,6 @@ internal sealed class GetCategoriesQueryHandler(
             );
         }
 
-        return new PaginatedResult<CategoryFullViewModel>
-        {
-            Items = res,
-            TotalCount = totalCount,
-        };
+        return new PaginatedResult<CategoryFullViewModel>(res, totalCount);
     }
 }

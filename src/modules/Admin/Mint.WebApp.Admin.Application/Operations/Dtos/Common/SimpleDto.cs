@@ -1,4 +1,4 @@
-﻿namespace Mint.WebApp.Admin.Application.Operations.Dtos;
+﻿namespace Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 
 public class SimpleDto
 {

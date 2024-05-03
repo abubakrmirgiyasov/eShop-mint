@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Mint.Domain.Models;
 
 namespace Mint.Application.Interfaces;
 
@@ -50,6 +51,15 @@ public interface IStorageCloudService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<string> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Uploads a list of files to indicated bucket.
+    /// </summary>
+    /// <param name="fileCollection"></param>
+    /// <param name="bucket"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<List<Photo>> UploadFilesAsync(IFormFileCollection fileCollection, Guid id, string bucket, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Uploads a file from the provided stream.

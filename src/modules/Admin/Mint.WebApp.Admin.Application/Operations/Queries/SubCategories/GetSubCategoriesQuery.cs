@@ -55,10 +55,8 @@ internal sealed class GetSubCategoriesQueryHandler(
                 subCategories = [.. subCategories.SortBy(x => x.DisplayOrder, request.Filter.DisplayOrder.Value)];
         }
 
-        return new PaginatedResult<SubCategoryInfoViewModel>
-        {
-            Items = _mapper.Map<List<SubCategoryInfoViewModel>>(subCategories),
-            TotalCount = totalCount
-        };
+        var res = _mapper.Map<List<SubCategoryInfoViewModel>>(subCategories);
+
+        return new PaginatedResult<SubCategoryInfoViewModel>(res, totalCount);
     }
 }

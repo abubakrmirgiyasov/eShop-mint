@@ -14,6 +14,8 @@ using Mint.WebApp.Client.Application.Operations.Services;
 using Mint.Infrastructure.Services.Client;
 using Mint.WebApp.Client.Application.Operations.Repositories;
 using Mint.Infrastructure.Repositories.Client;
+using Mint.Application.Repositories;
+using Mint.Infrastructure.Repositories.Common;
 
 namespace Mint.Infrastructure;
 
@@ -80,6 +82,14 @@ public static class ConfigureServices
         // repositories
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddCommonRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IPhotoRepository, PhotoRepository>();
+        services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
 
         return services;
     }

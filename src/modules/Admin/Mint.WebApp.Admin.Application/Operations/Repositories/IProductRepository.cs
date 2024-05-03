@@ -29,18 +29,9 @@ public interface IProductRepository : IGenericRepository<Product>
     );
 
     /// <summary>
-    /// Retrieves a product by unique identifier.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<Product> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Retrieves a product info by unique identifier.
     /// </summary>
     /// <param name="productId"></param>
-    /// <param name="userId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<Product> GetProductInfoAsync(Guid productId, CancellationToken cancellationToken = default);
@@ -52,4 +43,12 @@ public interface IProductRepository : IGenericRepository<Product>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<Product> GetProductWithCategoriesAsync(Guid productId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a product by unique identifier with product photos.
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Product> GetProductWithPhotosAsync(Guid productId, bool asNoTracking = false, CancellationToken cancellationToken = default);
 }

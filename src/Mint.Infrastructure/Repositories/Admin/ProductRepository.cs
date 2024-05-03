@@ -1,11 +1,9 @@
-﻿using Azure.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
 using Mint.Domain.Models.Admin.Products;
 using Mint.Infrastructure;
 using Mint.Infrastructure.Repositories;
-using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 
 namespace Mint.WebApp.Admin.Application.Operations.Repositories;
 
@@ -13,9 +11,15 @@ internal sealed class ProductRepository(ApplicationDbContext context)
     : GenericRepository<Product>(context), IProductRepository
 {
     private readonly ApplicationDbContext _context = context;
-    
+
     /// <inheritdoc/>
-    public async Task<(List<Product>, int)> GetProductsAsync(Guid userId, string? searchPhrase = null, SortType sort = SortType.Ascending, int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default)
+    public async Task<(List<Product>, int)> GetProductsAsync(
+        Guid userId, 
+        string? searchPhrase = null, 
+        SortType sort = SortType.Ascending, 
+        int pageIndex = 0, 
+        int pageSize = 25, 
+        CancellationToken cancellationToken = default)
     {
         var query = _context.Products.AsQueryable();
 
@@ -55,12 +59,6 @@ internal sealed class ProductRepository(ApplicationDbContext context)
     }
 
     /// <inheritdoc/>
-    public Task<Product> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
     public async Task<Product> GetProductInfoAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         var product = await _context.Products
@@ -76,6 +74,23 @@ internal sealed class ProductRepository(ApplicationDbContext context)
     {
         var product = await _context.Products
             .Include(x => x.ProductCategories)
+            .FirstOrDefaultAsync(x => x.Id == productId, cancellationToken)
+                ?? throw new NotFoundException("Товар не найден.");
+
+        return product;
+    }
+
+    /// <inheritdoc/>
+    public async Task<Product> GetProductWithPhotosAsync(Guid productId, bool asNoTracking = false, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Products.AsQueryable();
+
+        if (asNoTracking)
+            query = query.AsNoTracking();
+
+        var product = await query
+            .Include(x => x.ProductPhotos!)
+            .ThenInclude(x => x.Photo)
             .FirstOrDefaultAsync(x => x.Id == productId, cancellationToken)
                 ?? throw new NotFoundException("Товар не найден.");
 

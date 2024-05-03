@@ -5,6 +5,8 @@ using Minio.DataModel.Args;
 using Minio.Exceptions;
 using Mint.Application.Interfaces;
 using Mint.Domain.Common;
+using Mint.Domain.Extensions;
+using Mint.Domain.Models;
 using Mint.Infrastructure.Helpers;
 
 namespace Mint.Infrastructure.Services;
@@ -19,16 +21,34 @@ public class StorageCloudService(
     private readonly ILogger<StorageCloudService> _logger = logger;
 
     /// <inheritdoc />
-    public Task<string[]> GetFilesLinkAsync(string[] names, string bucket, CancellationToken cancellationToken = default)
+    public async Task<string[]> GetFilesLinkAsync(string[] names, string bucket, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (await IsBucketExists(bucket, cancellationToken))
+        {
+            var result = new List<string>();
+
+            foreach (var name in names)
+            {
+                var link = await GetFileLinkAsync(name, bucket, cancellationToken);
+
+                if (string.IsNullOrWhiteSpace(link))
+                    continue;
+
+                result.Add(link);
+            }
+
+            return [.. result];
+        }
+
+        return [];
     }
 
     /// <inheritdoc />
     public async Task<string?> GetFileLinkAsync(string name, string bucket, CancellationToken cancellationToken = default)
     {
-        if (cancellationToken.IsCancellationRequested)
-            return null;
+        cancellationToken.ThrowIfCancellationRequested();
 
         try
         {
@@ -42,11 +62,6 @@ public class StorageCloudService(
         catch (ObjectNotFoundException)
         {
             return null;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Exception Message: {Message}. \n Inner Exception: {Inner}", ex.Message, ex);
-            throw new Exception(ex.Message, ex);
         }
     }
 
@@ -73,6 +88,8 @@ public class StorageCloudService(
     /// <inheritdoc />
     public async Task<string> UploadFileAsync(IFormFile file, string name, string bucket, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         try
         {
             if (await IsBucketExists(bucket, cancellationToken))
@@ -110,6 +127,39 @@ public class StorageCloudService(
     public Task<string> UploadFileAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public async Task<List<Photo>> UploadFilesAsync(IFormFileCollection fileCollection, Guid id, string bucket, CancellationToken cancellationToken = default)
+    {
+        var res = new List<Photo>();
+
+        foreach (var file in fileCollection)
+        {
+            var photoName = file.FileName.GeneratePhotoName(id);
+
+            var link = await UploadFileAsync(file, photoName, bucket, cancellationToken);
+
+            var photo = new Photo
+            {
+                Bucket = bucket,
+                FileExtension = file.ContentType,
+                FileName = photoName,
+                FilePath = link,
+                FileSize = file.Length,
+            };
+
+            res.Add(photo);
+        }
+
+        _logger.LogInformation("Добавлен список файлов в MinIO: " +
+            "\n\t Bucket - {Bucket}," +
+            "\n\t Names - {Names}", 
+            bucket, 
+            string.Format("\n\t", res.ToArray())
+        );
+
+        return res;
     }
 
     /// <inheritdoc />
@@ -191,6 +241,9 @@ public class StorageCloudService(
     /// <inheritdoc />
     public async Task<bool> IsBucketExists(string bucket, CancellationToken cancellationToken = default)
     {
+        if (cancellationToken.IsCancellationRequested)
+            return false;
+
         try
         {
             var args = new BucketExistsArgs().WithBucket(bucket);

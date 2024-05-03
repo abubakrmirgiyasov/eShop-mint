@@ -18,6 +18,7 @@ public static class ConfigureAdminServices
             .AddInfrastructureServices()
             .AddAdminRepositories()
             .AddAuthenticationServices()
+            .AddCommonRepositories()
             .AddJwtConfiguration(appSettings);
 
         return services;
