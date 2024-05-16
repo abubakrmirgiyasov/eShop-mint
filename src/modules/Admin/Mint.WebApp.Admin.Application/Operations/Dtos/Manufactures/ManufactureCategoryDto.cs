@@ -9,5 +9,5 @@ public class ManufactureCategoryBindingModel
 
 public record ManufactureCategoryFullViewModel();
 
-public class ManufactureSimpleViewModel : SimpleDto;
+public class ManufactureSimpleViewModel : SimpleViewModel;
 

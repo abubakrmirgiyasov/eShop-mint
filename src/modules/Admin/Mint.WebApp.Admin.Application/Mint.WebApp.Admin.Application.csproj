@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Operations\Commands\Stores\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

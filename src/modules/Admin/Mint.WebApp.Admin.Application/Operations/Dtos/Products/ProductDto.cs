@@ -27,4 +27,6 @@ public class ProductViewModel
     public decimal Price { get; set; }
 
     public decimal OldPrice { get; set; }
+
+    public required string UrlToProduct { get; set; }
 }

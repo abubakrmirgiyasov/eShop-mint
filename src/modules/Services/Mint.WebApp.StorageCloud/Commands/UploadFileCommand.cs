@@ -8,11 +8,11 @@ public sealed record UploadFileCommand(StorageCloudDto StorageCloud) : IRequest;
 
 internal sealed class UploadFileCommandHandler(
     IStorageCloudService storageCloudService,
-    ILogger<GetImageLinkCommandHandler> logger
+    ILogger<UploadFileCommandHandler> logger
 ) : IRequestHandler<UploadFileCommand>
 {
     private readonly IStorageCloudService _storageCloudService = storageCloudService;
-    private readonly ILogger<GetImageLinkCommandHandler> _logger = logger;
+    private readonly ILogger<UploadFileCommandHandler> _logger = logger;
 
     public Task Handle(UploadFileCommand command, CancellationToken cancellationToken = default)
     {

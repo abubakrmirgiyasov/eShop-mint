@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Operations\Validations\" />
+    <Folder Include="Operations\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

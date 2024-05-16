@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using Mint.Application.Interfaces;
 using Mint.Domain.Common;
+using Mint.Domain.Extensions;
 using Mint.Domain.Helpers;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Products;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
+using Mint.WebApp.Admin.Application.Operations.Sorting.Products;
 
 namespace Mint.WebApp.Admin.Application.Operations.Queries.Products;
 
 public sealed record GetProductsQuery(
     Guid UserId,
     string? SearchPhrase,
-    SortType Sort,
+    string? SortBy,
+    SortDirection? SortDir,
     int PageIndex,
     int PageSize
 ) : IQuery<PaginatedResult<ProductViewModel>>;
@@ -28,13 +31,15 @@ internal sealed class GetProductsQueryHandler(
         var (products, totalCount) = await _productRepository.GetProductsAsync(
             userId: request.UserId,
             searchPhrase: request.SearchPhrase,
-            sort: request.Sort,
             pageIndex: request.PageIndex,
             pageSize: request.PageSize,
             cancellationToken: cancellationToken
         );
 
-        var res = _mapper.Map<List<ProductViewModel>>(products);
+        var sortDir = request.SortDir ?? SortDirection.Ascending;
+        var sortProp = ProductDbSorter.Instance.GetSortingProperty(request.SortBy).Compile();
+
+        var res = _mapper.Map<List<ProductViewModel>>(products.SortBy(sortProp!, sortDir).ToList());
 
         return new PaginatedResult<ProductViewModel>(res, totalCount);
     }

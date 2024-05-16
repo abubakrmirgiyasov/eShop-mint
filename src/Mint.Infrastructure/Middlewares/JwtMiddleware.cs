@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Mint.Application.Interfaces;
-using Mint.WebApp.Identity.Application.Operations.Repositories;
+using Mint.Application.Repositories;
 
 namespace Mint.Infrastructure.Middlewares;
 

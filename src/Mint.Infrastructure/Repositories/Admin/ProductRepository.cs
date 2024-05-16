@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Mint.Domain.Common;
 using Mint.Domain.Exceptions;
 using Mint.Domain.Models.Admin.Products;
 using Mint.Infrastructure;
@@ -16,7 +15,6 @@ internal sealed class ProductRepository(ApplicationDbContext context)
     public async Task<(List<Product>, int)> GetProductsAsync(
         Guid userId, 
         string? searchPhrase = null, 
-        SortType sort = SortType.Ascending, 
         int pageIndex = 0, 
         int pageSize = 25, 
         CancellationToken cancellationToken = default)
@@ -31,13 +29,9 @@ internal sealed class ProductRepository(ApplicationDbContext context)
                 || x.ShortDescription.Contains(searchPhrase)
                 || x.FullDescription.Contains(searchPhrase)
             );
-
-            if (sort == SortType.Ascending)
-                query = query.OrderBy(x => x.ProductNumber);
-
-            if (sort == SortType.Descending)
-                query = query.OrderByDescending(x => x.ProductNumber);
         }
+
+        query = query.Where(x => x.Store!.UserId == userId);
 
         var totalCount = await query.CountAsync(cancellationToken);
 
@@ -50,7 +44,6 @@ internal sealed class ProductRepository(ApplicationDbContext context)
             .Include(x => x.ProductCharacteristics)
             .Include(x => x.ProductPhotos!)
             .ThenInclude(x => x.Photo)
-            .Where(x => x.Store!.UserId == userId)
             .Skip(pageIndex * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

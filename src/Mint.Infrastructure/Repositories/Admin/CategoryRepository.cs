@@ -14,7 +14,7 @@ internal class CategoryRepository(
     private readonly ApplicationDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, SortType sorter = SortType.Ascending,  int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default)
+    public async Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, SortDirection sorter = SortDirection.Ascending,  int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default)
     {
         var query = _context.Categories
             .AsNoTracking()
@@ -23,7 +23,7 @@ internal class CategoryRepository(
         if (!string.IsNullOrEmpty(searchPhrase))
             query = query.Where(x => x.Name.Contains(searchPhrase));
 
-        if (sorter == SortType.Ascending)
+        if (sorter == SortDirection.Ascending)
             query = query.OrderBy(x => x.DisplayOrder);
         else
             query = query.OrderByDescending(x => x.DisplayOrder);

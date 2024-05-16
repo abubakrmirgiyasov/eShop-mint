@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluentValidation;
+using Microsoft.Extensions.Logging;
 using Mint.Application.Interfaces;
 using Mint.Domain.Models.Admin.Categories;
 using Mint.WebApp.Admin.Application.Operations.Dtos.Categories;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
 using Mint.WebApp.Admin.Application.Operations.Validations.Categories;
-using System.Text.Json;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Categories;
 
@@ -26,7 +26,7 @@ internal sealed class CreateCategoryCommandHandler(
         var validatorValidate = createCategoryValidator.Validate(request.Category);
 
         if (!validatorValidate.IsValid)
-            throw new Exception(JsonSerializer.Serialize(validatorValidate.Errors));
+            throw new ValidationException(validatorValidate.Errors);
 
         var category = new Category
         {

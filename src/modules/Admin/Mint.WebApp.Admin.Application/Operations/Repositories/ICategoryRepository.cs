@@ -17,7 +17,7 @@ public interface ICategoryRepository : IGenericRepository<Category>
     /// <param name="pageSize"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, SortType sorter = SortType.Ascending, int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default);
+    Task<(List<Category>, int)> GetCategoriesAsync(string? searchPhrase = default, SortDirection sorter = SortDirection.Ascending, int pageIndex = 0, int pageSize = 25, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a category by its unique identifier asynchronously.

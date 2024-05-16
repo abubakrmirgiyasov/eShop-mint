@@ -59,8 +59,8 @@
     <ProjectReference Include="..\Mint.Application\Mint.Application.csproj" />
     <ProjectReference Include="..\Mint.Domain\Mint.Domain.csproj" />
     <ProjectReference Include="..\modules\Admin\Mint.WebApp.Admin.Application\Mint.WebApp.Admin.Application.csproj" />
+    <ProjectReference Include="..\modules\Admin\Mint.WebApp.Admin.Identity.Application\Mint.WebApp.Admin.Identity.Application.csproj" />
     <ProjectReference Include="..\modules\Client\Mint.WebApp.Client.Application\Mint.WebApp.Client.Application.csproj" />
-    <ProjectReference Include="..\modules\Identity\Mint.WebApp.Identity.Application\Mint.WebApp.Identity.Application.csproj" />
   </ItemGroup>
 
 </Project>

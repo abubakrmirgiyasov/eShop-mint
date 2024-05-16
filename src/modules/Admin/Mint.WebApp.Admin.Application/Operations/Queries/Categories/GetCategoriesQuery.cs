@@ -12,7 +12,7 @@ namespace Mint.WebApp.Admin.Application.Operations.Queries.Categories;
 
 public sealed record GetCategoriesQuery(
     string? Search,
-    SortType Sorter,
+    SortDirection Sorter,
     int PageIndex = 0,
     int PageSize = 50
 ) : IQuery<PaginatedResult<CategoryFullViewModel>>;

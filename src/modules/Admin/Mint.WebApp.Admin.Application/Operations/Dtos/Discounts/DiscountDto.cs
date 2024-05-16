@@ -15,7 +15,7 @@ public class DiscountViewModel
     public required DateTime ActiveDateUntil { get; set; }
 }
 
-public class SimpleDiscountViewModel : SimpleDto
+public class SimpleDiscountViewModel : SimpleViewModel
 {
     public required DateOnly ActiveDateUntil { get; set; }
 }

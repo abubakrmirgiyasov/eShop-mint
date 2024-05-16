@@ -10,6 +10,8 @@ public interface IGenericReadRepository<T> where T : class
 {
     Task<List<T>> GetAllAsync(CancellationToken cancellationToken = default);
 
+    IQueryable<T> Where(Expression<Func<T, bool>> func);
+
     Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> func, CancellationToken cancellationToken = default);
 
     Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> func, CancellationToken cancellationToken = default);

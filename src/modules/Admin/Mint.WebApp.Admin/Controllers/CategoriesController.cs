@@ -37,6 +37,15 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetCategoryByIdQuery(id), cancellationToken);
     }
 
+    [HttpGet("simple")]
+    [Authorize(Roles = "admin")]
+    public async Task<ActionResult<List<CategorySimpleViewModel>>> GetSimpleCategories(
+        [FromQuery] string? search,
+        CancellationToken cancellationToken = default)
+    {
+        return await mediator.Send(new GetCommonCategoriesQuery(search), cancellationToken);
+    }
+
     [HttpGet("{id:guid}/simple")]
     [Authorize(Roles = "admin")]
     public async Task<ActionResult<CategorySimpleViewModel>> GetSimpleCategoryById(
@@ -62,24 +71,6 @@ public class CategoriesController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken = default)
     {
         return await mediator.Send(new GetCategoryPhotoQuery(id), cancellationToken);
-    }
-
-    [HttpGet("common")]
-    [Authorize(Roles = "admin")]
-    public async Task<ActionResult<List<CategorySimpleViewModel>>> GetSampleCategories(
-        [FromQuery] string? search,
-        CancellationToken cancellationToken = default)
-    {
-        return await mediator.Send(new GetCommonCategoriesQuery(search), cancellationToken);
-    }
-
-    [HttpGet("{id:guid}/common")]
-    [Authorize(Roles = "admin")]
-    public async Task<ActionResult<List<CategorySimpleViewModel>>> GetSampleCategoryById(
-        Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        return await mediator.Send(new GetSampleCategoryByIdQuery(id), cancellationToken);
     }
 
     [HttpGet("{id:guid}/subCategories")]

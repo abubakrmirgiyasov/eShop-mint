@@ -15,7 +15,8 @@ namespace Mint.Infrastructure.Services;
 public class JwtService(
     ILogger<JwtService> logger,
     IOptions<AppSettings> appSettings,
-    ApplicationDbContext context) : IJwtService
+    ApplicationDbContext context
+) : IJwtService
 {
     private readonly ILogger<JwtService> _logger = logger;
     private readonly AppSettings _appSettings = appSettings.Value;

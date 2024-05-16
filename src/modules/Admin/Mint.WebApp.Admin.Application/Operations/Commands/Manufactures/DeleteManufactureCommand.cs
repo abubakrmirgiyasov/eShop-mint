@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Mint.Application.Interfaces;
+using Mint.Domain.Exceptions;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Manufactures;
@@ -21,6 +22,9 @@ internal sealed class DeleteManufactureCommandHandler(
     public async Task Handle(DeleteManufactureCommand request, CancellationToken cancellationToken)
     {
         var manufacture = await _manufactureRepository.GetManufactureWithPhotoAsync(request.Id, cancellationToken);
+
+        if (manufacture is null)
+            throw new NotFoundException("Производитель не найден.");
 
         try
         {

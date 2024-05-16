@@ -39,7 +39,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             _ => (int)HttpStatusCode.BadRequest,
         };
 
-        await context.Response.WriteAsync(exception?.Message);
+        await context.Response.WriteAsync(exception.Message);
 
         _logger.LogCritical("{Type}: {Message}", exception?.GetType(), exception?.Message);
     }

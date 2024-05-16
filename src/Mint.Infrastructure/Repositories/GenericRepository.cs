@@ -16,6 +16,11 @@ internal class GenericRepository<T>(ApplicationDbContext context) : IGenericRepo
         return _dbSet.ToListAsync(cancellationToken);
     }
 
+    public IQueryable<T> Where(Expression<Func<T, bool>> func)
+    {
+        return _dbSet.Where(func);
+    }
+
     public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> func, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();

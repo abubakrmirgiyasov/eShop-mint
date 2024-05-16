@@ -1,7 +1,7 @@
-﻿using Mint.Application.Interfaces;
+﻿using Mint.Application.Dtos;
+using Mint.Application.Interfaces;
 using Mint.Application.Repositories;
 using Mint.Domain.Common.BucketKeys;
-using Mint.WebApp.Admin.Application.Operations.Dtos.Common;
 
 namespace Mint.WebApp.Admin.Application.Operations.Queries.Products;
 

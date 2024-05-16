@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Mint.WebApp.Admin.Application.Operations.Repositories;
 using Mint.Infrastructure.Repositories.Admin;
-using Mint.WebApp.Identity.Application.Operations.Repositories;
 using Mint.Infrastructure.Repositories.Identity;
 using Mint.Application.Interfaces;
 using Mint.Infrastructure.Services;
@@ -68,7 +67,6 @@ public static class ConfigureServices
 
     public static IServiceCollection AddAdminIdentityRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IAdminAuthenticationRepository, AdminAuthenticationRepository>();
         services.AddScoped<IAdminRepository, AdminRepository>();
 
         return services;

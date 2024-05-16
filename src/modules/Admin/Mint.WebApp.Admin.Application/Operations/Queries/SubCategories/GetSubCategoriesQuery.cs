@@ -17,13 +17,13 @@ public sealed record GetSubCategoriesQuery(
 
 public sealed class SubCategoryFilter
 {
-    public SortType? DisplayOrder { get; set; }
+    public SortDirection? DisplayOrder { get; set; }
 
-    public SortType? Name { get; set; }
+    public SortDirection? Name { get; set; }
 
-    public SortType? DefaultLink { get; set; }
+    public SortDirection? DefaultLink { get; set; }
 
-    public SortType? FullName { get; set; }
+    public SortDirection? FullName { get; set; }
 }
 
 internal sealed class GetSubCategoriesQueryHandler(

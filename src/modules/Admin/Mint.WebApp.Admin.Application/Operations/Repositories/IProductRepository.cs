@@ -1,5 +1,4 @@
 ﻿using Mint.Application.Interfaces;
-using Mint.Domain.Common;
 using Mint.Domain.Models.Admin.Products;
 
 namespace Mint.WebApp.Admin.Application.Operations.Repositories;
@@ -22,7 +21,6 @@ public interface IProductRepository : IGenericRepository<Product>
     Task<(List<Product>, int)> GetProductsAsync(
         Guid userId,
         string? searchPhrase = default,
-        SortType sort = SortType.Ascending,
         int pageIndex = 0,
         int pageSize = 25,
         CancellationToken cancellationToken = default

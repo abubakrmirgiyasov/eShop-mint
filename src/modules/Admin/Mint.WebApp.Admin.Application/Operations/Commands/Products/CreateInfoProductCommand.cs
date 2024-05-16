@@ -7,9 +7,7 @@ using Mint.WebApp.Admin.Application.Operations.Validations.Products;
 
 namespace Mint.WebApp.Admin.Application.Operations.Commands.Products;
 
-public sealed record CreateInfoProductCommand(
-    ProductInfoBindingModel Model
-) : ICommand<Guid>;
+public sealed record CreateInfoProductCommand(ProductInfoBindingModel Model) : ICommand<Guid>;
 
 internal sealed class CreateInfoProductCommandHandler(
     IProductRepository productRepository,

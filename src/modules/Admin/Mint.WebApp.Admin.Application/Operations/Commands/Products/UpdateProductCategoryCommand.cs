@@ -45,7 +45,7 @@ internal sealed class UpdateProductCategoryCommandHandler(
                 new ProductCategory
                 {
                     DisplayOrder = category.DisplayOrder,
-                    CategoryId = category.CategoryId,
+                    CategoryId = category.Category.Value,
                     ProductId = productId,
                 }
             );

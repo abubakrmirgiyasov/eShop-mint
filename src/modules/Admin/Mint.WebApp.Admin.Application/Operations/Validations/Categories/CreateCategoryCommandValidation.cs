@@ -14,7 +14,6 @@ internal sealed class CreateCategoryCommandValidation
         RuleFor(x => x.BadgeText).MaximumLength(30);
         RuleFor(x => x.BadgeStyle).MaximumLength(60);
         RuleFor(x => x.Description).MaximumLength(800);
-
         RuleFor(x => x.DefaultLink).MaximumLength(60);
     }
 }

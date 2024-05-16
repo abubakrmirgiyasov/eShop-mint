@@ -36,7 +36,9 @@ public class CategoryPhotoDto
     public required IFormFile Photo { get; set; }
 }
 
-public class CategorySimpleViewModel : SimpleDto;
+public class CategorySimpleViewModel : SimpleViewModel;
+
+public class CategorySimpleBindingModel : SimpleBindingModel;
 
 public class CategoryInfoViewModel : CategoryInfoBindingModel
 {
