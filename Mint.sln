@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Client.Identity
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Client.Identity.Application", "src\modules\Client\Mint.WebApp.Client.Identity.Application\Mint.WebApp.Client.Identity.Application.csproj", "{5C30774B-7B30-4AB7-A0EC-2B59BDF4DCA3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mint.WebApp.Email", "src\modules\Services\Mint.WebApp.Email\Mint.WebApp.Email.csproj", "{6A1D8254-8B68-4DD5-A40F-9B68CFB0E8FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{5C30774B-7B30-4AB7-A0EC-2B59BDF4DCA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C30774B-7B30-4AB7-A0EC-2B59BDF4DCA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C30774B-7B30-4AB7-A0EC-2B59BDF4DCA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A1D8254-8B68-4DD5-A40F-9B68CFB0E8FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1D8254-8B68-4DD5-A40F-9B68CFB0E8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1D8254-8B68-4DD5-A40F-9B68CFB0E8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1D8254-8B68-4DD5-A40F-9B68CFB0E8FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -175,6 +181,7 @@ Global
 		{0E22EBAA-790A-4502-9A9B-B1E542D845DD} = {E02DA575-B073-4084-89A9-2615E37C0C06}
 		{29757D78-4909-4545-AF0F-1AFAEEE6EAE5} = {A58CC3EF-B286-4151-853D-88F8EE5F0392}
 		{5C30774B-7B30-4AB7-A0EC-2B59BDF4DCA3} = {A58CC3EF-B286-4151-853D-88F8EE5F0392}
+		{6A1D8254-8B68-4DD5-A40F-9B68CFB0E8FB} = {B4987191-ABF8-472B-9432-C0222120D832}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2E3EF17-D76B-4080-B8AA-2FB58CBB21B8}
