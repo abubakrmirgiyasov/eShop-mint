@@ -54,6 +54,7 @@ public static class ConfigureServices
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
+        services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
 
         return services;
     }

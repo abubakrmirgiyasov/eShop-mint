@@ -21,6 +21,8 @@ internal sealed class ProductRepository(ApplicationDbContext context)
     {
         var query = _context.Products.AsQueryable();
 
+        query = query.Where(x => x.Store!.UserId == userId);
+
         if (!string.IsNullOrEmpty(searchPhrase))
         {
             query = query.Where(x =>
@@ -30,8 +32,6 @@ internal sealed class ProductRepository(ApplicationDbContext context)
                 || x.FullDescription.Contains(searchPhrase)
             );
         }
-
-        query = query.Where(x => x.Store!.UserId == userId);
 
         var totalCount = await query.CountAsync(cancellationToken);
 

@@ -39,7 +39,7 @@ internal sealed class GetProductsQueryHandler(
         var sortDir = request.SortDir ?? SortDirection.Ascending;
         var sortProp = ProductDbSorter.Instance.GetSortingProperty(request.SortBy).Compile();
 
-        var res = _mapper.Map<List<ProductViewModel>>(products.SortBy(sortProp!, sortDir).ToList());
+        var res = _mapper.Map<List<ProductViewModel>>(products.SortBy(sortProp!, sortDir));
 
         return new PaginatedResult<ProductViewModel>(res, totalCount);
     }
