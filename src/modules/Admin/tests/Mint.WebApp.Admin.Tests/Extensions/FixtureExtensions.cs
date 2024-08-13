@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using AutoFixture.AutoNSubstitute;
+﻿using AutoFixture.AutoNSubstitute;
 
 namespace Mint.WebApp.Admin.Tests.Extensions;
 
