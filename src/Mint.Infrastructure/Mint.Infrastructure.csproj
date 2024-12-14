@@ -43,10 +43,10 @@
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
-    <PackageReference Include="MongoDB.Bson" Version="2.23.1">
+    <PackageReference Include="MongoDB.Bson" Version="2.25.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
-    <PackageReference Include="MongoDB.Driver" Version="2.23.1">
+    <PackageReference Include="MongoDB.Driver" Version="2.25.0">
       <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
